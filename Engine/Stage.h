@@ -57,49 +57,24 @@ public:
 	void Update();
 	//描画
 	void Draw();
-private:
-	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle);
-
-	void SetBlock(Vec3 position, Vec3 scale);
 public://マップ
 	int GetMap(int i, int j) { return map[j][i]; }
 
 	Vec2 GetMapSize() { return mapSize; }
-public://床
-	Box GetFloorBox(int i) { if (floor.size() > 0) { return floor[i]->box; } }
 
-	Vec3 GetFloorPos(int i) { if (floor.size() > 0) { return floor[i]->position; } return Vec3{}; }
-
-	Vec3 GetFloorAngle(int i) { if (floor.size() > 0) { return floor[i]->angle; }return Vec3{}; }
-
-	Vec3 GetFloorScale(int i) { if (floor.size() > 0) { return floor[i]->scale; }return Vec3{}; }
-
-	int GetFloorSize() { return  static_cast<int>(floor.size()); };
-public://ボックス
-	Box GetBlockBlock(int i) { if (block.size() > 0) { return block[i]->box; } return Box{}; }
-
-	Vec3 GetBlockPos(int i) { if (block.size() > 0) { return block[i]->position; }return Vec3{}; }
-
-	Vec3 GetBlockAngle(int i) { if (block.size() > 0) { return block[i]->angle; }return Vec3{}; }
-
-	Vec3 GetBlockScale(int i) { if (block.size() > 0) { return block[i]->scale; } return Vec3{}; }
-
-	int GetBlockSize() { return static_cast<int>(block.size()); };
+	bool GetClearFlag() { return goalFlag; }
 private:
 	const Vec2 mapSize = { 50.0f,50.0f };
-	//床
-	std::vector<Floor*> floor;
-	int floorGraph = 0;
+	
 	//ブロック
-	std::vector<Block*>block;
-
-	int	map[MAP_HEIGHT][MAP_WIDTH] = {};//マップチップ
+	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
 
 	int mapOBJ[MAP_HEIGHT][MAP_WIDTH] = {};		//壁などのOBJ
 	int mapOBJPos[MAP_HEIGHT][MAP_WIDTH] = {};	//壁などのOBJの座標
 	//床
 	ObjectData floorOBJ[3];
+	int floorGraph = 0;
 
 	//壁OBJ
 	ObjectData wallOBJ = {};
@@ -110,5 +85,7 @@ private:
 	ObjectData goalOBJ = {};
 	int goalGraph = 0;
 	Vec3 goalPos = {};
-	Sphere goalSphere = {};
+	Vec3 goalScale = { 20.0f,2.0f,20.0f };
+	Box goalBox = {};
+	bool goalFlag = false;
 };

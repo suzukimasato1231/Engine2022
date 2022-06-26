@@ -43,8 +43,8 @@ void PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale)
 		float bL = bPos.x - bScale.x / 2;
 		float bR = bPos.x + bScale.x / 2;
 		//y
-		float b = bPos.y - bScale.y / 2;
-		float b2 = bPos.y + bScale.y / 2;
+		float bD = bPos.y - bScale.y / 2;
+		float bU = bPos.y + bScale.y / 2;
 		//z
 		float bz = bPos.z - bScale.z / 2;
 		float b2z = bPos.z + bScale.z / 2;
@@ -52,25 +52,25 @@ void PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale)
 		float pR = Player::Instance()->GetPosition().x + Player::Instance()->GetPSize().x;
 		float pL = Player::Instance()->GetPosition().x - Player::Instance()->GetPSize().x;
 		//y
-		float p = Player::Instance()->GetPosition().y + Player::Instance()->GetPSize().y;	
-		float p2 = Player::Instance()->GetPosition().y - Player::Instance()->GetPSize().y;
+		float pU = Player::Instance()->GetPosition().y + Player::Instance()->GetPSize().y;	
+		float pD = Player::Instance()->GetPosition().y - Player::Instance()->GetPSize().y;
 		//z	
-		float pz = Player::Instance()->GetPosition().z + Player::Instance()->GetPSize().z;
-		float p2z = Player::Instance()->GetPosition().z - Player::Instance()->GetPSize().z;
+		float pB = Player::Instance()->GetPosition().z + Player::Instance()->GetPSize().z;
+		float pF = Player::Instance()->GetPosition().z - Player::Instance()->GetPSize().z;
 		//プレイヤーがブロックより上か下か
-		if (b2 < Player::Instance()->GetOldPosition().y)
+		if (bU < Player::Instance()->GetOldPosition().y)
 		{//上の時
-			if (b2 > p2 && b2 < Player::Instance()->GetOldPosition().y)
+			if (bU > pD && bU < Player::Instance()->GetOldPosition().y)
 			{
-				set.y = b2 + Player::Instance()->GetPSize().y / 2;
+				set.y = bU + Player::Instance()->GetPSize().y / 2;
 				Player::Instance()->GroundFlag();
 			}
 		}
 		else
 		{//下の時
-			if (b < p && b>Player::Instance()->GetOldPosition().y)
+			if (bD < pU && bD>Player::Instance()->GetOldPosition().y)
 			{
-				set.y = b - Player::Instance()->GetPSize().y / 2;
+				set.y = bD - Player::Instance()->GetPSize().y / 2;
 			}
 		}
 		//x
@@ -83,17 +83,27 @@ void PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale)
 			set.x = bR + Player::Instance()->GetPSize().x / 2;
 		}
 		//z
-		if (bz < pz && bz>Player::Instance()->GetOldPosition().z)
+		if (bz < pB && bz>Player::Instance()->GetOldPosition().z)
 		{
 			set.z = bz - Player::Instance()->GetPSize().z / 2;
 		}
-		if (b2z > p2z && b2z < Player::Instance()->GetOldPosition().z)
+		if (b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
 		{
 			set.z = b2z + Player::Instance()->GetPSize().z / 2;
 		}
 		Player::Instance()->SetPosition(set);
 	}
 
+}
+
+bool PushCollision::PlayerGoal(Box goalBox)
+{
+	//ブロックとプレイヤーの押し戻し処理
+	if (Collision::CheckBox2Box(Player::Instance()->GetBox(), goalBox))
+	{
+		return true;
+	}
+	return false;
 }
 
 

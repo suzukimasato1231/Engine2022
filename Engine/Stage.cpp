@@ -8,19 +8,6 @@ Stage::Stage()
 
 Stage::~Stage()
 {
-	//ÉÅÉÇÉäâï˙
-	//è∞
-	for (int i = (int)floor.size() - 1; i >= 0; i--)
-	{
-		delete floor[i];
-		floor.erase(floor.begin() + i);
-	}
-	//ï«
-	for (int i = (int)block.size() - 1; i >= 0; i--)
-	{
-		delete block[i];
-		block.erase(block.begin() + i);
-	}
 }
 
 void Stage::Init()
@@ -35,7 +22,7 @@ void Stage::Init()
 	wallGraph = Texture::Instance()->LoadTexture(L"Resources/map/block.png");
 
 	//ÉSÅ[Éãê›íË
-	goalOBJ = Shape::CreateOBJ("sphere");
+	goalOBJ = Shape::CreateSquare(goalScale.x,goalScale.y,goalScale.z);
 
 	char* Filepath = "";
 	char* FilepathOBJ = "";
@@ -63,8 +50,10 @@ void Stage::Init()
 			case Wall:
 				break;
 			case Goal:
-				goalPos = Vec3(static_cast<float>(x) * 50 - 100, static_cast<float>(mapPos[y][x]) * 10 - 5.0f, (MAP_HEIGHT - 1 - y) * 50.0f);
-				goalSphere.center = XMVectorSet(goalPos.x, goalPos.y, goalPos.z, 1);
+				goalPos = Vec3(static_cast<float>(x) * 50 - 100, static_cast<float>(mapOBJPos[y][x]) * 10, (MAP_HEIGHT - 1 - y) * 50.0f);
+				goalBox = {};
+				goalBox.maxPosition = XMVectorSet(goalPos.x + goalScale.x / 2, goalPos.y + goalScale.y / 2, goalPos.z + goalScale.z / 2, 1);
+				goalBox.minPosition = XMVectorSet(goalPos.x - goalScale.x / 2, goalPos.y - goalScale.y / 2, goalPos.z - goalScale.z / 2, 1);
 				break;
 			default:
 				break;
@@ -75,17 +64,6 @@ void Stage::Init()
 
 void Stage::MainInit(int stageNum)
 {
-	//ÉÅÉÇÉäâï˙éŒÇﬂè∞
-	for (int i = (int)floor.size() - 1; i >= 0; i--)
-	{
-		delete floor[i];
-		floor.erase(floor.begin() + i);
-	}
-	for (int i = (int)block.size() - 1; i >= 0; i--)
-	{
-		delete block[i];
-		block.erase(block.begin() + i);
-	}
 }
 
 void Stage::Update()
@@ -127,11 +105,11 @@ void Stage::Update()
 			case NoneOBJ:
 				break;
 			case Wall:
-				PushCollision::PlayerBox(Vec3(static_cast<float>(x) * 50.0f - 100, static_cast<float>(mapPos[y][x]) * 10.0f + wallScale.y/2, (MAP_HEIGHT - 1 - y) * 50.0f),
+				PushCollision::PlayerBox(Vec3(static_cast<float>(x) * 50.0f - 100, static_cast<float>(mapOBJPos[y][x]) * 10.0f + wallScale.y / 3, (MAP_HEIGHT - 1 - y) * 50.0f),
 					wallScale);
 				break;
 			case Goal:
-
+				goalFlag = PushCollision::PlayerGoal(goalBox);
 				break;
 			default:
 				break;
@@ -182,12 +160,12 @@ void Stage::Draw()
 				break;
 			case Wall:
 				Object::Draw(wallOBJ,
-					Vec3(static_cast<float>(x) * 50.0f - 100.0f, static_cast<float>(mapPos[y][x]) * 10.0f + wallScale.y / 2, (MAP_HEIGHT - 1 - y) * 50.0f),
+					Vec3(static_cast<float>(x) * 50.0f - 100.0f, static_cast<float>(mapOBJPos[y][x]) * 10.0f + wallScale.y / 3, (MAP_HEIGHT - 1 - y) * 50.0f),
 					Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), wallGraph);
 				break;
 			case Goal:
 				Object::Draw(goalOBJ,
-					Vec3(static_cast<float>(x) * 50.0f - 100.0f, static_cast<float>(mapPos[y][x]) * 10.0f, (MAP_HEIGHT - 1 - y) * 50.0f),
+					Vec3(static_cast<float>(x) * 50.0f - 100.0f, static_cast<float>(mapOBJPos[y][x]) * 10.0f, (MAP_HEIGHT - 1 - y) * 50.0f),
 					Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				break;
 			default:

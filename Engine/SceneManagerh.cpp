@@ -54,10 +54,7 @@ void SceneManagerh::Initialize()
 
 void SceneManagerh::Update()
 {
-
-
 	Input::Instance()->Update();
-
 	if (scene == Title)
 	{
 		if (Input::Instance()->KeybordTrigger(DIK_SPACE))
@@ -68,7 +65,10 @@ void SceneManagerh::Update()
 	}
 	else if (scene == GameScene)
 	{
-		
+		if (GameSceneManager::Instance()->GetChangeScene())
+		{
+			scene = Title;
+		}
 	}
 
 	if (scene == Title)
@@ -79,8 +79,6 @@ void SceneManagerh::Update()
 	{
 		GameSceneManager::Instance()->Update();
 	}
-
-
 }
 
 void SceneManagerh::Draw()

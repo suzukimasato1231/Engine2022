@@ -71,6 +71,8 @@ void GameSceneManager::Init()
 	ParticleManager::SetCamera(camera);
 	Object::SetCamera(camera);
 	Object::SetLight(lightGroup);
+	changeScene = false;
+	Reset();
 }
 
 void GameSceneManager::Update()
@@ -92,17 +94,23 @@ void GameSceneManager::Update()
 	camera->FollowCamera(Player::Instance()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
 
 
+
 	//パーティクル更新
 	particleMan->Update();
 	//ライト更新
 	lightGroup->Update();
+	//クリアしたらシーンチェンジ
+	if (stage->GetClearFlag())
+	{
+		changeScene = true;
+	}
 }
 
 void GameSceneManager::Draw()
 {
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
-	Sprite::Instance()->Draw(BGGraph, pos, (float)window_width, (float)window_height);
+	//Sprite::Instance()->Draw(BGGraph, pos, (float)window_width, (float)window_height);
 
 	//プレイヤーの描画
 	Player::Instance()->Draw();

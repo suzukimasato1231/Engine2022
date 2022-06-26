@@ -31,6 +31,8 @@ public:
 	void Draw();
 
 	void Reset();
+public:
+	bool GetChangeScene() { return changeScene; }
 private:
 	ParticleManager *particleMan = nullptr;
 	Camera *camera = nullptr;
