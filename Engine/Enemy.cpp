@@ -1,7 +1,6 @@
 #include"Enemy.h"
 #include"Shape.h"
 #include"Input.h"
-#include "MapStage.h"
 Enemy::Enemy()
 {
 }

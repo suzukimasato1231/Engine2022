@@ -1,7 +1,6 @@
 #include"Player.h"
 #include"Shape.h"
 #include"Input.h"
-#include "MapStage.h"
 #include"Collision.h"
 Player::Player()
 {}

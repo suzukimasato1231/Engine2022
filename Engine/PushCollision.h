@@ -1,6 +1,5 @@
 #pragma once
 #include"Player.h"
-#include"MapStage.h"
 #include"Collision.h"
 #include"Enemy.h"
 #include"Stage.h"
