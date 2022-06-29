@@ -82,6 +82,7 @@ void GameSceneManager::Update()
 	if (Input::Instance()->KeybordTrigger(DIK_R))
 	{
 		Reset();
+		stage->MainInit(0);
 	}
 
 	Player::Instance()->Update(enemy);
@@ -112,10 +113,11 @@ void GameSceneManager::Draw()
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
 	//Sprite::Instance()->Draw(BGGraph, pos, (float)window_width, (float)window_height);
 
-	//プレイヤーの描画
-	Player::Instance()->Draw();
+	
 
 	stage->Draw();
+	//プレイヤーの描画
+	Player::Instance()->Draw();
 }
 
 void GameSceneManager::Reset()

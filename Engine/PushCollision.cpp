@@ -23,7 +23,7 @@ void PushCollision::Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale)
 	}
 }
 
-void PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale)
+int PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale, int mapL, int mapR)
 {
 	Box BlockBox = {};
 	BlockBox.maxPosition = XMVectorSet(
@@ -34,66 +34,161 @@ void PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale)
 		bPos.x - bScale.x / 2,
 		bPos.y - bScale.y / 2,
 		bPos.z - bScale.z / 2, 1);
-	Vec3 p = Player::Instance()->GetPosition();
+	int Flag = false;
 	//ブロックとプレイヤーの押し戻し処理
 	if (Collision::CheckBox2Box(Player::Instance()->GetBox(), BlockBox))
 	{
 		Vec3 set = Player::Instance()->GetPosition();
 		//x
-		float bL = bPos.x - bScale.x / 2;
-		float bR = bPos.x + bScale.x / 2;
+		float bL = bPos.x - bScale.x / 2, bR = bPos.x + bScale.x / 2;
 		//y
-		float bD = bPos.y - bScale.y / 2;
-		float bU = bPos.y + bScale.y / 2;
+		float bD = bPos.y - bScale.y / 2, bU = bPos.y + bScale.y / 2;
 		//z
-		float bz = bPos.z - bScale.z / 2;
-		float b2z = bPos.z + bScale.z / 2;
+		float bz = bPos.z - bScale.z / 2, b2z = bPos.z + bScale.z / 2;
 		//x
-		float pR = Player::Instance()->GetPosition().x + Player::Instance()->GetPSize().x;
-		float pL = Player::Instance()->GetPosition().x - Player::Instance()->GetPSize().x;
+		float pR = Player::Instance()->GetPosition().x + Player::Instance()->GetPSize().x, pL = Player::Instance()->GetPosition().x - Player::Instance()->GetPSize().x;
 		//y
-		float pU = Player::Instance()->GetPosition().y + Player::Instance()->GetPSize().y;	
-		float pD = Player::Instance()->GetPosition().y - Player::Instance()->GetPSize().y;
+		float pU = Player::Instance()->GetPosition().y + Player::Instance()->GetPSize().y, pD = Player::Instance()->GetPosition().y - Player::Instance()->GetPSize().y;
 		//z	
-		float pB = Player::Instance()->GetPosition().z + Player::Instance()->GetPSize().z;
-		float pF = Player::Instance()->GetPosition().z - Player::Instance()->GetPSize().z;
-		//プレイヤーがブロックより上か下か
-		if (bU < Player::Instance()->GetOldPosition().y)
-		{//上の時
+		float pB = Player::Instance()->GetPosition().z + Player::Instance()->GetPSize().z, pF = Player::Instance()->GetPosition().z - Player::Instance()->GetPSize().z;
+		//二方向
+		//上右
+		if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
+			bR > pL && bR < Player::Instance()->GetOldPosition().x)
+		{
+			set.y = bU + Player::Instance()->GetPSize().y / 2;
+			Flag = 1;
+		}//上左
+		else if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
+			bL < pR && bL > Player::Instance()->GetOldPosition().x)
+		{
+			set.y = bU + Player::Instance()->GetPSize().y / 2;
+			Flag = 1;
+		}//上前
+		else if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
+			bz < pB && bz>Player::Instance()->GetOldPosition().z)
+		{
+			set.y = bU + Player::Instance()->GetPSize().y / 2;
+			Flag = 1;
+		}//上奥
+		else if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
+			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
+		{
+			set.y = bU + Player::Instance()->GetPSize().y / 2;
+			Flag = 1;
+		}//下右
+		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
+			bR > pL && bR < Player::Instance()->GetOldPosition().x)
+		{
+			set.y = bD - Player::Instance()->GetPSize().y / 2;
+			Flag = 2;
+		}//下左
+		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
+			bL < pR && bL > Player::Instance()->GetOldPosition().x)
+		{
+			set.y = bD - Player::Instance()->GetPSize().y / 2;
+			Flag = 2;
+		}
+		//下前
+		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
+			bz < pB && bz>Player::Instance()->GetOldPosition().z)
+		{
+			set.y = bD - Player::Instance()->GetPSize().y / 2;
+			Flag = 2;
+		}//下奥
+		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
+			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
+		{
+			set.y = bD - Player::Instance()->GetPSize().y / 2;
+			Flag = 2;
+		}
+		//右奥
+		else if (bR > pL && bR < Player::Instance()->GetOldPosition().x &&
+			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
+		{
+			if (mapL > 0)
+			{
+				set.x = bR + Player::Instance()->GetPSize().x / 2;
+			}
+			else
+			{
+				set.z = b2z + Player::Instance()->GetPSize().z / 2;
+			}
+		}
+		//左奥
+		else if (bL < pR && bL > Player::Instance()->GetOldPosition().x &&
+			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
+		{
+			if (mapR > 0)
+			{
+				set.x = bL - Player::Instance()->GetPSize().x / 2;
+			}
+			else
+			{
+				set.z = b2z + Player::Instance()->GetPSize().z / 2;
+			}
+		}//右前
+		else if (bR > pL && bR < Player::Instance()->GetOldPosition().x &&
+			bz < pB && bz>Player::Instance()->GetOldPosition().z)
+		{
+			if (mapL > 0)
+			{
+				set.x = bR + Player::Instance()->GetPSize().x / 2;
+			}
+			else
+			{
+				set.z = bz - Player::Instance()->GetPSize().z / 2;
+			}
+		}//左前
+		else if (bL < pR && bL > Player::Instance()->GetOldPosition().x &&
+			bz < pB && bz>Player::Instance()->GetOldPosition().z)
+		{
+			if (mapR > 0)
+			{
+				set.x = bL - Player::Instance()->GetPSize().x / 2;
+			}
+			else
+			{
+				set.z = bz - Player::Instance()->GetPSize().z / 2;
+			}
+		}
+		else
+		{//一方向		
+			//上の時
 			if (bU > pD && bU < Player::Instance()->GetOldPosition().y)
 			{
 				set.y = bU + Player::Instance()->GetPSize().y / 2;
 				Player::Instance()->GroundFlag();
+				Flag = 1;
 			}
-		}
-		else
-		{//下の時
+			//下の時
 			if (bD < pU && bD>Player::Instance()->GetOldPosition().y)
 			{
 				set.y = bD - Player::Instance()->GetPSize().y / 2;
+				Flag = 2;
 			}
-		}
-		//x
-		if (bL < pR && bL > Player::Instance()->GetOldPosition().x)
-		{
-			set.x = bL - Player::Instance()->GetPSize().x / 2;
-		}
-		if (bR > pL && bR < Player::Instance()->GetOldPosition().x)
-		{
-			set.x = bR + Player::Instance()->GetPSize().x / 2;
-		}
-		//z
-		if (bz < pB && bz>Player::Instance()->GetOldPosition().z)
-		{
-			set.z = bz - Player::Instance()->GetPSize().z / 2;
-		}
-		if (b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
-		{
-			set.z = b2z + Player::Instance()->GetPSize().z / 2;
+			//x
+			if (bL < pR && bL > Player::Instance()->GetOldPosition().x)
+			{
+				set.x = bL - Player::Instance()->GetPSize().x / 2;
+			}
+			if (bR > pL && bR < Player::Instance()->GetOldPosition().x)
+			{
+				set.x = bR + Player::Instance()->GetPSize().x / 2;
+			}
+			//z
+			if (bz < pB && bz>Player::Instance()->GetOldPosition().z)
+			{
+				set.z = bz - Player::Instance()->GetPSize().z / 2;
+			}
+			if (b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
+			{
+				set.z = b2z + Player::Instance()->GetPSize().z / 2;
+			}
 		}
 		Player::Instance()->SetPosition(set);
 	}
-
+	return Flag;
 }
 
 bool PushCollision::PlayerGoal(Box goalBox)

@@ -15,7 +15,7 @@ public:
 
 	void Init();//初期化
 
-	void Update(class Enemy *enemy);//更新
+	void Update(class Enemy* enemy);//更新
 
 	void Draw();//描画
 
@@ -26,6 +26,8 @@ public:
 	void GroundFlag();
 
 	void Reset();
+
+	void GetBlockStepOnFlag() { blockStepOnFlag = true; }
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -61,13 +63,12 @@ private:
 	Vec3 scale{ 4.0f,4.0f,4.0f };		//大きさ
 	Vec3 angle{ 0.0f,0.0f,0.0f };		//角度
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
-	Vec3 pScale = { 5.0f,7.0f,5.0f };	//プレイヤー大きさ
+	Vec3 pScale = { 5.0f,7.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
-	int HP = 10;						//プレイヤーHP
 
 
-	Vec3 vec = {};						
+	Vec3 vec = {};
 
 	//ジャンプ
 	const float jumpPowerMax = 8.0f;
@@ -75,4 +76,5 @@ private:
 	float jumpPowerDelay = 0.2f;
 	float gravity = 5.0f;//重力
 	bool groundFlag = false;//地面に接しているかどうか
+	bool blockStepOnFlag = false;//ブロックを踏んで壊したかどうか
 };
