@@ -5,27 +5,7 @@
 #include <CollisionPrimitive.h>
 #include <LoadCSV.h>
 class Player;
-/// <summary>
-/// 床
-/// </summary>
-struct Floor
-{
-	Box box = {};
-	Vec3 position{};
-	Vec3 scale = {};
-	Vec3 angle = {};
 
-};
-/// <summary>
-/// ボックス
-/// </summary>
-struct Block
-{
-	Box box = {};
-	Vec3 position{};
-	Vec3 scale = {};
-	Vec3 angle = {};
-};
 
 enum StageFloor
 {
@@ -40,6 +20,7 @@ enum StageOBJ
 	NoneOBJ,
 	Wall,
 	Goal,
+	BreakBox,
 };
 
 class Stage
@@ -60,12 +41,12 @@ public:
 public://マップ
 	int GetMap(int i, int j) { return map[j][i]; }
 
-	Vec2 GetMapSize() { return mapSize; }
+	//Vec2 GetMapSize() { return mapSize; }
 
 	bool GetClearFlag() { return goalFlag; }
 private:
-	const Vec2 mapSize = { 50.0f,50.0f };
-	
+	const float mapSize = 25.0f;
+
 	//ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
@@ -79,7 +60,7 @@ private:
 	//壁OBJ
 	ObjectData wallOBJ = {};
 	int wallGraph = 0;
-	const Vec3 wallScale = { 50.0f, 50.0f, 50.0f };
+	const Vec3 wallScale = { 25.0f, 50.0f, 25.0f };
 
 	//ゴール
 	ObjectData goalOBJ = {};
@@ -88,4 +69,10 @@ private:
 	Vec3 goalScale = { 20.0f,2.0f,20.0f };
 	Box goalBox = {};
 	bool goalFlag = false;
+
+	//壊れる箱
+	ObjectData breakBoxOBJ = {};
+	int breakBoxGraph = 0;
+	Box breakBox = {};
+	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 };

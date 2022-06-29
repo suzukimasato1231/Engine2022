@@ -62,7 +62,7 @@ void Player::GroundFlag()
 
 void Player::Reset()
 {
-	position = { 100.0f,100.0f,100.0f };	//座標
+	position = { 90.0f,50.0f,10.0f };	//座標
 	oldPosition = position;
 }
 
@@ -91,11 +91,13 @@ void Player::Move()
 void Player::Jump()
 {
 	//ジャンプ
-	if (Input::Instance()->KeybordPush(DIK_SPACE) && groundFlag == true)
+	if ((Input::Instance()->KeybordPush(DIK_SPACE) || blockStepOnFlag) && groundFlag == true)
 	{
 		jumpPower = jumpPowerMax;
-	
+		blockStepOnFlag = false;
 	}
+
+
 	//重力加算
 	vec.y -= gravity;
 	if (jumpPower > 0)
