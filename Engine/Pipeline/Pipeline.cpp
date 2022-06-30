@@ -445,10 +445,10 @@ Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device *dev
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
-	//半透明
-	/*blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;*/
+	////半透明
+	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
 	//加算合成
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -512,6 +512,7 @@ Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device *dev
 	//パイプラインとルートシグネチャを表す
 	return pipelineSet;
 }
+
 
 Pipeline::PipelineSet Pipeline::PostTestCreateGraphicsPipeline(ID3D12Device* dev)
 {

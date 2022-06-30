@@ -4,17 +4,17 @@
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
-
+#include"Particle.h"
+#include"Particle.h"
 GameSceneManager::GameSceneManager()
 {}
 GameSceneManager::~GameSceneManager()
 {
-	safe_delete(particleMan);
+	//safe_delete(particleMan);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
 	safe_delete(enemy);
-	safe_delete(stage);
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
@@ -26,8 +26,6 @@ void GameSceneManager::Initialize()
 	audio = Audio::Create();
 	//カメラクラス作成
 	camera = Camera::Create();
-	//パーティクルクラス作成
-	particleMan = ParticleManager::Create();
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 
@@ -47,8 +45,8 @@ void GameSceneManager::Initialize()
 
 	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/backgroundA.png");
 
-	//3Dオブジェクト画像読み込み
 
+	//3Dオブジェクト画像読み込み
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 	//3Dオブジェクトの生成とモデルのセット
@@ -61,8 +59,7 @@ void GameSceneManager::Initialize()
 	enemy = new Enemy;
 	enemy->Init();
 	//ステージ
-	stage = new Stage;
-	stage->Init();
+	Stage::Instance()->Init();
 }
 
 void GameSceneManager::Init()
@@ -73,6 +70,7 @@ void GameSceneManager::Init()
 	Object::SetLight(lightGroup);
 	changeScene = false;
 	Reset();
+	Particle::Instance()->Init();
 }
 
 void GameSceneManager::Update()
@@ -82,29 +80,26 @@ void GameSceneManager::Update()
 	if (Input::Instance()->KeybordTrigger(DIK_R))
 	{
 		Reset();
-		stage->MainInit(0);
+		Stage::Instance()->MainInit(0);
 	}
 
 	Player::Instance()->Update(enemy);
 
 	enemy->Update();
 
-	stage->Update();
+	Stage::Instance()->Update();
 
 	//
 	camera->FollowCamera(Player::Instance()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
 
-
-
-	//パーティクル更新
-	particleMan->Update();
-	//ライト更新
-	lightGroup->Update();
 	//クリアしたらシーンチェンジ
-	if (stage->GetClearFlag())
+	if (Stage::Instance()->GetClearFlag())
 	{
 		changeScene = true;
 	}
+	Particle::Instance()->Update();
+	//ライト更新
+	lightGroup->Update();
 }
 
 void GameSceneManager::Draw()
@@ -113,11 +108,14 @@ void GameSceneManager::Draw()
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
 	//Sprite::Instance()->Draw(BGGraph, pos, (float)window_width, (float)window_height);
 
-	
 
-	stage->Draw();
+
+	Stage::Instance()->Draw();
 	//プレイヤーの描画
 	Player::Instance()->Draw();
+
+	Particle::Instance()->Draw();
+
 }
 
 void GameSceneManager::Reset()

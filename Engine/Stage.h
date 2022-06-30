@@ -23,8 +23,10 @@ enum StageOBJ
 	BreakBox,
 };
 
-class Stage
+class Stage :public Singleton<Stage>
 {
+private:
+	friend Singleton<Stage>;
 public:
 	//コンストラクタ
 	Stage();
@@ -40,8 +42,6 @@ public:
 	void Draw();
 public://マップ
 	int GetMap(int i, int j) { return map[j][i]; }
-
-	//Vec2 GetMapSize() { return mapSize; }
 
 	bool GetClearFlag() { return goalFlag; }
 private:

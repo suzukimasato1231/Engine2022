@@ -25,6 +25,8 @@ public:
 	//OBJ読み込み
 	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device *dev);
 	//パーティクル
+
+	//四角形
 	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device *dev);
 
 	//ポストエフェクト

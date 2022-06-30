@@ -34,7 +34,6 @@ public:
 public:
 	bool GetChangeScene() { return changeScene; }
 private:
-	ParticleManager *particleMan = nullptr;
 	Camera *camera = nullptr;
 	LightGroup *lightGroup = nullptr;
 	Audio *audio = nullptr;
@@ -46,8 +45,6 @@ private://定義
 
 	//エネミー
 	Enemy *enemy = nullptr;
-
-	Stage *stage = nullptr;
 
 	//FBX
 	Model *model1 = nullptr;

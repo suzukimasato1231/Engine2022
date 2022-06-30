@@ -2,6 +2,7 @@
 #include"Shape.h"
 #include <LoadCSV.h>
 #include"PushCollision.h"
+#include"Particle.h"
 Stage::Stage()
 {}
 
@@ -126,17 +127,19 @@ void Stage::Update()
 				break;
 			case BreakBox:
 			{
-				int breakNum = 0;
 				int breakFlag = PushCollision::PlayerBox(Vec3(static_cast<float>(x) * mapSize - 100, static_cast<float>(mapOBJPos[y][x]) * 10.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
 					breakBoxScale, mapOBJ[(y - 1) % MAP_HEIGHT][x], mapOBJ[(y + 1) % MAP_HEIGHT][x]);
+				//ƒuƒƒbƒN‚ª‰ó‚ê‚é
 				if (breakFlag == 1)
 				{
 					mapOBJ[y][x] = 0;
 					Player::Instance()->GetBlockStepOnFlag();
+					Particle::Instance()->BreakBoxFlag(Vec3(static_cast<float>(x) * mapSize - 100, static_cast<float>(mapOBJPos[y][x]) * 10.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize));
 				}
 				else if(breakFlag == 2)
 				{
 					mapOBJ[y][x] = 0;
+					Particle::Instance()->BreakBoxFlag(Vec3(static_cast<float>(x) * mapSize - 100, static_cast<float>(mapOBJPos[y][x]) * 10.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize));
 				}
 			}
 			break;
