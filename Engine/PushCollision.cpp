@@ -56,51 +56,43 @@ int PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale, int mapL, int mapR)
 		if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
 			bR > pL && bR < Player::Instance()->GetOldPosition().x)
 		{
-			set.y = bU + Player::Instance()->GetPSize().y / 2;
-			Flag = 1;
+			set.x = bR + Player::Instance()->GetPSize().x / 2;
 		}//上左
 		else if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
 			bL < pR && bL > Player::Instance()->GetOldPosition().x)
 		{
-			set.y = bU + Player::Instance()->GetPSize().y / 2;
-			Flag = 1;
+			set.x = bL - Player::Instance()->GetPSize().x / 2;
 		}//上前
 		else if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
 			bz < pB && bz>Player::Instance()->GetOldPosition().z)
 		{
-			set.y = bU + Player::Instance()->GetPSize().y / 2;
-			Flag = 1;
+			set.z = bz - Player::Instance()->GetPSize().z / 2;
 		}//上奥
 		else if (bU > pD && bU < Player::Instance()->GetOldPosition().y &&
 			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
 		{
-			set.y = bU + Player::Instance()->GetPSize().y / 2;
-			Flag = 1;
+			set.z = b2z + Player::Instance()->GetPSize().z / 2;
 		}//下右
 		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
 			bR > pL && bR < Player::Instance()->GetOldPosition().x)
 		{
-			set.y = bD - Player::Instance()->GetPSize().y / 2;
-			Flag = 2;
+			set.x = bR + Player::Instance()->GetPSize().x / 2;
 		}//下左
 		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
 			bL < pR && bL > Player::Instance()->GetOldPosition().x)
 		{
-			set.y = bD - Player::Instance()->GetPSize().y / 2;
-			Flag = 2;
+			set.x = bL - Player::Instance()->GetPSize().x / 2;
 		}
 		//下前
 		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
-			bz < pB && bz>Player::Instance()->GetOldPosition().z)
+			bz < pB && bz> Player::Instance()->GetOldPosition().z)
 		{
-			set.y = bD - Player::Instance()->GetPSize().y / 2;
-			Flag = 2;
+			set.z = bz - Player::Instance()->GetPSize().z / 2;
 		}//下奥
 		else if (bD < pU && bD>Player::Instance()->GetOldPosition().y &&
 			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
 		{
-			set.y = bD - Player::Instance()->GetPSize().y / 2;
-			Flag = 2;
+			set.z = b2z + Player::Instance()->GetPSize().z / 2;
 		}
 		//右奥
 		else if (bR > pL && bR < Player::Instance()->GetOldPosition().x &&

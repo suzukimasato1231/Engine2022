@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include"ShaderManager.h"
 ID3D12Device* Sprite::dev = nullptr;
 ID3D12GraphicsCommandList* Sprite::cmdList = nullptr;
 
@@ -201,7 +202,7 @@ Sprite::SpriteCommon Sprite::SpriteCommonCreate(int window_width, int window_hei
 	SpriteCommon spriteCommon{};
 
 	//スプライト用パイプライン生成
-	spriteCommon.pipelineSet = Pipeline::SpriteCreateGraphicsPipeline(dev);
+	spriteCommon.pipelineSet = Pipeline::SpriteCreateGraphicsPipeline(dev,ShaderManager::spriteShader);
 
 	//平行投影の射影行列生成
 	spriteCommon.matProjection = XMMatrixOrthographicOffCenterLH(

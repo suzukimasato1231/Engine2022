@@ -1,5 +1,5 @@
 #include "PostEffect.h"
-
+#include"ShaderManager.h"
 using namespace DirectX;
 extern const int window_width;
 extern const int window_height;
@@ -177,7 +177,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 
 void PostEffect::CreatePipeline(ID3D12Device* dev)
 {
-	pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev);
+	pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev,ShaderManager::postNormalShader);
 }
 
 void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
@@ -263,13 +263,12 @@ void PostEffect::SetPipeline(int num)
 	switch (num)
 	{
 	case 0:
-		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev);
+		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev,ShaderManager::postNormalShader);
 		break;
 	case 1:
-		pipelineSet = Pipeline::PostTestCreateGraphicsPipeline(dev);
+		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postTestShader);
 		break;
 	}
-
 }
 
 

@@ -3,6 +3,7 @@
 #include<iomanip>
 #include "Input.h"
 #include"Shape.h"
+#include"../ShaderManager.h"
 SceneManagerh::SceneManagerh()
 {}
 SceneManagerh::~SceneManagerh()
@@ -18,6 +19,8 @@ void SceneManagerh::Initialize()
 	_DirectX::Instance()->Initilize();
 	//入力の初期化
 	Input::Instance()->Initialize();
+	//シェーダーの読み込み
+	ShaderManager::LoadShaders();
 	//FBX初期化
 	FbxLoader::GetInstance()->Initialize(_DirectX::Instance()->GetDevice());
 	//ライト静的初期化

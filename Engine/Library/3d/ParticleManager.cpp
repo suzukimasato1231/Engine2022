@@ -2,6 +2,7 @@
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include"Texture.h"
+#include"ShaderManager.h"
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
@@ -10,15 +11,15 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-ID3D12Device *ParticleManager::device = nullptr;
-Camera *ParticleManager::camera = nullptr;
-ID3D12GraphicsCommandList *ParticleManager::cmdList = nullptr;
+ID3D12Device* ParticleManager::device = nullptr;
+Camera* ParticleManager::camera = nullptr;
+ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
 Pipeline::PipelineSet ParticleManager::PartclePipelineSet;
 XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
 XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
 
 
-bool ParticleManager::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height)
+bool ParticleManager::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height)
 {
 	// nullptrチェック
 	assert(device);
@@ -27,12 +28,13 @@ bool ParticleManager::StaticInitialize(ID3D12Device *device, ID3D12GraphicsComma
 	ParticleManager::cmdList = cmdList;
 
 	// パイプライン初期化
-	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device);
+	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device,ShaderManager::particleShader);
+	//PartclePipelineSet = Pipeline::ParticleCubeGraphicsPipeline(device);
 
 	return true;
 }
 
-void ParticleManager::PreDraw(ID3D12GraphicsCommandList *cmdList)
+void ParticleManager::PreDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	// パイプラインステートの設定
 	cmdList->SetPipelineState(PartclePipelineSet.pipelinestate.Get());
@@ -48,10 +50,10 @@ void ParticleManager::PostDraw()
 	ParticleManager::cmdList = nullptr;
 }
 
-ParticleManager *ParticleManager::Create()
+ParticleManager* ParticleManager::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
-	ParticleManager *particle = new ParticleManager();
+	ParticleManager* particle = new ParticleManager();
 
 	particle->CreateModel();
 
@@ -75,7 +77,7 @@ void ParticleManager::Add(int life, Vec3 position, Vec3 velocity, Vec3 accel, fl
 	//リストに要素を追加
 	particles.emplace_front();
 	//追加した要素の参照
-	Particle &p = particles.front();
+	Particle& p = particles.front();
 	//値のリセット
 	p.position = position;
 	p.velocity = velocity;
@@ -92,7 +94,7 @@ void ParticleManager::Add2(int life, Vec3 position, Vec3 velocity, Vec3 accel, f
 	//リストに要素を追加
 	particles.emplace_front();
 	//追加した要素の参照
-	Particle &p = particles.front();
+	Particle& p = particles.front();
 	//値のリセット
 	p.position = position;
 	p.velocity = velocity;
@@ -104,9 +106,9 @@ void ParticleManager::Add2(int life, Vec3 position, Vec3 velocity, Vec3 accel, f
 	p.e_color = end_color;
 }
 
-void ParticleManager::ParticleAdd(Vec3 Pos, Vec4 start_color, Vec4 end_color)
+void ParticleManager::BreakBoxAdd(Vec3 Pos, float Vel, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color)
 {
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
 		const float md_pos = 0.5f;
@@ -115,20 +117,17 @@ void ParticleManager::ParticleAdd(Vec3 Pos, Vec4 start_color, Vec4 end_color)
 		pos.y += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		////X,Y,Z全て{-0.05f,+0.05f}でランダムに分布
-		const float md_vel = 0.1f;
-		Vec3 vel{};
+		const float md_vel = Vel;
+		Vec3 vel = {};
 		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		//重力に見立ててYのみ{-0.001f,0}でランダム分布
 		Vec3 acc{};
-		const float md_acc = 0.001f;
-		acc.y = (float)rand() / RAND_MAX * md_acc;
-
-		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
-		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
-			//追加
-		Add(60, pos, vel, acc, 2.0f, 2.0f, start_color, end_color);
+		//const float md_acc = 0.001f;
+		//acc.y = (float)rand() / RAND_MAX * md_acc;
+		//追加
+		Add(30, pos, vel, acc, start_scale, end_scale, start_color, end_color);
 	}
 }
 
@@ -179,8 +178,8 @@ void ParticleManager::CreateModel()
 
 
 	// 頂点バッファへのデータ転送
-	VertexPos *vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
+	VertexPos* vertMap = nullptr;
+	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		memcpy(vertMap, vertices, sizeof(vertices));
 		vertBuff->Unmap(0, nullptr);
@@ -299,9 +298,8 @@ void ParticleManager::Update()
 	HRESULT result;
 
 	//寿命が尽きたパーティクルを全削除
-
 	particles.remove_if(
-		[](Particle &x)
+		[](Particle& x)
 		{
 			return x.frame >= x.num_frame;
 		}
@@ -332,8 +330,8 @@ void ParticleManager::Update()
 	}
 
 	//頂点バッファへデータ転送
-	VertexPos *vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
+	VertexPos* vertMap = nullptr;
+	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result))
 	{
 		//パーティクル情報を１つずつ反映
@@ -356,8 +354,8 @@ void ParticleManager::Update()
 	MatBillboardUpdate();
 
 	// 定数バッファへデータ転送
-	ConstBufferData *constMap = nullptr;
-	result = constBuff->Map(0, nullptr, (void **)&constMap);
+	ConstBufferData* constMap = nullptr;
+	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = camera->GetMatView() * camera->GetProjection();	// 行列の合成
 	constMap->matBillboard = matBillboard;
 	constBuff->Unmap(0, nullptr);
@@ -380,7 +378,7 @@ void ParticleManager::Draw(int graph)
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
 	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap *ppHeaps[] = { Texture::Instance()->GetDescHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->GetDescHeap() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット

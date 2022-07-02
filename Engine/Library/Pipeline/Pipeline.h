@@ -3,13 +3,14 @@
 #include<DirectXTex.h>
 #include<d3dx12.h>
 #include<wrl.h>
+#include"ShaderManager.h"
 using namespace Microsoft::WRL;
 using namespace DirectX;
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 
-class Pipeline
+class Pipeline :public ShaderManager
 {
 public:
 	//構造体
@@ -21,16 +22,15 @@ public:
 		ComPtr <ID3D12RootSignature>rootsignature;
 	};
 	//スプライト
-	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device *dev);
+	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev,Shader shader);
 	//OBJ読み込み
-	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device *dev);
+	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+
 	//パーティクル
-	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device *dev);
+	//四角形
+	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
 
 	//ポストエフェクト
-
-	//ぼかし
-	static PipelineSet PostTestCreateGraphicsPipeline(ID3D12Device* dev);
 	//通常
-	static PipelineSet PostNormalCreateGraphicsPipeline(ID3D12Device* dev);
+	static PipelineSet PostNormalCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
 };
