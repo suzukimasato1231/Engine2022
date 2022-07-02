@@ -23,11 +23,6 @@ public:
 	void Update();
 
 	void Draw();
-
-private:
-	GameSceneManager* gameScene = nullptr;
-
-	TitleScene* titleScene = nullptr;
 private://’è‹`
 	PostEffect* postEffect = nullptr;
 	//ƒV[ƒ“ŠÇ—

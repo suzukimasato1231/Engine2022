@@ -1,7 +1,6 @@
 #include "Object.h"
 #include <DirectXTex.h>
 #include<string>
-
 using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;
@@ -31,7 +30,7 @@ void  Object::Init(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 	Object::cmdList = cmdList;
 
 	//パイプライン生成
-	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev);
+	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev,ShaderManager::objShader);
 }
 
 Object* Object::Create()

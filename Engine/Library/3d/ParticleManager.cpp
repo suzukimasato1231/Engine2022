@@ -2,6 +2,7 @@
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include"Texture.h"
+#include"ShaderManager.h"
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
@@ -27,7 +28,7 @@ bool ParticleManager::StaticInitialize(ID3D12Device* device, ID3D12GraphicsComma
 	ParticleManager::cmdList = cmdList;
 
 	// パイプライン初期化
-	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device);
+	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device,ShaderManager::particleShader);
 	//PartclePipelineSet = Pipeline::ParticleCubeGraphicsPipeline(device);
 
 	return true;

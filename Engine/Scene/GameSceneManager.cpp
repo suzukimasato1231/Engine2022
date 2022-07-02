@@ -4,8 +4,7 @@
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
-#include"Particle.h"
-#include"Particle.h"
+#include"../Particle.h"
 GameSceneManager::GameSceneManager()
 {}
 GameSceneManager::~GameSceneManager()
@@ -14,7 +13,7 @@ GameSceneManager::~GameSceneManager()
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
-	safe_delete(enemy);
+	//safe_delete(enemy);
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
@@ -30,7 +29,6 @@ void GameSceneManager::Initialize()
 	lightGroup = LightGroup::Create();
 
 	//音データ読み込み
-
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
@@ -55,11 +53,12 @@ void GameSceneManager::Initialize()
 	fbxObject1->SetModel(model1);
 	//プレイヤーの初期化
 	Player::Instance()->Init();
-	//敵
+	////敵
 	enemy = new Enemy;
 	enemy->Init();
 	//ステージ
 	Stage::Instance()->Init();
+	Particle::Instance()->Init();
 }
 
 void GameSceneManager::Init()
@@ -70,7 +69,6 @@ void GameSceneManager::Init()
 	Object::SetLight(lightGroup);
 	changeScene = false;
 	Reset();
-	Particle::Instance()->Init();
 }
 
 void GameSceneManager::Update()

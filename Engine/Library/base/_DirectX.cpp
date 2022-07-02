@@ -12,10 +12,13 @@ void _DirectX::Initilize()
 #ifdef _DEBUG
 	//デバックレイヤーをオン
 	ComPtr<ID3D12Debug> debugController;
+//	ComPtr<ID3D12DebugDevice> mDebugDevice;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 	{
 		debugController->EnableDebugLayer();
 	}
+	//debugController->QueryInterface(mDebugDevice.GetAddressOf());
+	//mDebugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
 #endif
 	//アダプタの列挙
 	Adapter();

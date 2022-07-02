@@ -9,6 +9,8 @@ TitleScene::TitleScene()
 TitleScene::~TitleScene()
 {
 	safe_delete(lightGroup);
+	safe_delete(camera);
+	safe_delete(audio);
 }
 void TitleScene::Initialize()
 {

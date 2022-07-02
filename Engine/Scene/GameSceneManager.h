@@ -6,10 +6,10 @@
 #include"Collision.h"
 #include"Audio.h"
 #include"FBXObject3d.h"
-#include"Player.h"
-#include"PushCollision.h"
-#include"Enemy.h"
-#include"Stage.h"
+#include"../Player.h"
+#include"../PushCollision.h"
+#include"../Enemy.h"
+#include"../Stage.h"
 
 extern const int window_width;
 extern const int window_height;
@@ -17,7 +17,6 @@ class GameSceneManager :public Singleton<GameSceneManager>
 {
 private:
 	friend Singleton<GameSceneManager>;
-	_DirectX *directX = nullptr;
 public:
 	GameSceneManager();
 	~GameSceneManager();

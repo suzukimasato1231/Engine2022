@@ -1,0 +1,27 @@
+#pragma once
+#include <d3dcompiler.h>
+#include <d3dx12.h>
+
+using namespace Microsoft::WRL;
+class Shader
+{
+public:
+    ComPtr<ID3DBlob> vsBlob = nullptr; //頂点シェーダオブジェクト
+    ComPtr<ID3DBlob> gsBlob = nullptr; //ジオメトリシェーダー
+    ComPtr<ID3DBlob> psBlob = nullptr; //ピクセルシェーダオブジェクト
+};
+
+ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName = L"", LPCSTR Vtarget = "");
+
+class ShaderManager
+{
+public:
+	static Shader spriteShader;
+	static Shader objShader;
+	static Shader toonObjShader;
+	static Shader particleShader;
+	static Shader postNormalShader;
+	static Shader postTestShader;
+
+	static void LoadShaders();
+};

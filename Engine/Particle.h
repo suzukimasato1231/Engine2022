@@ -2,7 +2,6 @@
 #include"ParticleManager.h"
 #include "Safe_delete.h"
 #include"Singleton.h"
-#include<memory>
 class Particle :public Singleton<Particle>
 {
 private:
