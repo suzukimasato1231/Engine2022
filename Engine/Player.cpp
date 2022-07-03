@@ -62,7 +62,7 @@ void Player::GroundFlag()
 
 void Player::Reset()
 {
-	position = { 20.0f,20.0f,80.0f };	//ç¿ïW
+	position = { 70.0f,20.0f,80.0f };	//ç¿ïW
 	oldPosition = position;
 }
 

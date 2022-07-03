@@ -91,7 +91,7 @@ void GameSceneManager::Update()
 	camera->FollowCamera(Player::Instance()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
 
 	//クリアしたらシーンチェンジ
-	if (Stage::Instance()->GetClearFlag())
+	if (Stage::Instance()->GetClearFlag() == true)
 	{
 		changeScene = true;
 	}
