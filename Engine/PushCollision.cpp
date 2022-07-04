@@ -1,26 +1,46 @@
 #include"PushCollision.h"
 
-void PushCollision::Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale)
+int PushCollision::Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale, int moveFlag)
 {
 	//床OBBの当たり判定押し戻し処理
 	OBB diagonal;
 	diagonal.Initilize(pos, angle, scale);
-	while (1)
+	//プレイヤーOBB
+	OBB pOBB;
+	pOBB.Initilize(Vec3(Player::Instance()->GetPosition().x, Player::Instance()->GetPosition().y, Player::Instance()->GetPosition().z), Vec3{}, Player::Instance()->GetPSize());
+	if (OBBCollision::ColOBBs(pOBB, diagonal))
 	{
-		//プレイヤーOBB
-		OBB pOBB;
-		pOBB.Initilize(Vec3(Player::Instance()->GetPosition().x, Player::Instance()->GetPosition().y, Player::Instance()->GetPosition().z), Vec3{}, Player::Instance()->GetPSize());
-		if (OBBCollision::ColOBBs(pOBB, diagonal))
+		while (1)
 		{
-			Vec3 set = { Player::Instance()->GetPosition().x,Player::Instance()->GetPosition().y + 0.5f, Player::Instance()->GetPosition().z };
-			Player::Instance()->SetPosition(set);
-			Player::Instance()->GroundFlag();
-		}
-		else
-		{
-			break;
+			//プレイヤーOBB
+			Vec3 set = {};
+			OBB pOBB;
+			pOBB.Initilize(Vec3(Player::Instance()->GetPosition().x, Player::Instance()->GetPosition().y, Player::Instance()->GetPosition().z), Vec3{}, Player::Instance()->GetPSize());
+			if (OBBCollision::ColOBBs(pOBB, diagonal))
+			{
+				set = { Player::Instance()->GetPosition().x,Player::Instance()->GetPosition().y + 0.5f, Player::Instance()->GetPosition().z };
+				Player::Instance()->SetPosition(set);
+				Player::Instance()->GroundFlag();
+			}
+			else
+			{
+				if (moveFlag == 0)
+				{
+					set = Player::Instance()->GetPosition();
+					set += Vec3(0.0f, 0.0f, 0.5f);
+					Player::Instance()->SetPosition(set);
+				}
+				else if (moveFlag == 1)
+				{
+					set = Player::Instance()->GetPosition();
+					set -= Vec3(0.0f, 0.0f, 0.5f);
+					Player::Instance()->SetPosition(set);
+				}
+				return 1;
+			}
 		}
 	}
+	return 0;
 }
 
 int PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale, int mapL, int mapR)

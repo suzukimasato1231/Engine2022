@@ -11,7 +11,7 @@ public:
 	/// </summary>
 	/// <param name="stage">ステージクラス</param>
 	/// <param name="player">プレイヤークラス</param>
-	static void Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale);
+	static int Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale, int moveFlag = -1);
 	/// <summary>
 	/// プレイヤーと立方体
 	/// </summary>
