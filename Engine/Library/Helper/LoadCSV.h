@@ -2,6 +2,7 @@
 
 #define MAP_WIDTH (10) //‰¡‚ÌÅ‘å–‡”
 #define MAP_HEIGHT (100)  //c‚ÌÅ‘å–‡”
+#define MAP_ (100)  //c‚ÌÅ‘å–‡”
 
 /// <summary>
 /// CSVƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý

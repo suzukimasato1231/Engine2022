@@ -3,7 +3,6 @@
 #include<iomanip>
 #include "Input.h"
 #include"Shape.h"
-#include"../ShaderManager.h"
 SceneManagerh::SceneManagerh()
 {}
 SceneManagerh::~SceneManagerh()

@@ -119,4 +119,5 @@ void GameSceneManager::Draw()
 void GameSceneManager::Reset()
 {
 	Player::Instance()->Reset();
+	Stage::Instance()->MainInit(0);
 }

@@ -130,19 +130,26 @@ void Stage::MainInit(int stageNum)
 				SetWallBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapOBJPos[y][x]) * 10.0f + wallScale.y / 2 - 5.0f, (MAP_HEIGHT - 1 - y) * mapSize),
 					wallScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
+			case Goal:
+				SetGoal(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapOBJPos[y][x]) * 10 + goalScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					goalScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+				break;
 			case BreakBox:
 				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapOBJPos[y][x]) * 10.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
 					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
-			case Goal:
-				SetGoal(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapOBJPos[y][x]) * 10 + goalScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					goalScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+			case BreakBox2:
+				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapOBJPos[y][x]) * 10.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, (static_cast<float>(mapOBJPos[y][x])+2.0f) * 10.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
 			default:
 				break;
 			}
 		}
 	}
+	goalFlag = false;
 }
 
 void Stage::Update()
