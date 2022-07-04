@@ -10,8 +10,8 @@ Player::~Player()
 
 void Player::Init()
 {
-	//playerObject = Shape::CreateOBJ("player");
-	playerObject = Shape::CreateOBJ("sphere");
+	playerObject = Shape::CreateOBJ("player");
+	//playerObject = Shape::CreateOBJ("sphere");
 	oldPosition = position;
 	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
@@ -42,9 +42,6 @@ void Player::Update(Enemy* enemy)
 void Player::Draw()
 {
 	Object::Draw(playerObject, position, scale, angle, color);
-#if _DEBUG
-
-#endif
 
 }
 
@@ -110,12 +107,10 @@ void Player::Jump()
 
 void Player::FallDie()
 {
-	//
 	if (position.y < -30.0f)
 	{
 		Reset();
 	}
-
 }
 
 

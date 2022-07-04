@@ -61,10 +61,11 @@ enum StageFloor
 
 enum StageOBJ
 {
-	NoneOBJ,
-	Wall,		//壁
-	Goal,		//ゴール
-	BreakBox,	//壊れる箱
+	NoneOBJ = 0,
+	Wall = 1,		//壁
+	Goal = 2,		//ゴール
+	BreakBox = 10,	//壊れる箱
+	BreakBox2 = 11,	//壊れる箱ダブル
 };
 
 class Stage :public Singleton<Stage>

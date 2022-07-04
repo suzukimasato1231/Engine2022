@@ -118,51 +118,53 @@ int PushCollision::PlayerBox(Vec3 bPos, Vec3 bScale, int mapL, int mapR)
 		else if (bR > pL && bR < Player::Instance()->GetOldPosition().x &&
 			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
 		{
-			if (mapL > 0)
-			{
+		/*	if (set.x >)
+
+
+			{*/
 				set.x = bR + Player::Instance()->GetPSize().x / 2;
-			}
+			/*}
 			else
 			{
 				set.z = b2z + Player::Instance()->GetPSize().z / 2;
-			}
+			}*/
 		}
 		//¶‰œ
 		else if (bL < pR && bL > Player::Instance()->GetOldPosition().x &&
 			b2z > pF && b2z < Player::Instance()->GetOldPosition().z)
 		{
-			if (mapR > 0)
-			{
+			/*if (mapR > 0)
+			{*/
 				set.x = bL - Player::Instance()->GetPSize().x / 2;
-			}
+			/*}
 			else
 			{
 				set.z = b2z + Player::Instance()->GetPSize().z / 2;
-			}
+			}*/
 		}//‰E‘O
 		else if (bR > pL && bR < Player::Instance()->GetOldPosition().x &&
 			bz < pB && bz>Player::Instance()->GetOldPosition().z)
 		{
-			if (mapL > 0)
-			{
+			/*if (mapL > 0)
+			{*/
 				set.x = bR + Player::Instance()->GetPSize().x / 2;
-			}
+		/*	}
 			else
 			{
 				set.z = bz - Player::Instance()->GetPSize().z / 2;
-			}
+			}*/
 		}//¶‘O
 		else if (bL < pR && bL > Player::Instance()->GetOldPosition().x &&
 			bz < pB && bz>Player::Instance()->GetOldPosition().z)
 		{
-			if (mapR > 0)
-			{
+			/*if (mapR > 0)
+			{*/
 				set.x = bL - Player::Instance()->GetPSize().x / 2;
-			}
+			/*}
 			else
 			{
 				set.z = bz - Player::Instance()->GetPSize().z / 2;
-			}
+			}*/
 		}
 		else
 		{//ˆê•ûŒü		
