@@ -555,7 +555,7 @@ int Shape::LoadMaterial(const std::string& directoryPath, const std::string& fil
 			//テクスチャのファイル名読み込み
 			line_stream >> polygon.material.textureFilename;
 			//テクスチャ読み込み
-			polygon.OBJTexture = Texture::Instance()->OBJLoadTexture(directoryPath, polygon.material.textureFilename);
+			polygon.OBJTexture = Texture::Get()->OBJLoadTexture(directoryPath, polygon.material.textureFilename);
 		}
 	}
 	//ファイルを閉じる

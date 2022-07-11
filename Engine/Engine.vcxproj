@@ -261,6 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
     <ClInclude Include="Library\2d\PostEffect.h" />
     <ClInclude Include="Library\2d\Sprite.h" />
@@ -308,11 +309,16 @@
     <ClInclude Include="PushCollision.h" />
     <ClInclude Include="Scene\GameSceneManager.h" />
     <ClInclude Include="Scene\SceneManagerh.h" />
+    <ClInclude Include="Scene\StageSelect.h" />
     <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="StegeObject.h" />
+    <ClInclude Include="TimeAttack.h" />
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />
     <ClCompile Include="Library\2d\PostEffect.cpp" />
     <ClCompile Include="Library\2d\Sprite.cpp" />
@@ -353,8 +359,11 @@
     <ClCompile Include="PushCollision.cpp" />
     <ClCompile Include="Scene\GameSceneManager.cpp" />
     <ClCompile Include="Scene\SceneManagerh.cpp" />
+    <ClCompile Include="Scene\StageSelect.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="TimeAttack.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\就職作品制作\Engine\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">

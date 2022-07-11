@@ -8,7 +8,7 @@ protected:
 	Singleton(const Singleton &instance) {}
 	Singleton &operator=(const Singleton &r) {}
 public:
-	static T *Instance() {
+	static T *Get() {
 		static T instance;
 		return &instance;
 	}

@@ -142,7 +142,7 @@ void _DirectX::Swapchain()
 
 	dxgiFactory->CreateSwapChainForHwnd(
 		cmdQueue.Get(),
-		_Window::Instance()->GetHwnd(),
+		_Window::Get()->GetHwnd(),
 		&swapchainDesc,
 		nullptr,
 		nullptr,
@@ -316,7 +316,7 @@ void _DirectX::PreDraw()
 			float cputime = deltaTime - commandWaitTime;
 			char str[50];
 			sprintf_s(str, "fps=%03.0f cpu usage=%06.2f%%", frameRate, cputime * FPS_BASIS * 100.0f);
-			SetWindowTextA(_Window::Instance()->GetHwnd(), str);
+			SetWindowTextA(_Window::Get()->GetHwnd(), str);
 		}
 	}
 #endif

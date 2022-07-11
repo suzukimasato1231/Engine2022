@@ -19,7 +19,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	CreatePipeline(dev);
 
 	//頂点データ
-	VertexPosUv vertices[] = {
+	Sprite::VertexPosUv vertices[] = {
 		{{-1.0f,-1.0f,0.0f},{0.0f,1.0f}},
 		{{-1.0f,+1.0f,0.0f},{0.0f,0.0f}},
 		{{+1.0f,-1.0f,0.0f},{1.0f,1.0f}},
@@ -37,7 +37,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	assert(SUCCEEDED(result));
 
 	//頂点バッファへのデータ転送
-	VertexPosUv* vertMap = nullptr;
+	Sprite::VertexPosUv* vertMap = nullptr;
 	result = sprite.vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		memcpy(vertMap, vertices, sizeof(vertices));
@@ -46,14 +46,14 @@ void PostEffect::Initialize(ID3D12Device* dev)
 
 	//頂点バッファビューの作成
 	sprite.vbView.BufferLocation = sprite.vertBuff->GetGPUVirtualAddress();
-	sprite.vbView.SizeInBytes = sizeof(VertexPosUv) * 4;
-	sprite.vbView.StrideInBytes = sizeof(VertexPosUv);
+	sprite.vbView.SizeInBytes = sizeof(Sprite::VertexPosUv) * 4;
+	sprite.vbView.StrideInBytes = sizeof(Sprite::VertexPosUv);
 
 	//定数バッファ
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(Sprite::ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff)
@@ -225,7 +225,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 void PostEffect::UpdatePost(SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
 {
 	//定数バッファの転送
-	ConstBufferData* constMap = nullptr;
+	Sprite::ConstBufferData* constMap = nullptr;
 	HRESULT result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = XMMatrixIdentity();
 	constMap->color = color;
@@ -235,27 +235,27 @@ void PostEffect::UpdatePost(SpriteData& sprite, Vec2 position, float width, floa
 void PostEffect::DrawPost(SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
 {
 	//パイプラインステートの設定
-	cmdList->SetPipelineState(pipelineSet.pipelinestate.Get());
+	Sprite::cmdList->SetPipelineState(pipelineSet.pipelinestate.Get());
 	//ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
+	Sprite::cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 	//プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	Sprite::cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	//テクスチャ用デスクリプタヒープの設定
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	Sprite::cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 
 	UpdatePost(sprite, position, width, height, anchorpoint, color, isFlipX, isFlipY);
 	//頂点バッファをセット
-	cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
+	Sprite::cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
 	//定数バッファをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	Sprite::cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	Sprite::cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 
 	//ポリゴンの描画（４頂点で四角形）
-	cmdList->DrawInstanced(4, 1, 0, 0);
+	Sprite::cmdList->DrawInstanced(4, 1, 0, 0);
 }
 
 void PostEffect::SetPipeline(int num)

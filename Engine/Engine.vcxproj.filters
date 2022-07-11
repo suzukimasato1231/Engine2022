@@ -87,6 +87,12 @@
     <Filter Include="HLSL\PostEffect">
       <UniqueIdentifier>{11f4d085-5e8e-45af-bb14-e94018856884}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\UI">
+      <UniqueIdentifier>{6f3fbcb8-b526-4612-b475-74afa45a70d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\TimeAttack">
+      <UniqueIdentifier>{58a7077a-6d0a-4bfd-97a0-e4f64c828b7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -159,9 +165,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PushCollision.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>ソース ファイル\Stage</Filter>
     </ClInclude>
@@ -309,12 +312,27 @@
     <ClInclude Include="Library\2d\Sprite.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PushCollision.h">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="StegeObject.h">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\StageSelect.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeAttack.h">
+      <Filter>ソース ファイル\TimeAttack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="PushCollision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
@@ -439,6 +457,21 @@
     </ClCompile>
     <ClCompile Include="Library\2d\Sprite.cpp">
       <Filter>Library\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PushCollision.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\StageSelect.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeAttack.cpp">
+      <Filter>ソース ファイル\TimeAttack</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

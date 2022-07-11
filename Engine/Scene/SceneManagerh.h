@@ -1,10 +1,11 @@
 #pragma once
 #include"GameSceneManager.h"
 #include"TitleScene.h"
-#include"PostEffect.h"
+#include"StageSelect.h"
 enum Scene
 {
 	Title,
+	SelectScene,
 	GameScene,
 };
 
@@ -24,7 +25,6 @@ public:
 
 	void Draw();
 private://定義
-	PostEffect* postEffect = nullptr;
-	//シーン管理
-	int scene = Title;
+	
+	int scene = Title;	//シーン管理
 };

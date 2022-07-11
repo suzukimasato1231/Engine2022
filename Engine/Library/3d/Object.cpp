@@ -139,7 +139,7 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//デスクリプタヒープをセット
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->GetDescHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -164,12 +164,12 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	if (polygon.OBJTexture == 0)
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Instance()->GetGPUSRV(graph));
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
 	}
 	else
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Instance()->GetGPUSRV(polygon.OBJTexture));
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(polygon.OBJTexture));
 	}
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);

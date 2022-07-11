@@ -3,71 +3,79 @@
 #include<iomanip>
 #include "Input.h"
 #include"Shape.h"
+#include"PostEffect.h"
 SceneManagerh::SceneManagerh()
 {}
 SceneManagerh::~SceneManagerh()
 {
-	safe_delete(postEffect);
 }
 void SceneManagerh::Initialize()
 {
 	//汎用機能
 	//ゲームウィンドウの作成
-	_Window::Instance()->CreateGameWindow();
+	_Window::Get()->CreateGameWindow();
 	// DirectX初期化処理
-	_DirectX::Instance()->Initilize();
+	_DirectX::Get()->Initilize();
 	//入力の初期化
-	Input::Instance()->Initialize();
+	Input::Get()->Initialize();
 	//シェーダーの読み込み
 	ShaderManager::LoadShaders();
-	//FBX初期化
-	FbxLoader::GetInstance()->Initialize(_DirectX::Instance()->GetDevice());
 	//ライト静的初期化
-	LightGroup::StaticInitialize(_DirectX::Instance()->GetDevice());
+	LightGroup::StaticInitialize(_DirectX::Get()->GetDevice());
 	//スプライト静的初期化
-	Sprite::StaticInit(_DirectX::Instance()->GetDevice(), _DirectX::Instance()->GetCmandList());
+	Sprite::StaticInit(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 	//テキストクラス初期化
-	Texture::Instance()->Init(_DirectX::Instance()->GetDevice());
+	Texture::Get()->Init(_DirectX::Get()->GetDevice());
 	//デバックテキスト初期化
-	DebugText::Instance()->Initialize();
+	DebugText::Get()->Initialize();
 	//スプライトクラス作成
-	Sprite::Instance()->Init();
+	Sprite::Get()->Init();
 	//FBX初期化
-	FBXObject3d::SetDevice(_DirectX::Instance()->GetDevice());
-	FBXObject3d::SetCmdList(_DirectX::Instance()->GetCmandList());
+	FbxLoader::GetInstance()->Initialize(_DirectX::Get()->GetDevice());
+	FBXObject3d::SetDevice(_DirectX::Get()->GetDevice());
+	FBXObject3d::SetCmdList(_DirectX::Get()->GetCmandList());
 	FBXObject3d::CreateGraphicsPipeline();
 	//図形モデル初期化
-	Shape::Init(_DirectX::Instance()->GetDevice());
+	Shape::Init(_DirectX::Get()->GetDevice());
 	//パーティクル初期化
-	ParticleManager::StaticInitialize(_DirectX::Instance()->GetDevice(), _DirectX::Instance()->GetCmandList(), window_width, window_height);
+	ParticleManager::StaticInitialize(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList(), window_width, window_height);
 	//3Dオブジェクト初期化
-	Object::Init(_DirectX::Instance()->GetDevice(), _DirectX::Instance()->GetCmandList());
+	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 	//ゲームシーン
-	GameSceneManager::Instance()->Initialize();
-	GameSceneManager::Instance()->Init();
+	GameSceneManager::Get()->Initialize();
+	GameSceneManager::Get()->Init(1);
 
-	TitleScene::Instance()->Initialize();
-	TitleScene::Instance()->Init();
+	TitleScene::Get()->Initialize();
+	TitleScene::Get()->Init();
 
-	postEffect = new PostEffect;
-	postEffect->Initialize(_DirectX::Instance()->GetDevice());
+
+	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
 
 }
 
 void SceneManagerh::Update()
 {
-	Input::Instance()->Update();
+	Input::Get()->Update();
+
 	if (scene == Title)
 	{
-		if (Input::Instance()->KeybordTrigger(DIK_SPACE))
+		if (Input::Get()->KeybordTrigger(DIK_SPACE))
+		{
+			scene = SelectScene;
+			StageSelect::Get()->Init();
+		}
+	}
+	else if (scene == SelectScene)
+	{
+		if (Input::Get()->KeybordTrigger(DIK_SPACE))
 		{
 			scene = GameScene;
-			GameSceneManager::Instance()->Init();
+			GameSceneManager::Get()->Init(StageSelect::Get()->GetStageNum());
 		}
 	}
 	else if (scene == GameScene)
 	{
-		if (GameSceneManager::Instance()->GetChangeScene())
+		if (GameSceneManager::Get()->GetChangeScene())
 		{
 			scene = Title;
 		}
@@ -75,11 +83,15 @@ void SceneManagerh::Update()
 
 	if (scene == Title)
 	{
-		TitleScene::Instance()->Update();
+		TitleScene::Get()->Update();
+	}
+	else if (scene == SelectScene)
+	{
+		StageSelect::Get()->Update();
 	}
 	else if (scene == GameScene)
 	{
-		GameSceneManager::Instance()->Update();
+		GameSceneManager::Get()->Update();
 	}
 }
 
@@ -88,23 +100,27 @@ void SceneManagerh::Draw()
 	//描画開始
 
 	//オブジェクト描画前処理
-	Object::Instance()->PreDraw();
-	Sprite::Instance()->PreDraw();
-	postEffect->PreDrawScene(_DirectX::Instance()->GetCmandList());
+	Object::Get()->PreDraw();
+	Sprite::Get()->PreDraw();
+	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
 	if (scene == Title)
 	{
-		TitleScene::Instance()->Draw();
+		TitleScene::Get()->Draw();
+	}
+	else if (scene == SelectScene)
+	{
+		StageSelect::Get()->Draw();
 	}
 	else if (scene == GameScene)
 	{
-		GameSceneManager::Instance()->Draw();
+		GameSceneManager::Get()->Draw();
 	}
 
-	DebugText::Instance()->DrawAll();
-	postEffect->PostDrawScene(_DirectX::Instance()->GetCmandList());
+	DebugText::Get()->DrawAll();
+	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
 
-	_DirectX::Instance()->PreDraw();
+	_DirectX::Get()->PreDraw();
 	//ポストエフェクトの描画
-	postEffect->Draw(_DirectX::Instance()->GetCmandList());
-	_DirectX::Instance()->ResourceBarrier();
+	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList());
+	_DirectX::Get()->ResourceBarrier();
 }

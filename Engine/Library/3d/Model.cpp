@@ -1,6 +1,6 @@
 #include "Model.h"
 
-void Model::CreateBuffers(ID3D12Device *device)
+void Model::CreateBuffers(ID3D12Device* device)
 {
     HRESULT result;
     // 頂点データ全体のサイズ
@@ -15,8 +15,8 @@ void Model::CreateBuffers(ID3D12Device *device)
         IID_PPV_ARGS(&vertBuff));
 
     // 頂点バッファへのデータ転送
-    VertexPosNormalUvSkin *vertMap = nullptr;
-    result = vertBuff->Map(0, nullptr, (void **)&vertMap);
+    VertexPosNormalUvSkin* vertMap = nullptr;
+    result = vertBuff->Map(0, nullptr, (void**)&vertMap);
     if (SUCCEEDED(result)) {
         std::copy(vertices.begin(), vertices.end(), vertMap);
         vertBuff->Unmap(0, nullptr);
@@ -38,8 +38,8 @@ void Model::CreateBuffers(ID3D12Device *device)
         IID_PPV_ARGS(&indexBuff));
 
     // インデックスバッファへのデータ転送
-    unsigned short *indexMap = nullptr;
-    result = indexBuff->Map(0, nullptr, (void **)&indexMap);
+    unsigned short* indexMap = nullptr;
+    result = indexBuff->Map(0, nullptr, (void**)&indexMap);
     if (SUCCEEDED(result)) {
         std::copy(indices.begin(), indices.end(), indexMap);
         indexBuff->Unmap(0, nullptr);
@@ -51,7 +51,7 @@ void Model::CreateBuffers(ID3D12Device *device)
     ibView.SizeInBytes = sizeIB;
 
     // テクスチャ画像データ
-    const DirectX::Image *img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
+    const DirectX::Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
     assert(img);
 
     // リソース設定
@@ -103,7 +103,7 @@ void Model::CreateBuffers(ID3D12Device *device)
     );
 }
 
-void Model::Draw(ID3D12GraphicsCommandList *cmdList)
+void Model::Draw(ID3D12GraphicsCommandList* cmdList)
 {
     // 頂点バッファをセット(VBV)
     cmdList->IASetVertexBuffers(0, 1, &vbView);
@@ -111,7 +111,7 @@ void Model::Draw(ID3D12GraphicsCommandList *cmdList)
     cmdList->IASetIndexBuffer(&ibView);
 
     // デスクリプタヒープのセット
-    ID3D12DescriptorHeap *ppHeaps[] = { descHeapSRV.Get() };
+    ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
     cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
     // シェーダリソースビューをセット
     cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
@@ -123,5 +123,5 @@ void Model::Draw(ID3D12GraphicsCommandList *cmdList)
 Model::~Model()
 {
     //fbxシーンの解放
-    //fbxScene->Destroy();
+   // fbxScene->Destroy();
 }

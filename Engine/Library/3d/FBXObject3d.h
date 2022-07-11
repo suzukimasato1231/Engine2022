@@ -87,6 +87,10 @@ public://メンバ関数
 	/// アニメーションの停止
 	/// </summary>
 	void StopAnimation();
+
+	void SetPosition(XMFLOAT3 pos) { FBXObject3d::position = pos; }
+	void SetScale(XMFLOAT3 scale) { FBXObject3d::scale = scale; }
+	void SetRotation(XMFLOAT3 rotation) { FBXObject3d::rotation = rotation; }
 protected://メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource>constBuffTransform;
@@ -99,9 +103,9 @@ protected://メンバ変数
 	static ComPtr<ID3D12PipelineState>pipelinestate;
 
 	//ローカルスケール
-	XMFLOAT3 scale = { 1.2f,1.2f,1.2f };
+	XMFLOAT3 scale = { 0.02f,0.02f,0.02f };
 	//X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation = { 0.0f,90.0f,0.0f };
+	XMFLOAT3 rotation = { 30.0f,-90.0f,0.0f };
 	//ローカル座標
 	XMFLOAT3 position = { 0,0,0 };
 	//ローカルワールド変換行列

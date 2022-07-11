@@ -16,12 +16,14 @@ ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName = L"", LPCSTR Vtarget = "");
 class ShaderManager
 {
 public:
+	//2D
 	static Shader spriteShader;
+	static Shader postNormalShader;
+	static Shader postTestShader;
+	//3D
 	static Shader objShader;
 	static Shader toonObjShader;
 	static Shader particleShader;
-	static Shader postNormalShader;
-	static Shader postTestShader;
 
 	static void LoadShaders();
 };

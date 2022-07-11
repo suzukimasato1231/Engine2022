@@ -1,73 +1,9 @@
 #pragma once
-#include"Vec.h"
 #include"Object.h"
 #include<vector>
-#include <CollisionPrimitive.h>
 #include <LoadCSV.h>
+#include"./StegeObject.h"
 class Player;
-
-struct Floor
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-};
-
-struct BreakBoxData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-};
-
-struct WallData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-};
-
-struct GoalData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-	Box box = {};
-};
-
-struct MoveFloorData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-	int time = 0;
-	int moveFlag = 0;
-	Vec3 speed = { 0.0f,0.0f,0.5f };
-};
-
-enum StageFloor
-{
-	NoneFloor,
-	FloorNormal,//普通の床
-	Floor169,	//斜め床
-	Floor11,	//斜め床
-	FloorMove,	//移動床
-};
-
-enum StageOBJ
-{
-	NoneOBJ = 0,
-	Wall = 1,		//壁
-	Goal = 2,		//ゴール
-	BreakBox = 10,	//壊れる箱
-	BreakBox2 = 11,	//壊れる箱ダブル
-};
-
 class Stage :public Singleton<Stage>
 {
 private:
@@ -89,7 +25,12 @@ public://マップ
 	int GetMap(int i, int j) { return map[j][i]; }
 
 	bool GetClearFlag() { return goalFlag; }
+
+	int GetBlockNum() { return blockNum; }
+	int GetStageBlock() { return stageBlockNum; }
 private:
+	void LoadStage();
+
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
@@ -104,6 +45,7 @@ private:
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
+	 
 	//ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
@@ -120,7 +62,7 @@ private:
 	ObjectData wallOBJ = {};
 	std::vector<WallData*>wallData;
 	int wallGraph = 0;
-	const Vec3 wallScale = { 25.0f, 50.0f, 25.0f };
+	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
 
 	//ゴール
 	ObjectData goalOBJ = {};
@@ -134,6 +76,10 @@ private:
 	std::vector<BreakBoxData*>breakBoxData;
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 	int breakBoxGraph = 0;
+
+	
+	int stageBlockNum = 0;//ステージにある最大のブロック数
+	int blockNum = 0;	//壊したブロック
 
 	//動く床
 	ObjectData moveFloorOBJ = {};

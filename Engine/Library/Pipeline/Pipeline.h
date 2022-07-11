@@ -22,7 +22,7 @@ public:
 		ComPtr <ID3D12RootSignature>rootsignature;
 	};
 	//スプライト
-	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev,Shader shader);
+	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
 	//OBJ読み込み
 	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
 
@@ -33,4 +33,12 @@ public:
 	//ポストエフェクト
 	//通常
 	static PipelineSet PostNormalCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+public:
+	static PipelineSet OBJPipeline;
+
+	static PipelineSet SpritePipeline;
+
+	static PipelineSet ParticlePiepline;
+
+	static PipelineSet PostPipeline;
 };

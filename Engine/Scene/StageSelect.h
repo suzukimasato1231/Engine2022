@@ -1,3 +1,4 @@
+
 #pragma once
 #include "_DirectX.h"
 #include "Safe_delete.h"
@@ -8,13 +9,13 @@
 
 extern const int window_width;
 extern const int window_height;
-class TitleScene :public Singleton<TitleScene>
+class StageSelect :public Singleton<StageSelect>
 {
 private:
-	friend Singleton<TitleScene>;
+	friend Singleton<StageSelect>;
 public:
-	TitleScene();
-	~TitleScene();
+	StageSelect();
+	~StageSelect();
 
 	void Initialize();
 
@@ -23,13 +24,12 @@ public:
 	void Update();
 
 	void Draw();
-private:
-	Camera* camera = nullptr;
-	LightGroup* lightGroup = nullptr;
-	Audio* audio = nullptr;
+public:
+	int GetStageNum() { return stageNumMax; }
+	
 private://定義
-
-
+	const int stageNumMax = 1;	//最大ステージ数
+	int stageNum = 0;			//現在のステージ
 };
 
 

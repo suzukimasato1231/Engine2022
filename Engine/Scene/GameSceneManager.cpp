@@ -9,11 +9,9 @@ GameSceneManager::GameSceneManager()
 {}
 GameSceneManager::~GameSceneManager()
 {
-	//safe_delete(particleMan);
 	safe_delete(lightGroup);
 	safe_delete(fbxObject1);
 	safe_delete(model1);
-	//safe_delete(enemy);
 	//XAudio2解放
 	audio->xAudio2.Reset();
 	//音データ解放
@@ -41,83 +39,92 @@ void GameSceneManager::Initialize()
 	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
 
-	BGGraph = Sprite::Instance()->SpriteCreate(L"Resources/backgroundA.png");
+	BGGraph = Sprite::Get()->SpriteCreate(L"Resources/backgroundA.png");
 
 
 	//3Dオブジェクト画像読み込み
 	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
+	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
+	//fbxObject1 = new FBXObject3d;
+	//fbxObject1->Initialize();
+	//fbxObject1->SetModel(model1);
 	//プレイヤーの初期化
-	Player::Instance()->Init();
-	////敵
-	enemy = new Enemy;
-	enemy->Init();
+	Player::Get()->Init();
 	//ステージ
-	Stage::Instance()->Init();
-	Particle::Instance()->Init();
+	Stage::Get()->Init();
+	Particle::Get()->Init();
+
+	TimeAttack::Get()->Init();
+
+	UI::Get()->Init();
 }
 
-void GameSceneManager::Init()
+void GameSceneManager::Init(int stageNum)
 {
 	FBXObject3d::SetCamera(camera);
+	FBXObject3d::SetLight(lightGroup);
 	ParticleManager::SetCamera(camera);
 	Object::SetCamera(camera);
 	Object::SetLight(lightGroup);
 	changeScene = false;
-	Reset();
+	Reset(stageNum);
+	this->stageNum = stageNum;
 }
 
 void GameSceneManager::Update()
 {
 	//プレイヤーの更新
 
-	if (Input::Instance()->KeybordTrigger(DIK_R))
+	if (Input::Get()->KeybordTrigger(DIK_R))
 	{
-		Reset();
-		Stage::Instance()->MainInit(0);
+		Reset(stageNum);
 	}
 
-	Player::Instance()->Update(enemy);
+	Player::Get()->Update();
 
-	enemy->Update();
-
-	Stage::Instance()->Update();
+	Stage::Get()->Update();
 
 	//
-	camera->FollowCamera(Player::Instance()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
+	camera->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
 
 	//クリアしたらシーンチェンジ
-	if (Stage::Instance()->GetClearFlag() == true)
+	if (Stage::Get()->GetClearFlag() == true)
 	{
 		changeScene = true;
 	}
-	Particle::Instance()->Update();
+	Particle::Get()->Update();
 	//ライト更新
 	lightGroup->Update();
+
+	TimeAttack::Get()->Update();
+
+	UI::Get()->Update();
 }
 
 void GameSceneManager::Draw()
 {
 	//背景描画
 	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
-	//Sprite::Instance()->Draw(BGGraph, pos, (float)window_width, (float)window_height);
+	//Sprite::Get()->Draw(BGGraph, pos, (float)window_width, (float)window_height);
 
+	//3D
 
-
-	Stage::Instance()->Draw();
+	Stage::Get()->Draw();
 	//プレイヤーの描画
-	Player::Instance()->Draw();
+	Player::Get()->Draw();
 
-	Particle::Instance()->Draw();
+	Particle::Get()->Draw();
 
+	TimeAttack::Get()->Draw();
+
+	//2D
+	UI::Get()->Draw();
 }
 
-void GameSceneManager::Reset()
+void GameSceneManager::Reset(int stageNum)
 {
-	Player::Instance()->Reset();
-	Stage::Instance()->MainInit(0);
+	Player::Get()->Reset();
+	Stage::Get()->MainInit(stageNum);
+	TimeAttack::Get()->Reset();
 }

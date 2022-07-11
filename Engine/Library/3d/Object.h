@@ -136,6 +136,8 @@ public:
 	static void SetCamera(Camera* camera) { Object::camera = camera; }
 
 	static void SetLight(LightGroup* light) { Object::lightGroup = light; }
+
+	static void SetPipeline(Pipeline::PipelineSet piepline) { Object::objPipelineSet = piepline; }
 public:
 	//ƒJƒƒ‰ƒNƒ‰ƒX
 	static Camera* camera;

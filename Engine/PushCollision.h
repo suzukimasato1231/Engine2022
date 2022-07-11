@@ -19,11 +19,19 @@ public:
 	/// <param name="bScale"></param>
 	/// <param name="mapL"></param>
 	/// <param name="mapR"></param>
-	static int PlayerBox(Vec3 bPos, Vec3 bScale, int mapL, int mapR);
+	static int PlayerBox(Vec3 bPos, Vec3 bScale);
 	/// <summary>
 	/// ÉSÅ[ÉãÇ∆ÇÃìñÇΩÇËîªíË
 	/// </summary>
 	/// <param name="goalBox"></param>
 	/// <returns></returns>
 	static bool PlayerGoal(Box goalBox);
+
+
+	static int PlayerBox2(WallData data1[4]);
+
+	static int PlayerBreakBox(BreakBoxData data1[4],int &num);
+
+	static bool Player2OBB(Vec3 bPos, Vec3 bScale);
+
 };

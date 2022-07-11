@@ -2,29 +2,38 @@
 #include"Shape.h"
 #include"Input.h"
 #include"Collision.h"
+#include "Safe_delete.h"
 Player::Player()
 {}
 
 Player::~Player()
-{}
+{
+	safe_delete(fbxObject1);
+	safe_delete(model1);
+}
 
 void Player::Init()
 {
 	playerObject = Shape::CreateOBJ("player");
-	//playerObject = Shape::CreateOBJ("sphere");
 	oldPosition = position;
 	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+
+	//モデル名を指定してファイル読み込み
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Player2");
+	//3Dオブジェクトの生成とモデルのセット
+	fbxObject1 = new FBXObject3d;
+	fbxObject1->Initialize();
+	fbxObject1->SetModel(model1);
 }
 
-void Player::Update(Enemy* enemy)
+void Player::Update()
 {
-	if (enemy == nullptr)
-	{
-		return;
-	}
 	oldPosition = position;
+	oldBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
+	oldBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+	oldGroundFlag = groundFlag;
 	vec = {};
 	//移動
 	Move();
@@ -37,12 +46,18 @@ void Player::Update(Enemy* enemy)
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 	//落下死
 	FallDie();
+
+	
+
 }
 
 void Player::Draw()
 {
-	Object::Draw(playerObject, position, scale, angle, color);
-
+	//	Object::Draw(playerObject, position, scale, angle, color);
+	//FBX試し
+	fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
+	fbxObject1->Update();
+	fbxObject1->Draw();
 }
 
 void Player::SetPosition(Vec3 position)
@@ -67,28 +82,36 @@ void Player::Reset()
 void Player::Move()
 {
 	//移動
-	if (Input::Instance()->KeybordPush(DIK_RIGHT))
+	if (Input::Get()->KeybordPush(DIK_RIGHT))
 	{
 		vec.x += speed.x;
 	}
-	if (Input::Instance()->KeybordPush(DIK_LEFT))
+	if (Input::Get()->KeybordPush(DIK_LEFT))
 	{
 		vec.x -= speed.x;
 	}
-	if (Input::Instance()->KeybordPush(DIK_UP))
+	if (Input::Get()->KeybordPush(DIK_UP))
 	{
 		vec.z += speed.z;
 	}
-	if (Input::Instance()->KeybordPush(DIK_DOWN))
+	if (Input::Get()->KeybordPush(DIK_DOWN))
 	{
 		vec.z -= speed.z;
+	}
+	//コントローラー移動
+	if (Input::Get()->ConLeftInput())
+	{
+		float rad = Input::Get()->GetLeftAngle();
+		vec.x = speed.x * sinf(-rad);
+		vec.z = speed.z * cosf(rad);
+		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad))) - 90;
 	}
 }
 
 void Player::Jump()
 {
 	//ジャンプ
-	if ((Input::Instance()->KeybordPush(DIK_SPACE) || blockStepOnFlag) && groundFlag == true)
+	if ((Input::Get()->KeybordPush(DIK_SPACE) || blockStepOnFlag) && groundFlag == true)
 	{
 		jumpPower = jumpPowerMax;
 		blockStepOnFlag = false;

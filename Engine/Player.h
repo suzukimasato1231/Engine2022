@@ -1,7 +1,7 @@
 #pragma once
 #include"Object.h"
 #include"CollisionPrimitive.h"
-
+#include"FBXObject3d.h"
 class Enemy;
 
 class Player :public Singleton<Player>
@@ -15,11 +15,12 @@ public:
 
 	void Init();//初期化
 
-	void Update(class Enemy* enemy);//更新
+	void Update();//更新
 
 	void Draw();//描画
 
 	void SetPosition(Vec3 position);
+
 	/// <summary>
 	/// trueにする
 	/// </summary>
@@ -28,6 +29,8 @@ public:
 	void Reset();
 
 	void GetBlockStepOnFlag() { blockStepOnFlag = true; }
+
+	void JumpPoweZero() { jumpPower = 0; }
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -52,11 +55,15 @@ public://取得系
 
 	Box GetBox() { return pBox; }
 
+	Box GetOldBox() { oldBox; }
+
 	Vec3 GetVec() { return vec; }
 
 	float GetJumpPower() { return jumpPower; }
 
 	bool GetGroundFlag() { return groundFlag; }
+
+	bool GetOldGroundFlag() { return oldGroundFlag; }
 private:
 	ObjectData playerObject;			//プレイヤーオブジェクト
 	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
@@ -68,15 +75,20 @@ private:
 	Vec3 pScale = { 5.0f,7.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
-
+	Box oldBox;							//プレイヤーの箱
 
 	Vec3 vec = {};
 
 	//ジャンプ
 	const float jumpPowerMax = 8.0f;
-	float jumpPower = 8.0f;//ジャンプパワー
+	float jumpPower = 8.0f;			//ジャンプパワー
 	float jumpPowerDelay = 0.2f;
-	float gravity = 5.0f;//重力
-	bool groundFlag = false;//地面に接しているかどうか
-	bool blockStepOnFlag = false;//ブロックを踏んで壊したかどうか
+	float gravity = 5.0f;			//重力
+	bool groundFlag = false;		//地面に接しているかどうか
+	bool oldGroundFlag =false;		//地面に接していたかどうか
+	bool blockStepOnFlag = false;	//ブロックを踏んで壊したかどうか
+
+	//FBX
+	Model* model1 = nullptr;
+	FBXObject3d* fbxObject1 = nullptr;
 };

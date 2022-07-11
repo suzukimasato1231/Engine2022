@@ -1,10 +1,12 @@
 #pragma once
 #include "Sprite.h"
-
-class PostEffect :
-	public Sprite
+#include"Singleton.h"
+#include"Sprite.h"
+class PostEffect : public Singleton<PostEffect>
 {
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
+private:
+	friend Singleton<PostEffect>;
 public:
 
 	//画面クリアカラー

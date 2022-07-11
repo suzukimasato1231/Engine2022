@@ -59,7 +59,7 @@ SpriteData Sprite::SpriteCreate(const wchar_t* filename)
 	SpriteData sprite{};
 
 	//テクスチャ番号をコピー
-	sprite.texNumber = Texture::Instance()->LoadTexture(filename);
+	sprite.texNumber = Texture::Get()->LoadTexture(filename);
 
 	//頂点データ
 	VertexPosUv vertices[] =
@@ -91,10 +91,10 @@ SpriteData Sprite::SpriteCreate(const wchar_t* filename)
 
 
 	//指定番号の画像が読み込み済みなら
-	if (Texture::Instance()->GetTexbuff(sprite.texNumber))
+	if (Texture::Get()->GetTexbuff(sprite.texNumber))
 	{
 		//テクスチャ情報を取得
-		D3D12_RESOURCE_DESC resDesc = Texture::Instance()->GetTexbuff(sprite.texNumber)->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = Texture::Get()->GetTexbuff(sprite.texNumber)->GetDesc();
 		//スプライトの大きさを画像の解像度に合わせる
 		sprite.size = { (float)resDesc.Width,(float)resDesc.Height };
 	}
@@ -152,10 +152,10 @@ void Sprite::SpriteTransferVertexBuffer(const SpriteData& sprite)
 
 	//uv計算
 	//指定番号の画像が読み込み済みなら
-	if (Texture::Instance()->GetTexbuff(sprite.texNumber) && !sprite.texSize.x == 0 && !sprite.texSize.y == 0)
+	if (Texture::Get()->GetTexbuff(sprite.texNumber) && !sprite.texSize.x == 0 && !sprite.texSize.y == 0)
 	{
 		//テクスチャ情報取得
-		D3D12_RESOURCE_DESC resDesc = Texture::Instance()->GetTexbuff(sprite.texNumber)->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = Texture::Get()->GetTexbuff(sprite.texNumber)->GetDesc();
 
 		float tex_left = sprite.texLeftTop.x / resDesc.Width;
 		float tex_right = (sprite.texLeftTop.x + sprite.texSize.x) / resDesc.Width;
@@ -224,7 +224,7 @@ void Sprite::SpriteCommonBeginDraw()
 
 
 	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->GetDescHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 //スプライト単体更新
@@ -325,7 +325,7 @@ void Sprite::Draw(SpriteData& sprite, Vec2 position, float width, float height, 
 	//シェーダーリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1,
 		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			Texture::Instance()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
+			Texture::Get()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
 			sprite.texNumber,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 
@@ -373,7 +373,7 @@ void Sprite::DebugDraw(SpriteData& sprite)
 	//シェーダーリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1,
 		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			Texture::Instance()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
+			Texture::Get()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
 			sprite.texNumber,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 
