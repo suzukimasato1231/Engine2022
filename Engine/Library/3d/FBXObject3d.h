@@ -1,6 +1,5 @@
 #pragma once
 #include "Model.h"
-#include"Camera.h"
 #include<Windows.h>
 #include<wrl.h>
 #include<d3d12.h>
@@ -14,20 +13,15 @@ class FBXObject3d
 protected://エイリアス
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 public://静的メンバ関数
 	static void SetDevice(ID3D12Device *device) { FBXObject3d::device = device; }
-	static void SetCamera(Camera *camera) { FBXObject3d::camera = camera; }
 	static void SetLight(LightGroup* lightGroup) { FBXObject3d::lightGroup = lightGroup; }
 	static void SetCmdList(ID3D12GraphicsCommandList *cmdList) { FBXObject3d::cmdList = cmdList; }
 private://静的メンバ変数
 	//デバイス
 	static ID3D12Device *device;
-	//カメラ
-	static Camera *camera;
-
 	//ライトクラス
 	static LightGroup* lightGroup;
 
@@ -42,7 +36,7 @@ public://サブクラス
 	{
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
-		XMFLOAT3 cameraPos;	//カメラ座標(ワールド座標)
+		Vec3 cameraPos;	//カメラ座標(ワールド座標)
 	};
 
 
@@ -88,9 +82,9 @@ public://メンバ関数
 	/// </summary>
 	void StopAnimation();
 
-	void SetPosition(XMFLOAT3 pos) { FBXObject3d::position = pos; }
-	void SetScale(XMFLOAT3 scale) { FBXObject3d::scale = scale; }
-	void SetRotation(XMFLOAT3 rotation) { FBXObject3d::rotation = rotation; }
+	void SetPosition(Vec3 pos) { FBXObject3d::position = pos; }
+	void SetScale(Vec3 scale) { FBXObject3d::scale = scale; }
+	void SetRotation(Vec3 rotation) { FBXObject3d::rotation = rotation; }
 protected://メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource>constBuffTransform;
@@ -103,11 +97,11 @@ protected://メンバ変数
 	static ComPtr<ID3D12PipelineState>pipelinestate;
 
 	//ローカルスケール
-	XMFLOAT3 scale = { 0.02f,0.02f,0.02f };
+	Vec3 scale = { 0.02f,0.02f,0.02f };
 	//X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation = { 30.0f,-90.0f,0.0f };
+	Vec3 rotation = { 30.0f,90.0f,0.0f };
 	//ローカル座標
-	XMFLOAT3 position = { 0,0,0 };
+	Vec3 position = { 0,0,0 };
 	//ローカルワールド変換行列
 	XMMATRIX matWorld;
 	//モデル

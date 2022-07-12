@@ -24,7 +24,6 @@ public:
 
 	void Draw();
 private:
-	Camera* camera = nullptr;
 	LightGroup* lightGroup = nullptr;
 	Audio* audio = nullptr;
 private://’è‹`

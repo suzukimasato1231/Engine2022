@@ -1,5 +1,7 @@
 #include"Pipeline.h"
 
+Pipeline::
+
 //スプライト
 Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
 {

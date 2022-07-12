@@ -308,6 +308,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PushCollision.h" />
     <ClInclude Include="Scene\GameSceneManager.h" />
+    <ClInclude Include="Scene\ResultScene.h" />
     <ClInclude Include="Scene\SceneManagerh.h" />
     <ClInclude Include="Scene\StageSelect.h" />
     <ClInclude Include="Scene\TitleScene.h" />
@@ -358,6 +359,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PushCollision.cpp" />
     <ClCompile Include="Scene\GameSceneManager.cpp" />
+    <ClCompile Include="Scene\ResultScene.cpp" />
     <ClCompile Include="Scene\SceneManagerh.cpp" />
     <ClCompile Include="Scene\StageSelect.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />

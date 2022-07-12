@@ -58,7 +58,7 @@ void Stage::MainInit(int stageNum)
 	stageBlockNum = 0;
 	blockNum = 0;
 	//è∞
-	LoadStage();
+	LoadStage(stageNum);
 	goalFlag = false;
 }
 
@@ -89,7 +89,7 @@ void Stage::Update()
 	if (isHit2 == true)
 	{
 		int breakNum = -1;
-		int breakFlag = PushCollision::PlayerBreakBox(boxData,breakNum);
+		int breakFlag = PushCollision::PlayerBreakBox(boxData, breakNum);
 		//ÉuÉçÉbÉNÇ™âÛÇÍÇÈ
 		if (breakFlag == 1 && Player::Get()->GetOldGroundFlag() == false)
 		{
@@ -175,10 +175,10 @@ void Stage::Update()
 	//ìÆÇ≠è∞
 	for (int i = 0; i < moveFloorData.size(); i++)
 	{
-		if ((X - 10 <= moveFloorData[i]->map.x && moveFloorData[i]->map.x <= X + 10)
-			&& ((MAP_HEIGHT - 1 + Z) - 10 <= moveFloorData[i]->map.y && moveFloorData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 10))
+		MoveFloorUpdate(i);
+		if ((X - 3 <= moveFloorData[i]->map.x && moveFloorData[i]->map.x <= X + 3)
+			&& ((MAP_HEIGHT - 1 + Z) - 3 <= moveFloorData[i]->map.y && moveFloorData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 3))
 		{
-			MoveFloorUpdate(i);
 			PushCollision::Player2Floor(moveFloorData[i]->position,
 				moveFloorData[i]->angle, moveFloorData[i]->scale, moveFloorData[i]->moveFlag);
 		}
@@ -243,7 +243,7 @@ void Stage::Draw()
 	}
 }
 
-void Stage::LoadStage()
+void Stage::LoadStage(int stageNum)
 {
 	for (int i = (int)floor.size() - 1; i >= 0; i--)
 	{
@@ -270,18 +270,46 @@ void Stage::LoadStage()
 		delete moveFloorData[i];
 		moveFloorData.erase(moveFloorData.begin() + i);
 	}
-	char* Filepath = "";
+	char* FilepathFloor = "";
+	char* FilepathFloorPos = "";
 	char* FilepathOBJ = "";
-	Filepath = (char*)"Resources/map/Floor_Title1.csv";
-	FilepathOBJ = (char*)"Resources/map/Floor_TitlePos1.csv";
+	char* FilepathOBJPos = "";
+	switch (stageNum)
+	{
+	case 0:
+		//Floor
+		FilepathFloor = (char*)"Resources/map/selectFloor.csv";
+		FilepathFloorPos = (char*)"Resources/map/selectTitlePos.csv";
+		//OBJ
+		FilepathOBJ = (char*)"Resources/map/selectObj.csv";
+		FilepathOBJPos = (char*)"Resources/map/selectObjPos.csv";
+		break;
+	case 1:
+		//Floor
+		FilepathFloor = (char*)"Resources/map/Floor_Title1.csv";
+		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos1.csv";
+		//OBJ
+		FilepathOBJ = (char*)"Resources/map/OBJTitle1.csv";
+		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos1.csv";
+		break;
+	case 2:
+		//Floor
+		FilepathFloor = (char*)"Resources/map/Floor_Title2.csv";
+		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos2.csv";
+		//OBJ
+		FilepathOBJ = (char*)"Resources/map/OBJTitle2.csv";
+		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos2.csv";
+		break;
+	default:
+	
+		break;
+	
+	}
+	LoadCSV(map, FilepathFloor);
+	LoadCSV(mapPos, FilepathFloorPos);
 
-	LoadCSV(map, Filepath);
-	LoadCSV(mapPos, FilepathOBJ);
-	//OBJ
-	Filepath = (char*)"Resources/map/OBJTitle1.csv";
-	FilepathOBJ = (char*)"Resources/map/Obj_TitlePos1.csv";
-	LoadCSV(mapOBJ, Filepath);
-	LoadCSV(mapOBJPos, FilepathOBJ);
+	LoadCSV(mapOBJ, FilepathOBJ);
+	LoadCSV(mapOBJPos, FilepathOBJPos);
 
 	for (size_t y = 0; y < MAP_HEIGHT; y++)
 	{

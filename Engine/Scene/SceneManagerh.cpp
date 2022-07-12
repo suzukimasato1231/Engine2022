@@ -41,13 +41,13 @@ void SceneManagerh::Initialize()
 	ParticleManager::StaticInitialize(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList(), window_width, window_height);
 	//3Dオブジェクト初期化
 	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
-	//ゲームシーン
-	GameSceneManager::Get()->Initialize();
-	GameSceneManager::Get()->Init(1);
 
 	TitleScene::Get()->Initialize();
 	TitleScene::Get()->Init();
-
+	//ゲームシーン
+	GameSceneManager::Get()->Initialize();
+	GameSceneManager::Get()->Init(0);
+	StageSelect::Get()->Initialize();
 
 	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
 
@@ -56,10 +56,10 @@ void SceneManagerh::Initialize()
 void SceneManagerh::Update()
 {
 	Input::Get()->Update();
-
+	//シーン切り替え
 	if (scene == Title)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_SPACE))
+		if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
 		{
 			scene = SelectScene;
 			StageSelect::Get()->Init();
@@ -67,7 +67,7 @@ void SceneManagerh::Update()
 	}
 	else if (scene == SelectScene)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_SPACE))
+		if (StageSelect::Get()->GetSelectFlag() == true)
 		{
 			scene = GameScene;
 			GameSceneManager::Get()->Init(StageSelect::Get()->GetStageNum());
@@ -77,10 +77,17 @@ void SceneManagerh::Update()
 	{
 		if (GameSceneManager::Get()->GetChangeScene())
 		{
+			scene = Result;
+		}
+	}
+	else if (scene == Result)
+	{
+		if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
+		{
 			scene = Title;
 		}
 	}
-
+	//更新
 	if (scene == Title)
 	{
 		TitleScene::Get()->Update();
@@ -92,6 +99,10 @@ void SceneManagerh::Update()
 	else if (scene == GameScene)
 	{
 		GameSceneManager::Get()->Update();
+	}
+	else if (scene == Result)
+	{
+		ResultScene::Get()->Update();
 	}
 }
 
@@ -115,7 +126,10 @@ void SceneManagerh::Draw()
 	{
 		GameSceneManager::Get()->Draw();
 	}
-
+	else if (scene == Result)
+	{
+		ResultScene::Get()->Draw();
+	}
 	DebugText::Get()->DrawAll();
 	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
 

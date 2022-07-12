@@ -1,10 +1,9 @@
 #include<FBXObject3d.h>
-
+#include"Camera.h"
 ///<summary>
 ///静的メンバ変数の実体
 ///</summary>
 ID3D12Device* FBXObject3d::device = nullptr;
-Camera* FBXObject3d::camera = nullptr;
 LightGroup* FBXObject3d::lightGroup = nullptr;
 ID3D12GraphicsCommandList* FBXObject3d::cmdList = nullptr;
 #include<d3dcompiler.h>
@@ -230,11 +229,11 @@ void FBXObject3d::Update()
 	matWorld *= matTrans; // ワールド行列に平行移動を反映
 
 	// ビュープロジェクション行列
-	const XMMATRIX& matViewProjection = camera->GetMatView() * camera->GetProjection();
+	const XMMATRIX& matViewProjection = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();
 	// モデルのメッシュトランスフォーム
 	const XMMATRIX& modelTransform = model->GetModelTransform();
 	// カメラ座標
-	const XMFLOAT3& cameraPos = camera->GetEye();
+	const Vec3& cameraPos = Camera::Get()->GetEye();
 
 	HRESULT result;
 	// 定数バッファへデータ転送

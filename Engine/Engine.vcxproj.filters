@@ -330,6 +330,9 @@
     <ClInclude Include="TimeAttack.h">
       <Filter>ソース ファイル\TimeAttack</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\ResultScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -472,6 +475,9 @@
     </ClCompile>
     <ClCompile Include="TimeAttack.cpp">
       <Filter>ソース ファイル\TimeAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\ResultScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

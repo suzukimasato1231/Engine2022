@@ -34,7 +34,6 @@ public:
 public:
 	bool GetChangeScene() { return changeScene; }
 private:
-	Camera *camera = nullptr;
 	LightGroup *lightGroup = nullptr;
 	Audio *audio = nullptr;
 private://’è‹`

@@ -7,7 +7,6 @@ using namespace std;
 
 ID3D12Device* Object::dev = nullptr;
 ID3D12GraphicsCommandList* Object::cmdList = nullptr;
-Camera* Object::camera = nullptr;
 LightGroup* Object::lightGroup = nullptr;
 Pipeline::PipelineSet Object::objPipelineSet;		//OBJ読み込み
 size_t Object::objNum = 0;
@@ -73,8 +72,8 @@ void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotati
 	}
 
 
-	const XMMATRIX& matViewProjection = camera->GetMatView() * camera->GetProjection();
-	const Vec3& cameraPos = camera->GetEye();
+	const XMMATRIX& matViewProjection = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();
+	const Vec3& cameraPos = Camera::Get()->GetEye();
 	//GPU上のバッファに対応した仮想メモリを取得
 	ConstBufferDataB0* constMap = nullptr;
 	result = Object::OBJbuffer[OBJNum]->constBuffB0->Map(0, nullptr, (void**)&constMap);
@@ -161,7 +160,12 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	//ヒープの先頭にあるCBVをルートパラメータ０番に設定
 	cmdList->SetGraphicsRootConstantBufferView(0, Object::OBJbuffer[OBJNum]->constBuffB0->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(1, Object::OBJbuffer[OBJNum]->constBuffB1->GetGPUVirtualAddress());
-	if (polygon.OBJTexture == 0)
+	if (graph > 0)
+	{
+		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+	}
+	else if (polygon.OBJTexture == 0)
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
 		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));

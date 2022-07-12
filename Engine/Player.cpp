@@ -47,7 +47,7 @@ void Player::Update()
 	//落下死
 	FallDie();
 
-	
+
 
 }
 
@@ -55,7 +55,8 @@ void Player::Draw()
 {
 	//	Object::Draw(playerObject, position, scale, angle, color);
 	//FBX試し
-	fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
+	fbxObject1->SetPosition(Vec3(position.x, position.y + 5.0f, position.z));
+	fbxObject1->SetRotation(angle);
 	fbxObject1->Update();
 	fbxObject1->Draw();
 }
@@ -81,6 +82,17 @@ void Player::Reset()
 //移動
 void Player::Move()
 {
+	if (moveFlag == true)
+	{
+		if (Input::Get()->KeybordPush(DIK_UP))
+		{
+			vec.z += speed.z;
+		}
+		if (Input::Get()->KeybordPush(DIK_DOWN))
+		{
+			vec.z -= speed.z;
+		}
+	}
 	//移動
 	if (Input::Get()->KeybordPush(DIK_RIGHT))
 	{
@@ -90,20 +102,15 @@ void Player::Move()
 	{
 		vec.x -= speed.x;
 	}
-	if (Input::Get()->KeybordPush(DIK_UP))
-	{
-		vec.z += speed.z;
-	}
-	if (Input::Get()->KeybordPush(DIK_DOWN))
-	{
-		vec.z -= speed.z;
-	}
 	//コントローラー移動
 	if (Input::Get()->ConLeftInput())
 	{
 		float rad = Input::Get()->GetLeftAngle();
 		vec.x = speed.x * sinf(-rad);
-		vec.z = speed.z * cosf(rad);
+		if (moveFlag == true)
+		{
+			vec.z = speed.z * cosf(rad);
+		}
 		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad))) - 90;
 	}
 }
@@ -111,7 +118,7 @@ void Player::Move()
 void Player::Jump()
 {
 	//ジャンプ
-	if ((Input::Get()->KeybordPush(DIK_SPACE) || blockStepOnFlag) && groundFlag == true)
+	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag) && groundFlag == true)
 	{
 		jumpPower = jumpPowerMax;
 		blockStepOnFlag = false;

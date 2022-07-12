@@ -6,9 +6,9 @@ using namespace Microsoft::WRL;
 class Shader
 {
 public:
-    ComPtr<ID3DBlob> vsBlob = nullptr; //頂点シェーダオブジェクト
-    ComPtr<ID3DBlob> gsBlob = nullptr; //ジオメトリシェーダー
-    ComPtr<ID3DBlob> psBlob = nullptr; //ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> vsBlob = nullptr; //頂点シェーダオブジェクト
+	ComPtr<ID3DBlob> gsBlob = nullptr; //ジオメトリシェーダー
+	ComPtr<ID3DBlob> psBlob = nullptr; //ピクセルシェーダオブジェクト
 };
 
 ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName = L"", LPCSTR Vtarget = "");

@@ -31,6 +31,9 @@ public:
 	void GetBlockStepOnFlag() { blockStepOnFlag = true; }
 
 	void JumpPoweZero() { jumpPower = 0; }
+
+	//2D false 3D true
+	void ChangeMoveFlag(bool moveFlag) { Player::moveFlag = moveFlag; }
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -65,12 +68,15 @@ public://取得系
 
 	bool GetOldGroundFlag() { return oldGroundFlag; }
 private:
+	//2D false 3D true
+	bool moveFlag = false;
+
 	ObjectData playerObject;			//プレイヤーオブジェクト
 	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
 	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
-	Vec3 angle{ 0.0f,90.0f,0.0f };		//角度
+	Vec3 angle{ 30.0f,90.0f,0.0f };		//角度
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
 	Vec3 pScale = { 5.0f,7.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球

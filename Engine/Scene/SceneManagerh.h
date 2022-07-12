@@ -2,11 +2,13 @@
 #include"GameSceneManager.h"
 #include"TitleScene.h"
 #include"StageSelect.h"
+#include"ResultScene.h"
 enum Scene
 {
 	Title,
 	SelectScene,
 	GameScene,
+	Result,
 };
 
 extern const int window_width;

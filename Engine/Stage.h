@@ -21,6 +21,8 @@ public:
 	void Update();
 	//描画
 	void Draw();
+
+	void LoadStage(int stageNum);
 public://マップ
 	int GetMap(int i, int j) { return map[j][i]; }
 
@@ -28,9 +30,9 @@ public://マップ
 
 	int GetBlockNum() { return blockNum; }
 	int GetStageBlock() { return stageBlockNum; }
-private:
-	void LoadStage();
 
+
+private:
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);

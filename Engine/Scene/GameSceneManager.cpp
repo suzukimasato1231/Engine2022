@@ -21,8 +21,6 @@ void GameSceneManager::Initialize()
 {
 	//Audioクラス作成
 	audio = Audio::Create();
-	//カメラクラス作成
-	camera = Camera::Create();
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 
@@ -36,7 +34,7 @@ void GameSceneManager::Initialize()
 	lightGroup->SetSpotLightActive(0, false);
 	lightGroup->SetCircleShadowActive(0, false);
 	//カメラ位置をセット
-	camera->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
+	Camera::Get()->SetCamera(Vec3{0,0,-200}, Vec3{0, 0, 0}, Vec3{0, 1, 0});
 	//スプライト画像読み込み
 
 	BGGraph = Sprite::Get()->SpriteCreate(L"Resources/backgroundA.png");
@@ -62,14 +60,12 @@ void GameSceneManager::Initialize()
 
 void GameSceneManager::Init(int stageNum)
 {
-	FBXObject3d::SetCamera(camera);
 	FBXObject3d::SetLight(lightGroup);
-	ParticleManager::SetCamera(camera);
-	Object::SetCamera(camera);
 	Object::SetLight(lightGroup);
 	changeScene = false;
 	Reset(stageNum);
 	this->stageNum = stageNum;
+	Player::Get()->ChangeMoveFlag(true);
 }
 
 void GameSceneManager::Update()
@@ -86,7 +82,7 @@ void GameSceneManager::Update()
 	Stage::Get()->Update();
 
 	//
-	camera->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
+	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{0,0,-100}, 0.0f, 35.0f);
 
 	//クリアしたらシーンチェンジ
 	if (Stage::Get()->GetClearFlag() == true)

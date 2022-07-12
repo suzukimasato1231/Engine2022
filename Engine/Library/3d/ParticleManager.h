@@ -85,9 +85,6 @@ public: // 静的メンバ関数
 	/// <returns></returns>
 	static ParticleManager *Create();
 
-	//カメラをセット
-	static void SetCamera(Camera *camera) { ParticleManager::camera = camera; }
-
 	/// <summary>
 	/// パーティクルの追加
 	/// </summary>
@@ -107,8 +104,6 @@ public: // 静的メンバ関数
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device *device;
-
-	static Camera *camera;
 
 	// コマンドリスト
 	static ID3D12GraphicsCommandList *cmdList;
