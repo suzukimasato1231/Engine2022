@@ -8,10 +8,9 @@
 
 extern const int window_width;
 extern const int window_height;
-class TitleScene :public Singleton<TitleScene>
+class TitleScene 
 {
-private:
-	friend Singleton<TitleScene>;
+
 public:
 	TitleScene();
 	~TitleScene();

@@ -8,7 +8,7 @@ using namespace DirectX;
 /// </summary>
 ID3D12Device* LightGroup::device = nullptr;
 
-void LightGroup::StaticInitialize(ID3D12Device * device)
+void LightGroup::StaticInitialize(ID3D12Device* device)
 {
 	// 再初期化チェック
 	assert(!LightGroup::device);
@@ -19,7 +19,7 @@ void LightGroup::StaticInitialize(ID3D12Device * device)
 	LightGroup::device = device;
 }
 
-LightGroup * LightGroup::Create()
+LightGroup* LightGroup::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
 	LightGroup* instance = new LightGroup();
@@ -42,11 +42,11 @@ void LightGroup::Initialize()
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff)&~0xff),
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff));
-	if (FAILED(result)){
+	if (FAILED(result)) {
 		assert(0);
 	}
 
@@ -63,7 +63,7 @@ void LightGroup::Update()
 	}
 }
 
-void LightGroup::Draw(ID3D12GraphicsCommandList * cmdList, UINT rootParameterIndex)
+void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
 {
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(rootParameterIndex, constBuff->GetGPUVirtualAddress());
@@ -144,19 +144,20 @@ void LightGroup::TransferConstBuffer()
 void LightGroup::DefaultLightSetting()
 {
 	dirLights[0].SetActive(true);
-	dirLights[0].SetLightColor({1.0f, 1.0f, 1.0f});
-	dirLights[0].SetLightDir({0.0f, -1.0f, 0.0f, 0});
+	dirLights[0].SetLightColor({ 1.0f, 1.0f, 1.0f });
+	dirLights[0].SetLightDir({ 0.0f, -1.0f, 0.0f, 0 });
 
 	dirLights[1].SetActive(false);
 	dirLights[1].SetLightColor({ 1.0f, 1.0f, 1.0f });
 	dirLights[1].SetLightDir({ 0.0f, 0.0f, 0.0f, 0 });
-	
+
 	dirLights[2].SetActive(false);
 	dirLights[2].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	dirLights[2].SetLightDir({ -0.5f, +0.1f, -0.2f, 0 });	
+	dirLights[2].SetLightDir({ -0.5f, +0.1f, -0.2f, 0 });
+
 }
 
-void LightGroup::SetAmbientColor(const Vec3 & color)
+void LightGroup::SetAmbientColor(const Vec3& color)
 {
 	ambientColor = color;
 	dirty = true;
@@ -167,7 +168,7 @@ void LightGroup::SetDirLightActive(int index, bool active)
 	assert(0 <= index && index < DirLightNum);
 
 	dirLights[index].SetActive(active);
-	
+
 }
 
 void LightGroup::SetDirLightDir(int index, const XMVECTOR& lightdir)
@@ -194,7 +195,7 @@ void LightGroup::SetPointLightActive(int index, bool active)
 	dirty = true;
 }
 
-void LightGroup::SetPointLightPos(int index, const Vec3 & lightpos)
+void LightGroup::SetPointLightPos(int index, const Vec3& lightpos)
 {
 	assert(0 <= index && index < PointLightNum);
 
@@ -202,7 +203,7 @@ void LightGroup::SetPointLightPos(int index, const Vec3 & lightpos)
 	dirty = true;
 }
 
-void LightGroup::SetPointLightColor(int index, const Vec3 & lightcolor)
+void LightGroup::SetPointLightColor(int index, const Vec3& lightcolor)
 {
 	assert(0 <= index && index < PointLightNum);
 
@@ -210,7 +211,7 @@ void LightGroup::SetPointLightColor(int index, const Vec3 & lightcolor)
 	dirty = true;
 }
 
-void LightGroup::SetPointLightAtten(int index, const Vec3 & lightAtten)
+void LightGroup::SetPointLightAtten(int index, const Vec3& lightAtten)
 {
 	assert(0 <= index && index < PointLightNum);
 
@@ -226,7 +227,7 @@ void LightGroup::SetSpotLightActive(int index, bool active)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightDir(int index, const XMVECTOR & lightdir)
+void LightGroup::SetSpotLightDir(int index, const XMVECTOR& lightdir)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -234,7 +235,7 @@ void LightGroup::SetSpotLightDir(int index, const XMVECTOR & lightdir)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightPos(int index, const Vec3 & lightpos)
+void LightGroup::SetSpotLightPos(int index, const Vec3& lightpos)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -242,7 +243,7 @@ void LightGroup::SetSpotLightPos(int index, const Vec3 & lightpos)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightColor(int index, const Vec3 & lightcolor)
+void LightGroup::SetSpotLightColor(int index, const Vec3& lightcolor)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -250,7 +251,7 @@ void LightGroup::SetSpotLightColor(int index, const Vec3 & lightcolor)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightAtten(int index, const Vec3 & lightAtten)
+void LightGroup::SetSpotLightAtten(int index, const Vec3& lightAtten)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -258,7 +259,7 @@ void LightGroup::SetSpotLightAtten(int index, const Vec3 & lightAtten)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightFactorAngle(int index, const Vec2 & lightFactorAngle)
+void LightGroup::SetSpotLightFactorAngle(int index, const Vec2& lightFactorAngle)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -274,7 +275,7 @@ void LightGroup::SetCircleShadowActive(int index, bool active)
 	dirty = true;
 }
 
-void LightGroup::SetCircleShadowCasterPos(int index, const Vec3 & casterPos)
+void LightGroup::SetCircleShadowCasterPos(int index, const Vec3& casterPos)
 {
 	assert(0 <= index && index < CircleShadowNum);
 
@@ -282,7 +283,7 @@ void LightGroup::SetCircleShadowCasterPos(int index, const Vec3 & casterPos)
 	dirty = true;
 }
 
-void LightGroup::SetCircleShadowDir(int index, const XMVECTOR & lightdir)
+void LightGroup::SetCircleShadowDir(int index, const XMVECTOR& lightdir)
 {
 	assert(0 <= index && index < CircleShadowNum);
 
@@ -298,7 +299,7 @@ void LightGroup::SetCircleShadowDistanceCasterLight(int index, float distanceCas
 	dirty = true;
 }
 
-void LightGroup::SetCircleShadowAtten(int index, const Vec3 & lightAtten)
+void LightGroup::SetCircleShadowAtten(int index, const Vec3& lightAtten)
 {
 	assert(0 <= index && index < CircleShadowNum);
 
@@ -306,7 +307,7 @@ void LightGroup::SetCircleShadowAtten(int index, const Vec3 & lightAtten)
 	dirty = true;
 }
 
-void LightGroup::SetCircleShadowFactorAngle(int index, const Vec2 & lightFactorAngle)
+void LightGroup::SetCircleShadowFactorAngle(int index, const Vec2& lightFactorAngle)
 {
 	assert(0 <= index && index < CircleShadowNum);
 

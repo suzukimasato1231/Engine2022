@@ -2,8 +2,6 @@
 #include"Object.h"
 #include"CollisionPrimitive.h"
 #include"FBXObject3d.h"
-class Enemy;
-
 class Player :public Singleton<Player>
 {
 public:
@@ -58,8 +56,6 @@ public://取得系
 
 	Box GetBox() { return pBox; }
 
-	Box GetOldBox() { oldBox; }
-
 	Vec3 GetVec() { return vec; }
 
 	float GetJumpPower() { return jumpPower; }
@@ -81,7 +77,6 @@ private:
 	Vec3 pScale = { 5.0f,7.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
-	Box oldBox;							//プレイヤーの箱
 
 	Vec3 vec = {};
 
@@ -93,6 +88,12 @@ private:
 	bool groundFlag = false;		//地面に接しているかどうか
 	bool oldGroundFlag =false;		//地面に接していたかどうか
 	bool blockStepOnFlag = false;	//ブロックを踏んで壊したかどうか
+
+	//2段ジャンプ
+
+
+	//ボディプレス
+
 
 	//FBX
 	Model* model1 = nullptr;

@@ -16,6 +16,7 @@ void _DirectX::Initilize()
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 	{
 		debugController->EnableDebugLayer();
+		//debugController->SetEnableGPUBasedValidation(TRUE);
 	}
 	//debugController->QueryInterface(mDebugDevice.GetAddressOf());
 	//mDebugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);

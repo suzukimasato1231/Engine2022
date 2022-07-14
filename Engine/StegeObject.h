@@ -9,42 +9,6 @@ struct Floor
 	Vec2 map = {};
 };
 
-enum BlockType
-{
-	BLOCKNORMAL,
-	BLOCKHRDE,
-	BLOCKJUMP,
-};
-
-struct BreakBoxData
-{
-	
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-	Box box = {};
-	int type = 0;
-};
-
-struct WallData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-	Box box = {};
-};
-
-struct GoalData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-	Box box = {};
-};
-
 struct MoveFloorData
 {
 	Vec3 position = {};
@@ -65,7 +29,7 @@ enum StageFloor
 	FloorMove,	//à⁄ìÆè∞
 };
 
-enum StageOBJ
+enum StageType
 {
 	NoneOBJ = 0,
 	Wall = 1,		//ï«
@@ -76,3 +40,13 @@ enum StageOBJ
 	BreakJUMP = 13,	//ÉWÉÉÉìÉvî†
 };
 
+
+struct StageOBJ
+{
+	Vec3 position = {};
+	Vec3 scale = {};
+	Vec3 angle = {};
+	Vec2 map = {};
+	Box box = {};
+	int type = NoneOBJ;
+};

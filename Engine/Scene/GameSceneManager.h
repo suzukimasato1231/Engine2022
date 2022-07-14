@@ -14,10 +14,9 @@
 #include"../TimeAttack.h"
 extern const int window_width;
 extern const int window_height;
-class GameSceneManager :public Singleton<GameSceneManager>
+class GameSceneManager 
 {
-private:
-	friend Singleton<GameSceneManager>;
+
 public:
 	GameSceneManager();
 	~GameSceneManager();
@@ -43,9 +42,6 @@ private://定義
 	SpriteData BGGraph;
 	
 	Vec2 pos = { 0.0f,0.0f };
-
-	////エネミー
-	//Enemy *enemy = nullptr;
 
 	//FBX
 	Model *model1 = nullptr;

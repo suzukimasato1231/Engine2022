@@ -130,7 +130,7 @@ float4 main(VSOutput input) : SV_TARGET
 	float4 darkColor = float4(0.4, 0.4, 0.4, 1.0);							//暗い箇所の色
 	float4 dark = darkColor * (1 - smoothstep(0.3, 0.4,shadecolor.r));		//暗い箇所の判定
 	float4 reflectionColor = float4(1.0, 1.0, 1.0, 1.0);					//反射光の箇所の色
-	float4 reflect = reflectionColor * smoothstep(0.98, 1.0,shadecolor.r);	//反射光の判定
+	float4 reflect = reflectionColor * smoothstep(0.90, 1.0,shadecolor.r);	//反射光の判定
 
 	float4 col = bright + dark + reflect;//色を足す
 

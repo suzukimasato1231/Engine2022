@@ -14,12 +14,11 @@ Player::~Player()
 
 void Player::Init()
 {
-	playerObject = Shape::CreateOBJ("player");
+	playerObject = Shape::CreateOBJ("player", true);
 	oldPosition = position;
 	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
-
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Player2");
 	//3Dオブジェクトの生成とモデルのセット
@@ -31,8 +30,6 @@ void Player::Init()
 void Player::Update()
 {
 	oldPosition = position;
-	oldBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
-	oldBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 	oldGroundFlag = groundFlag;
 	vec = {};
 	//移動
@@ -46,16 +43,13 @@ void Player::Update()
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 	//落下死
 	FallDie();
-
-
-
 }
 
 void Player::Draw()
 {
-	//	Object::Draw(playerObject, position, scale, angle, color);
+	//Object::Draw(playerObject, position, scale, angle, color);
 	//FBX試し
-	fbxObject1->SetPosition(Vec3(position.x, position.y + 5.0f, position.z));
+	fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
 	fbxObject1->SetRotation(angle);
 	fbxObject1->Update();
 	fbxObject1->Draw();

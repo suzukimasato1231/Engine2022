@@ -192,6 +192,7 @@ int Texture::OBJLoadTexture(const std::string &directoryPath, const std::string 
 	return (int)texNum - 1;
 }
 
+
 D3D12_GPU_DESCRIPTOR_HANDLE Texture::GetGPUSRV(int i)
 {
 	return 	textureData[i]->gpuDescHandleSRV;

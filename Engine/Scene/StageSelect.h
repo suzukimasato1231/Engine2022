@@ -7,10 +7,9 @@
 #include"Object.h"
 extern const int window_width;
 extern const int window_height;
-class StageSelect :public Singleton<StageSelect>
+class StageSelect 
 {
-private:
-	friend Singleton<StageSelect>;
+
 public:
 	StageSelect();
 	~StageSelect();

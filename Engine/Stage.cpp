@@ -13,20 +13,10 @@ Stage::~Stage()
 		delete floor[i];
 		floor.erase(floor.begin() + i);
 	}
-	for (int i = (int)breakBoxData.size() - 1; i >= 0; i--)
+	for (int i = (int)stageObj.size() - 1; i >= 0; i--)
 	{
-		delete breakBoxData[i];
-		breakBoxData.erase(breakBoxData.begin() + i);
-	}
-	for (int i = (int)wallData.size() - 1; i >= 0; i--)
-	{
-		delete wallData[i];
-		wallData.erase(wallData.begin() + i);
-	}
-	for (int i = (int)goalData.size() - 1; i >= 0; i--)
-	{
-		delete goalData[i];
-		goalData.erase(goalData.begin() + i);
+		delete stageObj[i];
+		stageObj.erase(stageObj.begin() + i);
 	}
 	for (int i = (int)moveFloorData.size() - 1; i >= 0; i--)
 	{
@@ -37,7 +27,7 @@ Stage::~Stage()
 
 void Stage::Init()
 {
-	floorOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
+	floorOBJ = Shape::CreateOBJ("cube");
 	floorGraph = Texture::Get()->LoadTexture(L"Resources/ground.png");
 
 	wallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
@@ -69,88 +59,75 @@ void Stage::Update()
 	int Z = static_cast<int>(PPos.z / (-mapSize));
 	int X = static_cast<int>(PPos.x / mapSize);
 
-	bool isHit2 = false;
-	int boxCount = 0;
-	BreakBoxData boxData[4] = {};
+	bool is_hit = false;
+	int box_count = 0;
+	StageOBJ obj_data[4] = {};
 	//î†
-	for (int i = 0; i < breakBoxData.size(); i++)
+	for (int i = 0; i < stageObj.size(); i++)
 	{
-		if ((X - 1 <= breakBoxData[i]->map.x && breakBoxData[i]->map.x <= X + 1)
-			&& ((MAP_HEIGHT - 1 + Z) - 1 <= breakBoxData[i]->map.y && breakBoxData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
+		if ((X - 1 <= stageObj[i]->map.x && stageObj[i]->map.x <= X + 1)
+			&& ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
 		{
-			if (Collision::CheckBox2Box(breakBoxData[i]->box, Player::Get()->GetBox()))
+			if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
 			{
-				boxData[boxCount] = *breakBoxData[i];
-				boxCount++;
-				isHit2 = true;
+				if (box_count >= 4)
+				{
+					break;
+				}
+				obj_data[box_count] = *stageObj[i];
+				box_count++;
+				is_hit = true;
+				//ÉSÅ[Éã
+				if (stageObj[i]->type == Goal)
+				{
+					goalFlag = true;
+				}
 			}
 		}
 	}
-	if (isHit2 == true)
+	if (is_hit == true)
 	{
 		int breakNum = -1;
-		int breakFlag = PushCollision::PlayerBreakBox(boxData, breakNum);
+		int breakFlag = PushCollision::PlayerBreakBox(obj_data, breakNum);
 		//ÉuÉçÉbÉNÇ™âÛÇÍÇÈ
 		if (breakFlag == 1 && Player::Get()->GetOldGroundFlag() == false)
 		{
-			Player::Get()->GetBlockStepOnFlag();
-			for (int i = 0; i < breakBoxData.size(); i++)
+			for (int i = 0; i < stageObj.size(); i++)
 			{
 				if (breakNum == -1) { break; }
-				if (boxData[breakNum].position.x == breakBoxData[i]->position.x &&
-					boxData[breakNum].position.y == breakBoxData[i]->position.y &&
-					boxData[breakNum].position.z == breakBoxData[i]->position.z)
+				if (obj_data[breakNum].position.x == stageObj[i]->position.x &&
+					obj_data[breakNum].position.y == stageObj[i]->position.y &&
+					obj_data[breakNum].position.z == stageObj[i]->position.z &&
+					BreakBox == stageObj[i]->type)
 				{
-					Particle::Get()->BreakBoxFlag(breakBoxData[i]->position);
-					delete breakBoxData[i];
-					breakBoxData.erase(breakBoxData.begin() + i);
+					Player::Get()->GetBlockStepOnFlag();
+					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
 					blockNum++;
 					break;
 				}
 			}
 		}
-		else if (breakFlag == 2)
+		else if (breakFlag == 2 && stageObj[breakNum]->type == BreakBox)
 		{
 			Player::Get()->JumpPoweZero();
-			for (int i = 0; i < breakBoxData.size(); i++)
+			for (int i = 0; i < stageObj.size(); i++)
 			{
 				if (breakNum == -1) { break; }
-				if (boxData[breakNum].position.x == breakBoxData[i]->position.x &&
-					boxData[breakNum].position.y == breakBoxData[i]->position.y &&
-					boxData[breakNum].position.z == breakBoxData[i]->position.z)
+				if (obj_data[breakNum].position.x == stageObj[i]->position.x &&
+					obj_data[breakNum].position.y == stageObj[i]->position.y &&
+					obj_data[breakNum].position.z == stageObj[i]->position.z &&
+					BreakBox == stageObj[i]->type)
 				{
-					Particle::Get()->BreakBoxFlag(breakBoxData[i]->position);
-					delete breakBoxData[i];
-					breakBoxData.erase(breakBoxData.begin() + i);
+					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
 					blockNum++;
 				}
 			}
 		}
 	}
-
-
-	//ï«
-	int wallCount = 0;
-	WallData memoryData[4] = {};
-	bool isHit = false;
-	for (int i = 0; i < wallData.size(); i++)
-	{
-		if ((X - 1 <= wallData[i]->map.x && wallData[i]->map.x <= X + 1)
-			&& ((MAP_HEIGHT - 1 + Z) - 1 <= wallData[i]->map.y && wallData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
-		{
-			if (Collision::CheckBox2Box(wallData[i]->box, Player::Get()->GetBox()))
-			{
-				memoryData[wallCount] = *wallData[i];
-				wallCount++;
-				isHit = true;
-			}
-		}
-	}
-	if (isHit == true)
-	{
-		PushCollision::PlayerBox2(memoryData);
-	}
-
 
 	//è∞
 	for (int i = 0; i < floor.size(); i++)
@@ -163,15 +140,6 @@ void Stage::Update()
 		}
 	}
 
-	//ÉSÅ[Éã
-	for (int i = 0; i < goalData.size(); i++)
-	{
-		if ((X - 1 <= goalData[i]->map.x && goalData[i]->map.x <= X + 1)
-			&& ((MAP_HEIGHT - 1 + Z) - 1 <= goalData[i]->map.y && goalData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
-		{
-			goalFlag = PushCollision::PlayerGoal(goalData[i]->box);
-		}
-	}
 	//ìÆÇ≠è∞
 	for (int i = 0; i < moveFloorData.size(); i++)
 	{
@@ -197,40 +165,13 @@ void Stage::Draw()
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
 			&& ((MAP_HEIGHT - 1 + Z) - 55 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
-			Object::Draw(floorOBJ, floor[i]->position, floor[i]->scale,
+			Object::Draw(floorOBJ,
+				Vec3(floor[i]->position.x, floor[i]->position.y, floor[i]->position.z),
+				Vec3(floor[i]->scale.x, floor[i]->scale.y, floor[i]->scale.z),
 				floor[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), floorGraph);
 		}
 	}
-	//î†ÇÃï`âÊ
-	for (int i = 0; i < breakBoxData.size(); i++)
-	{
-		if ((X - drawNumX <= breakBoxData[i]->map.x && breakBoxData[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 55 <= breakBoxData[i]->map.y && breakBoxData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
-		{
-			Object::Draw(breakBoxOBJ, breakBoxData[i]->position, breakBoxData[i]->scale,
-				breakBoxData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), breakBoxGraph);
-		}
-	}
-	//ï«
-	for (int i = 0; i < wallData.size(); i++)
-	{
-		if ((X - drawNumX <= wallData[i]->map.x && wallData[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 55 <= wallData[i]->map.y && wallData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
-		{
-			Object::Draw(wallOBJ, wallData[i]->position, wallData[i]->scale,
-				wallData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), wallGraph);
-		}
-	}
-	//ÉSÅ[Éã
-	for (int i = 0; i < goalData.size(); i++)
-	{
-		if ((X - drawNumX <= goalData[i]->map.x && goalData[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 55 <= goalData[i]->map.y && goalData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
-		{
-			Object::Draw(goalOBJ, goalData[i]->position, goalData[i]->scale,
-				goalData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		}
-	}
+
 	//ìÆÇ≠è∞
 	for (int i = 0; i < moveFloorData.size(); i++)
 	{
@@ -239,6 +180,29 @@ void Stage::Draw()
 		{
 			Object::Draw(moveFloorOBJ, moveFloorData[i]->position, moveFloorData[i]->scale,
 				moveFloorData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), moveGraph);
+		}
+	}
+
+	for (int i = 0; i < stageObj.size(); i++)
+	{
+		if ((X - drawNumX <= stageObj[i]->map.x && stageObj[i]->map.x <= X + drawNumX)
+			&& ((MAP_HEIGHT - 1 + Z) - 55 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+		{
+			if (stageObj[i]->type == Wall)
+			{
+				Object::Draw(wallOBJ, stageObj[i]->position, stageObj[i]->scale,
+					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), wallGraph);
+			}
+			else if (stageObj[i]->type == Goal)
+			{
+				Object::Draw(goalOBJ, stageObj[i]->position, stageObj[i]->scale,
+					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+			else if (stageObj[i]->type == BreakBox)
+			{
+				Object::Draw(breakBoxOBJ, stageObj[i]->position, stageObj[i]->scale,
+					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), breakBoxGraph);
+			}
 		}
 	}
 }
@@ -250,20 +214,10 @@ void Stage::LoadStage(int stageNum)
 		delete floor[i];
 		floor.erase(floor.begin() + i);
 	}
-	for (int i = (int)breakBoxData.size() - 1; i >= 0; i--)
+	for (int i = (int)stageObj.size() - 1; i >= 0; i--)
 	{
-		delete breakBoxData[i];
-		breakBoxData.erase(breakBoxData.begin() + i);
-	}
-	for (int i = (int)wallData.size() - 1; i >= 0; i--)
-	{
-		delete wallData[i];
-		wallData.erase(wallData.begin() + i);
-	}
-	for (int i = (int)goalData.size() - 1; i >= 0; i--)
-	{
-		delete goalData[i];
-		goalData.erase(goalData.begin() + i);
+		delete stageObj[i];
+		stageObj.erase(stageObj.begin() + i);
 	}
 	for (int i = (int)moveFloorData.size() - 1; i >= 0; i--)
 	{
@@ -301,9 +255,8 @@ void Stage::LoadStage(int stageNum)
 		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos2.csv";
 		break;
 	default:
-	
 		break;
-	
+
 	}
 	LoadCSV(map, FilepathFloor);
 	LoadCSV(mapPos, FilepathFloorPos);
@@ -380,51 +333,60 @@ void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 
 void Stage::SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
-	breakBoxData.push_back(new BreakBoxData);
-	size_t boxNum = breakBoxData.size() - 1;
-	breakBoxData[boxNum]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	breakBoxData[boxNum]->position = position;
-	breakBoxData[boxNum]->scale = scale;
-	breakBoxData[boxNum]->angle = angle;
-	breakBoxData[boxNum]->box.maxPosition = XMVectorSet(
+	stageObj.push_back(new StageOBJ);
+	size_t num = stageObj.size() - 1;
+	stageObj[num]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	stageObj[num]->position = position;
+	stageObj[num]->scale = scale;
+	stageObj[num]->angle = angle;
+	stageObj[num]->box.maxPosition = XMVectorSet(
 		position.x + scale.x / 2,
 		position.y + scale.y / 2,
 		position.z + scale.z / 2, 1);
-	breakBoxData[boxNum]->box.minPosition = XMVectorSet(
+	stageObj[num]->box.minPosition = XMVectorSet(
 		position.x - scale.x / 2,
 		position.y - scale.y / 2,
 		position.z - scale.z / 2, 1);
+	stageObj[num]->type = BreakBox;
 	stageBlockNum++;
 }
 
 void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
-	wallData.push_back(new WallData);
-	size_t boxNum = wallData.size() - 1;
-	wallData[boxNum]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	wallData[boxNum]->position = position;
-	wallData[boxNum]->scale = scale;
-	wallData[boxNum]->angle = angle;
-	wallData[boxNum]->box.maxPosition = XMVectorSet(
+	stageObj.push_back(new StageOBJ);
+	size_t num = stageObj.size() - 1;
+	stageObj[num]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	stageObj[num]->position = position;
+	stageObj[num]->scale = scale;
+	stageObj[num]->angle = angle;
+	stageObj[num]->box.maxPosition = XMVectorSet(
 		position.x + scale.x / 2,
 		position.y + scale.y / 2,
 		position.z + scale.z / 2, 1);
-	wallData[boxNum]->box.minPosition = XMVectorSet(
+	stageObj[num]->box.minPosition = XMVectorSet(
 		position.x - scale.x / 2,
 		position.y - scale.y / 2,
 		position.z - scale.z / 2, 1);
+	stageObj[num]->type = Wall;
 }
 
 void Stage::SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
-	goalData.push_back(new GoalData);
-	size_t boxNum = goalData.size() - 1;
-	goalData[boxNum]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	goalData[boxNum]->position = position;
-	goalData[boxNum]->scale = scale;
-	goalData[boxNum]->angle = angle;
-	goalData[boxNum]->box.maxPosition = XMVectorSet(position.x + scale.x / 2, position.y + scale.y / 2, position.z + scale.z / 2, 1);
-	goalData[boxNum]->box.minPosition = XMVectorSet(position.x - scale.x / 2, position.y - scale.y / 2, position.z - scale.z / 2, 1);
+	stageObj.push_back(new StageOBJ);
+	size_t num = stageObj.size() - 1;
+	stageObj[num]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	stageObj[num]->position = position;
+	stageObj[num]->scale = scale;
+	stageObj[num]->angle = angle;
+	stageObj[num]->box.maxPosition = XMVectorSet(
+		position.x + scale.x / 2,
+		position.y + scale.y / 2,
+		position.z + scale.z / 2, 1);
+	stageObj[num]->box.minPosition = XMVectorSet(
+		position.x - scale.x / 2,
+		position.y - scale.y / 2,
+		position.z - scale.z / 2, 1);
+	stageObj[num]->type = Goal;
 }
 
 void Stage::SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)

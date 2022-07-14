@@ -30,13 +30,12 @@ public://マップ
 
 	int GetBlockNum() { return blockNum; }
 	int GetStageBlock() { return stageBlockNum; }
-
-
 private:
+	
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
-
+	
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
-
+	
 	void SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
@@ -60,22 +59,18 @@ private:
 	std::vector<Floor*>floor;
 	int floorGraph = 0;
 
+	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
 	ObjectData wallOBJ = {};
-	std::vector<WallData*>wallData;
 	int wallGraph = 0;
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
-
 	//ゴール
 	ObjectData goalOBJ = {};
-	std::vector<GoalData*>goalData;
 	int goalGraph = 0;
 	Vec3 goalScale = { 20.0f,4.0f,20.0f };
 	bool goalFlag = false;
-
 	//壊れる箱
 	ObjectData breakBoxOBJ = {};
-	std::vector<BreakBoxData*>breakBoxData;
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 	int breakBoxGraph = 0;
 

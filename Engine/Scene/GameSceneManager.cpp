@@ -32,7 +32,6 @@ void GameSceneManager::Initialize()
 	lightGroup->SetDirLightDir(1, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetPointLightActive(0, false);
 	lightGroup->SetSpotLightActive(0, false);
-	lightGroup->SetCircleShadowActive(0, false);
 	//カメラ位置をセット
 	Camera::Get()->SetCamera(Vec3{0,0,-200}, Vec3{0, 0, 0}, Vec3{0, 1, 0});
 	//スプライト画像読み込み
@@ -83,7 +82,7 @@ void GameSceneManager::Update()
 
 	//
 	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{0,0,-100}, 0.0f, 35.0f);
-
+	
 	//クリアしたらシーンチェンジ
 	if (Stage::Get()->GetClearFlag() == true)
 	{

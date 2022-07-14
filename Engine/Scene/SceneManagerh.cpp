@@ -42,13 +42,13 @@ void SceneManagerh::Initialize()
 	//3Dオブジェクト初期化
 	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 
-	TitleScene::Get()->Initialize();
-	TitleScene::Get()->Init();
+	titleScene.Initialize();
+	titleScene.Init();
 	//ゲームシーン
-	GameSceneManager::Get()->Initialize();
-	GameSceneManager::Get()->Init(0);
-	StageSelect::Get()->Initialize();
-
+	gameScene.Initialize();
+	gameScene.Init(0);
+	stageScene.Initialize();
+	resultScene.Init();
 	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
 
 }
@@ -62,22 +62,23 @@ void SceneManagerh::Update()
 		if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
 		{
 			scene = SelectScene;
-			StageSelect::Get()->Init();
+			stageScene.Init();
 		}
 	}
 	else if (scene == SelectScene)
 	{
-		if (StageSelect::Get()->GetSelectFlag() == true)
+		if (stageScene.GetSelectFlag() == true)
 		{
 			scene = GameScene;
-			GameSceneManager::Get()->Init(StageSelect::Get()->GetStageNum());
+			gameScene.Init(stageScene.GetStageNum());
 		}
 	}
 	else if (scene == GameScene)
 	{
-		if (GameSceneManager::Get()->GetChangeScene())
+		if (gameScene.GetChangeScene())
 		{
 			scene = Result;
+			resultScene.Init();
 		}
 	}
 	else if (scene == Result)
@@ -90,19 +91,19 @@ void SceneManagerh::Update()
 	//更新
 	if (scene == Title)
 	{
-		TitleScene::Get()->Update();
+		titleScene.Update();
 	}
 	else if (scene == SelectScene)
 	{
-		StageSelect::Get()->Update();
+		stageScene.Update();
 	}
 	else if (scene == GameScene)
 	{
-		GameSceneManager::Get()->Update();
+		gameScene.Update();
 	}
 	else if (scene == Result)
 	{
-		ResultScene::Get()->Update();
+		resultScene.Update();
 	}
 }
 
@@ -116,19 +117,19 @@ void SceneManagerh::Draw()
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
 	if (scene == Title)
 	{
-		TitleScene::Get()->Draw();
+		titleScene.Draw();
 	}
 	else if (scene == SelectScene)
 	{
-		StageSelect::Get()->Draw();
+		stageScene.Draw();
 	}
 	else if (scene == GameScene)
 	{
-		GameSceneManager::Get()->Draw();
+		gameScene.Draw();
 	}
 	else if (scene == Result)
 	{
-		ResultScene::Get()->Draw();
+		resultScene.Draw();
 	}
 	DebugText::Get()->DrawAll();
 	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());

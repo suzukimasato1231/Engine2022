@@ -27,6 +27,10 @@ public:
 
 	void Draw();
 private://’è‹`
-	
+	TitleScene titleScene;
+	StageSelect stageScene;
+	GameSceneManager gameScene;
+	ResultScene resultScene;
+
 	int scene = Title;	//ƒV[ƒ“ŠÇ—
 };

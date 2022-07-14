@@ -1,19 +1,18 @@
 #include"Singleton.h"
+#include <Object.h>
 
-class ResultScene :public Singleton<ResultScene>
+class ResultScene 
 {
 private:
-	friend Singleton<ResultScene>;
+
 public:
 	void Init();
 
 	void Update();
 
 	void Draw();
-
 private:
-
-
+	ObjectData resultOBJ;
 
 
 };

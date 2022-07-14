@@ -27,7 +27,6 @@ public:
 	int LoadTexture(const wchar_t *filename);
 	//OBJ‰æ‘œ“Ç‚İ‚İ
 	int OBJLoadTexture(const std::string &directoryPath, const std::string &filename);
-
 	//SRV‚ğŠl“¾
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUSRV(int i);
 
