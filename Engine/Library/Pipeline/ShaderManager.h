@@ -11,7 +11,7 @@ public:
 	ComPtr<ID3DBlob> psBlob = nullptr; //ピクセルシェーダオブジェクト
 };
 
-ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName = L"", LPCSTR Vtarget = "");
+ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName = L"", LPCSTR Vtarget = "", LPCSTR entryPoint = "main");
 
 class ShaderManager
 {
@@ -20,6 +20,7 @@ public:
 	static Shader spriteShader;
 	static Shader postNormalShader;
 	static Shader postTestShader;
+	static Shader ShadowMapShader;
 	//3D
 	static Shader objShader;
 	static Shader toonObjShader;

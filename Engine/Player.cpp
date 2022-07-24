@@ -45,14 +45,14 @@ void Player::Update()
 	FallDie();
 }
 
-void Player::Draw()
+void Player::Draw(bool shadowFlag)
 {
-	//Object::Draw(playerObject, position, scale, angle, color);
-	//FBXŽŽ‚µ
-	fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
-	fbxObject1->SetRotation(angle);
-	fbxObject1->Update();
-	fbxObject1->Draw();
+	Object::Draw(playerObject, position, scale, angle, color, playerObject.OBJTexture, shadowFlag);
+	////FBXŽŽ‚µ
+	//fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
+	//fbxObject1->SetRotation(angle);
+	//fbxObject1->Update();
+	//fbxObject1->Draw();
 }
 
 void Player::SetPosition(Vec3 position)

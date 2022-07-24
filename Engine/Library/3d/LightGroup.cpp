@@ -1,6 +1,6 @@
 ﻿#include "LightGroup.h"
 #include <assert.h>
-
+#include"Camera.h"
 using namespace DirectX;
 
 /// <summary>
@@ -49,18 +49,43 @@ void LightGroup::Initialize()
 	if (FAILED(result)) {
 		assert(0);
 	}
-
 	// 定数バッファへデータ転送
 	TransferConstBuffer();
 }
 
 void LightGroup::Update()
 {
+	//影用
+	//Vec3 eye = Camera::Get()->GetEye();
+	//Vec3 target = Camera::Get()->GetTarget();
+	//Vec3 up = Camera::Get()->GetUp();
+	
+	////影用
+	XMFLOAT3 eye = { 0,100,0 };
+	XMFLOAT3 target = { 0,0,0 };
+	XMFLOAT3 up = { 0,-1,0 };
+	matView = XMMatrixLookAtLH(
+		XMLoadFloat3(&eye),
+		XMLoadFloat3(&target),
+		XMLoadFloat3(&up));
+
+	//matProjection = XMMatrixPerspectiveFovLH(
+	//	XMConvertToRadians(60.0f),
+	//	(float)window_width / window_height,
+	//	0.1f, 1000); //前端、奥端
+
+	matProjection = XMMatrixOrthographicOffCenterLH(
+		-10.0f, 10.0f,
+		-10.0f, 10.0f,
+		-10.0f, 10.0f);//前端　奥端
+
+	lightMatViewProjection = matView * matProjection;
+
 	// 値の更新があった時だけ定数バッファに転送する
-	if (dirty) {
-		TransferConstBuffer();
-		dirty = false;
-	}
+//	if (dirty) {
+	TransferConstBuffer();
+	//	dirty = false;
+	//}
 }
 
 void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
@@ -72,6 +97,7 @@ void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterInde
 void LightGroup::TransferConstBuffer()
 {
 	HRESULT result;
+
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);

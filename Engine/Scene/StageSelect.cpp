@@ -17,12 +17,22 @@ void StageSelect::Initialize()
 	selectOBJ = Shape::CreateSquare(10.0f, 10.0f, 10.0f);
 	selectGraph[0] = Texture::Get()->LoadTexture(L"Resources/select/select1.png");
 	selectGraph[1] = Texture::Get()->LoadTexture(L"Resources/select/select2.png");
+
+	// ライトグループクラス作成
+	lightGroup = LightGroup::Create();
+
+	//音データ読み込み
+	// 3Dオブエクトにライトをセット
+	lightGroup->SetDirLightActive(0, true);
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
 }
 
 void StageSelect::Init()
 {
-	Player::Get()->ChangeMoveFlag(false);
+	FBXObject3d::SetLight(lightGroup);
+	Object::SetLight(lightGroup);
 
+	Player::Get()->ChangeMoveFlag(false);
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
 		selectPos[i] = Vec3(50.0f + 50 * i, 30.0f, 150.0f);
@@ -30,9 +40,7 @@ void StageSelect::Init()
 		selectBox[i].minPosition = XMVectorSet(selectPos[i].x - selectScale / 2, selectPos[i].y - selectScale / 2, selectPos[i].z - selectScale / 2, 1);
 	}
 	selectFlag = false;
-
 	Stage::Get()->LoadStage(0);
-
 	Player::Get()->SetPosition(Vec3(20.0f, 0.0f, 150.0f));
 }
 
@@ -45,13 +53,15 @@ void StageSelect::Update()
 	{
 		if (Collision::CheckBox2Box(Player::Get()->GetBox(), selectBox[i]))
 		{
-			stageNum = i+1;
+			stageNum = i + 1;
 			selectFlag = true;
 			break;
 		}
 	}
 	Player::Get()->Update();
 	Stage::Get()->Update();
+	//ライト更新
+	lightGroup->Update();
 }
 
 void StageSelect::Draw()

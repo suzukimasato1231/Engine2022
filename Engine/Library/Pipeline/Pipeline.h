@@ -41,4 +41,8 @@ public:
 	static PipelineSet ParticlePiepline;
 
 	static PipelineSet PostPipeline;
+
+	static PipelineSet ShadowMapPipeline;
+
+	static void CreatePipeline(ID3D12Device* dev);
 };

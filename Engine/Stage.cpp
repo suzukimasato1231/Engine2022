@@ -153,7 +153,7 @@ void Stage::Update()
 	}
 }
 
-void Stage::Draw()
+void Stage::Draw(bool shadowFlag)
 {
 	Vec3 PPos = Player::Get()->GetPosition();
 	//îªíËÇ∑ÇÈâ”èäÇæÇØçsÇ§ÇΩÇﬂ
@@ -163,12 +163,12 @@ void Stage::Draw()
 	for (int i = 0; i < floor.size(); i++)
 	{
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 55 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			Object::Draw(floorOBJ,
 				Vec3(floor[i]->position.x, floor[i]->position.y, floor[i]->position.z),
 				Vec3(floor[i]->scale.x, floor[i]->scale.y, floor[i]->scale.z),
-				floor[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), floorGraph);
+				floor[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), floorGraph, shadowFlag);
 		}
 	}
 
@@ -176,22 +176,22 @@ void Stage::Draw()
 	for (int i = 0; i < moveFloorData.size(); i++)
 	{
 		if ((X - drawNumX <= moveFloorData[i]->map.x && moveFloorData[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 55 <= moveFloorData[i]->map.y && moveFloorData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= moveFloorData[i]->map.y && moveFloorData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			Object::Draw(moveFloorOBJ, moveFloorData[i]->position, moveFloorData[i]->scale,
-				moveFloorData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), moveGraph);
+				moveFloorData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), moveGraph, shadowFlag);
 		}
 	}
 
 	for (int i = 0; i < stageObj.size(); i++)
 	{
 		if ((X - drawNumX <= stageObj[i]->map.x && stageObj[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 55 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			if (stageObj[i]->type == Wall)
 			{
 				Object::Draw(wallOBJ, stageObj[i]->position, stageObj[i]->scale,
-					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), wallGraph);
+					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), wallGraph, shadowFlag);
 			}
 			else if (stageObj[i]->type == Goal)
 			{
@@ -201,7 +201,7 @@ void Stage::Draw()
 			else if (stageObj[i]->type == BreakBox)
 			{
 				Object::Draw(breakBoxOBJ, stageObj[i]->position, stageObj[i]->scale,
-					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), breakBoxGraph);
+					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), breakBoxGraph, shadowFlag);
 			}
 		}
 	}

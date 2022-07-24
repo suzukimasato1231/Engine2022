@@ -29,6 +29,8 @@ public:
 
 	void Draw();
 
+	void ShadowDraw();
+
 	void Reset(int stageNum);
 public:
 	bool GetChangeScene() { return changeScene; }

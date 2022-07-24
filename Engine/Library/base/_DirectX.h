@@ -75,6 +75,8 @@ public://メンバ関数
 
 	ID3D12GraphicsCommandList* GetCmandList();
 
+	ID3D12Resource* GetDeth() { return depthBuffer.Get(); };
+
 	void ClearDepthBuffer();
 	
 };

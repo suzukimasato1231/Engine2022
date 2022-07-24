@@ -20,7 +20,7 @@ public:
 	//更新
 	void Update();
 	//描画
-	void Draw();
+	void Draw(bool shadowFlag = false);
 
 	void LoadStage(int stageNum);
 public://マップ
@@ -31,11 +31,11 @@ public://マップ
 	int GetBlockNum() { return blockNum; }
 	int GetStageBlock() { return stageBlockNum; }
 private:
-	
+
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
-	
+
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
-	
+
 	void SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
@@ -46,7 +46,7 @@ private:
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
-	 
+	const int drawNumY = 20;
 	//ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
@@ -74,7 +74,7 @@ private:
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 	int breakBoxGraph = 0;
 
-	
+
 	int stageBlockNum = 0;//ステージにある最大のブロック数
 	int blockNum = 0;	//壊したブロック
 

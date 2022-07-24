@@ -22,6 +22,8 @@ public:
 
 	void Draw();
 public:
+	LightGroup* lightGroup = nullptr;
+public:
 	int GetStageNum() { return stageNum; }
 
 	bool GetSelectFlag() { return selectFlag; }

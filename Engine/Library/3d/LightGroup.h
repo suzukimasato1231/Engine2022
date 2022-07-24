@@ -8,7 +8,8 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "CircleShadow.h"
-
+extern const int window_width;
+extern const int window_height;
 /// <summary>
 /// ライト
 /// </summary>
@@ -231,6 +232,9 @@ public: // メンバ関数
 	/// <param name="lightFactorAngle">x:減衰開始角度 y:減衰終了角度</param>
 	void SetCircleShadowFactorAngle(int index, const Vec2& lightFactorAngle);
 
+
+	XMMATRIX GetLightMatProjection() { return lightMatViewProjection; }
+
 private: // メンバ変数
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
@@ -252,5 +256,12 @@ private: // メンバ変数
 
 	// ダーティフラグ
 	bool dirty = false;
+
+	//ビュー変換行列
+	XMMATRIX matView;
+	//射影変換
+	XMMATRIX matProjection;
+
+	XMMATRIX lightMatViewProjection;
 };
 

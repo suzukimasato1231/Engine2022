@@ -11,6 +11,8 @@ LightGroup* Object::lightGroup = nullptr;
 Pipeline::PipelineSet Object::objPipelineSet;		//OBJ読み込み
 size_t Object::objNum = 0;
 size_t Object::OBJNum = 0;
+
+
 std::vector<Object::OBJBuffer*> Object::OBJbuffer;
 Object::~Object()
 {
@@ -29,7 +31,7 @@ void  Object::Init(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 	Object::cmdList = cmdList;
 
 	//パイプライン生成
-	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev,ShaderManager::objShader);
+	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev, ShaderManager::objShader);
 }
 
 Object* Object::Create()
@@ -43,6 +45,8 @@ Object* Object::Create()
 	// 初期化
 	return object;
 }
+
+
 
 void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color)
 {
@@ -89,6 +93,7 @@ void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotati
 	}
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
+	constMap->lightproj = lightGroup->GetLightMatProjection();
 	Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
 
 
@@ -132,7 +137,7 @@ void Object::OBJConstantBuffer()
 }
 
 
-void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph)
+void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph, bool shadowFlag)
 {
 	//プリミティブ形状の設定コマンド（三角形リスト）
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -147,7 +152,10 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	}
 	//更新
 	MatWord(polygon, position, scale, rotation, color);
-
+	if (objPipelineSet.pipelinestate == nullptr || objPipelineSet.rootsignature == nullptr)
+	{
+		assert(0);
+	}
 	cmdList->SetPipelineState(objPipelineSet.pipelinestate.Get());
 	cmdList->SetGraphicsRootSignature(objPipelineSet.rootsignature.Get());
 
@@ -177,6 +185,12 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	}
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
+	//影を描画するか
+	if (shadowFlag == true)
+	{//シャドウマップを設定
+		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
+	}
+
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
 	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
 	OBJNum++;

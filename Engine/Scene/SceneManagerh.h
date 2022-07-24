@@ -3,6 +3,8 @@
 #include"TitleScene.h"
 #include"StageSelect.h"
 #include"ResultScene.h"
+#include "../ShadowMap.h"
+
 enum Scene
 {
 	Title,
@@ -31,6 +33,6 @@ private://’è‹`
 	StageSelect stageScene;
 	GameSceneManager gameScene;
 	ResultScene resultScene;
-
+	ShadowMap* shadow = nullptr;
 	int scene = Title;	//ƒV[ƒ“ŠÇ—
 };

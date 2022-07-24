@@ -15,7 +15,7 @@ public:
 
 	void Update();//XV
 
-	void Draw();//•`‰æ
+	void Draw(bool shadowFlag = false);//•`‰æ
 
 	void SetPosition(Vec3 position);
 

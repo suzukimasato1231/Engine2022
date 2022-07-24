@@ -8,6 +8,7 @@ SceneManagerh::SceneManagerh()
 {}
 SceneManagerh::~SceneManagerh()
 {
+	safe_delete(shadow);
 }
 void SceneManagerh::Initialize()
 {
@@ -26,6 +27,7 @@ void SceneManagerh::Initialize()
 	Sprite::StaticInit(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 	//テキストクラス初期化
 	Texture::Get()->Init(_DirectX::Get()->GetDevice());
+	Pipeline::CreatePipeline(_DirectX::Get()->GetDevice());
 	//デバックテキスト初期化
 	DebugText::Get()->Initialize();
 	//スプライトクラス作成
@@ -50,7 +52,12 @@ void SceneManagerh::Initialize()
 	stageScene.Initialize();
 	resultScene.Init();
 	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
+	//影
+	shadow = new ShadowMap();
+	shadow->Init();
+	Texture::Get()->LoadShadowTexture(shadow->GetTexbuffer());
 
+	titleScene.Init();
 }
 
 void SceneManagerh::Update()
@@ -110,11 +117,33 @@ void SceneManagerh::Update()
 void SceneManagerh::Draw()
 {
 	//描画開始
+	
+	//影深度値取得
+	shadow->PreDraw(_DirectX::Get()->GetCmandList());
+	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
+	Object::SetPipeline(Pipeline::ShadowMapPipeline);
+	if (scene == Title)
+	{
+		titleScene.ShadowDraw();
+	}
+	else if (scene == SelectScene)
+	{
+	}
+	else if (scene == GameScene)
+	{
+		gameScene.ShadowDraw();
+	}
+	else if (scene == Result)
+	{
+	}
+	shadow->PostDraw(_DirectX::Get()->GetCmandList());
 
-	//オブジェクト描画前処理
-	Object::Get()->PreDraw();
-	Sprite::Get()->PreDraw();
+
+
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
+	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
+	//カメラ目線の描画
+	Object::SetPipeline(Pipeline::OBJPipeline);
 	if (scene == Title)
 	{
 		titleScene.Draw();
@@ -138,4 +167,5 @@ void SceneManagerh::Draw()
 	//ポストエフェクトの描画
 	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList());
 	_DirectX::Get()->ResourceBarrier();
+
 }

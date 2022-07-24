@@ -27,25 +27,16 @@ void GameSceneManager::Initialize()
 	//音データ読み込み
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
-	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightDir(1, XMVECTOR{ 0,-1,0,0 });
-	lightGroup->SetPointLightActive(0, false);
-	lightGroup->SetSpotLightActive(0, false);
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
+
 	//カメラ位置をセット
-	Camera::Get()->SetCamera(Vec3{0,0,-200}, Vec3{0, 0, 0}, Vec3{0, 1, 0});
+	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
 
 	BGGraph = Sprite::Get()->SpriteCreate(L"Resources/backgroundA.png");
-
+	BGGraph.texNumber = Texture::Get()->GetShadowTexture();
 
 	//3Dオブジェクト画像読み込み
-	//モデル名を指定してファイル読み込み
-	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
-	//3Dオブジェクトの生成とモデルのセット
-	//fbxObject1 = new FBXObject3d;
-	//fbxObject1->Initialize();
-	//fbxObject1->SetModel(model1);
 	//プレイヤーの初期化
 	Player::Get()->Init();
 	//ステージ
@@ -81,8 +72,8 @@ void GameSceneManager::Update()
 	Stage::Get()->Update();
 
 	//
-	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{0,0,-100}, 0.0f, 35.0f);
-	
+	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
+
 	//クリアしたらシーンチェンジ
 	if (Stage::Get()->GetClearFlag() == true)
 	{
@@ -100,9 +91,6 @@ void GameSceneManager::Update()
 void GameSceneManager::Draw()
 {
 	//背景描画
-	//Drawにカーソル合わせればコメントアウトしてあるからなにがどの変数かわかるよ
-	//Sprite::Get()->Draw(BGGraph, pos, (float)window_width, (float)window_height);
-
 	//3D
 
 	Stage::Get()->Draw();
@@ -117,9 +105,17 @@ void GameSceneManager::Draw()
 	UI::Get()->Draw();
 }
 
+void GameSceneManager::ShadowDraw()
+{
+	Stage::Get()->Draw(true);
+	//プレイヤーの描画
+	Player::Get()->Draw(true);
+}
+
 void GameSceneManager::Reset(int stageNum)
 {
 	Player::Get()->Reset();
 	Stage::Get()->MainInit(stageNum);
 	TimeAttack::Get()->Reset();
 }
+

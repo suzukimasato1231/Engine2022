@@ -140,6 +140,18 @@
     <FxCompile Include="Resources\shaders\OBJToonVS.hlsl">
       <Filter>HLSL\OBJ</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
+      <Filter>HLSL\OBJ</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
+      <Filter>HLSL\OBJ</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMap\ShadowMapPS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMap\ShadowMapVS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Sprite.hlsli">
@@ -162,6 +174,12 @@
     </None>
     <None Include="Resources\shaders\OBJToon.hlsli">
       <Filter>HLSL\OBJ</Filter>
+    </None>
+    <None Include="Resources\shaders\ShadowMap.hlsli">
+      <Filter>HLSL\OBJ</Filter>
+    </None>
+    <None Include="Resources\shaders\ShadowMap\ShadowMap.hlsli">
+      <Filter>HLSL\PostEffect</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -333,6 +351,9 @@
     <ClInclude Include="Scene\ResultScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -478,6 +499,9 @@
     </ClCompile>
     <ClCompile Include="Scene\ResultScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMap.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
