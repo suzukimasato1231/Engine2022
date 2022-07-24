@@ -55,11 +55,6 @@ void LightGroup::Initialize()
 
 void LightGroup::Update()
 {
-	//影用
-	//Vec3 eye = Camera::Get()->GetEye();
-	//Vec3 target = Camera::Get()->GetTarget();
-	//Vec3 up = Camera::Get()->GetUp();
-	
 	////影用
 	XMFLOAT3 eye = { 0,50,0 };
 	XMFLOAT3 target = { 0,0,0 };

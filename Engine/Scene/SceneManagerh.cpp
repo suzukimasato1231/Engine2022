@@ -124,7 +124,6 @@ void SceneManagerh::Draw()
 	Object::SetPipeline(Pipeline::ShadowMapPipeline);
 	if (scene == Title)
 	{
-		titleScene.ShadowDraw();
 	}
 	else if (scene == SelectScene)
 	{
