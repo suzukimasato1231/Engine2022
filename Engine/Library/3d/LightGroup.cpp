@@ -61,9 +61,9 @@ void LightGroup::Update()
 	//Vec3 up = Camera::Get()->GetUp();
 	
 	////影用
-	XMFLOAT3 eye = { 0,100,0 };
+	XMFLOAT3 eye = { 0,50,0 };
 	XMFLOAT3 target = { 0,0,0 };
-	XMFLOAT3 up = { 0,-1,0 };
+	XMFLOAT3 up = { 0,1,0 };
 	matView = XMMatrixLookAtLH(
 		XMLoadFloat3(&eye),
 		XMLoadFloat3(&target),
