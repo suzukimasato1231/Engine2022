@@ -144,8 +144,8 @@ public:
 class OBB
 {
 protected:
-	Vec3 m_Pos;              // 位置
-	Vec3 m_NormaDirect[3];   // 方向ベクトル
+	Vec3 m_Pos;					// 位置
+	Vec3 m_NormaDirect[3];		// 方向ベクトル
 	float m_fLength[3];         // 各軸方向の長さ
 public:
 	//XMfloat3 Pos 位置, XMMATRIX rotM 回転行列、float xの半分の長さ、 float yの半分の長さ、 float zの半分の長さ、
@@ -163,3 +163,4 @@ public:
 
 	static float LenSegOnSeparateAxis(Vec3 &Sep, Vec3 &e1, Vec3 &e2, Vec3 e3 = { 0,0,0 });
 };
+

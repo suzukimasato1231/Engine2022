@@ -45,7 +45,7 @@ void Camera::SetCamera(Vec3 eye, Vec3 target, Vec3 up)
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
 		(float)window_width / window_height,
-		0.1f, 5100.0f
+		0.1f, 1000.0f
 	);
 }
 

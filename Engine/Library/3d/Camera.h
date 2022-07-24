@@ -2,13 +2,15 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include"Vec.h"
+#include"Singleton.h"
 extern const int window_width;
 extern const int window_height;
 
-class Camera
+class Camera :public Singleton<Camera>
 {
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
+	friend Singleton<Camera>;
 	//ƒrƒ…[•ÏŠ·s—ñ
 	XMMATRIX matView;
 	//Ë‰e•ÏŠ·

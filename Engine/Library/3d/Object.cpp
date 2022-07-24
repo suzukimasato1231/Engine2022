@@ -7,11 +7,12 @@ using namespace std;
 
 ID3D12Device* Object::dev = nullptr;
 ID3D12GraphicsCommandList* Object::cmdList = nullptr;
-Camera* Object::camera = nullptr;
 LightGroup* Object::lightGroup = nullptr;
 Pipeline::PipelineSet Object::objPipelineSet;		//OBJ読み込み
 size_t Object::objNum = 0;
 size_t Object::OBJNum = 0;
+
+
 std::vector<Object::OBJBuffer*> Object::OBJbuffer;
 Object::~Object()
 {
@@ -30,7 +31,7 @@ void  Object::Init(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 	Object::cmdList = cmdList;
 
 	//パイプライン生成
-	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev,ShaderManager::objShader);
+	objPipelineSet = Pipeline::OBJCreateGraphicsPipeline(Object::dev, ShaderManager::objShader);
 }
 
 Object* Object::Create()
@@ -44,6 +45,8 @@ Object* Object::Create()
 	// 初期化
 	return object;
 }
+
+
 
 void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color)
 {
@@ -73,8 +76,8 @@ void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotati
 	}
 
 
-	const XMMATRIX& matViewProjection = camera->GetMatView() * camera->GetProjection();
-	const Vec3& cameraPos = camera->GetEye();
+	const XMMATRIX& matViewProjection = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();
+	const Vec3& cameraPos = Camera::Get()->GetEye();
 	//GPU上のバッファに対応した仮想メモリを取得
 	ConstBufferDataB0* constMap = nullptr;
 	result = Object::OBJbuffer[OBJNum]->constBuffB0->Map(0, nullptr, (void**)&constMap);
@@ -90,6 +93,7 @@ void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotati
 	}
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
+	constMap->lightproj = lightGroup->GetLightMatProjection();
 	Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
 
 
@@ -133,13 +137,13 @@ void Object::OBJConstantBuffer()
 }
 
 
-void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph)
+void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph, bool shadowFlag)
 {
 	//プリミティブ形状の設定コマンド（三角形リスト）
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//デスクリプタヒープをセット
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->GetDescHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -148,7 +152,10 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	}
 	//更新
 	MatWord(polygon, position, scale, rotation, color);
-
+	if (objPipelineSet.pipelinestate == nullptr || objPipelineSet.rootsignature == nullptr)
+	{
+		assert(0);
+	}
 	cmdList->SetPipelineState(objPipelineSet.pipelinestate.Get());
 	cmdList->SetGraphicsRootSignature(objPipelineSet.rootsignature.Get());
 
@@ -161,18 +168,29 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	//ヒープの先頭にあるCBVをルートパラメータ０番に設定
 	cmdList->SetGraphicsRootConstantBufferView(0, Object::OBJbuffer[OBJNum]->constBuffB0->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(1, Object::OBJbuffer[OBJNum]->constBuffB1->GetGPUVirtualAddress());
-	if (polygon.OBJTexture == 0)
+	if (graph > 0)
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Instance()->GetGPUSRV(graph));
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+	}
+	else if (polygon.OBJTexture == 0)
+	{
+		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
 	}
 	else
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Instance()->GetGPUSRV(polygon.OBJTexture));
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(polygon.OBJTexture));
 	}
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
+	//影を描画するか
+	if (shadowFlag == true)
+	{//シャドウマップを設定
+		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
+	}
+
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
 	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
 	OBJNum++;

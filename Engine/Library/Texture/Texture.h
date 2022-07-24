@@ -28,12 +28,15 @@ public:
 	//OBJ画像読み込み
 	int OBJLoadTexture(const std::string &directoryPath, const std::string &filename);
 
+	void LoadShadowTexture(ID3D12Resource *texbuff);
 	//SRVを獲得
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUSRV(int i);
 
 	ID3D12Resource *GetTexbuff(int i);
 	//desc獲得
 	ID3D12DescriptorHeap *GetDescHeap();
+
+	int GetShadowTexture() { return shadowTexture; }
 private:
 	//定数バッファ用のデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap >descHeap = { nullptr };
@@ -42,5 +45,7 @@ private:
 	std::vector <TextureData *>textureData;
 
 	int texNum = 0;
+
+	int shadowTexture = 0;
 };
 

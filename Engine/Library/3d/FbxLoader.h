@@ -21,19 +21,19 @@ public:
 	/// シングルトンインスタンスの取得
 	/// </summary>
 	/// <returns>インスタンス</returns>
-	static FbxLoader *GetInstance();
+	static FbxLoader* GetInstance();
 	/// <summary>
 	/// FBXの行列をXMMatrixに変換
 	/// </summary>
 	/// <param name="dst">書き込み先</param>
 	/// <param name="src">元となるFBX行列</param>
-	static void ConvertMatrixFromFbx(DirectX::XMMATRIX *dst, const FbxAMatrix &src);
+	static void ConvertMatrixFromFbx(DirectX::XMMATRIX* dst, const FbxAMatrix& src);
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="device">D3D12デバイス</param>
-	void Initialize(ID3D12Device *device);
+	void Initialize(ID3D12Device* device);
 
 	/// <summary>
 	/// 後始末
@@ -44,15 +44,15 @@ public:
 	/// ファイルからFBXモデル読込
 	/// </summary>
 	/// <param name="modelName">モデル名</param>
-	Model *LoadModelFromFile(const string &modelName);
+	Model* LoadModelFromFile(const string& modelName);
 
 private:
 	// D3D12デバイス
-	ID3D12Device *device = nullptr;
+	ID3D12Device* device = nullptr;
 	// FBXマネージャ
-	FbxManager *fbxManager = nullptr;
+	FbxManager* fbxManager = nullptr;
 	// FBXインポータ
-	FbxImporter *fbxImporter = nullptr;
+	FbxImporter* fbxImporter = nullptr;
 
 private:
 	// privateなコンストラクタ（シングルトンパターン）
@@ -60,9 +60,9 @@ private:
 	// privateなデストラクタ（シングルトンパターン）
 	~FbxLoader() = default;
 	// コピーコンストラクタを禁止（シングルトンパターン）
-	FbxLoader(const FbxLoader &obj) = delete;
+	FbxLoader(const FbxLoader& obj) = delete;
 	// コピー代入演算子を禁止（シングルトンパターン）
-	void operator=(const FbxLoader &obj) = delete;
+	void operator=(const FbxLoader& obj) = delete;
 
 	/// <summary>
 	/// 再帰的にノード構成を解析
@@ -70,24 +70,24 @@ private:
 	/// <param name="model">読み込み先モデルオブジェクト</param>
 	/// <param name="fbxNode">解析対象のノード</param>
 	/// <param name="parent">親ノード</param>
-	void ParseNodeRecursive(Model *model, FbxNode *fbxNode, Node *parent = nullptr);
+	void ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent = nullptr);
 
 	/// <summary>
 	/// メッシュ読み取り
 	/// </summary>
 	/// <param name="model">読み込み先モデルオブジェクト</param>
 	/// <param name="fbxNode">解析対象のノード</param>
-	void ParseMesh(Model *model, FbxNode *fbxNode);
+	void ParseMesh(Model* model, FbxNode* fbxNode);
 	// 頂点座標読み取り
-	void ParseMeshVertices(Model *model, FbxMesh *fbxMesh);
+	void ParseMeshVertices(Model* model, FbxMesh* fbxMesh);
 	// 面情報読み取り
-	void ParseMeshFaces(Model *model, FbxMesh *fbxMesh);
+	void ParseMeshFaces(Model* model, FbxMesh* fbxMesh);
 	// マテリアル読み取り
-	void ParseMaterial(Model *model, FbxNode *fbxNode);
+	void ParseMaterial(Model* model, FbxNode* fbxNode);
 	// テクスチャ読み込み
-	void LoadTexture(Model *model, const std::string &fullpath);
+	void LoadTexture(Model* model, const std::string& fullpath);
 	//スキニング情報の読み取り
-	void ParseSkin(Model *model, FbxMesh *fbxMesh);
+	void ParseSkin(Model* model, FbxMesh* fbxMesh);
 	// ディレクトリを含んだファイルパスからファイル名を抽出する
-	std::string ExtractFileName(const std::string &path);
+	std::string ExtractFileName(const std::string& path);
 };

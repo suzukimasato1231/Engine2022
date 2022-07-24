@@ -1,11 +1,16 @@
 #pragma once
 #include"GameSceneManager.h"
 #include"TitleScene.h"
-#include"PostEffect.h"
+#include"StageSelect.h"
+#include"ResultScene.h"
+#include "../ShadowMap.h"
+
 enum Scene
 {
 	Title,
+	SelectScene,
 	GameScene,
+	Result,
 };
 
 extern const int window_width;
@@ -24,7 +29,10 @@ public:
 
 	void Draw();
 private://定義
-	PostEffect* postEffect = nullptr;
-	//シーン管理
-	int scene = Title;
+	TitleScene titleScene;
+	StageSelect stageScene;
+	GameSceneManager gameScene;
+	ResultScene resultScene;
+	ShadowMap* shadow = nullptr;
+	int scene = Title;	//シーン管理
 };

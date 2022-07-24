@@ -10,6 +10,7 @@ float4 main(VSOutput input) : SV_TARGET
 float4 totalcolor = tex.Sample(smp, input.uv);
 
 
+
 return float4(totalcolor.rgb, 1);
 }
 

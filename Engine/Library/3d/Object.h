@@ -100,6 +100,7 @@ public://構造体
 		XMMATRIX world;//ワールド座標
 		Vec3 cameraPos;//カメラ座標(ワールド座標)
 		Vec4 color;
+		XMMATRIX lightproj;//ビュープロジェクション行列
 	};
 	struct ConstBufferDataB1
 	{
@@ -133,12 +134,10 @@ public:
 	/// <returns></returns>
 	static Object* Create();
 
-	static void SetCamera(Camera* camera) { Object::camera = camera; }
-
 	static void SetLight(LightGroup* light) { Object::lightGroup = light; }
+
+	static void SetPipeline(Pipeline::PipelineSet piepline) { Object::objPipelineSet = piepline; }
 public:
-	//カメラクラス
-	static Camera* camera;
 	//ライトクラス
 	static LightGroup* lightGroup;
 public://オブジェクト関連
@@ -162,7 +161,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static	void Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0);
+	static	void Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0, bool shadowFlag = false);
 public:
 	static size_t OBJNum;//OBJ読み込みの数
 	static size_t objNum;//オブジェクトの数

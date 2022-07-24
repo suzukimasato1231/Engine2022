@@ -7,11 +7,10 @@ VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOOR
 	float4 wpos = mul(world, pos);
 
 	VSOutput output; // ピクセルシェーダーに渡す値
-	output.svpos = mul(mul(viewproj, world), pos);
-
-	output.worldpos = mul(world, pos);
+	output.svpos = mul(viewproj, wpos);
+	output.worldpos = wpos;
 	output.normal = wnormal.xyz;
 	output.uv = uv;
-	
+	output.posInLVP = mul(lightproj, wpos);//ライトから見た行列
 	return output;
 }

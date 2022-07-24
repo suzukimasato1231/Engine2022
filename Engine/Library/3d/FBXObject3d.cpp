@@ -1,12 +1,11 @@
 #include<FBXObject3d.h>
-
+#include"Camera.h"
 ///<summary>
 ///静的メンバ変数の実体
 ///</summary>
-ID3D12Device *FBXObject3d::device = nullptr;
-Camera *FBXObject3d::camera = nullptr;
+ID3D12Device* FBXObject3d::device = nullptr;
 LightGroup* FBXObject3d::lightGroup = nullptr;
-ID3D12GraphicsCommandList *FBXObject3d::cmdList = nullptr;
+ID3D12GraphicsCommandList* FBXObject3d::cmdList = nullptr;
 #include<d3dcompiler.h>
 #pragma comment(lib,"d3dcompiler.lib")
 
@@ -40,8 +39,8 @@ void FBXObject3d::Initialize()
 	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
 
 	//スキン無し対応
-	ConstBufferDataSkin *constMapSkin = nullptr;
-	result = constBufferSkin->Map(0, nullptr, (void **)&constMapSkin);
+	ConstBufferDataSkin* constMapSkin = nullptr;
+	result = constBufferSkin->Map(0, nullptr, (void**)&constMapSkin);
 	for (int i = 0; i < MAX_BONES; i++)
 	{
 		constMapSkin->bones[i] = XMMatrixIdentity();
@@ -71,7 +70,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -94,7 +93,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -160,6 +159,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 
 	// ブレンドステートの設定
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
+	gpipeline.BlendState.RenderTarget[1] = blenddesc;
 
 	// 深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
@@ -171,8 +171,9 @@ void FBXObject3d::CreateGraphicsPipeline()
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;    // 描画対象は1つ
+	gpipeline.NumRenderTargets = 2;    // 描画対象は1つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
+	gpipeline.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
@@ -228,16 +229,16 @@ void FBXObject3d::Update()
 	matWorld *= matTrans; // ワールド行列に平行移動を反映
 
 	// ビュープロジェクション行列
-	const XMMATRIX &matViewProjection = camera->GetMatView() * camera->GetProjection();
+	const XMMATRIX& matViewProjection = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();
 	// モデルのメッシュトランスフォーム
-	const XMMATRIX &modelTransform = model->GetModelTransform();
+	const XMMATRIX& modelTransform = model->GetModelTransform();
 	// カメラ座標
-	const XMFLOAT3 &cameraPos = camera->GetEye();
+	const Vec3& cameraPos = Camera::Get()->GetEye();
 
 	HRESULT result;
 	// 定数バッファへデータ転送
-	ConstBufferDataTransform *constMap = nullptr;
-	result = constBuffTransform->Map(0, nullptr, (void **)&constMap);
+	ConstBufferDataTransform* constMap = nullptr;
+	result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
 		constMap->viewproj = matViewProjection;
 		constMap->world = modelTransform * matWorld;
@@ -246,7 +247,7 @@ void FBXObject3d::Update()
 	}
 
 	//ボーン配列
-	std::vector<Model::Bone> &bones = model->GetBones();
+	std::vector<Model::Bone>& bones = model->GetBones();
 
 	//アニメーション
 	if (isPlay)
@@ -268,8 +269,8 @@ void FBXObject3d::Update()
 	}
 
 	//定数バッファへデータ転送
-	ConstBufferDataSkin *constMapSkin = nullptr;
-	result = constBufferSkin->Map(0, nullptr, (void **)&constMapSkin);
+	ConstBufferDataSkin* constMapSkin = nullptr;
+	result = constBufferSkin->Map(0, nullptr, (void**)&constMapSkin);
 	for (int i = 0; i < bones.size(); i++)
 	{
 		//今の姿勢行列
@@ -278,7 +279,7 @@ void FBXObject3d::Update()
 		FbxAMatrix fbxCurrentPose = bones[i].fbxCluster->GetLink()->EvaluateGlobalTransform(currentTime);
 		//XMMATRIXに変換
 		FbxLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
-		
+
 		//合成してスキニング行列
 		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
 	}
@@ -312,13 +313,13 @@ void FBXObject3d::Draw()
 
 void FBXObject3d::PlayAnimation(bool Loop)
 {
-	FbxScene *fbxScene = model->GetFbxScene();
+	FbxScene* fbxScene = model->GetFbxScene();
 	//0番のアニメーション取得
-	FbxAnimStack *animstack = fbxScene->GetSrcObject<FbxAnimStack>(0);
+	FbxAnimStack* animstack = fbxScene->GetSrcObject<FbxAnimStack>(0);
 	//アニメーション取得
-	const char *animstackname = animstack->GetName();
+	const char* animstackname = animstack->GetName();
 	//アニメーションの時間情報
-	FbxTakeInfo *takeinfo = fbxScene->GetTakeInfo(animstackname);
+	FbxTakeInfo* takeinfo = fbxScene->GetTakeInfo(animstackname);
 
 	//開始時間取得
 	startTime = takeinfo->mLocalTimeSpan.GetStart();

@@ -12,7 +12,6 @@ using namespace Microsoft::WRL;
 /// 静的メンバ変数の実体
 /// </summary>
 ID3D12Device* ParticleManager::device = nullptr;
-Camera* ParticleManager::camera = nullptr;
 ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
 Pipeline::PipelineSet ParticleManager::PartclePipelineSet;
 XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
@@ -196,11 +195,11 @@ void ParticleManager::CreateModel()
 void ParticleManager::MatBillboardUpdate()
 {
 	// 視点座標
-	XMVECTOR eyePosition = XMLoadFloat3(&camera->GetEye());
+	XMVECTOR eyePosition = XMLoadFloat3(&Camera::Get()->GetEye());
 	// 注視点座標
-	XMVECTOR targetPosition = XMLoadFloat3(&camera->GetTarget());
+	XMVECTOR targetPosition = XMLoadFloat3(&Camera::Get()->GetTarget());
 	// （仮の）上方向
-	XMVECTOR upVector = XMLoadFloat3(&camera->GetUp());
+	XMVECTOR upVector = XMLoadFloat3(&Camera::Get()->GetUp());
 
 	// カメラZ軸（視線方向）
 	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPosition, eyePosition);
@@ -235,7 +234,7 @@ void ParticleManager::MatBillboardUpdate()
 	matCameraRot.r[2] = cameraAxisZ;
 	matCameraRot.r[3] = XMVectorSet(0, 0, 0, 1);
 	// 転置により逆行列（逆回転）を計算
-	XMMATRIX matView = camera->GetMatView();
+	XMMATRIX matView = Camera::Get()->GetMatView();
 	matView = XMMatrixTranspose(matCameraRot);
 
 	// 視点座標に-1を掛けた座標
@@ -356,7 +355,7 @@ void ParticleManager::Update()
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = camera->GetMatView() * camera->GetProjection();	// 行列の合成
+	constMap->mat = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();	// 行列の合成
 	constMap->matBillboard = matBillboard;
 	constBuff->Unmap(0, nullptr);
 }
@@ -378,13 +377,13 @@ void ParticleManager::Draw(int graph)
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
 	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->GetDescHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, Texture::Instance()->GetGPUSRV(graph));
+	cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(graph));
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
 }

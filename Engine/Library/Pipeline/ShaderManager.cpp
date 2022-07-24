@@ -1,6 +1,6 @@
 #include "ShaderManager.h"
 
-ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName, LPCSTR Vtarget)
+ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName, LPCSTR Vtarget, LPCSTR entryPoint)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> Blob;
@@ -12,7 +12,7 @@ ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName, LPCSTR Vtarget)
 		result = D3DCompileFromFile(VshaderName,
 			nullptr,
 			D3D_COMPILE_STANDARD_FILE_INCLUDE,
-			"main", Vtarget, D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
+			entryPoint, Vtarget, D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
 			0, &Blob, &errorBlob);
 		if (FAILED(result)) {
 			std::string errstr;
@@ -36,6 +36,7 @@ Shader ShaderManager::toonObjShader;
 Shader ShaderManager::particleShader;
 Shader ShaderManager::postNormalShader;
 Shader ShaderManager::postTestShader;
+Shader ShaderManager::ShadowMapShader;
 
 void ShaderManager::LoadShaders()
 {	
@@ -57,4 +58,10 @@ void ShaderManager::LoadShaders()
 
 	postTestShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestVS.hlsl", "vs_5_0");
 	postTestShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestPS.hlsl", "ps_5_0");
+
+	ShadowMapShader.vsBlob = LoadShader(L"Resources/shaders/ShadowMapVS.hlsl", "vs_5_0");
+	ShadowMapShader.psBlob = LoadShader(L"Resources/shaders/ShadowMapPS.hlsl", "ps_5_0");
+
+
+
 }

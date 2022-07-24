@@ -1,5 +1,14 @@
 #include"Pipeline.h"
 
+Pipeline::PipelineSet Pipeline::OBJPipeline;
+Pipeline::PipelineSet Pipeline::ShadowMapPipeline;
+void Pipeline::CreatePipeline(ID3D12Device* dev)
+{
+	OBJPipeline = OBJCreateGraphicsPipeline(dev, ShaderManager::objShader);
+	ShadowMapPipeline = OBJCreateGraphicsPipeline(dev, ShaderManager::ShadowMapShader);
+}
+
+
 //スプライト
 Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
 {
@@ -146,7 +155,7 @@ Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, Sh
 	{
 		assert(0);
 	}
-	
+
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
@@ -213,15 +222,18 @@ Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, Sh
 	PipelineSet pipelineSet;
 #pragma region//ルートシグネチャの生成
 	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
-	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV0;
+	descRangeSRV0.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV1;
+	descRangeSRV1.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[4];
+	CD3DX12_ROOT_PARAMETER rootparams[5];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV1, D3D12_SHADER_VISIBILITY_ALL);
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
@@ -232,16 +244,23 @@ Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, Sh
 	ComPtr<ID3DBlob >rootSigBlob;
 	//バージョン自動判定でのシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
-
+	if (FAILED(result)) {
+		assert(0);
+	}
 	//ルートシグネチャの生成
 	result = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&pipelineSet.rootsignature));
+	if (FAILED(result)) {
+		assert(0);
+	}
 	//パイプラインにルートシグネチャをセット
 	gpipeline.pRootSignature = pipelineSet.rootsignature.Get();
 
 	//パイプラインステートの生成
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineSet.pipelinestate));
-
+	if (FAILED(result)) {
+		assert(0);
+	}
 	//パイプラインとルートシグネチャを表す
 	return pipelineSet;
 }
@@ -508,3 +527,4 @@ Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* d
 	//パイプラインとルートシグネチャを表す
 	return pipelineSet;
 }
+

@@ -2,21 +2,15 @@
 #include "_DirectX.h"
 #include "Safe_delete.h"
 #include"DebugText.h"
-#include"ParticleManager.h"
 #include"Collision.h"
 #include"Audio.h"
 #include"FBXObject3d.h"
-#include"../Player.h"
-#include"../PushCollision.h"
-#include"../Enemy.h"
-#include"../Stage.h"
-
+#include"Object.h"
 extern const int window_width;
 extern const int window_height;
-class TitleScene :public Singleton<TitleScene>
+class TitleScene 
 {
-private:
-	friend Singleton<TitleScene>;
+
 public:
 	TitleScene();
 	~TitleScene();
@@ -28,12 +22,18 @@ public:
 	void Update();
 
 	void Draw();
+
+	void ShadowDraw();
 private:
-	Camera* camera = nullptr;
 	LightGroup* lightGroup = nullptr;
 	Audio* audio = nullptr;
 private://’è‹`
 
+	ObjectData floor;
+
+	ObjectData polygon;
+
+	Vec3 pos = {};
 
 };
 

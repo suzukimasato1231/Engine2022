@@ -4,7 +4,7 @@ void Keybord::Initialize()
 	HRESULT result;
 	//キーボード入力
 	result = DirectInput8Create(
-		_Window::Instance()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&dinput, nullptr);
+		_Window::Get()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&dinput, nullptr);
 
 	//キーボードデバイスの生成
 	result = dinput->CreateDevice(GUID_SysKeyboard, &devkeyboard, NULL);
@@ -12,7 +12,7 @@ void Keybord::Initialize()
 	result = devkeyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
 	//排他制御レベルのセット
 	result = devkeyboard->SetCooperativeLevel(
-		_Window::Instance()->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+		_Window::Get()->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 }
 
 void Keybord::Update()

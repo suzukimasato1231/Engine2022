@@ -8,7 +8,7 @@ bool Mouse::Init()
 	HRESULT result = S_FALSE;
 
 	// DirectInputオブジェクトの生成	
-	result = DirectInput8Create(_Window::Instance()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&dinput, nullptr);
+	result = DirectInput8Create(_Window::Get()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&dinput, nullptr);
 	if (FAILED(result)) {
 		assert(0);
 		return result;
@@ -29,7 +29,7 @@ bool Mouse::Init()
 	}
 
 	// 排他制御レベルのセット
-	result = devMouse->SetCooperativeLevel(_Window::Instance()->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	result = devMouse->SetCooperativeLevel(_Window::Get()->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	if (FAILED(result)) {
 		assert(0);
 		return result;
