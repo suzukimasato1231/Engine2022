@@ -33,6 +33,7 @@ private://’è‹`
 	StageSelect stageScene;
 	GameSceneManager gameScene;
 	ResultScene resultScene;
-	ShadowMap* shadow = nullptr;
 	int scene = Title;	//ƒV[ƒ“ŠÇ—
+
+	bool Flag = false;
 };

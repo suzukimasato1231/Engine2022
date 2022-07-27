@@ -22,9 +22,6 @@ public:
 	void Update();
 
 	void Draw();
-private:
-	
-	Audio* audio = nullptr;
 private://’è‹`
 };
 

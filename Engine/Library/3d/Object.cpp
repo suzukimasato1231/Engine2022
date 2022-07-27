@@ -1,6 +1,7 @@
 #include "Object.h"
 #include <DirectXTex.h>
 #include<string>
+#include"../ShadowMap.h"
 using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;
@@ -185,12 +186,24 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	}
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
+
+
 	//影を描画するか
 	if (shadowFlag == true)
-	{//シャドウマップを設定
-		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
+	{
+		cmdList->SetGraphicsRootDescriptorTable(4,
+			CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()),
+				0,
+				dev->GetDescriptorHandleIncrementSize(
+					D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
+				)));
 	}
-
+	else
+	{
+		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(graph));
+	}
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
 	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
 	OBJNum++;

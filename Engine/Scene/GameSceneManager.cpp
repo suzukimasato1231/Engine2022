@@ -93,9 +93,9 @@ void GameSceneManager::Draw()
 	//”wŒi•`‰æ
 	//3D
 
-	Stage::Get()->Draw();
+	Stage::Get()->Draw(true);
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
-	Player::Get()->Draw();
+	Player::Get()->Draw(true);
 
 	Particle::Get()->Draw();
 
@@ -107,9 +107,9 @@ void GameSceneManager::Draw()
 
 void GameSceneManager::ShadowDraw()
 {
-	Stage::Get()->Draw(true);
+	Stage::Get()->Draw();
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
-	Player::Get()->Draw(true);
+	Player::Get()->Draw();
 }
 
 void GameSceneManager::Reset(int stageNum)

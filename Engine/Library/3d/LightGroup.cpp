@@ -56,23 +56,22 @@ void LightGroup::Initialize()
 void LightGroup::Update()
 {
 	////影用
-	XMFLOAT3 eye = { 0,50,0 };
-	XMFLOAT3 target = { 0,0,0 };
-	XMFLOAT3 up = { 0,1,0 };
+	Vec3 eye = Vec3(100.0f, 100.0f, 0.0f);
+	eye.z += Camera::Get()->GetEye().z;
+	
+	Vec3 target = Vec3(0.0f, 0.0f, 0.0f);
+		target.z += Camera::Get()->GetEye().z;
+
+	Vec3 up = { 0,1,0 };
 	matView = XMMatrixLookAtLH(
 		XMLoadFloat3(&eye),
 		XMLoadFloat3(&target),
 		XMLoadFloat3(&up));
 
-	//matProjection = XMMatrixPerspectiveFovLH(
-	//	XMConvertToRadians(60.0f),
-	//	(float)window_width / window_height,
-	//	0.1f, 1000); //前端、奥端
-
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		-10.0f, 10.0f,
-		-10.0f, 10.0f,
-		-10.0f, 10.0f);//前端　奥端
+		-500.0f, 500.0f,
+		-500.0f, 500.0f,
+		-400.0f, 400.0f);//前端　奥端
 
 	lightMatViewProjection = matView * matProjection;
 

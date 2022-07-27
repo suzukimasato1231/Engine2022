@@ -11,6 +11,7 @@ StageSelect::StageSelect()
 {}
 StageSelect::~StageSelect()
 {
+	safe_delete(lightGroup);
 }
 void StageSelect::Initialize()
 {

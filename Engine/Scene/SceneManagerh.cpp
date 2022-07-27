@@ -8,7 +8,6 @@ SceneManagerh::SceneManagerh()
 {}
 SceneManagerh::~SceneManagerh()
 {
-	safe_delete(shadow);
 }
 void SceneManagerh::Initialize()
 {
@@ -53,10 +52,8 @@ void SceneManagerh::Initialize()
 	resultScene.Init();
 	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
 	//‰e
-	shadow = new ShadowMap();
-	shadow->Init();
-	Texture::Get()->LoadShadowTexture(shadow->GetTexbuffer());
-
+	ShadowMap::Get()->Init();
+	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
 	titleScene.Init();
 }
 
@@ -119,7 +116,7 @@ void SceneManagerh::Draw()
 	//•`‰æŠJŽn
 	
 	//‰e[“x’lŽæ“¾
-	shadow->PreDraw(_DirectX::Get()->GetCmandList());
+	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
 	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
 	Object::SetPipeline(Pipeline::ShadowMapPipeline);
 	if (scene == Title)
@@ -135,7 +132,7 @@ void SceneManagerh::Draw()
 	else if (scene == Result)
 	{
 	}
-	shadow->PostDraw(_DirectX::Get()->GetCmandList());
+	ShadowMap::Get()->PostDraw(_DirectX::Get()->GetCmandList());
 
 
 
@@ -153,7 +150,17 @@ void SceneManagerh::Draw()
 	}
 	else if (scene == GameScene)
 	{
-		gameScene.Draw();
+		if (Input::Get()->KeybordTrigger(DIK_C))
+		{
+			if (Flag == false){	Flag = true;}
+			else { Flag = false; }
+		}
+		if (Flag == false){
+			gameScene.Draw();
+		}
+		else {
+			ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
+		}
 	}
 	else if (scene == Result)
 	{

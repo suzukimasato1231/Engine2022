@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include"Singleton.h"
 #include"Sprite.h"
+#include"Texture.h"
 class PostEffect : public Singleton<PostEffect>
 {
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -48,6 +49,7 @@ public:
 	void SetPipeline(int num);
 
 private:
+	
 	//テクスチャバッファ
 	ComPtr<ID3D12Resource>texbuff;
 	//SRV用デスクリプタヒープ

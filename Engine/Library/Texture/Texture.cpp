@@ -194,11 +194,8 @@ int Texture::OBJLoadTexture(const std::string &directoryPath, const std::string 
 
 void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 {
-
 	textureData.push_back(new Texture::TextureData);
-	
-	textureData[texNum]->texbuff = texbuff;
-
+	textureData[textureData.size() - 1]->texbuff = texbuff;
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// シェーダリソースビュー作成
 	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
@@ -219,9 +216,7 @@ void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 		&srvDesc, //テクスチャ設定情報
 		textureData[texNum]->cpuDescHandleSRV
 	);
-
 	shadowTexture = texNum;
-
 	texNum++;
 }
 
