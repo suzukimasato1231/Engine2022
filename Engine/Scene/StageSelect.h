@@ -21,6 +21,8 @@ public:
 	void Update();
 
 	void Draw();
+
+	void DrawShadow();
 public:
 	LightGroup* lightGroup = nullptr;
 public:

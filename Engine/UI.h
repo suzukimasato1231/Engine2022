@@ -1,5 +1,6 @@
 #pragma once
 #include"Singleton.h"
+#include"Sprite.h"
 class UI :public Singleton<UI>
 {
 private:
@@ -15,7 +16,7 @@ public:
 	void Draw();
 
 private:
-	
+	SpriteData boxGraph;
 
 
 };

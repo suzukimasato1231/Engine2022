@@ -77,7 +77,7 @@ public: // メンバ関数
 	/// 更新
 	/// </summary>
 	void Update();
-	
+
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -263,5 +263,7 @@ private: // メンバ変数
 	XMMATRIX matProjection;
 
 	XMMATRIX lightMatViewProjection;
+
+	Vec3 a = {};
 };
 

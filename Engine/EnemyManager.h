@@ -1,26 +1,24 @@
-//#pragma once
-//
-//class Player;
-//
-//class EnemyManager
-//{
-//protected:
-//	int hp;
-//	int graph=0;
-//	bool flag = true;
-//private:
-//	Player* player = nullptr;
-//public:
-//	EnemyManager();
-//
-//	~EnemyManager();
-//
-//	void Update();
-//
-//	void Draw();
-//private:
-//
-//
-//
-//};
-//
+#pragma once
+
+class EnemyManager
+{
+protected:
+	int hp;
+	int graph=0;
+	bool flag = true;
+private:
+	
+public:
+	EnemyManager();
+
+	~EnemyManager();
+
+	void update();
+
+	void draw();
+private:
+
+
+
+};
+

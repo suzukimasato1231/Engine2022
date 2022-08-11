@@ -25,23 +25,26 @@ public:
 	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
 	//OBJ読み込み
 	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
-
+	//ノーマルマップ
+	static PipelineSet NormalMapCreatePipeline(ID3D12Device* dev, Shader shader);
 	//パーティクル
 	//四角形
 	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
-
 	//ポストエフェクト
 	//通常
 	static PipelineSet PostNormalCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
 public:
+	//オブジェクト描画
 	static PipelineSet OBJPipeline;
-
+	//２Dスプライト描画
 	static PipelineSet SpritePipeline;
-
+	//パーティクル
 	static PipelineSet ParticlePiepline;
-
+	//ノーマルマップ２種類
+	static PipelineSet NormalMapPipeline;
+	//ポストエフェクト
 	static PipelineSet PostPipeline;
-
+	//深度値保存用
 	static PipelineSet ShadowMapPipeline;
 
 	static void CreatePipeline(ID3D12Device* dev);

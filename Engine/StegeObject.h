@@ -36,7 +36,7 @@ enum StageType
 	Goal = 2,		//ゴール
 	BreakBox = 10,	//壊れる箱
 	BreakBox2 = 11,	//壊れる箱ダブル
-	BreakHARD = 12,	//固い箱ダブル
+	BreakHARD = 12,	//固い箱
 	BreakJUMP = 13,	//ジャンプ箱
 };
 

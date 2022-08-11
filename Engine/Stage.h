@@ -36,7 +36,11 @@ private:
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
+	void SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
 	void SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
+	void SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
@@ -46,7 +50,7 @@ private:
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
-	const int drawNumY = 20;
+	const int drawNumY = 25;
 	//ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
@@ -58,6 +62,10 @@ private:
 	ObjectData floorOBJ;
 	std::vector<Floor*>floor;
 	int floorGraph = 0;
+
+	int mask = 0;
+	int green = 0;
+	int grn = 0;
 
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
@@ -72,6 +80,7 @@ private:
 	//壊れる箱
 	ObjectData breakBoxOBJ = {};
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
+	int normalBoxGraph = 0;
 	int breakBoxGraph = 0;
 
 

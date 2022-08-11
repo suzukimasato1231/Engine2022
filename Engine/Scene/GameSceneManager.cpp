@@ -72,7 +72,7 @@ void GameSceneManager::Update()
 	Stage::Get()->Update();
 
 	//
-	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
+	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 40.0f);
 
 	//クリアしたらシーンチェンジ
 	if (Stage::Get()->GetClearFlag() == true)
@@ -86,6 +86,8 @@ void GameSceneManager::Update()
 	TimeAttack::Get()->Update();
 
 	UI::Get()->Update();
+
+
 }
 
 void GameSceneManager::Draw()

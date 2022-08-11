@@ -70,12 +70,22 @@ void StageSelect::Draw()
 	//”wŒi•`‰æ
 	DebugText::Get()->Print(10.0f, 10.0f, 3, "Select");
 
+	Player::Get()->Draw(true);
+	Stage::Get()->Draw(true);
+
+	for (size_t i = 0; i < stageNumMax; i++)
+	{
+		Object::Draw(selectOBJ, selectPos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), selectGraph[i], true);
+	}
+
+}
+
+void StageSelect::DrawShadow()
+{
 	Player::Get()->Draw();
 	Stage::Get()->Draw();
-
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
 		Object::Draw(selectOBJ, selectPos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), selectGraph[i]);
 	}
-
 }

@@ -1,6 +1,7 @@
 ﻿#include "LightGroup.h"
 #include <assert.h>
 #include"Camera.h"
+#include"Input.h"
 using namespace DirectX;
 
 /// <summary>
@@ -56,22 +57,20 @@ void LightGroup::Initialize()
 void LightGroup::Update()
 {
 	////影用
-	Vec3 eye = Vec3(100.0f, 100.0f, 0.0f);
-	eye.z += Camera::Get()->GetEye().z;
-	
-	Vec3 target = Vec3(0.0f, 0.0f, 0.0f);
-		target.z += Camera::Get()->GetEye().z;
-
+	Vec3 target = Vec3(Camera::Get()->GetEye().x-90, Camera::Get()->GetEye().y - 100, Camera::Get()->GetEye().z);
+	Vec3 eye = Camera::Get()->GetTarget() + Vec3(1, 1, 0).normalize() * Vec3(Camera::Get()->GetTarget() - Camera::Get()->GetEye()).length();
 	Vec3 up = { 0,1,0 };
+
+
 	matView = XMMatrixLookAtLH(
 		XMLoadFloat3(&eye),
 		XMLoadFloat3(&target),
 		XMLoadFloat3(&up));
 
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		-500.0f, 500.0f,
-		-500.0f, 500.0f,
-		-400.0f, 400.0f);//前端　奥端
+		-300.0f, 500.0f,
+		-300.0f, 500.0f,
+		-500.0f, 500.0f);//前端　奥端
 
 	lightMatViewProjection = matView * matProjection;
 
@@ -165,7 +164,7 @@ void LightGroup::DefaultLightSetting()
 {
 	dirLights[0].SetActive(true);
 	dirLights[0].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	dirLights[0].SetLightDir({ 0.0f, -1.0f, 0.0f, 0 });
+	dirLights[0].SetLightDir({ 1.0f, -1.0f, 0.0f, 0 });
 
 	dirLights[1].SetActive(false);
 	dirLights[1].SetLightColor({ 1.0f, 1.0f, 1.0f });

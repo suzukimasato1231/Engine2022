@@ -1,9 +1,9 @@
-//#include "EnemyManager.h"
-//
-//EnemyManager::EnemyManager()
-//{
-//}
-//
-//EnemyManager::~EnemyManager()
-//{
-//}
+#include "EnemyManager.h"
+
+EnemyManager::EnemyManager()
+{
+}
+
+EnemyManager::~EnemyManager()
+{
+}

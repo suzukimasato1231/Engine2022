@@ -152,6 +152,12 @@
     <FxCompile Include="Resources\shaders\ShadowMap\ShadowMapVS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NormalMapPS.hlsl">
+      <Filter>HLSL\OBJ</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NormalMapVS.hlsl">
+      <Filter>HLSL\OBJ</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Sprite.hlsli">
@@ -180,6 +186,9 @@
     </None>
     <None Include="Resources\shaders\ShadowMap\ShadowMap.hlsli">
       <Filter>HLSL\PostEffect</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\NormalMap.hlsli">
+      <Filter>HLSL\OBJ</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

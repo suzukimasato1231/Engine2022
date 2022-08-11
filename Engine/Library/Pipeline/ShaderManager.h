@@ -24,6 +24,7 @@ public:
 	//3D
 	static Shader objShader;
 	static Shader toonObjShader;
+	static Shader normalMapShader;
 	static Shader particleShader;
 
 	static void LoadShaders();

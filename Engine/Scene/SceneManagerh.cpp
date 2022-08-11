@@ -118,12 +118,12 @@ void SceneManagerh::Draw()
 	//‰e[“x’lŽæ“¾
 	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
 	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
-	Object::SetPipeline(Pipeline::ShadowMapPipeline);
 	if (scene == Title)
 	{
 	}
 	else if (scene == SelectScene)
 	{
+		stageScene.DrawShadow();
 	}
 	else if (scene == GameScene)
 	{
@@ -150,17 +150,17 @@ void SceneManagerh::Draw()
 	}
 	else if (scene == GameScene)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_C))
+		/*if (Input::Get()->KeybordTrigger(DIK_C))
 		{
 			if (Flag == false){	Flag = true;}
 			else { Flag = false; }
-		}
-		if (Flag == false){
+		}*/
+		//if (Flag == false){
 			gameScene.Draw();
-		}
+		/*}
 		else {
 			ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
-		}
+		}*/
 	}
 	else if (scene == Result)
 	{

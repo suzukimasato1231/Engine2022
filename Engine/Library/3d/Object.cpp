@@ -157,8 +157,17 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	{
 		assert(0);
 	}
-	cmdList->SetPipelineState(objPipelineSet.pipelinestate.Get());
-	cmdList->SetGraphicsRootSignature(objPipelineSet.rootsignature.Get());
+
+	if (shadowFlag == true)
+	{
+		cmdList->SetPipelineState(objPipelineSet.pipelinestate.Get());
+		cmdList->SetGraphicsRootSignature(objPipelineSet.rootsignature.Get());
+	}
+	else
+	{
+		cmdList->SetPipelineState(Pipeline::ShadowMapPipeline.pipelinestate.Get());
+		cmdList->SetGraphicsRootSignature(Pipeline::ShadowMapPipeline.rootsignature.Get());
+	}
 
 	//頂点バッファの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &polygon.vbView);
@@ -204,6 +213,79 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
 		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(graph));
 	}
+	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
+	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
+	OBJNum++;
+}
+
+void Object::DrawNormalMap(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, int mask, int graph1, int graph2, bool shadowFlag)
+{
+	//プリミティブ形状の設定コマンド（三角形リスト）
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//デスクリプタヒープをセット
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	if (OBJNum >= Object::OBJbuffer.size())
+	{
+		//定数バッファ
+		OBJConstantBuffer();
+	}
+	//更新
+	MatWord(polygon, position, scale, rotation, Vec4());
+	
+	if (shadowFlag == true)
+	{
+		cmdList->SetPipelineState(Pipeline::NormalMapPipeline.pipelinestate.Get());
+		cmdList->SetGraphicsRootSignature(Pipeline::NormalMapPipeline.rootsignature.Get());
+	}
+	else
+	{
+		cmdList->SetPipelineState(Pipeline::ShadowMapPipeline.pipelinestate.Get());
+		cmdList->SetGraphicsRootSignature(Pipeline::ShadowMapPipeline.rootsignature.Get());
+	}
+	//頂点バッファの設定コマンド
+	cmdList->IASetVertexBuffers(0, 1, &polygon.vbView);
+
+	////インデックスバッファビューのセットコマンド
+	cmdList->IASetIndexBuffer(&polygon.ibView);
+
+	//ヒープの先頭にあるCBVをルートパラメータ０番に設定
+	cmdList->SetGraphicsRootConstantBufferView(0, Object::OBJbuffer[OBJNum]->constBuffB0->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(1, Object::OBJbuffer[OBJNum]->constBuffB1->GetGPUVirtualAddress());
+
+
+	//ヒープの２番目にあるSRVをルートパラメータ4番に設定
+
+	cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(mask));
+
+	//ライトの描画
+	lightGroup->Draw(cmdList, 3);
+
+
+	//影を描画するか
+	if (shadowFlag == true)
+	{
+		cmdList->SetGraphicsRootDescriptorTable(4,
+			CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()),
+				0,
+				dev->GetDescriptorHandleIncrementSize(
+					D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
+				)));
+
+		cmdList->SetGraphicsRootDescriptorTable(5, Texture::Get()->GetGPUSRV(graph1));
+
+		cmdList->SetGraphicsRootDescriptorTable(6, Texture::Get()->GetGPUSRV(graph2));
+	}
+	else
+	{
+		//ヒープの２番目にあるSRVをルートパラメータ4番に設定
+		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(0));
+
+
+	}
+
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
 	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
 	OBJNum++;

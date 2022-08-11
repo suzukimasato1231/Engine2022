@@ -114,7 +114,15 @@ void Player::Jump()
 	//ƒWƒƒƒ“ƒv
 	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag) && groundFlag == true)
 	{
-		jumpPower = jumpPowerMax;
+		if (jumpBoxFlag)
+		{
+			jumpPower = jumpBoxPowerMax;
+			jumpBoxFlag = false;
+		}
+		else
+		{
+			jumpPower = jumpPowerMax;
+		}
 		blockStepOnFlag = false;
 	}
 

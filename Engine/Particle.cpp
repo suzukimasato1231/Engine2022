@@ -26,6 +26,7 @@ void Particle::Update()
 			Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		breakBoxFlag = false;
 	}
+
 	//パーティクル更新
 	breakBoxParticle->Update();
 }
