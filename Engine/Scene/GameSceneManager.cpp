@@ -96,6 +96,7 @@ void GameSceneManager::Draw()
 	//3D
 
 	Stage::Get()->Draw(true);
+
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	Player::Get()->Draw(true);
 

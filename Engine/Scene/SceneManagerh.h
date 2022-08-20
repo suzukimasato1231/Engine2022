@@ -4,7 +4,6 @@
 #include"StageSelect.h"
 #include"ResultScene.h"
 #include "../ShadowMap.h"
-
 enum Scene
 {
 	Title,

@@ -12,6 +12,7 @@
 #include"../Stage.h"
 #include"../UI.h"
 #include"../TimeAttack.h"
+#include"../EnemyManager.h"
 extern const int window_width;
 extern const int window_height;
 class GameSceneManager 

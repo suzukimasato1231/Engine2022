@@ -6,6 +6,7 @@
 #include"Audio.h"
 #include"FBXObject3d.h"
 #include"Object.h"
+#include"Sprite.h"
 extern const int window_width;
 extern const int window_height;
 class TitleScene 
@@ -23,6 +24,12 @@ public:
 
 	void Draw();
 private://’è‹`
+	ObjectData titlePlayer;
+	ObjectData box;
+	int boxGraph;
+
+	SpriteData titleButtonGraph;
+	int buttonTime = 0;
 };
 
 

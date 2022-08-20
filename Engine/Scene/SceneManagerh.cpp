@@ -44,7 +44,6 @@ void SceneManagerh::Initialize()
 	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 
 	titleScene.Initialize();
-	titleScene.Init();
 	//ゲームシーン
 	gameScene.Initialize();
 	gameScene.Init(0);
@@ -90,6 +89,7 @@ void SceneManagerh::Update()
 		if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
 		{
 			scene = Title;
+			titleScene.Init();
 		}
 	}
 	//更新
@@ -114,7 +114,7 @@ void SceneManagerh::Update()
 void SceneManagerh::Draw()
 {
 	//描画開始
-	
+
 	//影深度値取得
 	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
 	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
@@ -156,7 +156,7 @@ void SceneManagerh::Draw()
 			else { Flag = false; }
 		}*/
 		//if (Flag == false){
-			gameScene.Draw();
+		gameScene.Draw();
 		/*}
 		else {
 			ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());

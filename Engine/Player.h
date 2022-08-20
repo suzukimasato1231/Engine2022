@@ -71,8 +71,8 @@ private:
 	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
-	Vec3 scale{ 1.0f,1.0f,1.0f };		//大きさ
-	Vec3 angle{ 0.0f,90.0f,0.0f };		//角度
+	Vec3 scale{ 2.0f,2.0f,2.0f };		//大きさ
+	Vec3 angle{ 0.0f,180.0f,0.0f };		//角度
 	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
 	Vec3 pScale = { 8.0f,7.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
@@ -88,7 +88,7 @@ private:
 	float jumpPowerDelay = 0.2f;
 	float gravity = 5.0f;			//重力
 	bool groundFlag = false;		//地面に接しているかどうか
-	bool oldGroundFlag =false;		//地面に接していたかどうか
+	bool oldGroundFlag = false;		//地面に接していたかどうか
 	bool blockStepOnFlag = false;	//ブロックを踏んで壊したかどうか
 
 

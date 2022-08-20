@@ -1,5 +1,11 @@
 #include "Model.h"
 
+Model::~Model()
+{
+    //fbxシーンの解放
+    fbxScene->Destroy();
+}
+
 void Model::CreateBuffers(ID3D12Device* device)
 {
     HRESULT result;
@@ -120,8 +126,3 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList)
     cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }
 
-Model::~Model()
-{
-    //fbxシーンの解放
-   // fbxScene->Destroy();
-}

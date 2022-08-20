@@ -3,6 +3,7 @@
 #include <LoadCSV.h>
 #include"PushCollision.h"
 #include"Particle.h"
+#include"EnemyManager.h"
 Stage::Stage()
 {}
 
@@ -143,8 +144,12 @@ void Stage::Update()
 		if ((X - 1 <= floor[i]->map.x && floor[i]->map.x <= X + 1)
 			&& ((MAP_HEIGHT - 1 + Z) - 1 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
 		{
+			//ƒvƒŒƒCƒ„[
 			PushCollision::Player2Floor(floor[i]->position,
 				floor[i]->angle, floor[i]->scale);
+			//“G
+			Floor FloorIn = *floor[i];
+			//enemy.FloorPush(FloorIn);
 		}
 	}
 	//“®‚­°
@@ -201,7 +206,7 @@ void Stage::Draw(bool shadowFlag)
 			else if (stageObj[i]->type == Goal)
 			{
 				Object::Draw(goalOBJ, stageObj[i]->position, stageObj[i]->scale,
-					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), shadowFlag);
+					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 			}
 			else if (stageObj[i]->type == BreakBox)
 			{
@@ -220,6 +225,10 @@ void Stage::Draw(bool shadowFlag)
 			}
 		}
 	}
+
+
+
+
 }
 
 void Stage::LoadStage(int stageNum)

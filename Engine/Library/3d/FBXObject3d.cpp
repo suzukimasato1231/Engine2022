@@ -212,6 +212,25 @@ void FBXObject3d::CreateGraphicsPipeline()
 
 void FBXObject3d::Update()
 {
+	//アニメーション
+	if (isPlay)
+	{
+		//1フレーム進める
+		currentTime += frameTime;
+		//最後まで再生したら先頭に戻す
+		if (currentTime > endTime)
+		{
+			if (!isLoop)
+			{
+				currentTime = endTime;
+			}
+			else
+			{
+				currentTime = startTime;
+			}
+		}
+	}
+
 	XMMATRIX matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
@@ -248,25 +267,6 @@ void FBXObject3d::Update()
 
 	//ボーン配列
 	std::vector<Model::Bone>& bones = model->GetBones();
-
-	//アニメーション
-	if (isPlay)
-	{
-		//1フレーム進める
-		currentTime += frameTime;
-		//最後まで再生したら先頭に戻す
-		if (currentTime > endTime)
-		{
-			if (!isLoop)
-			{
-				currentTime = endTime;
-			}
-			else
-			{
-				currentTime = startTime;
-			}
-		}
-	}
 
 	//定数バッファへデータ転送
 	ConstBufferDataSkin* constMapSkin = nullptr;

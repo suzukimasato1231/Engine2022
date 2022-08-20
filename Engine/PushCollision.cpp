@@ -6,17 +6,17 @@ int PushCollision::Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale, int moveFlag)
 	OBB diagonal;
 	diagonal.Initilize(pos, angle, scale);
 	//プレイヤーOBB
-	OBB pOBB;
-	pOBB.Initilize(Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y, Player::Get()->GetPosition().z), Vec3{}, Player::Get()->GetPSize());
-	if (OBBCollision::ColOBBs(pOBB, diagonal))
+	OBB eOBB;
+	eOBB.Initilize(Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y, Player::Get()->GetPosition().z), Vec3{}, Player::Get()->GetPSize());
+	if (OBBCollision::ColOBBs(eOBB, diagonal))
 	{
 		while (1)
 		{
 			//プレイヤーOBB
 			Vec3 set = {};
-			OBB pOBB;
-			pOBB.Initilize(Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y, Player::Get()->GetPosition().z), Vec3{}, Player::Get()->GetPSize());
-			if (OBBCollision::ColOBBs(pOBB, diagonal))
+			OBB eOBB;
+			eOBB.Initilize(Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y, Player::Get()->GetPosition().z), Vec3{}, Player::Get()->GetPSize());
+			if (OBBCollision::ColOBBs(eOBB, diagonal))
 			{
 				diagonal.GetDirect(0);
 				set = { Player::Get()->GetPosition().x,Player::Get()->GetPosition().y + 0.5f, Player::Get()->GetPosition().z };
@@ -128,4 +128,31 @@ int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
 	Player::Get()->SetPosition(setPosition);
 
 	return breakFlag;
+}
+
+Vec3 PushCollision::Enemy2Floor(Vec3 pos, Vec3 angle, Vec3 scale, Vec3 ePos, Vec3 eSize)
+{
+	//床OBBの当たり判定押し戻し処理
+	OBB diagonal;
+	diagonal.Initilize(pos, angle, scale);
+	//プレイヤーOBB
+	OBB eOBB;
+	eOBB.Initilize(ePos, Vec3{}, Player::Get()->GetPSize());
+	if (OBBCollision::ColOBBs(eOBB, diagonal))
+	{
+		while (1)
+		{
+			//プレイヤーOBB
+			Vec3 set = {};
+			OBB eOBB;
+			eOBB.Initilize(ePos, Vec3{}, eSize);
+			if (OBBCollision::ColOBBs(eOBB, diagonal))
+			{
+				diagonal.GetDirect(0);
+				ePos = { ePos.x,ePos.y + 0.5f, Player::Get()->GetPosition().z };
+			}
+		}
+	}
+
+	return ePos;
 }

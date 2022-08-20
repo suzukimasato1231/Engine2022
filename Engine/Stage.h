@@ -3,6 +3,7 @@
 #include<vector>
 #include <LoadCSV.h>
 #include"./StegeObject.h"
+#include"../Engine/EnemyManager.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
