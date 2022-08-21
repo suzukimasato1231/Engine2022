@@ -21,11 +21,11 @@ void StageSelect::Initialize()
 
 	// ライトグループクラス作成
 	lightGroup = LightGroup::Create();
-
 	//音データ読み込み
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,-1,0 });
+	lightGroup->SetShadowDir(Vec3(0, 1, 0));
 }
 
 void StageSelect::Init()
@@ -84,8 +84,4 @@ void StageSelect::DrawShadow()
 {
 	Player::Get()->Draw();
 	Stage::Get()->Draw();
-	for (size_t i = 0; i < stageNumMax; i++)
-	{
-		Object::Draw(selectOBJ, selectPos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), selectGraph[i]);
-	}
 }

@@ -12,6 +12,13 @@ enum Scene
 	Result,
 };
 
+enum ChangeNumber
+{
+	ChangeStand,
+	ChangeFirst,
+	ChangeEnd,
+};
+
 extern const int window_width;
 extern const int window_height;
 class SceneManagerh :public Singleton<SceneManagerh>
@@ -33,6 +40,10 @@ private://定義
 	GameSceneManager gameScene;
 	ResultScene resultScene;
 	int scene = Title;	//シーン管理
+	int sceneMe = Title;
 
+	SpriteData changeBlack;
+	int changeSceneFlag = false;
+	Vec4 changeSceneColor = { 1.0f,1.0f,1.0f,0.0f };//シーンが変わる時の色
 	bool Flag = false;
 };

@@ -34,7 +34,7 @@ void Stage::Init()
 	wallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 	wallGraph = Texture::Get()->LoadTexture(L"Resources/map/block.png");
 	//ƒS[ƒ‹Ý’è
-	goalOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
+	goalOBJ = Shape::CreateOBJ("goal");
 
 	breakBoxOBJ = Shape::CreateOBJ("cube");
 	normalBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
@@ -205,7 +205,7 @@ void Stage::Draw(bool shadowFlag)
 			}
 			else if (stageObj[i]->type == Goal)
 			{
-				Object::Draw(goalOBJ, stageObj[i]->position, stageObj[i]->scale,
+				Object::Draw(goalOBJ, stageObj[i]->position, Vec3(5.0f, 5.0f, 5.0f),
 					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 			}
 			else if (stageObj[i]->type == BreakBox)
@@ -325,7 +325,7 @@ void Stage::LoadStage(int stageNum)
 					wallScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
 			case Goal:
-				SetGoal(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapOBJPos[y][x]) * 20 + goalScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+				SetGoal(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapOBJPos[y][x]) * 20 + 5.0f, (MAP_HEIGHT - 1 - y) * mapSize),
 					goalScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
 			case BreakBox:

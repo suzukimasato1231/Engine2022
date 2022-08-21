@@ -30,7 +30,7 @@ public:
 	/// 描画コマンドの発行
 	/// </summary>
 	/// <param name="cmdList"></param>
-	void Draw(ID3D12GraphicsCommandList* cmdList);
+	void Draw(ID3D12GraphicsCommandList* cmdList,Vec4 color={1.0f,1.0f,1.0f,1.0f});
 	/// <summary>
 	/// シーン描画前処理
 	/// </summary>

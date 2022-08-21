@@ -57,8 +57,8 @@ void LightGroup::Initialize()
 void LightGroup::Update()
 {
 	////影用
-	Vec3 target = Vec3(Camera::Get()->GetEye().x-90, Camera::Get()->GetEye().y - 100, Camera::Get()->GetEye().z);
-	Vec3 eye = Camera::Get()->GetTarget() + Vec3(1, 1, 0).normalize() * Vec3(Camera::Get()->GetTarget() - Camera::Get()->GetEye()).length();
+	Vec3 target = Vec3(Camera::Get()->GetEye().x - 90, Camera::Get()->GetEye().y - 100, Camera::Get()->GetEye().z);
+	Vec3 eye = Camera::Get()->GetTarget() + shadowDir.normalize() * Vec3(Camera::Get()->GetTarget() - Camera::Get()->GetEye()).length();
 	Vec3 up = { 0,1,0 };
 
 
@@ -68,17 +68,17 @@ void LightGroup::Update()
 		XMLoadFloat3(&up));
 
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		-300.0f, 500.0f,
-		-300.0f, 500.0f,
+		-300.0f, 400.0f,
+		-300.0f, 400.0f,
 		-500.0f, 500.0f);//前端　奥端
 
 	lightMatViewProjection = matView * matProjection;
 
 	// 値の更新があった時だけ定数バッファに転送する
-//	if (dirty) {
-	TransferConstBuffer();
-	//	dirty = false;
-	//}
+	if (dirty) {
+		TransferConstBuffer();
+		dirty = false;
+	}
 }
 
 void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
@@ -332,4 +332,9 @@ void LightGroup::SetCircleShadowFactorAngle(int index, const Vec2& lightFactorAn
 
 	circleShadows[index].SetFactorAngle(lightFactorAngle);
 	dirty = true;
+}
+
+void LightGroup::SetShadowDir(const Vec3 shadowDir)
+{
+	LightGroup::shadowDir = shadowDir;
 }

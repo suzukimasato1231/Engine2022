@@ -180,9 +180,9 @@ void PostEffect::CreatePipeline(ID3D12Device* dev)
 	pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev,ShaderManager::postNormalShader);
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
+void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList,Vec4 color)
 {
-	DrawPost(sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, { 1,1,1,1 }, false, false);
+	DrawPost(sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false);
 }
 
 void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)

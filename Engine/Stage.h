@@ -51,7 +51,7 @@ private:
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
-	const int drawNumY = 25;
+	const int drawNumY = 35;
 	//ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
@@ -75,8 +75,7 @@ private:
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
 	//ゴール
 	ObjectData goalOBJ = {};
-	int goalGraph = 0;
-	Vec3 goalScale = { 20.0f,4.0f,20.0f };
+	Vec3 goalScale = { 25.0f,25.0f,25.0f };
 	bool goalFlag = false;
 	//壊れる箱
 	ObjectData breakBoxOBJ = {};

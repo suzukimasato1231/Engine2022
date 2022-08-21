@@ -52,4 +52,6 @@ private://’è‹`
 
 	//ƒV[ƒ“‚ª•Ï‚í‚é‚©‚Ç‚¤‚©
 	bool changeScene = false;
+	int changeSceneTime = 100;
+
 };
