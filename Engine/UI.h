@@ -18,6 +18,11 @@ public:
 private:
 	SpriteData boxGraph;
 
+	SpriteData playerIcon;
 
+	SpriteData fishGraph;
+
+	SpriteData uiNumber[10];
+	SpriteData uiSlash;
 };
 
