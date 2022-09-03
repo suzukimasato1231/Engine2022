@@ -17,6 +17,7 @@ void TitleScene::Initialize()
 	box = Shape::CreateOBJ("cube");
 	boxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
 	titleButtonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
+	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title.png");
 }
 
 void TitleScene::Init()
@@ -43,11 +44,9 @@ void TitleScene::Draw()
 	Object::Draw(box, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2), Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph, true);
 
 	//UI
+	Sprite::Get()->Draw(titleGraph, Vec2(0.0f, 0.0f), static_cast<float>(window_width), static_cast<float>(window_height));
 	if (buttonTime >= 30)
 	{
 		Sprite::Get()->Draw(titleButtonGraph, Vec2(420.0f, 532.0f), 512.0f, 64.0f);
-
 	}
-	
-	DebugText::Get()->Print(10.0f, 10.0f, 3, "Title");
 }

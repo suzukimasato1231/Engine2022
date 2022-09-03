@@ -13,7 +13,7 @@ public:
 
 	void Update();
 
-	void Draw();
+	void Draw(int pLives, int fishNum, bool gameoverFlag, int gameoverNum = 0);
 
 private:
 	SpriteData boxGraph;
@@ -24,5 +24,8 @@ private:
 
 	SpriteData uiNumber[10];
 	SpriteData uiSlash;
+	//ゲームオーバー時の
+	SpriteData gameoverGraph;
+	SpriteData selectGraph;
 };
 

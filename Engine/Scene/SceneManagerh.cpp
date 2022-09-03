@@ -48,6 +48,7 @@ void SceneManagerh::Initialize()
 	gameScene.Initialize();
 	gameScene.Init(0);
 	stageScene.Initialize();
+	resultScene.Initialize();
 	resultScene.Init();
 	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
 	//‰e
@@ -83,7 +84,18 @@ void SceneManagerh::Update()
 	{
 		if (changeSceneFlag == ChangeStand && gameScene.GetChangeScene())
 		{
-			sceneMe = Result;
+			if (gameScene.GetChangeNum() == 0)
+			{
+				sceneMe = Result;
+			}
+			else if (gameScene.GetChangeNum() == 1)
+			{
+				sceneMe = GameScene;
+			}
+			else if (gameScene.GetChangeNum() == 2)
+			{
+				sceneMe = SelectScene;
+			}
 			changeSceneFlag = ChangeFirst;
 		}
 	}
@@ -130,7 +142,18 @@ void SceneManagerh::Update()
 				gameScene.Init(stageScene.GetStageNum());
 				break;
 			case GameScene:
-				resultScene.Init();
+				if (sceneMe == Result)
+				{
+					resultScene.Init();
+				}
+				else if (sceneMe == GameScene)
+				{
+					gameScene.Init(stageScene.GetStageNum());
+				}
+				else if (sceneMe == SelectScene)
+				{
+					stageScene.Init();
+				}
 				break;
 			case Result:
 				titleScene.Init();
@@ -149,8 +172,6 @@ void SceneManagerh::Update()
 			changeSceneFlag = ChangeStand;
 		}
 	}
-
-
 }
 
 void SceneManagerh::Draw()

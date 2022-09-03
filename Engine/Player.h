@@ -34,6 +34,8 @@ public:
 	void ChangeMoveFlag(bool moveFlag) { Player::moveFlag = moveFlag; }
 
 	void GetJumpBox() { jumpBoxFlag = true; }
+	//箱を壊したか
+	void ChangeBreakFlag() { changeBreakFlag = true; }
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -46,6 +48,8 @@ private:
 
 	//落ちて死亡したとき
 	void FallDie();
+
+	void Fish();
 public://取得系
 	//座標
 	Vec3 GetPosition() { return position; }
@@ -63,9 +67,17 @@ public://取得系
 	bool GetGroundFlag() { return groundFlag; }
 
 	bool GetOldGroundFlag() { return oldGroundFlag; }
+	//残機数獲得
+	int GetRemanLives() { return remainLives; }
+
+	int GetFishNum() { return fishNum; }
+
+	bool GetGameoverFlag() { return gameoverFlag ; }
 private:
 	//2D false 3D true
 	bool moveFlag = false;
+
+	bool gameoverFlag = false;
 
 	ObjectData playerObject;			//プレイヤーオブジェクト
 	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
@@ -79,6 +91,11 @@ private:
 	Box pBox;							//プレイヤーの箱
 
 	Vec3 vec = {};
+
+	bool changeBreakFlag = false;
+
+	const int remainLivesMax = 3;//１ステージの残機数
+	int remainLives = 3;		//残機
 
 	//ジャンプ
 	const float jumpPowerMax = 8.0f;
@@ -98,6 +115,11 @@ private:
 
 	//ボディプレス
 
+
+
+	//魚
+	bool fishFlag = false;
+	int fishNum = 0;
 
 	//FBX
 	Model* model1 = nullptr;

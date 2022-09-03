@@ -15,6 +15,12 @@
 #include"../EnemyManager.h"
 extern const int window_width;
 extern const int window_height;
+enum ChangeStatus
+{
+	ChangeClear,
+	ChangeRetry,
+	ChangeSelect,
+};
 class GameSceneManager 
 {
 
@@ -35,6 +41,8 @@ public:
 	void Reset(int stageNum);
 public:
 	bool GetChangeScene() { return changeScene; }
+
+	int GetChangeNum() { return changeNum; }
 private:
 	LightGroup *lightGroup = nullptr;
 	Audio *audio = nullptr;
@@ -53,5 +61,6 @@ private://定義
 	//シーンが変わるかどうか
 	bool changeScene = false;
 	int changeSceneTime = 100;
-
+	//ゲームオーバー時
+	int changeNum = 0;
 };

@@ -42,7 +42,7 @@ void StageSelect::Init()
 	}
 	selectFlag = false;
 	Stage::Get()->LoadStage(0);
-	Player::Get()->SetPosition(Vec3(20.0f, 0.0f, 150.0f));
+	Player::Get()->SetPosition(Vec3(20.0f, 10.0f, 150.0f));
 }
 
 void StageSelect::Update()
@@ -68,8 +68,6 @@ void StageSelect::Update()
 void StageSelect::Draw()
 {
 	//”wŒi•`‰æ
-	DebugText::Get()->Print(10.0f, 10.0f, 3, "Select");
-
 	Player::Get()->Draw(true);
 	Stage::Get()->Draw(true);
 

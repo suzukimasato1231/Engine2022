@@ -47,7 +47,11 @@ private:
 
 	void SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
+	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int time);
+
 	void MoveFloorUpdate(int i);
+
+	void PitfallUpdate(int i);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
@@ -82,6 +86,7 @@ private:
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 	int normalBoxGraph = 0;
 	int breakBoxGraph = 0;
+	int jumpBoxgraph = 0;
 
 
 	int stageBlockNum = 0;//ステージにある最大のブロック数
@@ -91,4 +96,9 @@ private:
 	ObjectData moveFloorOBJ = {};
 	std::vector<MoveFloorData*>moveFloorData;
 	int moveGraph = 0;
+
+	//落とし床
+	ObjectData floorPitfallOBJ = {};
+	std::vector<FloorPitfallData*>floorPitfallData;
+	int pitfallGraph = 0;
 };

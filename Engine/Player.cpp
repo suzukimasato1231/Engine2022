@@ -43,6 +43,8 @@ void Player::Update()
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 	//落下死
 	FallDie();
+	//魚関連
+	Fish();
 }
 
 void Player::Draw(bool shadowFlag)
@@ -69,8 +71,10 @@ void Player::GroundFlag()
 
 void Player::Reset()
 {
-	position = { 70.0f,20.0f,80.0f };	//座標
+	position = { 70.0f,25.0f,80.0f };	//座標
 	oldPosition = position;
+	remainLives = remainLivesMax;
+	gameoverFlag = false;
 }
 
 //移動
@@ -112,7 +116,8 @@ void Player::Move()
 void Player::Jump()
 {
 	//ジャンプ
-	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag) && groundFlag == true)
+	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag)
+		&& groundFlag == true)
 	{
 		if (jumpBoxFlag)
 		{
@@ -122,8 +127,8 @@ void Player::Jump()
 		else
 		{
 			jumpPower = jumpPowerMax;
-		}
-		blockStepOnFlag = false;
+		}		
+			blockStepOnFlag = false;
 	}
 
 
@@ -141,7 +146,37 @@ void Player::FallDie()
 {
 	if (position.y < -30.0f)
 	{
-		Reset();
+		if (remainLives > 0)
+		{
+			position = { 70.0f,20.0f,80.0f };	//座標
+			oldPosition = position;
+			remainLives--;
+		}
+		else if (remainLives == 0)
+		{
+			gameoverFlag = true;
+		}
+	}
+}
+
+void Player::Fish()
+{
+	if (changeBreakFlag == true)
+	{
+		fishFlag = true;
+		changeBreakFlag = false;
+	}
+	if (fishFlag == true)
+	{
+		fishNum += 5;
+		fishFlag = false;
+	}
+
+	//100個集まったら残機１つ増える
+	if (fishNum >= 100)
+	{
+		fishNum -= 100;
+		remainLives++;
 	}
 }
 

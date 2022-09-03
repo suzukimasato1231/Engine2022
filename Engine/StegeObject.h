@@ -20,6 +20,17 @@ struct MoveFloorData
 	Vec3 speed = { 0.0f,0.0f,0.5f };
 };
 
+struct FloorPitfallData
+{
+	Vec3 position = {};
+	Vec3 scale = {};
+	Vec3 angle = {};
+	Vec3 drawAngle = {};//•`‰æ—p
+	Vec2 map = {};
+	int time = 0;
+	int moveFlag = 0;
+};
+
 enum StageFloor
 {
 	NoneFloor,
@@ -27,6 +38,8 @@ enum StageFloor
 	Floor169,	//Î‚ß°
 	Floor11,	//Î‚ß°
 	FloorMove,	//ˆÚ“®°
+	FloorPitfall_A,//—‚Æ‚µŒŠA
+	FloorPitfall_B,//—‚Æ‚µŒŠB
 };
 
 enum StageType

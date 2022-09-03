@@ -27,7 +27,7 @@ private://’è‹`
 	ObjectData titlePlayer;
 	ObjectData box;
 	int boxGraph;
-
+	SpriteData titleGraph;
 	SpriteData titleButtonGraph;
 	int buttonTime = 0;
 };

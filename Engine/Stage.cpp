@@ -24,6 +24,11 @@ Stage::~Stage()
 		delete moveFloorData[i];
 		moveFloorData.erase(moveFloorData.begin() + i);
 	}
+	for (int i = (int)floorPitfallData.size() - 1; i >= 0; i--)
+	{
+		delete floorPitfallData[i];
+		floorPitfallData.erase(floorPitfallData.begin() + i);
+	}
 }
 
 void Stage::Init()
@@ -39,9 +44,15 @@ void Stage::Init()
 	breakBoxOBJ = Shape::CreateOBJ("cube");
 	normalBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
 	breakBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Hard.png");
+	jumpBoxgraph = Texture::Get()->LoadTexture(L"Resources/cube/jumpBox.png");
 
 	moveFloorOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 	moveGraph = Texture::Get()->LoadTexture(L"Resources/map/block.png");
+
+	floorPitfallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
+	moveGraph = Texture::Get()->LoadTexture(L"Resources/map/block.png");
+
+
 	MainInit(0);
 
 	mask = Texture::Get()->LoadTexture(L"Resources/FirldMask.png");
@@ -106,6 +117,7 @@ void Stage::Update()
 					BreakBox == stageObj[i]->type)
 				{
 					Player::Get()->GetBlockStepOnFlag();
+					Player::Get()->ChangeBreakFlag();
 					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
 					delete stageObj[i];
 					stageObj.erase(stageObj.begin() + i);
@@ -123,6 +135,7 @@ void Stage::Update()
 		else if (breakFlag == 2 && stageObj[breakNum]->type == BreakBox)
 		{
 			Player::Get()->JumpPoweZero();
+			Player::Get()->ChangeBreakFlag();
 			for (int i = 0; i < stageObj.size(); i++)
 			{
 				if (breakNum == -1) { break; }
@@ -147,9 +160,6 @@ void Stage::Update()
 			//プレイヤー
 			PushCollision::Player2Floor(floor[i]->position,
 				floor[i]->angle, floor[i]->scale);
-			//敵
-			Floor FloorIn = *floor[i];
-			//enemy.FloorPush(FloorIn);
 		}
 	}
 	//動く床
@@ -161,6 +171,20 @@ void Stage::Update()
 		{
 			PushCollision::Player2Floor(moveFloorData[i]->position,
 				moveFloorData[i]->angle, moveFloorData[i]->scale, moveFloorData[i]->moveFlag);
+		}
+	}
+
+	for (int i = 0; i < floorPitfallData.size(); i++)
+	{
+		PitfallUpdate(i);
+		if ((X - drawNumX <= floorPitfallData[i]->map.x && floorPitfallData[i]->map.x <= X + drawNumX)
+			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floorPitfallData[i]->map.y && floorPitfallData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+		{
+			if (floorPitfallData[i]->moveFlag == 0)
+			{
+				PushCollision::Player2Floor(floorPitfallData[i]->position,
+					floorPitfallData[i]->angle, floorPitfallData[i]->scale);
+			}
 		}
 	}
 }
@@ -192,6 +216,25 @@ void Stage::Draw(bool shadowFlag)
 				moveFloorData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), moveGraph, shadowFlag);
 		}
 	}
+	//落とし穴
+	for (int i = 0; i < floorPitfallData.size(); i++)
+	{
+		if ((X - drawNumX <= floorPitfallData[i]->map.x && floorPitfallData[i]->map.x <= X + drawNumX)
+			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floorPitfallData[i]->map.y && floorPitfallData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+		{//開いている
+			if (floorPitfallData[i]->moveFlag == 0)
+			{
+				Object::Draw(floorPitfallOBJ, floorPitfallData[i]->position, floorPitfallData[i]->scale,
+					floorPitfallData[i]->drawAngle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), pitfallGraph, shadowFlag);
+			}//閉じている
+			else if (floorPitfallData[i]->moveFlag == 1)
+			{
+				Object::Draw(floorPitfallOBJ, floorPitfallData[i]->position, floorPitfallData[i]->scale,
+					floorPitfallData[i]->drawAngle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), pitfallGraph, shadowFlag);
+			}
+		}
+	}
+
 	//オブジェクト描画
 	for (int i = 0; i < stageObj.size(); i++)
 	{
@@ -216,7 +259,7 @@ void Stage::Draw(bool shadowFlag)
 			else if (stageObj[i]->type == BreakJUMP)
 			{
 				Object::Draw(breakBoxOBJ, stageObj[i]->position, stageObj[i]->scale,
-					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), breakBoxGraph, shadowFlag);
+					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), jumpBoxgraph, shadowFlag);
 			}
 			else if (stageObj[i]->type == BreakHARD)
 			{
@@ -225,10 +268,6 @@ void Stage::Draw(bool shadowFlag)
 			}
 		}
 	}
-
-
-
-
 }
 
 void Stage::LoadStage(int stageNum)
@@ -247,6 +286,11 @@ void Stage::LoadStage(int stageNum)
 	{
 		delete moveFloorData[i];
 		moveFloorData.erase(moveFloorData.begin() + i);
+	}
+	for (int i = (int)floorPitfallData.size() - 1; i >= 0; i--)
+	{
+		delete floorPitfallData[i];
+		floorPitfallData.erase(floorPitfallData.begin() + i);
 	}
 	char* FilepathFloor = "";
 	char* FilepathFloorPos = "";
@@ -312,6 +356,14 @@ void Stage::LoadStage(int stageNum)
 			case FloorMove:
 				SetMoveFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
 					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+				break;
+			case FloorPitfall_A:
+				SetPitfallFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)), 50);
+				break;
+			case FloorPitfall_B:
+				SetPitfallFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)), 100);
 				break;
 			default:
 				break;
@@ -400,7 +452,6 @@ void Stage::SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 		position.y - scale.y / 2,
 		position.z - scale.z / 2, 1);
 	stageObj[num]->type = BreakJUMP;
-	stageBlockNum++;
 }
 
 void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
@@ -439,7 +490,6 @@ void Stage::SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 		position.y - scale.y / 2,
 		position.z - scale.z / 2, 1);
 	stageObj[num]->type = BreakHARD;
-	stageBlockNum++;
 }
 
 void Stage::SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
@@ -464,11 +514,22 @@ void Stage::SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 void Stage::SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
 	moveFloorData.push_back(new MoveFloorData);
-	size_t moveNum = moveFloorData.size() - 1;
-	moveFloorData[moveNum]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	moveFloorData[moveNum]->position = position;
-	moveFloorData[moveNum]->scale = scale;
-	moveFloorData[moveNum]->angle = angle;
+	size_t NUM = moveFloorData.size() - 1;
+	moveFloorData[NUM]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	moveFloorData[NUM]->position = position;
+	moveFloorData[NUM]->scale = scale;
+	moveFloorData[NUM]->angle = angle;
+}
+
+void Stage::SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time)
+{
+	floorPitfallData.push_back(new FloorPitfallData);
+	size_t NUM = floorPitfallData.size() - 1;
+	floorPitfallData[NUM]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	floorPitfallData[NUM]->position = position;
+	floorPitfallData[NUM]->scale = scale;
+	floorPitfallData[NUM]->angle = angle;
+	floorPitfallData[NUM]->time = time;
 }
 
 void Stage::MoveFloorUpdate(int i)
@@ -490,6 +551,36 @@ void Stage::MoveFloorUpdate(int i)
 		{
 			moveFloorData[i]->moveFlag = 1;
 			moveFloorData[i]->time = 0;
+		}
+	}
+}
+
+void Stage::PitfallUpdate(int i)
+{
+	floorPitfallData[i]->time--;
+	//開いている
+	if (floorPitfallData[i]->moveFlag == 0)
+	{
+		if (floorPitfallData[i]->time <= 0)
+		{
+			floorPitfallData[i]->time = 50;
+			floorPitfallData[i]->moveFlag = 1;
+		}
+		if (floorPitfallData[i]->time <= 5)
+		{
+			floorPitfallData[i]->drawAngle.z += 18;
+		}
+	}//閉じている
+	else if (floorPitfallData[i]->moveFlag == 1)
+	{
+		if (floorPitfallData[i]->time <= 0)
+		{
+			floorPitfallData[i]->time = 50;
+			floorPitfallData[i]->moveFlag = 0;
+		}
+		if (floorPitfallData[i]->time <= 5)
+		{
+			floorPitfallData[i]->drawAngle.z += 18;
 		}
 	}
 }
