@@ -14,17 +14,17 @@ Player::~Player()
 
 void Player::Init()
 {
-	playerObject = Shape::CreateOBJ("player", true);
+	playerObject = Shape::CreateOBJ("pengin", true);
 	oldPosition = position;
 	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
-	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Player2");
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
+	////モデル名を指定してファイル読み込み
+	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking");
+	////3Dオブジェクトの生成とモデルのセット
+	//fbxObject1 = new FBXObject3d;
+	//fbxObject1->Initialize();
+	//fbxObject1->SetModel(model1);
 }
 
 void Player::Update()
@@ -43,16 +43,18 @@ void Player::Update()
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 	//落下死
 	FallDie();
+	//魚関連
+	Fish();
 }
 
 void Player::Draw(bool shadowFlag)
 {
 	Object::Draw(playerObject, position, scale, angle, color, playerObject.OBJTexture, shadowFlag);
-	////FBX試し
-	//fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
-	//fbxObject1->SetRotation(angle);
-	//fbxObject1->Update();
-	//fbxObject1->Draw();
+	//FBX試し
+	/*fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
+	fbxObject1->SetRotation(angle);
+	fbxObject1->Update();
+	fbxObject1->Draw();*/
 }
 
 void Player::SetPosition(Vec3 position)
@@ -69,8 +71,10 @@ void Player::GroundFlag()
 
 void Player::Reset()
 {
-	position = { 70.0f,20.0f,80.0f };	//座標
+	position = { 70.0f,25.0f,80.0f };	//座標
 	oldPosition = position;
+	remainLives = remainLivesMax;
+	gameoverFlag = false;
 }
 
 //移動
@@ -112,10 +116,19 @@ void Player::Move()
 void Player::Jump()
 {
 	//ジャンプ
-	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag) && groundFlag == true)
+	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag)
+		&& groundFlag == true)
 	{
-		jumpPower = jumpPowerMax;
-		blockStepOnFlag = false;
+		if (jumpBoxFlag)
+		{
+			jumpPower = jumpBoxPowerMax;
+			jumpBoxFlag = false;
+		}
+		else
+		{
+			jumpPower = jumpPowerMax;
+		}		
+			blockStepOnFlag = false;
 	}
 
 
@@ -133,7 +146,37 @@ void Player::FallDie()
 {
 	if (position.y < -30.0f)
 	{
-		Reset();
+		if (remainLives > 0)
+		{
+			position = { 70.0f,20.0f,80.0f };	//座標
+			oldPosition = position;
+			remainLives--;
+		}
+		else if (remainLives == 0)
+		{
+			gameoverFlag = true;
+		}
+	}
+}
+
+void Player::Fish()
+{
+	if (changeBreakFlag == true)
+	{
+		fishFlag = true;
+		changeBreakFlag = false;
+	}
+	if (fishFlag == true)
+	{
+		fishNum += 5;
+		fishFlag = false;
+	}
+
+	//100個集まったら残機１つ増える
+	if (fishNum >= 100)
+	{
+		fishNum -= 100;
+		remainLives++;
 	}
 }
 

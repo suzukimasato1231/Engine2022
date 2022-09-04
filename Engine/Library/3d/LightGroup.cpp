@@ -1,6 +1,7 @@
 ﻿#include "LightGroup.h"
 #include <assert.h>
 #include"Camera.h"
+#include"Input.h"
 using namespace DirectX;
 
 /// <summary>
@@ -55,37 +56,29 @@ void LightGroup::Initialize()
 
 void LightGroup::Update()
 {
-	//影用
-	//Vec3 eye = Camera::Get()->GetEye();
-	//Vec3 target = Camera::Get()->GetTarget();
-	//Vec3 up = Camera::Get()->GetUp();
-	
 	////影用
-	XMFLOAT3 eye = { 0,50,0 };
-	XMFLOAT3 target = { 0,0,0 };
-	XMFLOAT3 up = { 0,1,0 };
+	Vec3 target = Vec3(Camera::Get()->GetEye().x - 90, Camera::Get()->GetEye().y - 100, Camera::Get()->GetEye().z);
+	Vec3 eye = Camera::Get()->GetTarget() + shadowDir.normalize() * Vec3(Camera::Get()->GetTarget() - Camera::Get()->GetEye()).length();
+	Vec3 up = { 0,1,0 };
+
+
 	matView = XMMatrixLookAtLH(
 		XMLoadFloat3(&eye),
 		XMLoadFloat3(&target),
 		XMLoadFloat3(&up));
 
-	//matProjection = XMMatrixPerspectiveFovLH(
-	//	XMConvertToRadians(60.0f),
-	//	(float)window_width / window_height,
-	//	0.1f, 1000); //前端、奥端
-
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		-10.0f, 10.0f,
-		-10.0f, 10.0f,
-		-10.0f, 10.0f);//前端　奥端
+		-400.0f, 450.0f,
+		-400.0f, 450.0f,
+		-500.0f, 500.0f);//前端　奥端
 
 	lightMatViewProjection = matView * matProjection;
 
 	// 値の更新があった時だけ定数バッファに転送する
-//	if (dirty) {
-	TransferConstBuffer();
-	//	dirty = false;
-	//}
+	if (dirty) {
+		TransferConstBuffer();
+		dirty = false;
+	}
 }
 
 void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
@@ -171,7 +164,7 @@ void LightGroup::DefaultLightSetting()
 {
 	dirLights[0].SetActive(true);
 	dirLights[0].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	dirLights[0].SetLightDir({ 0.0f, -1.0f, 0.0f, 0 });
+	dirLights[0].SetLightDir({ 1.0f, -1.0f, 0.0f, 0 });
 
 	dirLights[1].SetActive(false);
 	dirLights[1].SetLightColor({ 1.0f, 1.0f, 1.0f });
@@ -339,4 +332,9 @@ void LightGroup::SetCircleShadowFactorAngle(int index, const Vec2& lightFactorAn
 
 	circleShadows[index].SetFactorAngle(lightFactorAngle);
 	dirty = true;
+}
+
+void LightGroup::SetShadowDir(const Vec3 shadowDir)
+{
+	LightGroup::shadowDir = shadowDir;
 }

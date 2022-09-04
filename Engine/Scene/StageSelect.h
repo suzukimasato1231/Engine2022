@@ -5,6 +5,7 @@
 #include"Audio.h"
 #include"FBXObject3d.h"
 #include"Object.h"
+#include"../EnemyManager.h"
 extern const int window_width;
 extern const int window_height;
 class StageSelect 
@@ -21,6 +22,8 @@ public:
 	void Update();
 
 	void Draw();
+
+	void DrawShadow();
 public:
 	LightGroup* lightGroup = nullptr;
 public:

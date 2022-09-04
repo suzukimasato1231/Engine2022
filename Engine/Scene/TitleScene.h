@@ -6,6 +6,7 @@
 #include"Audio.h"
 #include"FBXObject3d.h"
 #include"Object.h"
+#include"Sprite.h"
 extern const int window_width;
 extern const int window_height;
 class TitleScene 
@@ -22,19 +23,13 @@ public:
 	void Update();
 
 	void Draw();
-
-	void ShadowDraw();
-private:
-	LightGroup* lightGroup = nullptr;
-	Audio* audio = nullptr;
 private://’è‹`
-
-	ObjectData floor;
-
-	ObjectData polygon;
-
-	Vec3 pos = {};
-
+	ObjectData titlePlayer;
+	ObjectData box;
+	int boxGraph;
+	SpriteData titleGraph;
+	SpriteData titleButtonGraph;
+	int buttonTime = 0;
 };
 
 

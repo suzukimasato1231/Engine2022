@@ -21,28 +21,6 @@ for (float j = -2.0f; j < 3.0f; j = j + 1.0f)
 		totalcolor += tex.Sample(smp, input.uv + float2(i * U, j * V));
 	}
 }
-
-////¶ã
-//totalcolor += tex.Sample(smp, input.uv + float2(-U, -V));
-////’†ã
-//totalcolor += tex.Sample(smp, input.uv + float2(0, -V));
-////‰E‰º
-//totalcolor += tex.Sample(smp, input.uv + float2(U, -V));
-////¶’†
-//totalcolor += tex.Sample(smp, input.uv + float2(-U, 0));
-////’†’†
-//totalcolor += tex.Sample(smp, input.uv + float2(0, 0));
-////‰E’†
-//totalcolor += tex.Sample(smp, input.uv + float2(U, 0));
-////¶‰º
-//totalcolor += tex.Sample(smp, input.uv + float2(-U, V));
-////’†‰º
-//totalcolor += tex.Sample(smp, input.uv + float2(0, V));
-////‰E‰º
-//totalcolor += tex.Sample(smp, input.uv + float2(U, V));
-
-
-
 return float4(totalcolor.rgb / 25.0f, 1);
 }
 

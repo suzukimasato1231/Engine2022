@@ -3,6 +3,7 @@
 #include<vector>
 #include <LoadCSV.h>
 #include"./StegeObject.h"
+#include"../Engine/EnemyManager.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
@@ -36,17 +37,25 @@ private:
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
+	void SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
 	void SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
+	void SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
+	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int time);
+
 	void MoveFloorUpdate(int i);
+
+	void PitfallUpdate(int i);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
-	const int drawNumY = 20;
+	const int drawNumY = 55;
 	//ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
@@ -59,6 +68,10 @@ private:
 	std::vector<Floor*>floor;
 	int floorGraph = 0;
 
+	int mask = 0;
+	int green = 0;
+	int grn = 0;
+
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
 	ObjectData wallOBJ = {};
@@ -66,13 +79,14 @@ private:
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
 	//ゴール
 	ObjectData goalOBJ = {};
-	int goalGraph = 0;
-	Vec3 goalScale = { 20.0f,4.0f,20.0f };
+	Vec3 goalScale = { 25.0f,25.0f,25.0f };
 	bool goalFlag = false;
 	//壊れる箱
 	ObjectData breakBoxOBJ = {};
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
+	int normalBoxGraph = 0;
 	int breakBoxGraph = 0;
+	int jumpBoxgraph = 0;
 
 
 	int stageBlockNum = 0;//ステージにある最大のブロック数
@@ -82,4 +96,9 @@ private:
 	ObjectData moveFloorOBJ = {};
 	std::vector<MoveFloorData*>moveFloorData;
 	int moveGraph = 0;
+
+	//落とし床
+	ObjectData floorPitfallOBJ = {};
+	std::vector<FloorPitfallData*>floorPitfallData;
+	int pitfallGraph = 0;
 };

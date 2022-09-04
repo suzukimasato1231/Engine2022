@@ -4,7 +4,7 @@ using namespace DirectX;
 extern const int window_width;
 extern const int window_height;
 
-const float PostEffect::clearColor[4] = { 0.2f,0.5f,0.1f,0.0f };//óŒÇ¡Ç€Ç¢êF
+const float PostEffect::clearColor[4] = { 0.2f,0.2f,0.4f,0.0f };//óŒÇ¡Ç€Ç¢êF
 ID3D12Device* PostEffect::dev = nullptr;
 PostEffect::PostEffect()
 {}
@@ -180,9 +180,9 @@ void PostEffect::CreatePipeline(ID3D12Device* dev)
 	pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev,ShaderManager::postNormalShader);
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
+void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList,Vec4 color)
 {
-	DrawPost(sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, { 1,1,1,1 }, false, false);
+	DrawPost(sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false);
 }
 
 void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)

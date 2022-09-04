@@ -30,6 +30,9 @@ private:
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 	//深度バッファ
 	ComPtr<ID3D12Resource> depthbuff;
+
+	//SRv用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> depthHeapSRV;
 	//RTV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapRTV;
 	//DSV用デスクリプタヒープ
@@ -53,8 +56,8 @@ public:
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 	void PreDraw(ID3D12GraphicsCommandList* cmdList);
 	void PostDraw(ID3D12GraphicsCommandList* cmdList);
-	ID3D12Resource* GetTexbuffer() { return texbuff; }
 
+	ID3D12Resource* GetTexbuff() { return depthbuff.Get(); }
 private:
-	void CreateGraphicsPipelineState();
+	void CreateGraphicsPipelineState(ID3D12Device* dev);
 };

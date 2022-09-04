@@ -8,7 +8,6 @@ SceneManagerh::SceneManagerh()
 {}
 SceneManagerh::~SceneManagerh()
 {
-	safe_delete(shadow);
 }
 void SceneManagerh::Initialize()
 {
@@ -45,54 +44,67 @@ void SceneManagerh::Initialize()
 	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 
 	titleScene.Initialize();
-	titleScene.Init();
 	//ゲームシーン
 	gameScene.Initialize();
 	gameScene.Init(0);
 	stageScene.Initialize();
+	resultScene.Initialize();
 	resultScene.Init();
 	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
 	//影
-	shadow = new ShadowMap();
-	shadow->Init();
-	Texture::Get()->LoadShadowTexture(shadow->GetTexbuffer());
-
+	ShadowMap::Get()->Init();
+	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
 	titleScene.Init();
+
+	changeBlack = Sprite::Get()->SpriteCreate(L"Resources/black.png");
 }
 
 void SceneManagerh::Update()
 {
 	Input::Get()->Update();
+
 	//シーン切り替え
 	if (scene == Title)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
+		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
 		{
-			scene = SelectScene;
-			stageScene.Init();
+			changeSceneFlag = ChangeFirst;
+			sceneMe = SelectScene;
 		}
 	}
 	else if (scene == SelectScene)
 	{
-		if (stageScene.GetSelectFlag() == true)
+		if (changeSceneFlag == ChangeStand && stageScene.GetSelectFlag() == true)
 		{
-			scene = GameScene;
-			gameScene.Init(stageScene.GetStageNum());
+			sceneMe = GameScene;
+			changeSceneFlag = ChangeFirst;
 		}
 	}
 	else if (scene == GameScene)
 	{
-		if (gameScene.GetChangeScene())
+		if (changeSceneFlag == ChangeStand && gameScene.GetChangeScene())
 		{
-			scene = Result;
-			resultScene.Init();
+			if (gameScene.GetChangeNum() == 0)
+			{
+				sceneMe = Result;
+			}
+			else if (gameScene.GetChangeNum() == 1)
+			{
+				sceneMe = GameScene;
+			}
+			else if (gameScene.GetChangeNum() == 2)
+			{
+				sceneMe = SelectScene;
+			}
+			changeSceneFlag = ChangeFirst;
 		}
 	}
 	else if (scene == Result)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
+		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
 		{
-			scene = Title;
+			sceneMe = Title;
+			changeSceneFlag = ChangeFirst;
 		}
 	}
 	//更新
@@ -112,22 +124,69 @@ void SceneManagerh::Update()
 	{
 		resultScene.Update();
 	}
+
+
+	//シーンチェンジ
+	if (changeSceneFlag == ChangeFirst)
+	{
+		changeSceneColor += Vec4(0.0f, 0.0f, 0.0f, 0.1f);
+		if (changeSceneColor.w >= 1.0f)
+		{
+			changeSceneFlag = ChangeEnd;
+			switch (scene)
+			{
+			case Title:
+				stageScene.Init();
+				break;
+			case SelectScene:
+				gameScene.Init(stageScene.GetStageNum());
+				break;
+			case GameScene:
+				if (sceneMe == Result)
+				{
+					resultScene.Init();
+				}
+				else if (sceneMe == GameScene)
+				{
+					gameScene.Init(stageScene.GetStageNum());
+				}
+				else if (sceneMe == SelectScene)
+				{
+					stageScene.Init();
+				}
+				break;
+			case Result:
+				titleScene.Init();
+				break;
+			default:
+				break;
+			}
+			scene = sceneMe;
+		}
+	}
+	else if (changeSceneFlag == ChangeEnd)
+	{
+		changeSceneColor -= Vec4(0.0f, 0.0f, 0.0f, 0.1f);
+		if (changeSceneColor.w <= 0.0f)
+		{
+			changeSceneFlag = ChangeStand;
+		}
+	}
 }
 
 void SceneManagerh::Draw()
 {
 	//描画開始
-	
+
 	//影深度値取得
-	shadow->PreDraw(_DirectX::Get()->GetCmandList());
+	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
 	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
-	Object::SetPipeline(Pipeline::ShadowMapPipeline);
 	if (scene == Title)
 	{
-		titleScene.ShadowDraw();
 	}
 	else if (scene == SelectScene)
 	{
+		stageScene.DrawShadow();
 	}
 	else if (scene == GameScene)
 	{
@@ -136,9 +195,7 @@ void SceneManagerh::Draw()
 	else if (scene == Result)
 	{
 	}
-	shadow->PostDraw(_DirectX::Get()->GetCmandList());
-
-
+	ShadowMap::Get()->PostDraw(_DirectX::Get()->GetCmandList());
 
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
 	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
@@ -150,11 +207,31 @@ void SceneManagerh::Draw()
 	}
 	else if (scene == SelectScene)
 	{
+		/*if (Input::Get()->KeybordTrigger(DIK_C))
+		{
+			if (Flag == false) { Flag = true; }
+			else { Flag = false; }
+		}*/
+		//if (Flag == false) {
 		stageScene.Draw();
+		/*}
+		else {
+			ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
+		}*/
 	}
 	else if (scene == GameScene)
 	{
+		/*if (Input::Get()->KeybordTrigger(DIK_C))
+		{
+			if (Flag == false) { Flag = true; }
+			else { Flag = false; }
+		}
+		if (Flag == false) {*/
 		gameScene.Draw();
+		/*}
+		else {
+			ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
+		}*/
 	}
 	else if (scene == Result)
 	{
@@ -165,7 +242,11 @@ void SceneManagerh::Draw()
 
 	_DirectX::Get()->PreDraw();
 	//ポストエフェクトの描画
-	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList());
+	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList(), changeSceneColor);
+	if (changeSceneFlag == ChangeFirst || changeSceneFlag == ChangeEnd)
+	{
+		Sprite::Get()->Draw(changeBlack, Vec2(), static_cast<float>(window_width), static_cast<float>(window_height), Vec2(), changeSceneColor);
+	}
 	_DirectX::Get()->ResourceBarrier();
 
 }

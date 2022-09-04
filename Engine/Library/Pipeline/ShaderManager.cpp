@@ -33,6 +33,7 @@ ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName, LPCSTR Vtarget, LPCSTR entryPoi
 Shader ShaderManager::spriteShader;
 Shader ShaderManager::objShader;
 Shader ShaderManager::toonObjShader;
+Shader ShaderManager::normalMapShader;
 Shader ShaderManager::particleShader;
 Shader ShaderManager::postNormalShader;
 Shader ShaderManager::postTestShader;
@@ -48,6 +49,9 @@ void ShaderManager::LoadShaders()
 
 	toonObjShader.vsBlob = LoadShader(L"Resources/shaders/OBJToonVS.hlsl", "vs_5_0");
 	toonObjShader.psBlob = LoadShader(L"Resources/shaders/OBJToonPS.hlsl", "ps_5_0");
+
+	normalMapShader.vsBlob = LoadShader(L"Resources/shaders/Object/NormalMapVS.hlsl","vs_5_0");
+	normalMapShader.psBlob = LoadShader(L"Resources/shaders/Object/NormalMapPS.hlsl", "ps_5_0");
 
 	particleShader.vsBlob = LoadShader(L"Resources/shaders/ParticleVS.hlsl", "vs_5_0");
 	particleShader.psBlob = LoadShader(L"Resources/shaders/ParticlePS.hlsl", "ps_5_0");

@@ -77,7 +77,7 @@ public: // メンバ関数
 	/// 更新
 	/// </summary>
 	void Update();
-	
+
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -231,6 +231,11 @@ public: // メンバ関数
 	/// <param name="index">番号</param>
 	/// <param name="lightFactorAngle">x:減衰開始角度 y:減衰終了角度</param>
 	void SetCircleShadowFactorAngle(int index, const Vec2& lightFactorAngle);
+	/// <summary>
+	/// 影の方向
+	/// </summary>
+	/// <param name="shadowDir"></param>
+	void SetShadowDir(const Vec3 shadowDir);
 
 
 	XMMATRIX GetLightMatProjection() { return lightMatViewProjection; }
@@ -263,5 +268,7 @@ private: // メンバ変数
 	XMMATRIX matProjection;
 
 	XMMATRIX lightMatViewProjection;
+
+	Vec3 shadowDir = { 1,1,0 };
 };
 

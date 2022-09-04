@@ -1,7 +1,8 @@
 
 cbuffer cbuff0 : register(b0)
 {
-	
+	matrix world;
+	float4 color;
 };
 struct VSOutput
 {

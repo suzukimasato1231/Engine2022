@@ -1,6 +1,7 @@
 #pragma once
 #include <d3dx12.h>
 #include"Singleton.h"
+#include"Sprite.h"
 class Texture :public Singleton<Texture>
 {
 public:
@@ -27,6 +28,8 @@ public:
 	int LoadTexture(const wchar_t *filename);
 	//OBJ‰æ‘œ“Ç‚İ‚İ
 	int OBJLoadTexture(const std::string &directoryPath, const std::string &filename);
+
+	//void LoadDivGraph(SpriteData& graph, const int num, const int width, const int height, const float sizeX, const float sizeY);
 
 	void LoadShadowTexture(ID3D12Resource *texbuff);
 	//SRV‚ğŠl“¾

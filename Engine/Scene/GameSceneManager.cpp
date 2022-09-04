@@ -23,28 +23,23 @@ void GameSceneManager::Initialize()
 	audio = Audio::Create();
 	//ライトグループクラス作成
 	lightGroup = LightGroup::Create();
-
 	//音データ読み込み
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
-
+	lightGroup->SetShadowDir(Vec3(1, 1, 0));
 	//カメラ位置をセット
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
-
 	BGGraph = Sprite::Get()->SpriteCreate(L"Resources/backgroundA.png");
 	BGGraph.texNumber = Texture::Get()->GetShadowTexture();
-
 	//3Dオブジェクト画像読み込み
 	//プレイヤーの初期化
 	Player::Get()->Init();
 	//ステージ
 	Stage::Get()->Init();
 	Particle::Get()->Init();
-
 	TimeAttack::Get()->Init();
-
 	UI::Get()->Init();
 }
 
@@ -61,29 +56,53 @@ void GameSceneManager::Init(int stageNum)
 void GameSceneManager::Update()
 {
 	//プレイヤーの更新
-
 	if (Input::Get()->KeybordTrigger(DIK_R))
 	{
 		Reset(stageNum);
 	}
-
 	Player::Get()->Update();
 
 	Stage::Get()->Update();
-
-	//
-	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 35.0f);
-
+	//残機が０にならない限り追跡
+	if (Player::Get()->GetGameoverFlag() == false)
+	{
+		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 40.0f);
+	}
 	//クリアしたらシーンチェンジ
 	if (Stage::Get()->GetClearFlag() == true)
 	{
 		changeScene = true;
+		changeNum = ChangeClear;
 	}
 	Particle::Get()->Update();
 	//ライト更新
 	lightGroup->Update();
 
 	TimeAttack::Get()->Update();
+	//ゲームオーバー時のセレクト
+	if (Player::Get()->GetGameoverFlag() == true)
+	{
+		if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft)==true)
+		{
+			changeNum++;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight)==true)
+		{
+			changeNum--;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA)==true)
+		{
+			changeScene = true;
+		}
+		if (changeNum > 2)
+		{
+			changeNum = 1;
+		}
+		else if (changeNum < 1)
+		{
+			changeNum = 2;
+		}
+	}
 
 	UI::Get()->Update();
 }
@@ -93,23 +112,25 @@ void GameSceneManager::Draw()
 	//背景描画
 	//3D
 
-	Stage::Get()->Draw();
+	Stage::Get()->Draw(true);
+
 	//プレイヤーの描画
-	Player::Get()->Draw();
+	Player::Get()->Draw(true);
 
 	Particle::Get()->Draw();
 
-	TimeAttack::Get()->Draw();
+	//TimeAttack::Get()->Draw();
 
 	//2D
-	UI::Get()->Draw();
+	UI::Get()->Draw(Player::Get()->GetRemanLives(), Player::Get()->GetFishNum(), 
+		Player::Get()->GetGameoverFlag(),changeNum);
 }
 
 void GameSceneManager::ShadowDraw()
 {
-	Stage::Get()->Draw(true);
+	Stage::Get()->Draw();
 	//プレイヤーの描画
-	Player::Get()->Draw(true);
+	Player::Get()->Draw();
 }
 
 void GameSceneManager::Reset(int stageNum)

@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include <DirectXTex.h>
 using namespace DirectX;
-ID3D12Device *Texture::dev = nullptr;
+ID3D12Device* Texture::dev = nullptr;
 
 Texture::Texture()
 {
@@ -16,14 +16,14 @@ Texture::~Texture()
 	}
 }
 
-void Texture::Init(ID3D12Device *dev)
+void Texture::Init(ID3D12Device* dev)
 {
 	this->dev = dev;
 
 	LoadTexture(L"Resources/white1x1.png");
 }
 
-int Texture::LoadTexture(const wchar_t *filename)
+int Texture::LoadTexture(const wchar_t* filename)
 {
 	HRESULT result = S_FALSE;
 
@@ -49,7 +49,7 @@ int Texture::LoadTexture(const wchar_t *filename)
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
-	const Image *img = scratchImg.GetImage(0, 0, 0);//生データ抽出
+	const Image* img = scratchImg.GetImage(0, 0, 0);//生データ抽出
 
 	//リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -104,7 +104,7 @@ int Texture::LoadTexture(const wchar_t *filename)
 	return (int)texNum - 1;
 }
 
-int Texture::OBJLoadTexture(const std::string &directoryPath, const std::string &filename)
+int Texture::OBJLoadTexture(const std::string& directoryPath, const std::string& filename)
 {
 	HRESULT result = S_FALSE;
 	textureData.push_back(new Texture::TextureData);
@@ -136,7 +136,7 @@ int Texture::OBJLoadTexture(const std::string &directoryPath, const std::string 
 	if (FAILED(result)) {
 		return result;
 	}
-	const Image *img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
+	const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
 
 	// リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -192,13 +192,17 @@ int Texture::OBJLoadTexture(const std::string &directoryPath, const std::string 
 	return (int)texNum - 1;
 }
 
+//void Texture::LoadDivGraph(SpriteData& graph, const int num, const int width, const int height, const float sizeX, const float sizeY)
+//{
+//	
+//
+//
+//}
+
 void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 {
-
 	textureData.push_back(new Texture::TextureData);
-	
-	textureData[texNum]->texbuff = texbuff;
-
+	textureData[textureData.size() - 1]->texbuff = texbuff;
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// シェーダリソースビュー作成
 	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
@@ -208,9 +212,7 @@ void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-	D3D12_RESOURCE_DESC resDesc = textureData[texNum]->texbuff->GetDesc();
-
-	srvDesc.Format = resDesc.Format;
+	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
@@ -219,9 +221,7 @@ void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 		&srvDesc, //テクスチャ設定情報
 		textureData[texNum]->cpuDescHandleSRV
 	);
-
 	shadowTexture = texNum;
-
 	texNum++;
 }
 
@@ -231,12 +231,12 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::GetGPUSRV(int i)
 	return 	textureData[i]->gpuDescHandleSRV;
 }
 
-ID3D12Resource *Texture::GetTexbuff(int i)
+ID3D12Resource* Texture::GetTexbuff(int i)
 {
 	return textureData[i]->texbuff.Get();
 }
 
-ID3D12DescriptorHeap *Texture::GetDescHeap()
+ID3D12DescriptorHeap* Texture::GetDescHeap()
 {
 	return descHeap.Get();
 }

@@ -4,6 +4,8 @@
 #include"Camera.h"
 #include"Shape.h"
 #include"Input.h"
+#include"Texture.h"
+
 TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
@@ -11,70 +13,40 @@ TitleScene::~TitleScene()
 }
 void TitleScene::Initialize()
 {
-	//ライトグループクラス作成
-	lightGroup = LightGroup::Create();
-
-	//音データ読み込み
-	// 3Dオブエクトにライトをセット
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
-
-	//カメラ位置をセット
-	Camera::Get()->SetCamera(Vec3{ 0,50,-10 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-
-	floor = Shape::CreateSquare(200.0f, 2.0f, 200.0f);
-
-	polygon = Shape::CreateOBJ("sphere",true);
+	titlePlayer = Shape::CreateOBJ("pengin", true);
+	box = Shape::CreateOBJ("cube");
+	boxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
+	titleButtonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
+	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title.png");
 }
 
 void TitleScene::Init()
 {
-	Object::SetLight(lightGroup);
-	//カメラ位置をセット
-	Camera::Get()->SetCamera(Vec3{ 0,20,-40 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-
+	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 }
 
 void TitleScene::Update()
 {
-	if (Input::Get()->KeybordTrigger(DIK_LEFT))
+	buttonTime++;
+	if (buttonTime >= 60)
 	{
-		pos.x -= 1.0f;
+		buttonTime = 0;
 	}
-	if (Input::Get()->KeybordTrigger(DIK_RIGHT))
-	{
-		pos.x += 1.0f;
-	}
-	if (Input::Get()->KeybordTrigger(DIK_DOWN))
-	{
-		pos.y -= 1.0f;
-	}
-	if (Input::Get()->KeybordTrigger(DIK_UP))
-	{
-		pos.y += 1.0f;
-	}
-
-	lightGroup->Update();
 }
 
 void TitleScene::Draw()
 {
-	Object::Get()->Draw(floor, Vec3(), Vec3(1.0f, 1.0f, 1.0f), Vec3());
-
-	Object::Get()->Draw(polygon, pos, Vec3(1.0f, 1.0f, 1.0f), Vec3());
-
-	Object::Get()->Draw(polygon, Vec3(10.0f, 20.0f, 20.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3());
-
-	Object::Get()->Draw(polygon, Vec3(0.0f, 20.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3());
 	//背景描画
-	DebugText::Get()->Print(10.0f, 10.0f, 3, "Title");
-}
 
-void TitleScene::ShadowDraw()
-{
-	Object::Get()->Draw(floor, Vec3(), Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), 0, true);
+	//3D
+	Object::Draw(titlePlayer, Vec3(10.0f, -3.0f, 0.0f), Vec3(1, 1, 1), Vec3(0.0f, 10.0f, 0.0f), Vec4(), titlePlayer.OBJTexture, true);
 
-	Object::Get()->Draw(polygon, pos, Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), 0, true);
+	Object::Draw(box, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2), Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph, true);
 
-	Object::Get()->Draw(polygon, Vec3(10.0f, 20.0f, 20.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), 0, true);
+	//UI
+	Sprite::Get()->Draw(titleGraph, Vec2(0.0f, 0.0f), static_cast<float>(window_width), static_cast<float>(window_height));
+	if (buttonTime >= 30)
+	{
+		Sprite::Get()->Draw(titleButtonGraph, Vec2(420.0f, 532.0f), 512.0f, 64.0f);
+	}
 }

@@ -11,6 +11,7 @@ StageSelect::StageSelect()
 {}
 StageSelect::~StageSelect()
 {
+	safe_delete(lightGroup);
 }
 void StageSelect::Initialize()
 {
@@ -20,11 +21,11 @@ void StageSelect::Initialize()
 
 	// ライトグループクラス作成
 	lightGroup = LightGroup::Create();
-
 	//音データ読み込み
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,-1,0 });
+	lightGroup->SetShadowDir(Vec3(0, 1, 0));
 }
 
 void StageSelect::Init()
@@ -41,7 +42,7 @@ void StageSelect::Init()
 	}
 	selectFlag = false;
 	Stage::Get()->LoadStage(0);
-	Player::Get()->SetPosition(Vec3(20.0f, 0.0f, 150.0f));
+	Player::Get()->SetPosition(Vec3(20.0f, 10.0f, 150.0f));
 }
 
 void StageSelect::Update()
@@ -67,14 +68,18 @@ void StageSelect::Update()
 void StageSelect::Draw()
 {
 	//背景描画
-	DebugText::Get()->Print(10.0f, 10.0f, 3, "Select");
-
-	Player::Get()->Draw();
-	Stage::Get()->Draw();
+	Player::Get()->Draw(true);
+	Stage::Get()->Draw(true);
 
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
-		Object::Draw(selectOBJ, selectPos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), selectGraph[i]);
+		Object::Draw(selectOBJ, selectPos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), selectGraph[i], true);
 	}
 
+}
+
+void StageSelect::DrawShadow()
+{
+	Player::Get()->Draw();
+	Stage::Get()->Draw();
 }

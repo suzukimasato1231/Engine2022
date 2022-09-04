@@ -53,7 +53,7 @@ public:
 	Vec3 &operator/=(float s);
 
 };
-
+const bool operator==(const Vec3& v1, const Vec3& v2);
 //２項演算子オーバーロード
 const Vec3 operator+(const Vec3 &v1, const Vec3 &v2);
 const Vec3 operator-(const Vec3 &v1, const Vec3 &v2);
