@@ -142,7 +142,7 @@ public:
 	static LightGroup* lightGroup;
 public://オブジェクト関連
 	//オブジェクト描画前
-	static void PreDraw();
+	static void PreDraw(bool shadowFlag = false);
 	//定数バッファ設定
 	static void OBJConstantBuffer();
 	/// <summary>

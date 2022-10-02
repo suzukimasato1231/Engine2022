@@ -36,8 +36,6 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	//”wŒi•`‰æ
-
 	//3D
 	Object::Draw(titlePlayer, Vec3(10.0f, -3.0f, 0.0f), Vec3(1, 1, 1), Vec3(0.0f, 10.0f, 0.0f), Vec4(), titlePlayer.OBJTexture, true);
 

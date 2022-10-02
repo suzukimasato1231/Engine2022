@@ -74,6 +74,7 @@ void Player::Reset()
 	position = { 70.0f,25.0f,80.0f };	//ç¿ïW
 	oldPosition = position;
 	remainLives = remainLivesMax;
+	fishNum = 0;
 	gameoverFlag = false;
 }
 
@@ -109,7 +110,7 @@ void Player::Move()
 		{
 			vec.z = speed.z * cosf(rad);
 		}
-		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad))) - 90;
+		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)) - 59.8f);
 	}
 }
 
@@ -127,8 +128,8 @@ void Player::Jump()
 		else
 		{
 			jumpPower = jumpPowerMax;
-		}		
-			blockStepOnFlag = false;
+		}
+		blockStepOnFlag = false;
 	}
 
 

@@ -10,7 +10,6 @@ ID3D12Device* Object::dev = nullptr;
 ID3D12GraphicsCommandList* Object::cmdList = nullptr;
 LightGroup* Object::lightGroup = nullptr;
 Pipeline::PipelineSet Object::objPipelineSet;		//OBJ読み込み
-size_t Object::objNum = 0;
 size_t Object::OBJNum = 0;
 
 
@@ -108,10 +107,30 @@ void Object::MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotati
 	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::PreDraw()
+void Object::PreDraw(bool shadowFlag)
 {
-	objNum = 0;
 	OBJNum = 0;
+	//プリミティブ形状の設定コマンド（三角形リスト）
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//デスクリプタヒープをセット
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	if (objPipelineSet.pipelinestate == nullptr || objPipelineSet.rootsignature == nullptr)
+	{
+		assert(0);
+	}
+
+	if (shadowFlag == true)
+	{
+		cmdList->SetPipelineState(objPipelineSet.pipelinestate.Get());
+		cmdList->SetGraphicsRootSignature(objPipelineSet.rootsignature.Get());
+	}
+	else
+	{
+		cmdList->SetPipelineState(Pipeline::ShadowMapPipeline.pipelinestate.Get());
+		cmdList->SetGraphicsRootSignature(Pipeline::ShadowMapPipeline.rootsignature.Get());
+	}
 }
 
 void Object::OBJConstantBuffer()
@@ -140,12 +159,6 @@ void Object::OBJConstantBuffer()
 
 void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation, Vec4 color, int graph, bool shadowFlag)
 {
-	//プリミティブ形状の設定コマンド（三角形リスト）
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	//デスクリプタヒープをセット
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
 		//定数バッファ
@@ -153,22 +166,7 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	}
 	//更新
 	MatWord(polygon, position, scale, rotation, color);
-	if (objPipelineSet.pipelinestate == nullptr || objPipelineSet.rootsignature == nullptr)
-	{
-		assert(0);
-	}
-
-	if (shadowFlag == true)
-	{
-		cmdList->SetPipelineState(objPipelineSet.pipelinestate.Get());
-		cmdList->SetGraphicsRootSignature(objPipelineSet.rootsignature.Get());
-	}
-	else
-	{
-		cmdList->SetPipelineState(Pipeline::ShadowMapPipeline.pipelinestate.Get());
-		cmdList->SetGraphicsRootSignature(Pipeline::ShadowMapPipeline.rootsignature.Get());
-	}
-
+	
 	//頂点バッファの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &polygon.vbView);
 
@@ -195,7 +193,6 @@ void Object::Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 rotation,
 	}
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
-
 
 	//影を描画するか
 	if (shadowFlag == true)

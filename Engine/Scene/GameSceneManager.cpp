@@ -62,11 +62,11 @@ void GameSceneManager::Update()
 	}
 	Player::Get()->Update();
 
-	Stage::Get()->Update();
+	Stage::Get()->Update(Player::Get()->GetPosition());
 	//残機が０にならない限り追跡
 	if (Player::Get()->GetGameoverFlag() == false)
 	{
-		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 40.0f);
+		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 45.0f);
 	}
 	//クリアしたらシーンチェンジ
 	if (Stage::Get()->GetClearFlag() == true)
@@ -82,15 +82,15 @@ void GameSceneManager::Update()
 	//ゲームオーバー時のセレクト
 	if (Player::Get()->GetGameoverFlag() == true)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft)==true)
+		if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft) == true)
 		{
 			changeNum++;
 		}
-		if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight)==true)
+		if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight) == true)
 		{
 			changeNum--;
 		}
-		if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA)==true)
+		if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA) == true)
 		{
 			changeScene = true;
 		}
@@ -112,23 +112,21 @@ void GameSceneManager::Draw()
 	//背景描画
 	//3D
 
-	Stage::Get()->Draw(true);
+	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
 
 	//プレイヤーの描画
 	Player::Get()->Draw(true);
 
 	Particle::Get()->Draw();
 
-	//TimeAttack::Get()->Draw();
-
 	//2D
-	UI::Get()->Draw(Player::Get()->GetRemanLives(), Player::Get()->GetFishNum(), 
-		Player::Get()->GetGameoverFlag(),changeNum);
+	UI::Get()->Draw(Player::Get()->GetRemanLives(), Player::Get()->GetFishNum(),
+		Player::Get()->GetGameoverFlag(), changeNum);
 }
 
 void GameSceneManager::ShadowDraw()
 {
-	Stage::Get()->Draw();
+	Stage::Get()->Draw(Player::Get()->GetPosition());
 	//プレイヤーの描画
 	Player::Get()->Draw();
 }

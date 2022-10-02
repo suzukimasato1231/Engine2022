@@ -19,9 +19,9 @@ public:
 	//ステージ選択
 	void MainInit(int stageNum);
 	//更新
-	void Update();
+	void Update(Vec3 pPos);
 	//描画
-	void Draw(bool shadowFlag = false);
+	void Draw(Vec3 pPos,bool shadowFlag = false);
 
 	void LoadStage(int stageNum);
 public://マップ
@@ -32,7 +32,6 @@ public://マップ
 	int GetBlockNum() { return blockNum; }
 	int GetStageBlock() { return stageBlockNum; }
 private:
-
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
@@ -55,7 +54,7 @@ private:
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
-	const int drawNumY = 55;
+	const int drawNumY = 30;
 	//ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};

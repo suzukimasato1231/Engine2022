@@ -60,7 +60,7 @@ void StageSelect::Update()
 		}
 	}
 	Player::Get()->Update();
-	Stage::Get()->Update();
+	Stage::Get()->Update(Player::Get()->GetPosition());
 	//ƒ‰ƒCƒgXV
 	lightGroup->Update();
 }
@@ -69,17 +69,15 @@ void StageSelect::Draw()
 {
 	//”wŒi•`‰æ
 	Player::Get()->Draw(true);
-	Stage::Get()->Draw(true);
-
+	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
 		Object::Draw(selectOBJ, selectPos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), selectGraph[i], true);
 	}
-
 }
 
 void StageSelect::DrawShadow()
 {
 	Player::Get()->Draw();
-	Stage::Get()->Draw();
+	Stage::Get()->Draw(Player::Get()->GetPosition());
 }

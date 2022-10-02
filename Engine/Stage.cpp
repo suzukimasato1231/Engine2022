@@ -69,7 +69,7 @@ void Stage::MainInit(int stageNum)
 	goalFlag = false;
 }
 
-void Stage::Update()
+void Stage::Update(Vec3 pPos)
 {
 	Vec3 PPos = Player::Get()->GetPosition();
 	//”»’è‚·‚é‰ÓŠ‚¾‚¯s‚¤‚½‚ß
@@ -189,7 +189,7 @@ void Stage::Update()
 	}
 }
 
-void Stage::Draw(bool shadowFlag)
+void Stage::Draw(Vec3 pPos, bool shadowFlag)
 {
 	Vec3 PPos = Player::Get()->GetPosition();
 	//”»’è‚·‚é‰ÓŠ‚¾‚¯s‚¤‚½‚ß
@@ -201,9 +201,9 @@ void Stage::Draw(bool shadowFlag)
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
 			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
-			Object::DrawNormalMap(floorOBJ, Vec3(floor[i]->position.x, floor[i]->position.y, floor[i]->position.z),
+			Object::Draw(floorOBJ, Vec3(floor[i]->position.x, floor[i]->position.y, floor[i]->position.z),
 				Vec3(floor[i]->scale.x, floor[i]->scale.y, floor[i]->scale.z),
-				floor[i]->angle, mask, green, grn, shadowFlag);
+				floor[i]->angle, Vec4(), grn, shadowFlag);
 		}
 	}
 	//“®‚­°
