@@ -19,12 +19,16 @@ void Player::Init()
 	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+
+	playerFallDie.Init();
 	////モデル名を指定してファイル読み込み
 	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking");
 	////3Dオブジェクトの生成とモデルのセット
 	//fbxObject1 = new FBXObject3d;
 	//fbxObject1->Initialize();
 	//fbxObject1->SetModel(model1);
+
+	fishOBJ = Shape::CreateOBJ("fish", true);
 }
 
 void Player::Update()
@@ -57,6 +61,11 @@ void Player::Draw(bool shadowFlag)
 	fbxObject1->Draw();*/
 }
 
+void Player::DrawParticle()
+{
+	playerFallDie.Draw();
+}
+
 void Player::SetPosition(Vec3 position)
 {
 	this->position = position;
@@ -74,6 +83,7 @@ void Player::Reset()
 	position = { 70.0f,25.0f,80.0f };	//座標
 	oldPosition = position;
 	remainLives = remainLivesMax;
+	fishNum = 0;
 	gameoverFlag = false;
 }
 
@@ -109,7 +119,7 @@ void Player::Move()
 		{
 			vec.z = speed.z * cosf(rad);
 		}
-		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad))) - 90;
+		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)) - 59.8f);
 	}
 }
 
@@ -127,8 +137,8 @@ void Player::Jump()
 		else
 		{
 			jumpPower = jumpPowerMax;
-		}		
-			blockStepOnFlag = false;
+		}
+		blockStepOnFlag = false;
 	}
 
 
@@ -144,19 +154,35 @@ void Player::Jump()
 
 void Player::FallDie()
 {
-	if (position.y < -30.0f)
+	static const int dieTime = 30;	//死んだときの演出時間
+
+	if (position.y < -30.0f && dieFlag == false)
 	{
-		if (remainLives > 0)
+		dieFlag = true;
+		dieNowTime = dieTime;
+		playerFallDie.Create(position);
+	}
+
+	if (dieFlag == true)
+	{
+		if (dieNowTime > 0)
+		{
+			dieNowTime--;
+		}
+		else if (remainLives > 0)
 		{
 			position = { 70.0f,20.0f,80.0f };	//座標
 			oldPosition = position;
 			remainLives--;
+			dieFlag = false;
 		}
 		else if (remainLives == 0)
 		{
 			gameoverFlag = true;
+			dieFlag = false;
 		}
 	}
+	playerFallDie.Update();
 }
 
 void Player::Fish()

@@ -363,6 +363,15 @@
     <ClInclude Include="ShadowMap.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerFallDie.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Fish.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="FishBox.h">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -511,6 +520,15 @@
     </ClCompile>
     <ClCompile Include="ShadowMap.cpp">
       <Filter>Library\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFallDie.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Fish.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="FishBox.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

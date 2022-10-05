@@ -301,6 +301,8 @@
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="Fish.h" />
+    <ClInclude Include="FishBox.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
     <ClInclude Include="Library\2d\PostEffect.h" />
     <ClInclude Include="Library\2d\Sprite.h" />
@@ -345,6 +347,7 @@
     <ClInclude Include="Library\Texture\Texture.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerFallDie.h" />
     <ClInclude Include="PushCollision.h" />
     <ClInclude Include="Scene\GameSceneManager.h" />
     <ClInclude Include="Scene\ResultScene.h" />
@@ -360,6 +363,8 @@
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="Fish.cpp" />
+    <ClCompile Include="FishBox.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />
     <ClCompile Include="Library\2d\PostEffect.cpp" />
     <ClCompile Include="Library\2d\Sprite.cpp" />
@@ -397,6 +402,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerFallDie.cpp" />
     <ClCompile Include="PushCollision.cpp" />
     <ClCompile Include="Scene\GameSceneManager.cpp" />
     <ClCompile Include="Scene\ResultScene.cpp" />

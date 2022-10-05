@@ -4,6 +4,7 @@
 #include <LoadCSV.h>
 #include"./StegeObject.h"
 #include"../Engine/EnemyManager.h"
+#include"FishBox.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
@@ -19,21 +20,18 @@ public:
 	//ステージ選択
 	void MainInit(int stageNum);
 	//更新
-	void Update();
+	void Update(Vec3 pPos);
 	//描画
-	void Draw(bool shadowFlag = false);
+	void Draw(Vec3 pPos, bool shadowFlag = false);
 
 	void LoadStage(int stageNum);
 public://マップ
-	int GetMap(int i, int j) { return map[j][i]; }
-
 	bool GetClearFlag() { return goalFlag; }
 
 	int GetBlockNum() { return blockNum; }
 	int GetStageBlock() { return stageBlockNum; }
 private:
-
-	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type);
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
@@ -47,7 +45,7 @@ private:
 
 	void SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
-	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int time);
+	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time);
 
 	void MoveFloorUpdate(int i);
 
@@ -55,22 +53,18 @@ private:
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
-	const int drawNumY = 55;
-	//ブロック
+	const int drawNumY = 30;
+	////ブロック
 	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
 
 	int mapOBJ[MAP_HEIGHT][MAP_WIDTH] = {};		//壁などのOBJ
 	int mapOBJPos[MAP_HEIGHT][MAP_WIDTH] = {};	//壁などのOBJの座標
 
-	//床
+	//雪の床
 	ObjectData floorOBJ;
 	std::vector<Floor*>floor;
-	int floorGraph = 0;
 
-	int mask = 0;
-	int green = 0;
-	int grn = 0;
 
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
@@ -88,6 +82,7 @@ private:
 	int breakBoxGraph = 0;
 	int jumpBoxgraph = 0;
 
+	FishBox fishBox;
 
 	int stageBlockNum = 0;//ステージにある最大のブロック数
 	int blockNum = 0;	//壊したブロック
@@ -101,4 +96,8 @@ private:
 	ObjectData floorPitfallOBJ = {};
 	std::vector<FloorPitfallData*>floorPitfallData;
 	int pitfallGraph = 0;
+
+
+	ObjectData blackGround = {};
+	int blackGraph = 0;
 };

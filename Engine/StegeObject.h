@@ -1,13 +1,6 @@
 #pragma once
 #include"Vec.h"
 #include <CollisionPrimitive.h>
-struct Floor
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-};
 
 struct MoveFloorData
 {
@@ -52,7 +45,14 @@ enum StageType
 	BreakHARD = 12,	//ŒÅ‚¢” 
 	BreakJUMP = 13,	//ƒWƒƒƒ“ƒv” 
 };
-
+struct Floor
+{
+	Vec3 position = {};
+	Vec3 scale = {};
+	Vec3 angle = {};
+	Vec2 map = {};
+	int type = 0;
+};
 
 struct StageOBJ
 {

@@ -127,9 +127,6 @@ float4 main(VSOutput input) : SV_TARGET
 	   }
    }
 
-
-
-
    //ライト視点から見た位置を求める
 	float3 posFromLightVP = input.posInLVP.xyz / input.posInLVP.w;
 	float2 shadowmap = (posFromLightVP + float2(1,-1)) * float2(0.5,-0.5);
@@ -144,12 +141,6 @@ float4 main(VSOutput input) : SV_TARGET
 		{
 			shadecolor.rgb = shadecolor.rgb * 0.5f;//暗くする
 		}
-
-		/*float depthFromLight = shadow.SampleCmp(
-			shadowSmp,
-			shadowmap,
-			posFromLightVP.z - 0.005f);
-		shadecolor = lerp(0.5f, 1.0f, depthFromLight);*/
 	}
 	// シェーディングによる色で描画
 	 return shadecolor * texcolor;

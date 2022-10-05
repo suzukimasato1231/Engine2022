@@ -33,11 +33,9 @@ Stage::~Stage()
 
 void Stage::Init()
 {
-	floorOBJ = Shape::CreateOBJ("cube");
-	floorGraph = Texture::Get()->LoadTexture(L"Resources/ground.png");
+	floorOBJ = Shape::CreateOBJ("ice");
 
-	wallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
-	wallGraph = Texture::Get()->LoadTexture(L"Resources/map/block.png");
+	wallOBJ = Shape::CreateOBJ("iceWall");
 	//ゴール設定
 	goalOBJ = Shape::CreateOBJ("goal");
 
@@ -52,12 +50,13 @@ void Stage::Init()
 	floorPitfallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 	moveGraph = Texture::Get()->LoadTexture(L"Resources/map/block.png");
 
+	blackGround = Shape::CreateSquare(1.0f, 0.5f, 1.0f);
+	blackGraph = Texture::Get()->LoadTexture(L"Resources/black.png");
 
 	MainInit(0);
 
-	mask = Texture::Get()->LoadTexture(L"Resources/FirldMask.png");
-	green = Texture::Get()->LoadTexture(L"Resources/Grass.jpg");
-	grn = Texture::Get()->LoadTexture(L"Resources/Dirt.jpg");
+	//魚を初期化
+	fishBox.Init();
 }
 
 void Stage::MainInit(int stageNum)
@@ -67,9 +66,11 @@ void Stage::MainInit(int stageNum)
 	//床
 	LoadStage(stageNum);
 	goalFlag = false;
+	//魚を消す
+	fishBox.Delete();
 }
 
-void Stage::Update()
+void Stage::Update(Vec3 pPos)
 {
 	Vec3 PPos = Player::Get()->GetPosition();
 	//判定する箇所だけ行うため
@@ -119,6 +120,7 @@ void Stage::Update()
 					Player::Get()->GetBlockStepOnFlag();
 					Player::Get()->ChangeBreakFlag();
 					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
+					fishBox.Create(stageObj[i]->position);
 					delete stageObj[i];
 					stageObj.erase(stageObj.begin() + i);
 					blockNum++;
@@ -143,6 +145,7 @@ void Stage::Update()
 					BreakBox == stageObj[i]->type)
 				{
 					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
+					fishBox.Create(stageObj[i]->position);
 					delete stageObj[i];
 					stageObj.erase(stageObj.begin() + i);
 					blockNum++;
@@ -187,9 +190,11 @@ void Stage::Update()
 			}
 		}
 	}
+	//魚の更新
+	fishBox.Update(pPos);
 }
 
-void Stage::Draw(bool shadowFlag)
+void Stage::Draw(Vec3 pPos, bool shadowFlag)
 {
 	Vec3 PPos = Player::Get()->GetPosition();
 	//判定する箇所だけ行うため
@@ -201,9 +206,26 @@ void Stage::Draw(bool shadowFlag)
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
 			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
-			Object::DrawNormalMap(floorOBJ, Vec3(floor[i]->position.x, floor[i]->position.y, floor[i]->position.z),
-				Vec3(floor[i]->scale.x, floor[i]->scale.y, floor[i]->scale.z),
-				floor[i]->angle, mask, green, grn, shadowFlag);
+			switch (floor[i]->type)
+			{
+			case FloorNormal:
+				Object::Draw(floorOBJ, Vec3(floor[i]->position.x, floor[i]->position.y - 15.0f, floor[i]->position.z),
+					Vec3(15.0f, 15.0f, 15.0f),
+					floor[i]->angle, Vec4(), 0, shadowFlag);
+				break;
+			case Floor169:
+				Object::Draw(floorOBJ, Vec3(floor[i]->position.x, floor[i]->position.y - 16.0f, floor[i]->position.z),
+					Vec3(15.0f, 15.0f, 23.0f),
+					floor[i]->angle, Vec4(), 0, shadowFlag);
+				break;
+			case Floor11:
+				Object::Draw(floorOBJ, Vec3(floor[i]->position.x, floor[i]->position.y - 16.0f, floor[i]->position.z),
+					Vec3(15.0f, 15.0f, 23.0f),
+					floor[i]->angle, Vec4(), 0, shadowFlag);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	//動く床
@@ -243,8 +265,8 @@ void Stage::Draw(bool shadowFlag)
 		{
 			if (stageObj[i]->type == Wall)
 			{
-				Object::Draw(wallOBJ, stageObj[i]->position, stageObj[i]->scale,
-					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), wallGraph, shadowFlag);
+				Object::Draw(wallOBJ, Vec3(stageObj[i]->position.x, stageObj[i]->position.y - 30.0f, stageObj[i]->position.z),
+					Vec3(12.0f, 12.0f, 12.0f), stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 			}
 			else if (stageObj[i]->type == Goal)
 			{
@@ -268,6 +290,11 @@ void Stage::Draw(bool shadowFlag)
 			}
 		}
 	}
+	//闇
+	Object::Draw(blackGround, Vec3(pPos.x, -50.0f, pPos.z + 1000.0f),
+		Vec3(10000.0f, 1.0f, 100000.0f), Vec3(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), blackGraph);
+	//箱壊した時に出る魚
+	fishBox.Draw();
 }
 
 void Stage::LoadStage(int stageNum)
@@ -326,6 +353,7 @@ void Stage::LoadStage(int stageNum)
 		break;
 
 	}
+
 	LoadCSV(map, FilepathFloor);
 	LoadCSV(mapPos, FilepathFloorPos);
 
@@ -343,15 +371,15 @@ void Stage::LoadStage(int stageNum)
 				break;
 			case FloorNormal:
 				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)), FloorNormal);
 				break;
 			case Floor169:
 				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapPos[y][x]) * 20.0f - 10.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(mapSize, 1.0f, 32.01f), Vec3(141.61f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)));
+					Vec3(mapSize, 1.0f, 32.01f), Vec3(141.61f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)), Floor169);
 				break;
 			case Floor11:
 				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapPos[y][x]) * 20.0f - 10.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(mapSize, 1.0f, 32.01f), Vec3(38.39f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)));
+					Vec3(mapSize, 1.0f, 32.01f), Vec3(38.39f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)), Floor11);
 				break;
 			case FloorMove:
 				SetMoveFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(mapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
@@ -405,7 +433,7 @@ void Stage::LoadStage(int stageNum)
 	}
 }
 
-void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type)
 {
 	floor.push_back(new Floor);
 	size_t floorNum = floor.size() - 1;
@@ -413,6 +441,7 @@ void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	floor[floorNum]->position = position;
 	floor[floorNum]->scale = scale;
 	floor[floorNum]->angle = angle;
+	floor[floorNum]->type = type;
 }
 
 void Stage::SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
