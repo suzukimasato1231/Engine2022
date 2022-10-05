@@ -88,23 +88,6 @@ void ParticleManager::Add(int life, Vec3 position, Vec3 velocity, Vec3 accel, fl
 	p.e_color = end_color;
 }
 
-void ParticleManager::Add2(int life, Vec3 position, Vec3 velocity, Vec3 accel, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color)
-{
-	//リストに要素を追加
-	particles.emplace_front();
-	//追加した要素の参照
-	Particle& p = particles.front();
-	//値のリセット
-	p.position = position;
-	p.velocity = velocity;
-	p.accel = accel;
-	p.num_frame = life;
-	p.s_scale = start_scale;
-	p.e_scale = end_scale;
-	p.s_color = start_color;
-	p.e_color = end_color;
-}
-
 void ParticleManager::BreakBoxAdd(Vec3 Pos, float Vel, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color)
 {
 	for (int i = 0; i < 20; i++)
@@ -154,7 +137,7 @@ void ParticleManager::ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color)
 		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
 		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
 			//追加
-		Add2(90, pos, vel, acc, 4.0f, 8.0f, start_color, end_color);
+		Add(90, pos, vel, acc, 4.0f, 8.0f, start_color, end_color);
 	}
 }
 

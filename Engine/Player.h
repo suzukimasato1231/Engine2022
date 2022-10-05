@@ -2,6 +2,7 @@
 #include"Object.h"
 #include"CollisionPrimitive.h"
 #include"FBXObject3d.h"
+#include"PlayerFallDie.h"
 class Player :public Singleton<Player>
 {
 public:
@@ -16,6 +17,8 @@ public:
 	void Update();//更新
 
 	void Draw(bool shadowFlag = false);//描画
+
+	void DrawParticle();
 
 	void SetPosition(Vec3 position);
 
@@ -72,7 +75,7 @@ public://取得系
 
 	int GetFishNum() { return fishNum; }
 
-	bool GetGameoverFlag() { return gameoverFlag ; }
+	bool GetGameoverFlag() { return gameoverFlag; }
 private:
 	//2D false 3D true
 	bool moveFlag = false;
@@ -107,21 +110,24 @@ private:
 	bool groundFlag = false;		//地面に接しているかどうか
 	bool oldGroundFlag = false;		//地面に接していたかどうか
 	bool blockStepOnFlag = false;	//ブロックを踏んで壊したかどうか
-
-
-
 	//2段ジャンプ
 
 
 	//ボディプレス
 
-
-
 	//魚
+	ObjectData fishOBJ = {};
+	int fishGraph = 0;
 	bool fishFlag = false;
 	int fishNum = 0;
 
 	//FBX
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
+
+
+	//死んだときの演出の時間
+	PlayerFallDie playerFallDie;
+	bool dieFlag = false;
+	int dieNowTime = 0;
 };

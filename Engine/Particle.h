@@ -21,9 +21,7 @@ private:
 	//箱が壊れるパーティクル
 	ParticleManager* breakBoxParticle = nullptr;
 	Vec3 breakPos = {};
-
 	int graph = 0;
-
 	bool breakBoxFlag = false;
 };
 

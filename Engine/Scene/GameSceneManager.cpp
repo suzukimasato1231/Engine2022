@@ -31,7 +31,6 @@ void GameSceneManager::Initialize()
 	//カメラ位置をセット
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
-	BGGraph = Sprite::Get()->SpriteCreate(L"Resources/backgroundA.png");
 	BGGraph.texNumber = Texture::Get()->GetShadowTexture();
 	//3Dオブジェクト画像読み込み
 	//プレイヤーの初期化
@@ -64,7 +63,7 @@ void GameSceneManager::Update()
 
 	Stage::Get()->Update(Player::Get()->GetPosition());
 	//残機が０にならない限り追跡
-	if (Player::Get()->GetGameoverFlag() == false)
+	if (Player::Get()->GetGameoverFlag() == false && Player::Get()->GetPosition().y > 0)
 	{
 		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 45.0f);
 	}
@@ -109,15 +108,15 @@ void GameSceneManager::Update()
 
 void GameSceneManager::Draw()
 {
-	//背景描画
 	//3D
-
 	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
 
 	//プレイヤーの描画
 	Player::Get()->Draw(true);
 
+	//パーティクル
 	Particle::Get()->Draw();
+	Player::Get()->DrawParticle();
 
 	//2D
 	UI::Get()->Draw(Player::Get()->GetRemanLives(), Player::Get()->GetFishNum(),
