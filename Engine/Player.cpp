@@ -53,7 +53,7 @@ void Player::Update()
 
 void Player::Draw(bool shadowFlag)
 {
-	Object::Draw(playerObject, position, scale, angle, color, playerObject.OBJTexture, shadowFlag);
+	Object::Draw(playerObject, psr, position, scale, angle, color, playerObject.OBJTexture, shadowFlag);
 	//FBX‚µ
 	/*fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
 	fbxObject1->SetRotation(angle);
@@ -140,7 +140,6 @@ void Player::Jump()
 		}
 		blockStepOnFlag = false;
 	}
-
 
 	//d—Í‰ÁZ
 	vec.y -= gravity;

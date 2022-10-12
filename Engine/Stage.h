@@ -23,7 +23,7 @@ public:
 	void Update(Vec3 pPos);
 	//描画
 	void Draw(Vec3 pPos, bool shadowFlag = false);
-
+	//ステージ作成
 	void LoadStage(int stageNum);
 public://マップ
 	bool GetClearFlag() { return goalFlag; }
@@ -54,12 +54,6 @@ private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
 	const int drawNumY = 30;
-	////ブロック
-	int	map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
-	int mapPos[MAP_HEIGHT][MAP_WIDTH] = {};
-
-	int mapOBJ[MAP_HEIGHT][MAP_WIDTH] = {};		//壁などのOBJ
-	int mapOBJPos[MAP_HEIGHT][MAP_WIDTH] = {};	//壁などのOBJの座標
 
 	//雪の床
 	ObjectData floorOBJ;
@@ -90,7 +84,6 @@ private:
 	//動く床
 	ObjectData moveFloorOBJ = {};
 	std::vector<MoveFloorData*>moveFloorData;
-	int moveGraph = 0;
 
 	//落とし床
 	ObjectData floorPitfallOBJ = {};
@@ -100,4 +93,5 @@ private:
 
 	ObjectData blackGround = {};
 	int blackGraph = 0;
+	PSR blackPsr[3] = {};
 };

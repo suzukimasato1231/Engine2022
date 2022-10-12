@@ -8,17 +8,17 @@ class Player :public Singleton<Player>
 public:
 	friend Singleton<Player>;
 public:
-	Player();//コンストラクタ
+	Player();		//コンストラクタ
 
-	~Player();//ですコンストラクタ
+	~Player();		//デスコンストラクタ
 
-	void Init();//初期化
+	void Init();	//初期化
 
-	void Update();//更新
+	void Update();						//更新
 
 	void Draw(bool shadowFlag = false);//描画
 
-	void DrawParticle();
+	void DrawParticle();//プレイヤーが死んだときのパーティクル
 
 	void SetPosition(Vec3 position);
 
@@ -93,27 +93,31 @@ private:
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
 
+	PSR psr = {};
+
 	Vec3 vec = {};
 
 	bool changeBreakFlag = false;
 
-	const int remainLivesMax = 3;//１ステージの残機数
-	int remainLives = 3;		//残機
+	const int remainLivesMax = 3;		//１ステージの残機数
+	int remainLives = 3;				//残機
 
 	//ジャンプ
 	const float jumpPowerMax = 8.0f;
-	const float jumpBoxPowerMax = 9.0f;//ジャンプ台のジャンプパワー
+	const float jumpBoxPowerMax = 9.0f;	//ジャンプ台のジャンプパワー
 	bool jumpBoxFlag = false;
-	float jumpPower = 8.0f;			//ジャンプパワー
+	float jumpPower = 8.0f;				//ジャンプパワー
 	float jumpPowerDelay = 0.2f;
-	float gravity = 5.0f;			//重力
-	bool groundFlag = false;		//地面に接しているかどうか
-	bool oldGroundFlag = false;		//地面に接していたかどうか
-	bool blockStepOnFlag = false;	//ブロックを踏んで壊したかどうか
+	float gravity = 5.0f;				//重力
+	bool groundFlag = false;			//地面に接しているかどうか
+	bool oldGroundFlag = false;			//地面に接していたかどうか
+	bool blockStepOnFlag = false;		//ブロックを踏んで壊したかどうか
 	//2段ジャンプ
 
 
 	//ボディプレス
+
+
 
 	//魚
 	ObjectData fishOBJ = {};

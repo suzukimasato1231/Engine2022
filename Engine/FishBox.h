@@ -10,6 +10,7 @@ private:
 		Vec3 startPosition = {};
 		float fishTime = 0.0f;
 		bool endFlag = false;
+		PSR psr = {};
 	};
 public:
 
@@ -32,7 +33,7 @@ private:
 	//‘å‚«‚³
 	const Vec3 scale = { 1.8f,1.8f,1.8f };
 	//UI‚Ì‹›‚ÌˆÊ’u
-	const Vec3 fishGoalPos = { -80.0f,50.0f,10.0f };
+	const Vec3 fishGoalPos = { -70.0f,50.0f,10.0f };
 	//ˆÚ“®‚·‚éŽžŠÔ
 	const float time = 50.0f;
 };

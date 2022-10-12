@@ -33,7 +33,7 @@ void PlayerFallDie::Create(Vec3 pPos)
 	static const Vec3 accel = { 0.0f,0.01f,0.0f };
 	static const float start_scale = 3.0f;
 	static const float end_scale = 3.0f;
-	static const Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
+	static const Vec4 start_color = { 1.0f,1.0f,0.0f,1.0f };
 	static const Vec4 end_color = {};
 	for (int i = 0; i < 20; i++)
 	{

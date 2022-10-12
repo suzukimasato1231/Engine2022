@@ -25,7 +25,9 @@ public:
 	void Draw();
 private://’è‹`
 	ObjectData titlePlayer;
+	PSR titlePsr = {};
 	ObjectData box;
+	PSR boxPsr = {};
 	int boxGraph;
 	SpriteData titleGraph;
 	SpriteData titleButtonGraph;

@@ -2,28 +2,6 @@
 #include"Vec.h"
 #include <CollisionPrimitive.h>
 
-struct MoveFloorData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
-	int time = 0;
-	int moveFlag = 0;
-	Vec3 speed = { 0.0f,0.0f,0.5f };
-};
-
-struct FloorPitfallData
-{
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec3 drawAngle = {};//描画用
-	Vec2 map = {};
-	int time = 0;
-	int moveFlag = 0;
-};
-
 enum StageFloor
 {
 	NoneFloor,
@@ -44,9 +22,11 @@ enum StageType
 	BreakBox2 = 11,	//壊れる箱ダブル
 	BreakHARD = 12,	//固い箱
 	BreakJUMP = 13,	//ジャンプ箱
+
 };
 struct Floor
 {
+	PSR psr = {};
 	Vec3 position = {};
 	Vec3 scale = {};
 	Vec3 angle = {};
@@ -54,8 +34,33 @@ struct Floor
 	int type = 0;
 };
 
+struct MoveFloorData
+{
+	PSR psr = {};
+	Vec3 position = {};
+	Vec3 scale = {};
+	Vec3 angle = {};
+	Vec2 map = {};
+	int time = 0;
+	int moveFlag = 0;
+	Vec3 speed = { 0.0f,0.0f,0.5f };
+};
+
+struct FloorPitfallData
+{
+	PSR psr = {};
+	Vec3 position = {};
+	Vec3 scale = {};
+	Vec3 angle = {};
+	Vec3 drawAngle = {};//描画用
+	Vec2 map = {};
+	int time = 0;
+	int moveFlag = 0;
+};
+
 struct StageOBJ
 {
+	PSR psr = {};
 	Vec3 position = {};
 	Vec3 scale = {};
 	Vec3 angle = {};

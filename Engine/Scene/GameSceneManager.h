@@ -8,7 +8,6 @@
 #include"FBXObject3d.h"
 #include"../Player.h"
 #include"../PushCollision.h"
-#include"../Enemy.h"
 #include"../Stage.h"
 #include"../UI.h"
 #include"../TimeAttack.h"
@@ -21,6 +20,9 @@ enum ChangeStatus
 	ChangeRetry,
 	ChangeSelect,
 };
+/// <summary>
+/// ゲームシーン
+/// </summary>
 class GameSceneManager 
 {
 
@@ -53,10 +55,6 @@ private://定義
 	SpriteData BGGraph;
 	
 	Vec2 pos = { 0.0f,0.0f };
-
-	//FBX
-	Model *model1 = nullptr;
-	FBXObject3d *fbxObject1 = nullptr;
 
 	//シーンが変わるかどうか
 	bool changeScene = false;
