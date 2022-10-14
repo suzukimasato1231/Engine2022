@@ -37,9 +37,9 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	//3D
-	Object::Draw(titlePlayer, Vec3(10.0f, -3.0f, 0.0f), Vec3(1, 1, 1), Vec3(0.0f, 10.0f, 0.0f), Vec4(), titlePlayer.OBJTexture, true);
+	Object::Draw(titlePlayer, titlePsr,Vec3(10.0f, -3.0f, 0.0f), Vec3(1, 1, 1), Vec3(0.0f, 10.0f, 0.0f), Vec4(), titlePlayer.OBJTexture, true);
 
-	Object::Draw(box, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2), Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph, true);
+	Object::Draw(box, boxPsr,Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2), Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph, true);
 
 	//UI
 	Sprite::Get()->Draw(titleGraph, Vec2(0.0f, 0.0f), static_cast<float>(window_width), static_cast<float>(window_height));

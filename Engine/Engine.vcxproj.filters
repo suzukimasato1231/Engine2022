@@ -372,6 +372,9 @@
     <ClInclude Include="FishBox.h">
       <Filter>ソース ファイル\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="BlockBox.h">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -528,6 +531,9 @@
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="FishBox.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockBox.cpp">
       <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
   </ItemGroup>

@@ -10,8 +10,6 @@ GameSceneManager::GameSceneManager()
 GameSceneManager::~GameSceneManager()
 {
 	safe_delete(lightGroup);
-	safe_delete(fbxObject1);
-	safe_delete(model1);
 	//XAudio2‰ğ•ú
 	audio->xAudio2.Reset();
 	//‰¹ƒf[ƒ^‰ğ•ú

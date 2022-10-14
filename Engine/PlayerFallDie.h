@@ -6,7 +6,6 @@ class PlayerFallDie
 public://’è”
 private://ƒƒ“ƒo•Ï”
 	ParticleManager* particle = nullptr;
-
 	int graph = 0;
 public://ƒƒ“ƒoŠÖ”
 	PlayerFallDie();

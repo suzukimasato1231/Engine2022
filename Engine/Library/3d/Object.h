@@ -38,13 +38,17 @@ struct Material
 	}
 };
 /// <summary>
-/// 位置、大きさ、色情報
+/// 位置、大きさ、回転情報
 /// </summary>
-struct PSC
+struct PSR
 {
 	Vec3 position = {};
 	Vec3 scale = {};
-	Vec4 color = {};
+	Vec3 rotation = {};
+	//ワールド変換
+	XMMATRIX matWorld;
+	//親クラス
+	PSR* parent = nullptr;
 };
 
 //オブジェクトデータ構造体
@@ -66,14 +70,8 @@ struct ObjectData
 	int OBJTexture = 0;
 	//頂点法線スムージング用データ
 	std::unordered_map<unsigned short, std::vector<unsigned short>>smoothData;
-	//ワールド変換
-	XMMATRIX matWorld;
-	//親クラス
-	ObjectData* parent = nullptr;
 	//マテリアル
 	Material material;
-	//位置、大きさ、色情報
-	PSC psc;
 };
 
 class Object :public Singleton<Object>
@@ -152,7 +150,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static void MatWord(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color);
+	static void MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color);
 	/// <summary>
 	/// OBJ描画
 	/// </summary>
@@ -161,7 +159,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static	void Draw(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0, bool shadowFlag = false);
+	static	void Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0, bool shadowFlag = false);
 	/// <summary>
 	/// ノーマルマップ描画
 	/// </summary>
@@ -176,5 +174,4 @@ public://オブジェクト関連
 	static void DrawNormalMap(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, int mask, int graph1, int graph2, bool shadowFlag = false);
 public:
 	static size_t OBJNum;//OBJ読み込みの数
-	static size_t objNum;//オブジェクトの数
 };

@@ -12,10 +12,10 @@ Camera::~Camera()
 {
 }
 
-Camera *Camera::Create()
+Camera* Camera::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Camera *view = new Camera();
+	Camera* view = new Camera();
 	if (view == nullptr) {
 		return nullptr;
 	}
@@ -47,6 +47,7 @@ void Camera::SetCamera(Vec3 eye, Vec3 target, Vec3 up)
 		(float)window_width / window_height,
 		0.1f, 50000.0f
 	);
+	matViewProjection = matView * matProjection;
 }
 
 void Camera::FollowCamera(Vec3 position, Vec3 d, float angleX, float angleY)
@@ -70,6 +71,8 @@ void Camera::FollowCamera(Vec3 position, Vec3 d, float angleX, float angleY)
 	//5
 	//ビュー変換行列
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+	matViewProjection = matView * matProjection;
 }
 
 XMMATRIX Camera::GetMatView()
@@ -80,6 +83,11 @@ XMMATRIX Camera::GetMatView()
 XMMATRIX Camera::GetProjection()
 {
 	return matProjection;
+}
+
+XMMATRIX Camera::GetMatViewProjection()
+{
+	return matViewProjection;
 }
 
 Vec3 Camera::GetEye()

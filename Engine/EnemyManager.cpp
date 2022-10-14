@@ -34,8 +34,8 @@ void EnemyManager::Draw(bool shadowFlag)
 {
 	for (int num = 0; num < enemy.size(); num++)
 	{//•`‰æ
-		Object::Draw(enemyData, enemy[num]->GetPos(), enemy[num]->GetSize(),
-			Vec3(), Vec4(), 0, shadowFlag);
+		/*Object::Draw(enemyData, enemy[num]->GetPos(), enemy[num]->GetSize(),
+			Vec3(), Vec4(), 0, shadowFlag);*/
 	}
 }
 

@@ -14,15 +14,15 @@ class StageSelect
 public:
 	StageSelect();
 	~StageSelect();
-
+	//初期化
 	void Initialize();
 
 	void Init();
-
+	//更新
 	void Update();
-
+	//描画
 	void Draw();
-
+	//影の描画
 	void DrawShadow();
 public:
 	LightGroup* lightGroup = nullptr;
@@ -40,6 +40,7 @@ private://定義
 	float selectScale = 10.0f;
 	Vec3 selectPos[stageNumMax];
 	Box selectBox[stageNumMax];
+	PSR selectPsr[stageNumMax];
 
 	int stageNum = 0;			//現在のステージ
 };
