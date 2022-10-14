@@ -3,7 +3,6 @@
 #include<vector>
 #include <LoadCSV.h>
 #include"./StegeObject.h"
-#include"../Engine/EnemyManager.h"
 #include"FishBox.h"
 #include"BlockBox.h"
 class Player;

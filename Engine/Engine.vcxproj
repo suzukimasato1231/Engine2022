@@ -299,13 +299,20 @@
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BlockBox.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyManager.h" />
-    <ClInclude Include="Fish.h" />
-    <ClInclude Include="FishBox.h" />
+    <ClInclude Include="App\Particle\Particle.h" />
+    <ClInclude Include="App\player\Fish.h" />
+    <ClInclude Include="App\player\Player.h" />
+    <ClInclude Include="App\player\PlayerFallDie.h" />
+    <ClInclude Include="App\stage\BlockBox.h" />
+    <ClInclude Include="App\stage\FishBox.h" />
+    <ClInclude Include="App\stage\PushCollision.h" />
+    <ClInclude Include="App\stage\Stage.h" />
+    <ClInclude Include="App\stage\StegeObject.h" />
+    <ClInclude Include="App\TimeAttack\TimeAttack.h" />
+    <ClInclude Include="App\ui\UI.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
     <ClInclude Include="Library\2d\PostEffect.h" />
+    <ClInclude Include="Library\2d\ShadowMap.h" />
     <ClInclude Include="Library\2d\Sprite.h" />
     <ClInclude Include="Library\3d\Camera.h" />
     <ClInclude Include="Library\3d\CircleShadow.h" />
@@ -346,29 +353,26 @@
     <ClInclude Include="Library\Pipeline\Pipeline.h" />
     <ClInclude Include="Library\Pipeline\ShaderManager.h" />
     <ClInclude Include="Library\Texture\Texture.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerFallDie.h" />
-    <ClInclude Include="PushCollision.h" />
     <ClInclude Include="Scene\GameSceneManager.h" />
     <ClInclude Include="Scene\ResultScene.h" />
     <ClInclude Include="Scene\SceneManagerh.h" />
     <ClInclude Include="Scene\StageSelect.h" />
     <ClInclude Include="Scene\TitleScene.h" />
-    <ClInclude Include="ShadowMap.h" />
-    <ClInclude Include="Stage.h" />
-    <ClInclude Include="StegeObject.h" />
-    <ClInclude Include="TimeAttack.h" />
-    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BlockBox.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyManager.cpp" />
-    <ClCompile Include="Fish.cpp" />
-    <ClCompile Include="FishBox.cpp" />
+    <ClCompile Include="App\Particle\Particle.cpp" />
+    <ClCompile Include="App\player\Fish.cpp" />
+    <ClCompile Include="App\player\Player.cpp" />
+    <ClCompile Include="App\player\PlayerFallDie.cpp" />
+    <ClCompile Include="App\stage\BlockBox.cpp" />
+    <ClCompile Include="App\stage\FishBox.cpp" />
+    <ClCompile Include="App\stage\PushCollision.cpp" />
+    <ClCompile Include="App\stage\Stage.cpp" />
+    <ClCompile Include="App\TimeAttack\TimeAttack.cpp" />
+    <ClCompile Include="App\ui\UI.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />
     <ClCompile Include="Library\2d\PostEffect.cpp" />
+    <ClCompile Include="Library\2d\ShadowMap.cpp" />
     <ClCompile Include="Library\2d\Sprite.cpp" />
     <ClCompile Include="Library\3d\Camera.cpp" />
     <ClCompile Include="Library\3d\FbxLoader.cpp" />
@@ -402,19 +406,11 @@
     <ClCompile Include="Library\Pipeline\ShaderManager.cpp" />
     <ClCompile Include="Library\Texture\Texture.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerFallDie.cpp" />
-    <ClCompile Include="PushCollision.cpp" />
     <ClCompile Include="Scene\GameSceneManager.cpp" />
     <ClCompile Include="Scene\ResultScene.cpp" />
     <ClCompile Include="Scene\SceneManagerh.cpp" />
     <ClCompile Include="Scene\StageSelect.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
-    <ClCompile Include="ShadowMap.cpp" />
-    <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="TimeAttack.cpp" />
-    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">

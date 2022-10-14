@@ -1,5 +1,5 @@
 #include "UI.h"
-#include"Stage.h"
+#include"../stage/Stage.h"
 #include"DebugText.h"
 UI::UI()
 {

@@ -1,6 +1,6 @@
 #include "ResultScene.h"
 #include"DebugText.h"
-#include"../Stage.h"
+#include"../App/stage/Stage.h"
 void ResultScene::Initialize()
 {
 	boxGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/UIBox.png");

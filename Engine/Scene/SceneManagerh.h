@@ -3,7 +3,7 @@
 #include"TitleScene.h"
 #include"StageSelect.h"
 #include"ResultScene.h"
-#include "../ShadowMap.h"
+#include "ShadowMap.h"
 enum Scene
 {
 	Title,

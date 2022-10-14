@@ -1,9 +1,9 @@
 #include "BlockBox.h"
 #include"Shape.h"
 #include"Texture.h"
-#include"Player.h"
+#include"../Engine/App/player/Player.h"
 #include"PushCollision.h"
-#include"Particle.h"
+#include"../Particle/Particle.h"
 void BlockBox::Init()
 {
 	breakBoxOBJ = Shape::CreateOBJ("cube");

@@ -2,8 +2,7 @@
 #include"Shape.h"
 #include <LoadCSV.h>
 #include"PushCollision.h"
-#include"Particle.h"
-#include"EnemyManager.h"
+#include"../Particle/Particle.h"
 Stage::Stage()
 {}
 

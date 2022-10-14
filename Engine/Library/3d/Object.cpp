@@ -1,7 +1,7 @@
 #include "Object.h"
 #include <DirectXTex.h>
 #include<string>
-#include"../ShadowMap.h"
+#include"ShadowMap.h"
 using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;
