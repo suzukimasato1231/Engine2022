@@ -22,7 +22,7 @@ void Player::Init()
 
 	playerFallDie.Init();
 	////モデル名を指定してファイル読み込み
-	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking");
+	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin");
 	////3Dオブジェクトの生成とモデルのセット
 	//fbxObject1 = new FBXObject3d;
 	//fbxObject1->Initialize();
@@ -54,11 +54,11 @@ void Player::Update()
 void Player::Draw(bool shadowFlag)
 {
 	Object::Draw(playerObject, psr, position, scale, angle, color, playerObject.OBJTexture, shadowFlag);
-	//FBX試し
-	/*fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
-	fbxObject1->SetRotation(angle);
-	fbxObject1->Update();
-	fbxObject1->Draw();*/
+	////FBX試し
+	//fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
+	//fbxObject1->SetRotation(angle);
+	//fbxObject1->Update();
+	//fbxObject1->Draw();
 }
 
 void Player::DrawParticle()

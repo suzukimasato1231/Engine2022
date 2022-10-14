@@ -5,6 +5,7 @@
 #include"./StegeObject.h"
 #include"../Engine/EnemyManager.h"
 #include"FishBox.h"
+#include"BlockBox.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
@@ -54,12 +55,20 @@ private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
 	const int drawNumY = 30;
-
+private://床関連
 	//雪の床
 	ObjectData floorOBJ;
 	std::vector<Floor*>floor;
+	int floorGraph = 0;
+	//動く床
+	ObjectData moveFloorOBJ = {};
+	std::vector<MoveFloorData*>moveFloorData;
 
-
+	//落とし床
+	ObjectData floorPitfallOBJ = {};
+	std::vector<FloorPitfallData*>floorPitfallData;
+	int pitfallGraph = 0;
+private://罠ブロック
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
 	ObjectData wallOBJ = {};
@@ -69,26 +78,15 @@ private:
 	ObjectData goalOBJ = {};
 	Vec3 goalScale = { 25.0f,25.0f,25.0f };
 	bool goalFlag = false;
-	//壊れる箱
-	ObjectData breakBoxOBJ = {};
+	//箱
+	BlockBox blockBox;
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
-	int normalBoxGraph = 0;
-	int breakBoxGraph = 0;
-	int jumpBoxgraph = 0;
-
+private:
+	//壊した時に出る魚
 	FishBox fishBox;
 
 	int stageBlockNum = 0;//ステージにある最大のブロック数
 	int blockNum = 0;	//壊したブロック
-
-	//動く床
-	ObjectData moveFloorOBJ = {};
-	std::vector<MoveFloorData*>moveFloorData;
-
-	//落とし床
-	ObjectData floorPitfallOBJ = {};
-	std::vector<FloorPitfallData*>floorPitfallData;
-	int pitfallGraph = 0;
 
 
 	ObjectData blackGround = {};
