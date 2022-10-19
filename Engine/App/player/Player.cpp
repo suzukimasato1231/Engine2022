@@ -90,36 +90,39 @@ void Player::Reset()
 //移動
 void Player::Move()
 {
-	if (moveFlag == true)
+	if (dieType == DIENULL)
 	{
-		if (Input::Get()->KeybordPush(DIK_UP))
-		{
-			vec.z += speed.z;
-		}
-		if (Input::Get()->KeybordPush(DIK_DOWN))
-		{
-			vec.z -= speed.z;
-		}
-	}
-	//移動
-	if (Input::Get()->KeybordPush(DIK_RIGHT))
-	{
-		vec.x += speed.x;
-	}
-	if (Input::Get()->KeybordPush(DIK_LEFT))
-	{
-		vec.x -= speed.x;
-	}
-	//コントローラー移動
-	if (Input::Get()->ConLeftInput())
-	{
-		float rad = Input::Get()->GetLeftAngle();
-		vec.x = speed.x * sinf(-rad);
 		if (moveFlag == true)
 		{
-			vec.z = speed.z * cosf(rad);
+			if (Input::Get()->KeybordPush(DIK_UP))
+			{
+				vec.z += speed.z;
+			}
+			if (Input::Get()->KeybordPush(DIK_DOWN))
+			{
+				vec.z -= speed.z;
+			}
 		}
-		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)) - 59.8f);
+		//移動
+		if (Input::Get()->KeybordPush(DIK_RIGHT))
+		{
+			vec.x += speed.x;
+		}
+		if (Input::Get()->KeybordPush(DIK_LEFT))
+		{
+			vec.x -= speed.x;
+		}
+		//コントローラー移動
+		if (Input::Get()->ConLeftInput())
+		{
+			float rad = Input::Get()->GetLeftAngle();
+			vec.x = speed.x * sinf(-rad);
+			if (moveFlag == true)
+			{
+				vec.z = speed.z * cosf(rad);
+			}
+			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)) - 59.8f);
+		}
 	}
 }
 
@@ -155,14 +158,14 @@ void Player::FallDie()
 {
 	static const int dieTime = 30;	//死んだときの演出時間
 
-	if (position.y < -30.0f && dieFlag == false)
+	if (position.y < -30.0f && dieType == DIENULL)
 	{
-		dieFlag = true;
+		dieType = FALLDOWN;
 		dieNowTime = dieTime;
 		playerFallDie.Create(position);
 	}
 
-	if (dieFlag == true)
+	if (dieType == FALLDOWN || dieType == ELECTDIE)
 	{
 		if (dieNowTime > 0)
 		{
@@ -173,14 +176,16 @@ void Player::FallDie()
 			position = { 70.0f,20.0f,80.0f };	//座標
 			oldPosition = position;
 			remainLives--;
-			dieFlag = false;
+			dieType = DIENULL;
 		}
 		else if (remainLives == 0)
 		{
 			gameoverFlag = true;
-			dieFlag = false;
+			dieType = DIENULL;
 		}
 	}
+
+
 	playerFallDie.Update();
 }
 

@@ -90,6 +90,18 @@
     <Filter Include="ソース ファイル\TimeAttack">
       <UniqueIdentifier>{58a7077a-6d0a-4bfd-97a0-e4f64c828b7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Stage\Box">
+      <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Base">
+      <UniqueIdentifier>{e1cf664f-505e-45a0-9f07-634338a82202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Trap">
+      <UniqueIdentifier>{08fcf23e-6e0a-4b37-a9fa-e4aadccd9139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Floor">
+      <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -345,26 +357,32 @@
     <ClInclude Include="App\ui\UI.h">
       <Filter>ソース ファイル\UI</Filter>
     </ClInclude>
-    <ClInclude Include="App\stage\BlockBox.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="App\stage\FishBox.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="App\stage\PushCollision.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="App\stage\Stage.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="App\stage\StegeObject.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Library\2d\ShadowMap.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
     <ClInclude Include="App\Particle\Particle.h">
       <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\FishBox.h">
+      <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\BlockBox.h">
+      <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\StegeObject.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\Stage.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\PushCollision.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Electricity.h">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="DangerFish.h">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -503,23 +521,29 @@
     <ClCompile Include="App\ui\UI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="App\stage\BlockBox.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="App\stage\FishBox.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="App\stage\PushCollision.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="App\stage\Stage.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Library\2d\ShadowMap.cpp">
       <Filter>Library\2d</Filter>
     </ClCompile>
     <ClCompile Include="App\Particle\Particle.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\FishBox.cpp">
+      <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\BlockBox.cpp">
+      <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\Stage.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\PushCollision.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Electricity.cpp">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="DangerFish.cpp">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

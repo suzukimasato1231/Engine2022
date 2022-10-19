@@ -51,7 +51,7 @@ void UI::Draw(int pLives, int fishNum, bool gameoverFlag, int gameoverNum)
 
 	Sprite::Get()->Draw(uiSlash, Vec2(128.0f, 100.0f), 64.0f, 64.0f);
 	//Å‘å” ‚Ì”
-	breaknumber = Stage::Get()->GetStageBlock() % 10, breakremain = Stage::Get()->GetStageBlock() / 10;
+	breaknumber = Stage::Get()->GetBlockMax() % 10, breakremain = Stage::Get()->GetBlockMax() / 10;
 	if (breakremain >= 1)
 	{
 		Sprite::Get()->Draw(uiNumber[breakremain], Vec2(160.0f, 105.0f), 64.0f, 64.0f);

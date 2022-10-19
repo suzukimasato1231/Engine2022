@@ -28,7 +28,7 @@ void DebugText::Initialize()
 	}
 }
 // 1文字列追加
-void DebugText::Print(float x, float y, float size, std::string text, ...)
+void DebugText::Print(const float x, const  float y, const  float size,std::string text, ...)
 {
 	bool parsentFlag = false;
 	va_list args;
@@ -75,7 +75,7 @@ void DebugText::Print(float x, float y, float size, std::string text, ...)
 		}
 
 		// 1文字取り出す(※ASCIIコードでしか成り立たない)
-		const unsigned char &character = text[i];
+		const unsigned char& character = text[i];
 
 		int fontIndex = character - 32;
 		if (character >= 0x7f) {

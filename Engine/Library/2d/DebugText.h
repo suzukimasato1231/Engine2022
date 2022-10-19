@@ -21,7 +21,7 @@ public:
 	~DebugText();
 
 	void Initialize();
-	  
+
 	/// <summary>
 	///  デバックテキスト
 	/// </summary>
@@ -30,12 +30,12 @@ public:
 	/// <param name="size">サイズ</param>
 	/// <param name="text">表示する文字</param>
 	/// <param name=""></param>
-	void Print(float x, float y, float size, std::string text, ...);
+	void Print(const float x, const float y, const float size, std::string text, ...);
 
 	void DrawAll();
 
 private:
-	Sprite *sprite = nullptr;
+	Sprite* sprite = nullptr;
 
 	// スプライトデータの配列
 	SpriteData sprites[maxCharCount] = {};

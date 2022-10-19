@@ -5,6 +5,8 @@
 #include"./StegeObject.h"
 #include"FishBox.h"
 #include"BlockBox.h"
+#include"../Engine/Electricity.h"
+#include"../Engine/DangerFish.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
@@ -29,7 +31,7 @@ public://マップ
 	bool GetClearFlag() { return goalFlag; }
 
 	int GetBlockNum() { return blockNum; }
-	int GetStageBlock() { return stageBlockNum; }
+	int GetBlockMax() { return blockMax; }
 private:
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type);
 
@@ -46,6 +48,10 @@ private:
 	void SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time);
+
+	void SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
+	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void MoveFloorUpdate(int i);
 
@@ -80,11 +86,15 @@ private://罠ブロック
 	//箱
 	BlockBox blockBox;
 	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
+	//電撃の罠
+	Electricity elect;
+	//危険魚
+	DangerFish dangerFish;
 private:
 	//壊した時に出る魚
 	FishBox fishBox;
 
-	int stageBlockNum = 0;//ステージにある最大のブロック数
+	int blockMax = 0;//ステージにある最大のブロック数
 	int blockNum = 0;	//壊したブロック
 
 

@@ -50,11 +50,15 @@ void Stage::Init()
 
 	//魚を初期化
 	fishBox.Init();
+	//電気の罠
+	elect.Init();
+	//危険魚
+	dangerFish.Init();
 }
 
 void Stage::MainInit(int stageNum)
 {
-	stageBlockNum = 0;
+	blockMax = 0;
 	blockNum = 0;
 	//床
 	LoadStage(stageNum);
@@ -87,12 +91,29 @@ void Stage::Update(Vec3 pPos)
 				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
 				{
 					//ゴール
-					if (stageObj[i]->type == Goal)
-					{
-						goalFlag = true;
-					}
+					goalFlag = true;
 				}
 			}
+			break;
+		case ELECTRICITY:
+			if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1 && elect.GetElectFlag())
+			{
+				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
+				{
+					Player::Get()->DieType(ELECTDIE);
+				}
+			}
+			break;
+		case FISHATTACK:
+			if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1 && elect.GetElectFlag())
+			{
+				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
+				{
+					Player::Get()->DieType(EATDIE);
+				}
+			}
+			break;
+		default:
 			break;
 		}
 	}
@@ -148,6 +169,8 @@ void Stage::Update(Vec3 pPos)
 	}
 	//箱の更新
 	blockBox.Update();
+	elect.Update();
+	dangerFish.Update();
 
 	//床
 	for (int i = 0; i < floor.size(); i++)
@@ -273,6 +296,14 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			case BreakHARD:
 				blockBox.Draw(stageObj[i], shadowFlag);
 				break;
+			case ELECTRICITY:
+				elect.Draw(stageObj[i], shadowFlag);
+				break;
+			case FISHATTACK:
+				dangerFish.Draw(stageObj[i], shadowFlag);
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -344,6 +375,13 @@ void Stage::LoadStage(int stageNum)
 		FilepathOBJ = (char*)"Resources/map/OBJTitle2.csv";
 		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos2.csv";
 		break;
+	case 3:
+		//Floor
+		FilepathFloor = (char*)"Resources/map/Floor_Title3.csv";
+		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos3.csv";
+		//OBJ
+		FilepathOBJ = (char*)"Resources/map/OBJTitle3.csv";
+		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos3.csv";
 	default:
 		break;
 
@@ -427,6 +465,13 @@ void Stage::LoadStage(int stageNum)
 				SetBreakHard(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
 					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
+			case ELECTRICITY:
+				SetElectricity(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+				break;
+			case FISHATTACK:
+				SetFishAttack(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 			default:
 				break;
 			}
@@ -450,7 +495,7 @@ void Stage::SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BreakBox);
-	stageBlockNum++;
+	blockMax++;
 }
 
 void Stage::SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
@@ -524,6 +569,20 @@ void Stage::SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int
 	floorPitfallData[NUM]->scale = scale;
 	floorPitfallData[NUM]->angle = angle;
 	floorPitfallData[NUM]->time = time;
+}
+
+void Stage::SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+{
+	stageObj.push_back(new StageOBJ);
+	size_t num = stageObj.size() - 1;
+	*stageObj[num] = Electricity::SetElect(position, scale, angle, map, ELECTRICITY);
+}
+
+void Stage::SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+{
+	stageObj.push_back(new StageOBJ);
+	size_t num = stageObj.size() - 1;
+	*stageObj[num] = Electricity::SetElect(position, scale, angle, map, FISHATTACK);
 }
 
 void Stage::MoveFloorUpdate(int i)

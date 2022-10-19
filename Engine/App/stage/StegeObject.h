@@ -22,8 +22,9 @@ enum StageType
 	BreakBox2 = 11,		//壊れる箱ダブル
 	BreakHARD = 12,		//固い箱
 	BreakJUMP = 13,		//ジャンプ箱
-	Icicle = 20,		//氷柱
-	Electricity = 21,	//電気
+	ICICLE = 20,		//氷柱
+	ELECTRICITY = 21,	//電気
+	FISHATTACK  = 22,	//魚アタック
 };
 struct Floor
 {

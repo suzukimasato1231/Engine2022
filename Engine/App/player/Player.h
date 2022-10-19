@@ -3,6 +3,14 @@
 #include"CollisionPrimitive.h"
 #include"FBXObject3d.h"
 #include"PlayerFallDie.h"
+enum DieType
+{
+	DIENULL,
+	FALLDOWN,
+	ELECTDIE,
+	EATDIE,
+	DIEMAX,
+};
 class Player :public Singleton<Player>
 {
 public:
@@ -39,6 +47,8 @@ public:
 	void GetJumpBox() { jumpBoxFlag = true; }
 	//箱を壊したか
 	void ChangeBreakFlag() { changeBreakFlag = true; }
+
+	void DieType(int type) { Player::dieType = type; }
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -112,12 +122,6 @@ private:
 	bool groundFlag = false;			//地面に接しているかどうか
 	bool oldGroundFlag = false;			//地面に接していたかどうか
 	bool blockStepOnFlag = false;		//ブロックを踏んで壊したかどうか
-	//2段ジャンプ
-
-
-	//ボディプレス
-
-
 
 	//魚
 	ObjectData fishOBJ = {};
@@ -130,8 +134,9 @@ private:
 	FBXObject3d* fbxObject1 = nullptr;
 
 
+
+	int dieType = DIENULL;
 	//死んだときの演出の時間
 	PlayerFallDie playerFallDie;
-	bool dieFlag = false;
 	int dieNowTime = 0;
 };
