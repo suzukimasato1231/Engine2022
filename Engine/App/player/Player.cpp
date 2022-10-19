@@ -165,7 +165,7 @@ void Player::FallDie()
 		playerFallDie.Create(position);
 	}
 
-	if (dieType == FALLDOWN || dieType == ELECTDIE)
+	if (dieType == FALLDOWN || dieType == ELECTDIE || dieType == EATDIE)
 	{
 		if (dieNowTime > 0)
 		{

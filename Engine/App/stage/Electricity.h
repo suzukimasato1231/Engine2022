@@ -1,5 +1,5 @@
 #pragma once
-#include"../Engine/App/stage/StegeObject.h"
+#include"../stage/StegeObject.h"
 class Electricity
 {
 public:

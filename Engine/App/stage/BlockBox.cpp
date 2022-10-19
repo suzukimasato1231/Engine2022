@@ -40,15 +40,15 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 #endif
 	switch (stageObj->type)
 	{
-	case BreakBox:
+	case BOX:
 		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
 			stageObj->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), normalBoxGraph, shadowFlag);
 		break;
-	case BreakJUMP:
+	case BOXJUMP:
 		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
 			stageObj->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), jumpBoxgraph, shadowFlag);
 		break;
-	case BreakHARD:
+	case BOXHARD:
 		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
 			stageObj->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), hardBoxGraph, shadowFlag);
 		break;

@@ -18,10 +18,10 @@ enum StageType
 	NoneOBJ = 0,
 	Wall = 1,			//壁
 	Goal = 2,			//ゴール
-	BreakBox = 10,		//壊れる箱
-	BreakBox2 = 11,		//壊れる箱ダブル
-	BreakHARD = 12,		//固い箱
-	BreakJUMP = 13,		//ジャンプ箱
+	BOX = 10,			//壊れる箱
+	BOXDOUBLE = 11,		//壊れる箱ダブル
+	BOXHARD = 12,		//固い箱
+	BOXJUMP = 13,		//ジャンプ箱
 	ICICLE = 20,		//氷柱
 	ELECTRICITY = 21,	//電気
 	FISHATTACK  = 22,	//魚アタック
@@ -69,4 +69,5 @@ struct StageOBJ
 	Vec2 map = {};
 	Box box = {};
 	int type = NoneOBJ;
+	Vec3 actionPos = {};
 };

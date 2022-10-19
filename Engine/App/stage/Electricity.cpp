@@ -1,17 +1,14 @@
 #include "Electricity.h"
 #include<Shape.h>
 Electricity::Electricity()
-{
-}
+{}
 
 Electricity::~Electricity()
-{
-}
+{}
 
 void Electricity::Init()
 {
 	electOBJ = Shape::CreateOBJ("elect");
-
 	electShockOBJ = Shape::CreateOBJ("electShock");
 }
 
@@ -40,7 +37,12 @@ void Electricity::Update()
 
 void Electricity::Draw(StageOBJ* stageObj, const bool shadowFlag)
 {
-	if (stageObj == nullptr) { assert(0); }
+#ifdef _DEBUG
+	if (stageObj == nullptr)
+	{
+		assert(0);
+	}
+#endif
 	Object::Draw(electOBJ, stageObj->psr, stageObj->position, Vec3(2.0f, 2.0f, 2.0f),
 		Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 
@@ -50,7 +52,6 @@ void Electricity::Draw(StageOBJ* stageObj, const bool shadowFlag)
 		Object::Draw(electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
 			Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, false);
 	}
-
 }
 
 StageOBJ Electricity::SetElect(const Vec3 position, const Vec3 scale, const Vec3 angle, const Vec2 map, const int type)

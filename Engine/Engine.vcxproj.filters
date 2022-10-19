@@ -378,10 +378,10 @@
     <ClInclude Include="App\stage\PushCollision.h">
       <Filter>ソース ファイル\Stage\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Electricity.h">
+    <ClInclude Include="App\stage\DangerFish.h">
       <Filter>ソース ファイル\Stage\Trap</Filter>
     </ClInclude>
-    <ClInclude Include="DangerFish.h">
+    <ClInclude Include="App\stage\Electricity.h">
       <Filter>ソース ファイル\Stage\Trap</Filter>
     </ClInclude>
   </ItemGroup>
@@ -539,10 +539,10 @@
     <ClCompile Include="App\stage\PushCollision.cpp">
       <Filter>ソース ファイル\Stage\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Electricity.cpp">
+    <ClCompile Include="App\stage\DangerFish.cpp">
       <Filter>ソース ファイル\Stage\Trap</Filter>
     </ClCompile>
-    <ClCompile Include="DangerFish.cpp">
+    <ClCompile Include="App\stage\Electricity.cpp">
       <Filter>ソース ファイル\Stage\Trap</Filter>
     </ClCompile>
   </ItemGroup>

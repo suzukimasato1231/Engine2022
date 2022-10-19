@@ -5,8 +5,8 @@
 #include"./StegeObject.h"
 #include"FishBox.h"
 #include"BlockBox.h"
-#include"../Engine/Electricity.h"
-#include"../Engine/DangerFish.h"
+#include"../stage/Electricity.h"
+#include"../stage/DangerFish.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
@@ -85,7 +85,6 @@ private://罠ブロック
 	bool goalFlag = false;
 	//箱
 	BlockBox blockBox;
-	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 	//電撃の罠
 	Electricity elect;
 	//危険魚
