@@ -34,18 +34,10 @@ struct Floor
 	Vec3 angle = {};
 	Vec2 map = {};
 	int type = 0;
-};
-
-struct MoveFloorData
-{
-	PSR psr;
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
 	int time = 0;
 	int moveFlag = 0;
 	Vec3 speed = { 0.0f,0.0f,0.5f };
+	Vec3 drawAngle = {};
 };
 
 struct FloorPitfallData
@@ -58,6 +50,7 @@ struct FloorPitfallData
 	Vec2 map = {};
 	int time = 0;
 	int moveFlag = 0;
+
 };
 
 struct StageOBJ

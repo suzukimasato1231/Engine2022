@@ -1,5 +1,5 @@
 #pragma once
-#include"./StegeObject.h"
+#include"StegeObject.h"
 #include"Object.h"
 #include"LoadCSV.h"
 class BlockBox

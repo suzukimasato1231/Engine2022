@@ -2,11 +2,13 @@
 #include"Object.h"
 #include<vector>
 #include <LoadCSV.h>
-#include"./StegeObject.h"
+#include"StegeObject.h"
 #include"FishBox.h"
 #include"BlockBox.h"
-#include"../stage/Electricity.h"
-#include"../stage/DangerFish.h"
+#include"Electricity.h"
+#include"DangerFish.h"
+#include"MoveFloor.h"
+#include"FloorPitfall.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
@@ -52,10 +54,6 @@ private:
 	void SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
-
-	void MoveFloorUpdate(int i);
-
-	void PitfallUpdate(int i);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
@@ -64,15 +62,10 @@ private://床関連
 	//雪の床
 	ObjectData floorOBJ;
 	std::vector<Floor*>floor;
-	int floorGraph = 0;
 	//動く床
-	ObjectData moveFloorOBJ = {};
-	std::vector<MoveFloorData*>moveFloorData;
+	MoveFloor moveFloor;
 
-	//落とし床
-	ObjectData floorPitfallOBJ = {};
-	std::vector<FloorPitfallData*>floorPitfallData;
-	int pitfallGraph = 0;
+	FloorPitfall floorPitfall;
 private://罠ブロック
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ

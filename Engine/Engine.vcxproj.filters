@@ -384,6 +384,12 @@
     <ClInclude Include="App\stage\Electricity.h">
       <Filter>ソース ファイル\Stage\Trap</Filter>
     </ClInclude>
+    <ClInclude Include="App\stage\FloorPitfall.h">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\MoveFloor.h">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -544,6 +550,12 @@
     </ClCompile>
     <ClCompile Include="App\stage\Electricity.cpp">
       <Filter>ソース ファイル\Stage\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\FloorPitfall.cpp">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\MoveFloor.cpp">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
