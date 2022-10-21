@@ -72,9 +72,6 @@
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{dbfb1e19-53f1-44bd-a6ae-e59a8b9d4106}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Enemy">
-      <UniqueIdentifier>{4f19e1c3-c989-4db8-9cea-e16cffe5281e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\Texture">
       <UniqueIdentifier>{09581daa-d630-45b0-a417-f4c659c3f100}</UniqueIdentifier>
     </Filter>
@@ -92,6 +89,18 @@
     </Filter>
     <Filter Include="ソース ファイル\TimeAttack">
       <UniqueIdentifier>{58a7077a-6d0a-4bfd-97a0-e4f64c828b7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Box">
+      <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Base">
+      <UniqueIdentifier>{e1cf664f-505e-45a0-9f07-634338a82202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Trap">
+      <UniqueIdentifier>{08fcf23e-6e0a-4b37-a9fa-e4aadccd9139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Floor">
+      <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -192,18 +201,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Stage.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\GameSceneManager.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
@@ -339,57 +336,63 @@
     <ClInclude Include="Library\2d\Sprite.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyManager.h">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="PushCollision.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="StegeObject.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\StageSelect.h">
       <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeAttack.h">
-      <Filter>ソース ファイル\TimeAttack</Filter>
     </ClInclude>
     <ClInclude Include="Scene\ResultScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowMap.h">
+    <ClInclude Include="App\player\Fish.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="App\player\Player.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="App\player\PlayerFallDie.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="App\TimeAttack\TimeAttack.h">
+      <Filter>ソース ファイル\TimeAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="App\ui\UI.h">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\2d\ShadowMap.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerFallDie.h">
-      <Filter>ソース ファイル\Player</Filter>
+    <ClInclude Include="App\Particle\Particle.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Fish.h">
-      <Filter>ソース ファイル\Player</Filter>
+    <ClInclude Include="App\stage\FishBox.h">
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
-    <ClInclude Include="FishBox.h">
-      <Filter>ソース ファイル\Stage</Filter>
+    <ClInclude Include="App\stage\BlockBox.h">
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
-    <ClInclude Include="BlockBox.h">
-      <Filter>ソース ファイル\Stage</Filter>
+    <ClInclude Include="App\stage\StegeObject.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\Stage.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\PushCollision.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\DangerFish.h">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\Electricity.h">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\FloorPitfall.h">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\MoveFloor.h">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Particle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Scene\GameSceneManager.cpp">
@@ -503,38 +506,56 @@
     <ClCompile Include="Library\2d\Sprite.cpp">
       <Filter>Library\2d</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="PushCollision.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\StageSelect.cpp">
       <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeAttack.cpp">
-      <Filter>ソース ファイル\TimeAttack</Filter>
     </ClCompile>
     <ClCompile Include="Scene\ResultScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ShadowMap.cpp">
+    <ClCompile Include="App\player\Fish.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\player\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\player\PlayerFallDie.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\TimeAttack\TimeAttack.cpp">
+      <Filter>ソース ファイル\TimeAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="App\ui\UI.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Library\2d\ShadowMap.cpp">
       <Filter>Library\2d</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerFallDie.cpp">
-      <Filter>ソース ファイル\Player</Filter>
+    <ClCompile Include="App\Particle\Particle.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Fish.cpp">
-      <Filter>ソース ファイル\Player</Filter>
+    <ClCompile Include="App\stage\FishBox.cpp">
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClCompile>
-    <ClCompile Include="FishBox.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
+    <ClCompile Include="App\stage\BlockBox.cpp">
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClCompile>
-    <ClCompile Include="BlockBox.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
+    <ClCompile Include="App\stage\Stage.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\PushCollision.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\DangerFish.cpp">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\Electricity.cpp">
+      <Filter>ソース ファイル\Stage\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\FloorPitfall.cpp">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\MoveFloor.cpp">
+      <Filter>ソース ファイル\Stage\Floor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include <Safe_delete.h>
-#include"Player.h"
-#include"Stage.h"
+#include"../Engine/App/player/Player.h"
+#include"../Engine/App/stage/Stage.h"
 Particle::Particle()
 {
 }

@@ -4,7 +4,7 @@
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
-#include"../Particle.h"
+#include"../App/Particle/Particle.h"
 GameSceneManager::GameSceneManager()
 {}
 GameSceneManager::~GameSceneManager()

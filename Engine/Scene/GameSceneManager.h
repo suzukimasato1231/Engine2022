@@ -6,12 +6,11 @@
 #include"Collision.h"
 #include"Audio.h"
 #include"FBXObject3d.h"
-#include"../Player.h"
-#include"../PushCollision.h"
-#include"../Stage.h"
-#include"../UI.h"
-#include"../TimeAttack.h"
-#include"../EnemyManager.h"
+#include"../App/player/Player.h"
+#include"../App/stage/PushCollision.h"
+#include"../App/stage/Stage.h"
+#include"../App/ui/UI.h"
+#include"../App/TimeAttack/TimeAttack.h"
 extern const int window_width;
 extern const int window_height;
 enum ChangeStatus

@@ -1,5 +1,5 @@
 #pragma once
-#include"./StegeObject.h"
+#include"StegeObject.h"
 #include"Object.h"
 #include"LoadCSV.h"
 class BlockBox
@@ -26,11 +26,18 @@ public:
 	int GetBox_Count() { return box_count; }
 
 	bool GetIs_Hit() { return is_hit; }
+
+	Vec3 GetBoxScale() { return breakBoxScale; }
 private:
 	ObjectData breakBoxOBJ = {};
-	int normalBoxGraph = 0;		//壊れる箱の画像
-	int hardBoxGraph = 0;		//固い箱の画像
-	int jumpBoxgraph = 0;		//ジャンプの箱の画像
+	//壊れる箱の画像
+	int normalBoxGraph = 0;
+	//固い箱の画像
+	int hardBoxGraph = 0;
+	//ジャンプの箱の画像
+	int jumpBoxgraph = 0;
+	//箱の大きさ
+	const Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 
 	bool is_hit = false;
 	int box_count = 0;

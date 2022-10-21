@@ -4,9 +4,9 @@
 #include "Input.h"
 #include"Shape.h"
 #include"DebugText.h"
-#include"../Player.h"
+#include"../App/player/Player.h"
 #include"Object.h"
-#include"../Stage.h"
+#include"../App/stage/Stage.h"
 StageSelect::StageSelect()
 {}
 StageSelect::~StageSelect()

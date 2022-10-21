@@ -1,7 +1,6 @@
 #pragma once
-#include"Player.h"
+#include"../Engine/App/player/Player.h"
 #include"Collision.h"
-#include"Enemy.h"
 #include"Stage.h"
 class PushCollision
 {

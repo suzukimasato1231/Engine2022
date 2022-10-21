@@ -18,12 +18,13 @@ enum StageType
 	NoneOBJ = 0,
 	Wall = 1,			//壁
 	Goal = 2,			//ゴール
-	BreakBox = 10,		//壊れる箱
-	BreakBox2 = 11,		//壊れる箱ダブル
-	BreakHARD = 12,		//固い箱
-	BreakJUMP = 13,		//ジャンプ箱
-	Icicle = 20,		//氷柱
-	Electricity = 21,	//電気
+	BOX = 10,			//壊れる箱
+	BOXDOUBLE = 11,		//壊れる箱ダブル
+	BOXHARD = 12,		//固い箱
+	BOXJUMP = 13,		//ジャンプ箱
+	ICICLE = 20,		//氷柱
+	ELECTRICITY = 21,	//電気
+	FISHATTACK  = 22,	//魚アタック
 };
 struct Floor
 {
@@ -33,18 +34,10 @@ struct Floor
 	Vec3 angle = {};
 	Vec2 map = {};
 	int type = 0;
-};
-
-struct MoveFloorData
-{
-	PSR psr;
-	Vec3 position = {};
-	Vec3 scale = {};
-	Vec3 angle = {};
-	Vec2 map = {};
 	int time = 0;
 	int moveFlag = 0;
 	Vec3 speed = { 0.0f,0.0f,0.5f };
+	Vec3 drawAngle = {};
 };
 
 struct FloorPitfallData
@@ -57,6 +50,7 @@ struct FloorPitfallData
 	Vec2 map = {};
 	int time = 0;
 	int moveFlag = 0;
+
 };
 
 struct StageOBJ
@@ -68,4 +62,5 @@ struct StageOBJ
 	Vec2 map = {};
 	Box box = {};
 	int type = NoneOBJ;
+	Vec3 actionPos = {};
 };

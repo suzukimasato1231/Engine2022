@@ -306,7 +306,7 @@ void Sprite::Update(SpriteData& sprite, Vec2 position, float width, float height
 }
 
 //スプライト単体描画
-void Sprite::Draw(SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
+void Sprite::Draw(SpriteData& sprite,const Vec2 position,const float width,const float height,const Vec2 anchorpoint,const Vec4 color,const bool isFlipX,const bool isFlipY)
 {
 	SpriteCommonBeginDraw();
 

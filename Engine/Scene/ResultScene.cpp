@@ -1,6 +1,6 @@
 #include "ResultScene.h"
 #include"DebugText.h"
-#include"../Stage.h"
+#include"../App/stage/Stage.h"
 void ResultScene::Initialize()
 {
 	boxGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/UIBox.png");
@@ -55,7 +55,7 @@ void ResultScene::Draw()
 
 		Sprite::Get()->Draw(uiSlash, Vec2(650.0f, 200.0f), 128.0f, 128.0f);
 		//Å‘å” ‚Ì”
-		breaknumber = Stage::Get()->GetStageBlock() % 10, breakremain = Stage::Get()->GetStageBlock() / 10;
+		breaknumber = Stage::Get()->GetBlockMax() % 10, breakremain = Stage::Get()->GetBlockMax() / 10;
 		if (breakremain >= 1)
 		{
 			Sprite::Get()->Draw(uiNumber[breakremain], Vec2(750.0f, 200.0f), 128.0f, 128.0f);

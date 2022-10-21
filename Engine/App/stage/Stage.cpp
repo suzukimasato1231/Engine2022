@@ -2,8 +2,7 @@
 #include"Shape.h"
 #include <LoadCSV.h>
 #include"PushCollision.h"
-#include"Particle.h"
-#include"EnemyManager.h"
+#include"../Particle/Particle.h"
 Stage::Stage()
 {}
 
@@ -19,43 +18,36 @@ Stage::~Stage()
 		delete stageObj[i];
 		stageObj.erase(stageObj.begin() + i);
 	}
-	for (int i = (int)moveFloorData.size() - 1; i >= 0; i--)
-	{
-		delete moveFloorData[i];
-		moveFloorData.erase(moveFloorData.begin() + i);
-	}
-	for (int i = (int)floorPitfallData.size() - 1; i >= 0; i--)
-	{
-		delete floorPitfallData[i];
-		floorPitfallData.erase(floorPitfallData.begin() + i);
-	}
 }
 
 void Stage::Init()
 {
 	blockBox.Init();
 	floorOBJ = Shape::CreateOBJ("ice");//Shape::CreateSquare(1.0f, 1.0f, 1.0f);
-	floorGraph = Texture::Get()->LoadTexture(L"Resources/ice/ice.png");
 
 	wallOBJ = Shape::CreateOBJ("iceWall");
 	//ゴール設定
 	goalOBJ = Shape::CreateOBJ("goal");
 
-	moveFloorOBJ = Shape::CreateOBJ("moveFloor");
-	floorPitfallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
-
 	blackGround = Shape::CreateSquare(1.0f, 0.5f, 1.0f);
 	blackGraph = Texture::Get()->LoadTexture(L"Resources/black.png");
 
 	MainInit(0);
+	//動く床を初期化
+	moveFloor.Init();
 
+	floorPitfall.Init();
 	//魚を初期化
 	fishBox.Init();
+	//電気の罠を初期化
+	elect.Init();
+	//危険魚を初期化
+	dangerFish.Init();
 }
 
 void Stage::MainInit(int stageNum)
 {
-	stageBlockNum = 0;
+	blockMax = 0;
 	blockNum = 0;
 	//床
 	LoadStage(stageNum);
@@ -76,9 +68,9 @@ void Stage::Update(Vec3 pPos)
 		switch (stageObj[i]->type)
 		{
 		case Wall:
-		case BreakBox:
-		case BreakJUMP:
-		case BreakHARD:
+		case BOX:
+		case BOXJUMP:
+		case BOXHARD:
 			blockBox.PlayerHit(stageObj[i], X, Z);
 			break;
 		case Goal:
@@ -88,12 +80,30 @@ void Stage::Update(Vec3 pPos)
 				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
 				{
 					//ゴール
-					if (stageObj[i]->type == Goal)
-					{
-						goalFlag = true;
-					}
+					goalFlag = true;
 				}
 			}
+			break;
+		case ELECTRICITY:
+			if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1 && elect.GetElectFlag())
+			{
+				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
+				{
+					Player::Get()->DieType(ELECTDIE);
+				}
+			}
+			break;
+		case FISHATTACK:
+			if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1)
+			{
+				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
+				{
+					Player::Get()->DieType(EATDIE);
+				}
+			}
+			dangerFish.Update(stageObj[i]);
+			break;
+		default:
 			break;
 		}
 	}
@@ -109,7 +119,7 @@ void Stage::Update(Vec3 pPos)
 			{
 				if (breakNum == -1) { break; }
 				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BreakBox == stageObj[i]->type)
+					BOX == stageObj[i]->type)
 				{
 					Player::Get()->GetBlockStepOnFlag();
 					Player::Get()->ChangeBreakFlag();
@@ -121,14 +131,14 @@ void Stage::Update(Vec3 pPos)
 					break;
 				}//ジャンプ台
 				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BreakJUMP == stageObj[i]->type)
+					BOXJUMP == stageObj[i]->type)
 				{
 					Player::Get()->GetJumpBox();
 					Player::Get()->GetBlockStepOnFlag();
 				}
 			}
 		}
-		else if (breakFlag == 2 && stageObj[breakNum]->type == BreakBox)
+		else if (breakFlag == 2 && stageObj[breakNum]->type == BOX)
 		{
 			Player::Get()->JumpPoweZero();
 			Player::Get()->ChangeBreakFlag();
@@ -136,7 +146,7 @@ void Stage::Update(Vec3 pPos)
 			{
 				if (breakNum == -1) { break; }
 				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BreakBox == stageObj[i]->type)
+					BOX == stageObj[i]->type)
 				{
 					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
 					fishBox.Create(stageObj[i]->position);
@@ -149,42 +159,51 @@ void Stage::Update(Vec3 pPos)
 	}
 	//箱の更新
 	blockBox.Update();
+	elect.Update();
 
 	//床
 	for (int i = 0; i < floor.size(); i++)
 	{
-		if ((X - 1 <= floor[i]->map.x && floor[i]->map.x <= X + 1)
-			&& ((MAP_HEIGHT - 1 + Z) - 1 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
+		switch (floor[i]->type)
 		{
-			//プレイヤー
-			PushCollision::Player2Floor(floor[i]->position,
-				floor[i]->angle, floor[i]->scale);
-		}
-	}
-	//動く床
-	for (int i = 0; i < moveFloorData.size(); i++)
-	{
-		MoveFloorUpdate(i);
-		if ((X - 3 <= moveFloorData[i]->map.x && moveFloorData[i]->map.x <= X + 3)
-			&& ((MAP_HEIGHT - 1 + Z) - 3 <= moveFloorData[i]->map.y && moveFloorData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 3))
-		{
-			PushCollision::Player2Floor(moveFloorData[i]->position,
-				moveFloorData[i]->angle, moveFloorData[i]->scale, moveFloorData[i]->moveFlag);
-		}
-	}
-
-	for (int i = 0; i < floorPitfallData.size(); i++)
-	{
-		PitfallUpdate(i);
-		if ((X - drawNumX <= floorPitfallData[i]->map.x && floorPitfallData[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floorPitfallData[i]->map.y && floorPitfallData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
-		{
-			if (floorPitfallData[i]->moveFlag == 0)
+		case Floor11:
+		case Floor169:
+		case FloorNormal:
+			if ((X - 1 <= floor[i]->map.x && floor[i]->map.x <= X + 1)
+				&& ((MAP_HEIGHT - 1 + Z) - 1 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
 			{
-				PushCollision::Player2Floor(floorPitfallData[i]->position,
-					floorPitfallData[i]->angle, floorPitfallData[i]->scale);
+				//プレイヤー
+				PushCollision::Player2Floor(floor[i]->position,
+					floor[i]->angle, floor[i]->scale);
 			}
+			break;
+		case FloorMove:
+			if ((X - 3 <= floor[i]->map.x && floor[i]->map.x <= X + 3)
+				&& ((MAP_HEIGHT - 1 + Z) - 3 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 3))
+			{
+				//プレイヤー
+				PushCollision::Player2Floor(floor[i]->position,
+					floor[i]->angle, floor[i]->scale, floor[i]->moveFlag);
+			}
+			moveFloor.Update(floor[i]);
+			break;
+		case FloorPitfall_A:
+		case FloorPitfall_B:
+			if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
+				&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			{
+				if (floor[i]->moveFlag == 0)
+				{
+					PushCollision::Player2Floor(floor[i]->position,
+						floor[i]->angle, floor[i]->scale);
+				}
+			}
+			floorPitfall.Update(floor[i]);
+			break;
+		default:
+			break;
 		}
+
 	}
 	//魚の更新
 	fishBox.Update(pPos);
@@ -219,36 +238,15 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 					Vec3(15.0f, 15.0f, 23.0f),
 					floor[i]->angle, Vec4(), 0, shadowFlag);
 				break;
+			case FloorMove:
+				moveFloor.Draw(floor[i], shadowFlag);
+				break;
+			case FloorPitfall_A:
+			case FloorPitfall_B:
+				floorPitfall.Draw(floor[i], shadowFlag);
+				break;
 			default:
 				break;
-			}
-		}
-	}
-	//動く床
-	for (int i = 0; i < moveFloorData.size(); i++)
-	{
-		if ((X - drawNumX <= moveFloorData[i]->map.x && moveFloorData[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= moveFloorData[i]->map.y && moveFloorData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
-		{
-			Object::Draw(moveFloorOBJ, moveFloorData[i]->psr, Vec3(moveFloorData[i]->position.x, moveFloorData[i]->position.y - 15.0f, moveFloorData[i]->position.z),
-				Vec3(14.0f, 14.0f, 14.0f), moveFloorData[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
-		}
-	}
-	//落とし穴
-	for (int i = 0; i < floorPitfallData.size(); i++)
-	{
-		if ((X - drawNumX <= floorPitfallData[i]->map.x && floorPitfallData[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floorPitfallData[i]->map.y && floorPitfallData[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
-		{//開いている
-			if (floorPitfallData[i]->moveFlag == 0)
-			{
-				Object::Draw(floorPitfallOBJ, floorPitfallData[i]->psr, floorPitfallData[i]->position, floorPitfallData[i]->scale,
-					floorPitfallData[i]->drawAngle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), pitfallGraph, shadowFlag);
-			}//閉じている
-			else if (floorPitfallData[i]->moveFlag == 1)
-			{
-				Object::Draw(floorPitfallOBJ, floorPitfallData[i]->psr, floorPitfallData[i]->position, floorPitfallData[i]->scale,
-					floorPitfallData[i]->drawAngle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), pitfallGraph, shadowFlag);
 			}
 		}
 	}
@@ -269,10 +267,18 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 				Object::Draw(goalOBJ, stageObj[i]->psr, stageObj[i]->position, Vec3(5.0f, 5.0f, 5.0f),
 					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 				break;
-			case BreakBox:
-			case BreakJUMP:
-			case BreakHARD:
+			case BOX:
+			case BOXJUMP:
+			case BOXHARD:
 				blockBox.Draw(stageObj[i], shadowFlag);
+				break;
+			case ELECTRICITY:
+				elect.Draw(stageObj[i], shadowFlag);
+				break;
+			case FISHATTACK:
+				dangerFish.Draw(stageObj[i], shadowFlag);
+				break;
+			default:
 				break;
 			}
 		}
@@ -305,16 +311,6 @@ void Stage::LoadStage(int stageNum)
 		delete stageObj[i];
 		stageObj.erase(stageObj.begin() + i);
 	}
-	for (int i = (int)moveFloorData.size() - 1; i >= 0; i--)
-	{
-		delete moveFloorData[i];
-		moveFloorData.erase(moveFloorData.begin() + i);
-	}
-	for (int i = (int)floorPitfallData.size() - 1; i >= 0; i--)
-	{
-		delete floorPitfallData[i];
-		floorPitfallData.erase(floorPitfallData.begin() + i);
-	}
 	char* FilepathFloor = "";
 	char* FilepathFloorPos = "";
 	char* FilepathOBJ = "";
@@ -345,11 +341,16 @@ void Stage::LoadStage(int stageNum)
 		FilepathOBJ = (char*)"Resources/map/OBJTitle2.csv";
 		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos2.csv";
 		break;
+	case 3:
+		//Floor
+		FilepathFloor = (char*)"Resources/map/Floor_Title3.csv";
+		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos3.csv";
+		//OBJ
+		FilepathOBJ = (char*)"Resources/map/OBJTitle3.csv";
+		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos3.csv";
 	default:
 		break;
-
 	}
-
 	////ブロック
 	int	Map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int MapPos[MAP_HEIGHT][MAP_WIDTH] = {};
@@ -410,24 +411,31 @@ void Stage::LoadStage(int stageNum)
 				SetGoal(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20 + 5.0f, (MAP_HEIGHT - 1 - y) * mapSize),
 					goalScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
-			case BreakBox:
-				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+			case BOX:
+				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
-			case BreakBox2:
-				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
-				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, (static_cast<float>(MapOBJPos[y][x]) + 1.0f) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+			case BOXDOUBLE:
+				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, (static_cast<float>(MapOBJPos[y][x]) + 1.0f) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
-			case BreakJUMP:
-				SetJumpBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+			case BOXJUMP:
+				SetJumpBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
-			case BreakHARD:
-				SetBreakHard(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + breakBoxScale.y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					breakBoxScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+			case BOXHARD:
+				SetBreakHard(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
+			case ELECTRICITY:
+				SetElectricity(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+				break;
+			case FISHATTACK:
+				SetFishAttack(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 			default:
 				break;
 			}
@@ -438,34 +446,34 @@ void Stage::LoadStage(int stageNum)
 void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type)
 {
 	floor.push_back(new Floor);
-	size_t floorNum = floor.size() - 1;
-	floor[floorNum]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	floor[floorNum]->position = position;
-	floor[floorNum]->scale = scale;
-	floor[floorNum]->angle = angle;
-	floor[floorNum]->type = type;
+	size_t Num = floor.size() - 1;
+	floor[Num]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	floor[Num]->position = position;
+	floor[Num]->scale = scale;
+	floor[Num]->angle = angle;
+	floor[Num]->type = type;
 }
 
 void Stage::SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
-	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BreakBox);
-	stageBlockNum++;
+	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOX);
+	blockMax++;
 }
 
 void Stage::SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
-	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BreakJUMP);
+	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXJUMP);
 }
 
 void Stage::SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
-	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BreakHARD);
+	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXHARD);
 }
 
 void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
@@ -508,74 +516,37 @@ void Stage::SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 
 void Stage::SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
-	moveFloorData.push_back(new MoveFloorData);
-	size_t NUM = moveFloorData.size() - 1;
-	moveFloorData[NUM]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	moveFloorData[NUM]->position = position;
-	moveFloorData[NUM]->scale = scale;
-	moveFloorData[NUM]->angle = angle;
+	floor.push_back(new Floor);
+	size_t NUM = floor.size() - 1;
+	floor[NUM]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	floor[NUM]->position = position;
+	floor[NUM]->scale = scale;
+	floor[NUM]->angle = angle;
+	floor[NUM]->type = FloorMove;
 }
 
 void Stage::SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time)
 {
-	floorPitfallData.push_back(new FloorPitfallData);
-	size_t NUM = floorPitfallData.size() - 1;
-	floorPitfallData[NUM]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	floorPitfallData[NUM]->position = position;
-	floorPitfallData[NUM]->scale = scale;
-	floorPitfallData[NUM]->angle = angle;
-	floorPitfallData[NUM]->time = time;
+	floor.push_back(new Floor);
+	size_t NUM = floor.size() - 1;
+	floor[NUM]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	floor[NUM]->position = position;
+	floor[NUM]->scale = scale;
+	floor[NUM]->angle = angle;
+	floor[NUM]->time = time;
+	floor[NUM]->type = FloorPitfall_A;
 }
 
-void Stage::MoveFloorUpdate(int i)
+void Stage::SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
-	moveFloorData[i]->time++;
-	if (moveFloorData[i]->moveFlag == 1)
-	{
-		moveFloorData[i]->position -= Vec3(0.0f, 0.0f, 0.5f);
-		if (moveFloorData[i]->time >= 150)
-		{
-			moveFloorData[i]->moveFlag = 0;
-			moveFloorData[i]->time = 0;
-		}
-	}
-	else
-	{
-		moveFloorData[i]->position += Vec3(0.0f, 0.0f, 0.5f);
-		if (moveFloorData[i]->time >= 150)
-		{
-			moveFloorData[i]->moveFlag = 1;
-			moveFloorData[i]->time = 0;
-		}
-	}
+	stageObj.push_back(new StageOBJ);
+	size_t num = stageObj.size() - 1;
+	*stageObj[num] = Electricity::SetElect(position, scale, angle, map, ELECTRICITY);
 }
 
-void Stage::PitfallUpdate(int i)
+void Stage::SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 {
-	floorPitfallData[i]->time--;
-	//開いている
-	if (floorPitfallData[i]->moveFlag == 0)
-	{
-		if (floorPitfallData[i]->time <= 0)
-		{
-			floorPitfallData[i]->time = 50;
-			floorPitfallData[i]->moveFlag = 1;
-		}
-		if (floorPitfallData[i]->time <= 5)
-		{
-			floorPitfallData[i]->drawAngle.z += 18;
-		}
-	}//閉じている
-	else if (floorPitfallData[i]->moveFlag == 1)
-	{
-		if (floorPitfallData[i]->time <= 0)
-		{
-			floorPitfallData[i]->time = 50;
-			floorPitfallData[i]->moveFlag = 0;
-		}
-		if (floorPitfallData[i]->time <= 5)
-		{
-			floorPitfallData[i]->drawAngle.z += 18;
-		}
-	}
+	stageObj.push_back(new StageOBJ);
+	size_t num = stageObj.size() - 1;
+	*stageObj[num] = DangerFish::SetDangerFish(position, scale, angle, map, FISHATTACK);
 }

@@ -2,10 +2,13 @@
 #include"Object.h"
 #include<vector>
 #include <LoadCSV.h>
-#include"./StegeObject.h"
-#include"../Engine/EnemyManager.h"
+#include"StegeObject.h"
 #include"FishBox.h"
 #include"BlockBox.h"
+#include"Electricity.h"
+#include"DangerFish.h"
+#include"MoveFloor.h"
+#include"FloorPitfall.h"
 class Player;
 class Stage :public Singleton<Stage>
 {
@@ -30,7 +33,7 @@ public://マップ
 	bool GetClearFlag() { return goalFlag; }
 
 	int GetBlockNum() { return blockNum; }
-	int GetStageBlock() { return stageBlockNum; }
+	int GetBlockMax() { return blockMax; }
 private:
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type);
 
@@ -48,9 +51,9 @@ private:
 
 	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time);
 
-	void MoveFloorUpdate(int i);
+	void SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
-	void PitfallUpdate(int i);
+	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 10;
@@ -59,15 +62,10 @@ private://床関連
 	//雪の床
 	ObjectData floorOBJ;
 	std::vector<Floor*>floor;
-	int floorGraph = 0;
 	//動く床
-	ObjectData moveFloorOBJ = {};
-	std::vector<MoveFloorData*>moveFloorData;
+	MoveFloor moveFloor;
 
-	//落とし床
-	ObjectData floorPitfallOBJ = {};
-	std::vector<FloorPitfallData*>floorPitfallData;
-	int pitfallGraph = 0;
+	FloorPitfall floorPitfall;
 private://罠ブロック
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
@@ -80,12 +78,15 @@ private://罠ブロック
 	bool goalFlag = false;
 	//箱
 	BlockBox blockBox;
-	Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
+	//電撃の罠
+	Electricity elect;
+	//危険魚
+	DangerFish dangerFish;
 private:
 	//壊した時に出る魚
 	FishBox fishBox;
 
-	int stageBlockNum = 0;//ステージにある最大のブロック数
+	int blockMax = 0;//ステージにある最大のブロック数
 	int blockNum = 0;	//壊したブロック
 
 
