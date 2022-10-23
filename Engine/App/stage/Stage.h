@@ -27,6 +27,8 @@ public:
 	void Update(Vec3 pPos);
 	//描画
 	void Draw(Vec3 pPos, bool shadowFlag = false);
+
+	void DrawParicle();
 	//ステージ作成
 	void LoadStage(int stageNum);
 public://マップ
@@ -62,6 +64,7 @@ private://床関連
 	//雪の床
 	ObjectData floorOBJ;
 	std::vector<Floor*>floor;
+	int floorGraph = 0;
 	//動く床
 	MoveFloor moveFloor;
 

@@ -79,5 +79,8 @@ void BlockBox::Update()
 {
 	is_hit = false;
 	box_count = 0;
-	StageOBJ obj_data[4] = {};
+	for (int i = 0; i < 4; i++)
+	{
+		obj_data[i] = {};
+	}
 }

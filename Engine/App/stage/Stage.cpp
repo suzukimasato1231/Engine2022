@@ -23,8 +23,8 @@ Stage::~Stage()
 void Stage::Init()
 {
 	blockBox.Init();
-	floorOBJ = Shape::CreateOBJ("ice");//Shape::CreateSquare(1.0f, 1.0f, 1.0f);
-
+	floorOBJ = Shape::CreateOBJ("ice");
+	floorGraph = Texture::Get()->LoadTexture(L"Resources/floor.png");
 	wallOBJ = Shape::CreateOBJ("iceWall");
 	//ゴール設定
 	goalOBJ = Shape::CreateOBJ("goal");
@@ -85,13 +85,7 @@ void Stage::Update(Vec3 pPos)
 			}
 			break;
 		case ELECTRICITY:
-			if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1 && elect.GetElectFlag())
-			{
-				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
-				{
-					Player::Get()->DieType(ELECTDIE);
-				}
-			}
+			elect.Update(stageObj[i], Z);
 			break;
 		case FISHATTACK:
 			if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1)
@@ -138,28 +132,32 @@ void Stage::Update(Vec3 pPos)
 				}
 			}
 		}
-		else if (breakFlag == 2 && stageObj[breakNum]->type == BOX)
+		else if (breakFlag == 2)
 		{
-			Player::Get()->JumpPoweZero();
-			Player::Get()->ChangeBreakFlag();
-			for (int i = 0; i < stageObj.size(); i++)
+			if (stageObj[breakNum]->type == BOX)
 			{
-				if (breakNum == -1) { break; }
-				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOX == stageObj[i]->type)
+				Player::Get()->JumpPoweZero();
+				Player::Get()->ChangeBreakFlag();
+				for (int i = 0; i < stageObj.size(); i++)
 				{
-					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
-					fishBox.Create(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
-					blockNum++;
+					if (breakNum == -1) { break; }
+					if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
+						BOX == stageObj[i]->type)
+					{
+						Particle::Get()->BreakBoxFlag(stageObj[i]->position);
+						fishBox.Create(stageObj[i]->position);
+						delete stageObj[i];
+						stageObj.erase(stageObj.begin() + i);
+						blockNum++;
+					}
 				}
 			}
 		}
 	}
 	//箱の更新
 	blockBox.Update();
-	elect.Update();
+
+	elect.AllUpdate();
 
 	//床
 	for (int i = 0; i < floor.size(); i++)
@@ -225,18 +223,18 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			{
 			case FloorNormal:
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 15.0f, floor[i]->position.z),
-					Vec3(12.5f, 15.0f, 12.5f),
+					Vec3(25.0f, 30.0f, 25.0f),
 					floor[i]->angle, Vec4(), 0, shadowFlag);
 				break;
 			case Floor169:
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 16.0f, floor[i]->position.z),
-					Vec3(15.0f, 15.0f, 23.0f),
-					floor[i]->angle, Vec4(), 0, shadowFlag);
+				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 15.7f, floor[i]->position.z + 4.5f),
+					Vec3(15.0f, 15.0f, 23.0f) * 2,
+					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
 				break;
 			case Floor11:
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 16.0f, floor[i]->position.z),
-					Vec3(15.0f, 15.0f, 23.0f),
-					floor[i]->angle, Vec4(), 0, shadowFlag);
+				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 16.0f, floor[i]->position.z - 4.5f),
+					Vec3(15.0f, 15.0f, 23.0f) * 2,
+					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
 				break;
 			case FloorMove:
 				moveFloor.Draw(floor[i], shadowFlag);
@@ -288,15 +286,20 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 		Vec3(10000.0f, 1.0f, 100000.0f), Vec3(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), blackGraph);
 
 	//左右の床の描画
-	Object::Draw(floorOBJ, blackPsr[1], Vec3(-560.0f, 5.0f, 1200.0f),
+	Object::Draw(floorOBJ, blackPsr[1], Vec3(-280.0f, 5.0f, 1200.0f),
 		Vec3(550.0f, 15.0f, 5500.0f),
 		Vec3(), Vec4(), 0, shadowFlag);
-	Object::Draw(floorOBJ, blackPsr[2], Vec3(800.0f, 5.0f, 1200.0f),
+	Object::Draw(floorOBJ, blackPsr[2], Vec3(500.0f, 5.0f, 1200.0f),
 		Vec3(550.0f, 15.0f, 5500.0f),
 		Vec3(), Vec4(), 0, shadowFlag);
 
 	//箱壊した時に出る魚
 	fishBox.Draw();
+}
+
+void Stage::DrawParicle()
+{
+	elect.DrawParicle();
 }
 
 void Stage::LoadStage(int stageNum)

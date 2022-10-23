@@ -2,12 +2,10 @@
 #include <Shape.h>
 
 FloorPitfall::FloorPitfall()
-{
-}
+{}
 
 FloorPitfall::~FloorPitfall()
-{
-}
+{}
 
 void FloorPitfall::Init()
 {

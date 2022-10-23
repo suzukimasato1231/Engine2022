@@ -348,7 +348,7 @@
     <ClInclude Include="App\player\Player.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="App\player\PlayerFallDie.h">
+    <ClInclude Include="App\player\Staging.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="App\TimeAttack\TimeAttack.h">
@@ -518,7 +518,7 @@
     <ClCompile Include="App\player\Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="App\player\PlayerFallDie.cpp">
+    <ClCompile Include="App\player\Staging.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="App\TimeAttack\TimeAttack.cpp">

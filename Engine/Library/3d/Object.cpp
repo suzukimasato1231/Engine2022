@@ -165,7 +165,7 @@ void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3
 		OBJConstantBuffer();
 	}
 	//更新
-	MatWord(polygon,psr, position, scale, rotation, color);
+	MatWord(polygon, psr, position, scale, rotation, color);
 
 	//頂点バッファの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &polygon.vbView);

@@ -20,7 +20,7 @@ void Player::Init()
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 
-	playerFallDie.Init();
+	staging.Init();
 	////モデル名を指定してファイル読み込み
 	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin");
 	////3Dオブジェクトの生成とモデルのセット
@@ -63,7 +63,7 @@ void Player::Draw(bool shadowFlag)
 
 void Player::DrawParticle()
 {
-	playerFallDie.Draw();
+	staging.Draw();
 }
 
 void Player::SetPosition(Vec3 position)
@@ -129,8 +129,7 @@ void Player::Move()
 void Player::Jump()
 {
 	//ジャンプ
-	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag)
-		&& groundFlag == true)
+	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) && groundFlag == true) || blockStepOnFlag)
 	{
 		if (jumpBoxFlag)
 		{
@@ -160,12 +159,26 @@ void Player::FallDie()
 
 	if (position.y < -30.0f && dieType == DIENULL)
 	{
-		dieType = FALLDOWN;
 		dieNowTime = dieTime;
-		playerFallDie.Create(position);
+		staging.CreateFallDown(position);
+		dieType = DIENOW;
+	}
+	if (dieType == ELECTDIE)
+	{
+		dieNowTime = dieTime;
+		staging.CreateElect(position);
+		dieType = DIENOW;
+
+	}
+	if (dieType == EATDIE)
+	{
+		dieNowTime = dieTime;
+		staging.CreateFallDown(position);
+		dieType = DIENOW;
 	}
 
-	if (dieType == FALLDOWN || dieType == ELECTDIE || dieType == EATDIE)
+
+	if (dieType == DIENOW)
 	{
 		if (dieNowTime > 0)
 		{
@@ -186,7 +199,7 @@ void Player::FallDie()
 	}
 
 
-	playerFallDie.Update();
+	staging.Update();
 }
 
 void Player::Fish()

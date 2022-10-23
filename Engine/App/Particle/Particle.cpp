@@ -13,7 +13,7 @@ Particle::~Particle()
 
 void Particle::Init()
 {
-	graph = Texture::Get()->LoadTexture(L"Resources/particle.jpg");
+	graph = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
 	breakBoxParticle = ParticleManager::Create();
 }
 

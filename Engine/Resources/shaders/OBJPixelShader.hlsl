@@ -28,7 +28,7 @@ float4 main(VSOutput input) : SV_TARGET
 		   // ライトに向かうベクトルと法線の内積
 		   float3 dotlightnormal = dot(dirLights[i].lightv, input.normal);
 		   // 反射光ベクトル
-		   float3 reflect = normalize(-dirLights[i].lightv + 2 * dotlightnormal * input.normal);
+		  float3 reflect = normalize(-dirLights[i].lightv + 2 * dotlightnormal * input.normal);
 		   // 拡散反射光
 		   float3 diffuse = dotlightnormal * m_diffuse;
 		   // 鏡面反射光
@@ -139,7 +139,7 @@ float4 main(VSOutput input) : SV_TARGET
 		//深度を比較
 		if (shadowDepth  < posFromLightVP.z - 0.001f)
 		{
-			shadecolor.rgb = shadecolor.rgb * 0.5f;//暗くする
+			shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
 		}
 	}
 	// シェーディングによる色で描画

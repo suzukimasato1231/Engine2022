@@ -2,14 +2,14 @@
 #include"Object.h"
 #include"CollisionPrimitive.h"
 #include"FBXObject3d.h"
-#include"PlayerFallDie.h"
+#include"Staging.h"
 enum DieType
 {
 	DIENULL,
 	FALLDOWN,
 	ELECTDIE,
 	EATDIE,
-	DIEMAX,
+	DIENOW,
 };
 class Player :public Singleton<Player>
 {
@@ -48,7 +48,7 @@ public:
 	//箱を壊したか
 	void ChangeBreakFlag() { changeBreakFlag = true; }
 
-	void DieType(int type) { Player::dieType = type; }
+	void DieType(int type) { if (dieType != DIENOW) { Player::dieType = type; } }
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -137,6 +137,6 @@ private:
 
 	int dieType = DIENULL;
 	//死んだときの演出の時間
-	PlayerFallDie playerFallDie;
+Staging staging;
 	int dieNowTime = 0;
 };
