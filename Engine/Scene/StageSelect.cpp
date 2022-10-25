@@ -18,7 +18,7 @@ void StageSelect::Initialize()
 	selectOBJ = Shape::CreateSquare(10.0f, 10.0f, 10.0f);
 	selectGraph[0] = Texture::Get()->LoadTexture(L"Resources/select/select1.png");
 	selectGraph[1] = Texture::Get()->LoadTexture(L"Resources/select/select2.png");
-
+	selectGraph[2] = Texture::Get()->LoadTexture(L"Resources/select/select3.png");
 	// ライトグループクラス作成
 	lightGroup = LightGroup::Create();
 	//音データ読み込み

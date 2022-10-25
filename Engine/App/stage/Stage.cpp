@@ -159,6 +159,8 @@ void Stage::Update(Vec3 pPos)
 
 	elect.AllUpdate();
 
+	dangerFish.AllUpdate();
+
 	//è∞
 	for (int i = 0; i < floor.size(); i++)
 	{
