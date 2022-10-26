@@ -192,13 +192,6 @@ int Texture::OBJLoadTexture(const std::string& directoryPath, const std::string&
 	return (int)texNum - 1;
 }
 
-//void Texture::LoadDivGraph(SpriteData& graph, const int num, const int width, const int height, const float sizeX, const float sizeY)
-//{
-//	
-//
-//
-//}
-
 void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 {
 	textureData.push_back(new Texture::TextureData);

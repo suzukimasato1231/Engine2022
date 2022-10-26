@@ -58,7 +58,7 @@ private:
 	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 private:
 	const float mapSize = 25.0f;
-	const int drawNumX = 10;
+	const int drawNumX = 9;
 	const int drawNumY = 30;
 private://è∞ä÷òA
 	//ê·ÇÃè∞

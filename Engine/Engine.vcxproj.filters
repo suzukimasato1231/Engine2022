@@ -342,9 +342,6 @@
     <ClInclude Include="Scene\ResultScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="App\player\Fish.h">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="App\player\Player.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
@@ -389,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="App\stage\MoveFloor.h">
       <Filter>ソース ファイル\Stage\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\3d\Particle3D.h">
+      <Filter>Library\3d\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -512,9 +512,6 @@
     <ClCompile Include="Scene\ResultScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="App\player\Fish.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="App\player\Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
@@ -556,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="App\stage\MoveFloor.cpp">
       <Filter>ソース ファイル\Stage\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Library\3d\Particle3D.cpp">
+      <Filter>Library\3d\Particle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

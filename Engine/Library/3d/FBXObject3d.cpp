@@ -304,7 +304,7 @@ void FBXObject3d::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(2, constBufferSkin->GetGPUVirtualAddress());
-	//ライトの描画
+	////ライトの描画
 	lightGroup->Draw(cmdList, 3);
 	//モデル描画
 	model->Draw(cmdList);

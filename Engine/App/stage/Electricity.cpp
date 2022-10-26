@@ -117,8 +117,8 @@ void Electricity::AddElect(Vec3 pos)
 	static const int onAddNum = 20;
 	static const int offAddNum = 40;
 	int addNum = 0;
-	if (electFlag == true) { addNum = 30; }
-	else { addNum = 10; }
+	if (electFlag == true) { addNum = 20; }
+	else { addNum = 5; }
 
 	for (int i = 0; i < addNum; i++)
 	{

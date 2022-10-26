@@ -49,6 +49,8 @@ public:
 	void ChangeBreakFlag() { changeBreakFlag = true; }
 
 	void DieType(int type) { if (dieType != DIENOW) { Player::dieType = type; } }
+
+	void Delete();
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -93,17 +95,15 @@ private:
 	bool gameoverFlag = false;
 
 	ObjectData playerObject;			//プレイヤーオブジェクト
+	PSR psr = {};
 	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
 	Vec3 scale{ 2.0f,2.0f,2.0f };		//大きさ
 	Vec3 angle{ 0.0f,180.0f,0.0f };		//角度
-	Vec4 color{ 1.0f,1.0f,1.0f,1.0f };	//色
 	Vec3 pScale = { 8.0f,7.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
-
-	PSR psr = {};
 
 	Vec3 vec = {};
 
@@ -136,7 +136,11 @@ private:
 
 
 	int dieType = DIENULL;
-	//死んだときの演出の時間
-Staging staging;
+	//プレイヤー演出
+	Staging staging;
 	int dieNowTime = 0;
+
+	const int walkTimeMax = 5;
+	int walkTime = walkTimeMax;
+
 };

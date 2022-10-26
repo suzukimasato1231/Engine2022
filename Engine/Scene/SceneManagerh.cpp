@@ -178,7 +178,7 @@ void SceneManagerh::Draw()
 {
 	//‰e[“x’lŽæ“¾
 	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
-	Object::Get()->PreDraw(), Sprite::Get()->PreDraw();
+	Object::Get()->PreDraw(), Object::InitDraw(), Sprite::Get()->PreDraw();
 	if (scene == Title)
 	{
 	}
@@ -197,7 +197,7 @@ void SceneManagerh::Draw()
 
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
 	Object::SetPipeline(Pipeline::OBJPipeline);
-	Object::Get()->PreDraw(true), Sprite::Get()->PreDraw();
+	Object::Get()->PreDraw(true),Object::InitDraw(), Sprite::Get()->PreDraw();
 	//ƒJƒƒ‰–Úü‚Ì•`‰æ
 	if (scene == Title)
 	{
@@ -226,5 +226,4 @@ void SceneManagerh::Draw()
 		Sprite::Get()->Draw(changeBlack, Vec2(), static_cast<float>(window_width), static_cast<float>(window_height), Vec2(), changeSceneColor);
 	}
 	_DirectX::Get()->ResourceBarrier();
-
 }

@@ -112,6 +112,7 @@ void GameSceneManager::Draw()
 	//プレイヤーの描画
 	Player::Get()->Draw(true);
 
+	Particle::Get()->Draw3D();
 	//パーティクル
 	Particle::Get()->Draw();
 	Player::Get()->DrawParticle();

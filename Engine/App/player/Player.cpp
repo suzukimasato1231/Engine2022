@@ -7,10 +7,7 @@ Player::Player()
 {}
 
 Player::~Player()
-{
-	safe_delete(fbxObject1);
-	safe_delete(model1);
-}
+{}
 
 void Player::Init()
 {
@@ -21,14 +18,13 @@ void Player::Init()
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 
 	staging.Init();
-	////モデル名を指定してファイル読み込み
-	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin");
-	////3Dオブジェクトの生成とモデルのセット
-	//fbxObject1 = new FBXObject3d;
-	//fbxObject1->Initialize();
-	//fbxObject1->SetModel(model1);
-
-	fishOBJ = Shape::CreateOBJ("fish", true);
+	//モデル名を指定してファイル読み込み
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("uma");
+	//3Dオブジェクトの生成とモデルのセット
+	fbxObject1 = new FBXObject3d;
+	fbxObject1->Initialize();
+	fbxObject1->SetModel(model1);
+	//fishOBJ = Shape::CreateOBJ("fish", true);
 }
 
 void Player::Update()
@@ -53,12 +49,13 @@ void Player::Update()
 
 void Player::Draw(bool shadowFlag)
 {
-	Object::Draw(playerObject, psr, position, scale, angle, color, playerObject.OBJTexture, shadowFlag);
+	Object::Draw(playerObject, psr, position, scale, angle,Vec4(), playerObject.OBJTexture, shadowFlag);
+	staging.Draw3D();
 	////FBX試し
-	//fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
-	//fbxObject1->SetRotation(angle);
-	//fbxObject1->Update();
-	//fbxObject1->Draw();
+	/*fbxObject1->SetPosition(position);
+	fbxObject1->Update();
+	fbxObject1->Draw();
+	Object::Get()->PreDraw(shadowFlag);*/
 }
 
 void Player::DrawParticle()
@@ -85,6 +82,12 @@ void Player::Reset()
 	remainLives = remainLivesMax;
 	fishNum = 0;
 	gameoverFlag = false;
+}
+
+void Player::Delete()
+{
+	safe_delete(fbxObject1);
+	safe_delete(model1);
 }
 
 //移動
@@ -122,6 +125,12 @@ void Player::Move()
 				vec.z = speed.z * cosf(rad);
 			}
 			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)) - 59.8f);
+			if (walkTime < 0)
+			{
+				staging.CreateWalk(position, vec);
+				walkTime = walkTimeMax;
+			}
+			walkTime--;
 		}
 	}
 }
@@ -173,7 +182,7 @@ void Player::FallDie()
 	if (dieType == EATDIE)
 	{
 		dieNowTime = dieTime;
-		staging.CreateFallDown(position);
+		
 		dieType = DIENOW;
 	}
 

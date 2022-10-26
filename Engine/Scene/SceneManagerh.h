@@ -41,11 +41,8 @@ private://定義
 	ResultScene resultScene;
 	int scene = Title;	//シーン管理
 	int sceneMe = Title;
-
 	SpriteData changeBlack;
 	int changeSceneFlag = false;
 	Vec4 changeSceneColor = { 1.0f,1.0f,1.0f,0.0f };//シーンが変わる時の色
 	bool Flag = false;
-
-
 };
