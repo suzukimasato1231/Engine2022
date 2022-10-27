@@ -29,7 +29,6 @@ ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName, LPCSTR Vtarget, LPCSTR entryPoi
 	return Blob;
 }
 
-
 Shader ShaderManager::spriteShader;
 Shader ShaderManager::objShader;
 Shader ShaderManager::toonObjShader;
@@ -65,7 +64,4 @@ void ShaderManager::LoadShaders()
 
 	ShadowMapShader.vsBlob = LoadShader(L"Resources/shaders/ShadowMapVS.hlsl", "vs_5_0");
 	ShadowMapShader.psBlob = LoadShader(L"Resources/shaders/ShadowMapPS.hlsl", "ps_5_0");
-
-
-
 }

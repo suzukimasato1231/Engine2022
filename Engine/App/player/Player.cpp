@@ -7,10 +7,7 @@ Player::Player()
 {}
 
 Player::~Player()
-{
-	safe_delete(fbxObject1);
-	safe_delete(model1);
-}
+{}
 
 void Player::Init()
 {
@@ -20,15 +17,14 @@ void Player::Init()
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 
-	playerFallDie.Init();
-	////モデル名を指定してファイル読み込み
-	//model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin");
-	////3Dオブジェクトの生成とモデルのセット
-	//fbxObject1 = new FBXObject3d;
-	//fbxObject1->Initialize();
-	//fbxObject1->SetModel(model1);
-
-	fishOBJ = Shape::CreateOBJ("fish", true);
+	staging.Init();
+	//モデル名を指定してファイル読み込み
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("uma");
+	//3Dオブジェクトの生成とモデルのセット
+	fbxObject1 = new FBXObject3d;
+	fbxObject1->Initialize();
+	fbxObject1->SetModel(model1);
+	//fishOBJ = Shape::CreateOBJ("fish", true);
 }
 
 void Player::Update()
@@ -53,17 +49,18 @@ void Player::Update()
 
 void Player::Draw(bool shadowFlag)
 {
-	Object::Draw(playerObject, psr, position, scale, angle, color, playerObject.OBJTexture, shadowFlag);
+	//Object::Draw(playerObject, psr, Vec3(position.x, position.y - 2.0f, position.z), scale, angle, Vec4(), playerObject.OBJTexture, shadowFlag);
+	staging.Draw3D();
 	////FBX試し
-	//fbxObject1->SetPosition(Vec3(position.x, position.y + 2.0f, position.z));
-	//fbxObject1->SetRotation(angle);
-	//fbxObject1->Update();
-	//fbxObject1->Draw();
+	fbxObject1->SetPosition(position);
+	fbxObject1->Update();
+	fbxObject1->Draw();
+	Object::Get()->PreDraw(shadowFlag);
 }
 
 void Player::DrawParticle()
 {
-	playerFallDie.Draw();
+	staging.Draw();
 }
 
 void Player::SetPosition(Vec3 position)
@@ -85,6 +82,12 @@ void Player::Reset()
 	remainLives = remainLivesMax;
 	fishNum = 0;
 	gameoverFlag = false;
+}
+
+void Player::Delete()
+{
+	safe_delete(fbxObject1);
+	safe_delete(model1);
 }
 
 //移動
@@ -122,6 +125,12 @@ void Player::Move()
 				vec.z = speed.z * cosf(rad);
 			}
 			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)) - 59.8f);
+			if (walkTime < 0)
+			{
+				staging.CreateWalk(position, vec);
+				walkTime = walkTimeMax;
+			}
+			walkTime--;
 		}
 	}
 }
@@ -129,8 +138,7 @@ void Player::Move()
 void Player::Jump()
 {
 	//ジャンプ
-	if ((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA) || blockStepOnFlag)
-		&& groundFlag == true)
+	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) && groundFlag == true) || blockStepOnFlag)
 	{
 		if (jumpBoxFlag)
 		{
@@ -142,6 +150,7 @@ void Player::Jump()
 			jumpPower = jumpPowerMax;
 		}
 		blockStepOnFlag = false;
+		fbxObject1->PlayAnimation(false);
 	}
 
 	//重力加算
@@ -160,12 +169,26 @@ void Player::FallDie()
 
 	if (position.y < -30.0f && dieType == DIENULL)
 	{
-		dieType = FALLDOWN;
 		dieNowTime = dieTime;
-		playerFallDie.Create(position);
+		staging.CreateFallDown(position);
+		dieType = DIENOW;
+	}
+	if (dieType == ELECTDIE)
+	{
+		dieNowTime = dieTime;
+		staging.CreateElect(position);
+		dieType = DIENOW;
+
+	}
+	if (dieType == EATDIE)
+	{
+		dieNowTime = dieTime;
+
+		dieType = DIENOW;
 	}
 
-	if (dieType == FALLDOWN || dieType == ELECTDIE || dieType == EATDIE)
+
+	if (dieType == DIENOW)
 	{
 		if (dieNowTime > 0)
 		{
@@ -186,7 +209,7 @@ void Player::FallDie()
 	}
 
 
-	playerFallDie.Update();
+	staging.Update();
 }
 
 void Player::Fish()

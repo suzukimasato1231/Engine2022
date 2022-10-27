@@ -11,7 +11,6 @@ extern const int window_width;
 extern const int window_height;
 class TitleScene 
 {
-
 public:
 	TitleScene();
 	~TitleScene();

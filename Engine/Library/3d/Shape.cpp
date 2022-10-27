@@ -391,7 +391,6 @@ ObjectData Shape::CreateOBJ(const std::string filename, bool smoothing)
 			string filename;
 			line_stream >> filename;
 			//ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ
-			//polygon.OBJTexture = LoadMaterial(directoryPath, filename);
 			LoadMaterial(directoryPath, filename, polygon);
 		}
 

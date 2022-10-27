@@ -109,7 +109,6 @@ void Object::MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, V
 
 void Object::PreDraw(bool shadowFlag)
 {
-	OBJNum = 0;
 	//プリミティブ形状の設定コマンド（三角形リスト）
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -131,6 +130,11 @@ void Object::PreDraw(bool shadowFlag)
 		cmdList->SetPipelineState(Pipeline::ShadowMapPipeline.pipelinestate.Get());
 		cmdList->SetGraphicsRootSignature(Pipeline::ShadowMapPipeline.rootsignature.Get());
 	}
+}
+
+void Object::InitDraw()
+{
+	OBJNum = 0;
 }
 
 void Object::OBJConstantBuffer()
@@ -165,7 +169,7 @@ void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3
 		OBJConstantBuffer();
 	}
 	//更新
-	MatWord(polygon,psr, position, scale, rotation, color);
+	MatWord(polygon, psr, position, scale, rotation, color);
 
 	//頂点バッファの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &polygon.vbView);

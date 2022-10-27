@@ -25,18 +25,42 @@ void DangerFish::Update(StageOBJ* stageObj)
 	{//飛び出す
 		if (start_endTime < start_endTimeMax)
 		{
-			start_endTime++;
 			float t = min(start_endTime / start_endTimeMax, 1.0f);
 			//魚飛び出し
 			stageObj->actionPos = Easing::easeOut(stageObj->position, stageObj->position + start_end, t);
-			rotation += Vec3(0.0f, 0.0f, 0.5f);
 		}
+		else if (end_endTime < end_endTimeMax)
+		{
+			float t = min(end_endTime / end_endTimeMax, 1.0f);
+			//魚飛び出し
+			stageObj->actionPos = Easing::easeIn(stageObj->position + start_end, stageObj->position + end_end, t);
+		}
+	}
+	stageObj->box.maxPosition = XMVectorSet(
+		stageObj->actionPos.x + fishSize.x / 2,
+		stageObj->actionPos.y + fishSize.y / 2,
+		stageObj->actionPos.z + fishSize.z / 2, 1);
+	stageObj->box.minPosition = XMVectorSet(
+		stageObj->actionPos.x - fishSize.x / 2,
+		stageObj->actionPos.y - fishSize.y / 2,
+		stageObj->actionPos.z - fishSize.z / 2, 1);
+}
+
+void DangerFish::AllUpdate()
+{
+	//魚が飛び出すプログラム
+	if (dangerFishFlag == true)
+	{//飛び出す
+		if (start_endTime < start_endTimeMax)
+		{
+			start_endTime++;
+			float t = min(start_endTime / start_endTimeMax, 1.0f);
+			rotation += Vec3(0.0f, 0.0f, 0.5f);
+	}
 		else if (end_endTime < end_endTimeMax)
 		{
 			end_endTime++;
 			float t = min(end_endTime / end_endTimeMax, 1.0f);
-			//魚飛び出し
-			stageObj->actionPos = Easing::easeIn(stageObj->position + start_end, stageObj->position + end_end, t);
 			rotation -= Vec3(0.0f, 0.0f, 1.0f);
 		}
 		else
@@ -46,7 +70,7 @@ void DangerFish::Update(StageOBJ* stageObj)
 			start_endTime = 0;
 			end_endTime = 0;
 		}
-	}
+}
 	else
 	{
 		dangerFishTime--;
@@ -57,15 +81,6 @@ void DangerFish::Update(StageOBJ* stageObj)
 			rotation = { 0.0f,180.0f,0.0f };
 		}
 	}
-
-	stageObj->box.maxPosition = XMVectorSet(
-		stageObj->actionPos.x + fishSize.x / 2,
-		stageObj->actionPos.y + fishSize.y / 2,
-		stageObj->actionPos.z + fishSize.z / 2, 1);
-	stageObj->box.minPosition = XMVectorSet(
-		stageObj->actionPos.x - fishSize.x / 2,
-		stageObj->actionPos.y - fishSize.y / 2,
-		stageObj->actionPos.z - fishSize.z / 2, 1);
 }
 
 void DangerFish::Draw(StageOBJ* stageObj, const bool shadowFlag)

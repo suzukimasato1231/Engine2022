@@ -112,10 +112,11 @@ void GameSceneManager::Draw()
 	//プレイヤーの描画
 	Player::Get()->Draw(true);
 
+	Particle::Get()->Draw3D();
 	//パーティクル
 	Particle::Get()->Draw();
 	Player::Get()->DrawParticle();
-
+	Stage::Get()->DrawParicle();
 	//2D
 	UI::Get()->Draw(Player::Get()->GetRemanLives(), Player::Get()->GetFishNum(),
 		Player::Get()->GetGameoverFlag(), changeNum);

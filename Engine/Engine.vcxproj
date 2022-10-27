@@ -300,9 +300,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Particle\Particle.h" />
-    <ClInclude Include="App\player\Fish.h" />
     <ClInclude Include="App\player\Player.h" />
-    <ClInclude Include="App\player\PlayerFallDie.h" />
+    <ClInclude Include="App\player\Staging.h" />
     <ClInclude Include="App\stage\BlockBox.h" />
     <ClInclude Include="App\stage\DangerFish.h" />
     <ClInclude Include="App\stage\Electricity.h" />
@@ -326,6 +325,7 @@
     <ClInclude Include="Library\3d\LightGroup.h" />
     <ClInclude Include="Library\3d\Model.h" />
     <ClInclude Include="Library\3d\Object.h" />
+    <ClInclude Include="Library\3d\Particle3D.h" />
     <ClInclude Include="Library\3d\ParticleManager.h" />
     <ClInclude Include="Library\3d\PointLight.h" />
     <ClInclude Include="Library\3d\Shape.h" />
@@ -365,9 +365,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Particle\Particle.cpp" />
-    <ClCompile Include="App\player\Fish.cpp" />
     <ClCompile Include="App\player\Player.cpp" />
-    <ClCompile Include="App\player\PlayerFallDie.cpp" />
+    <ClCompile Include="App\player\Staging.cpp" />
     <ClCompile Include="App\stage\BlockBox.cpp" />
     <ClCompile Include="App\stage\DangerFish.cpp" />
     <ClCompile Include="App\stage\Electricity.cpp" />
@@ -388,6 +387,7 @@
     <ClCompile Include="Library\3d\LightGroup.cpp" />
     <ClCompile Include="Library\3d\Model.cpp" />
     <ClCompile Include="Library\3d\Object.cpp" />
+    <ClCompile Include="Library\3d\Particle3D.cpp" />
     <ClCompile Include="Library\3d\ParticleManager.cpp" />
     <ClCompile Include="Library\3d\Shape.cpp" />
     <ClCompile Include="Library\Audio\Audio.cpp" />

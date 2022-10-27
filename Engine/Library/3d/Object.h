@@ -141,6 +141,8 @@ public:
 public://オブジェクト関連
 	//オブジェクト描画前
 	static void PreDraw(bool shadowFlag = false);
+
+	static void InitDraw();
 	//定数バッファ設定
 	static void OBJConstantBuffer();
 	/// <summary>

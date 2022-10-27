@@ -27,6 +27,8 @@ public:
 	void Update(Vec3 pPos);
 	//描画
 	void Draw(Vec3 pPos, bool shadowFlag = false);
+
+	void DrawParicle();
 	//ステージ作成
 	void LoadStage(int stageNum);
 public://マップ
@@ -56,12 +58,13 @@ private:
 	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 private:
 	const float mapSize = 25.0f;
-	const int drawNumX = 10;
-	const int drawNumY = 30;
+	const int drawNumX = 9;
+	const int drawNumY = 20;
 private://床関連
 	//雪の床
 	ObjectData floorOBJ;
 	std::vector<Floor*>floor;
+	int floorGraph = 0;
 	//動く床
 	MoveFloor moveFloor;
 
