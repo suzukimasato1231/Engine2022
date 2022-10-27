@@ -59,7 +59,7 @@ private:
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 9;
-	const int drawNumY = 30;
+	const int drawNumY = 20;
 private://è∞ä÷òA
 	//ê·ÇÃè∞
 	ObjectData floorOBJ;

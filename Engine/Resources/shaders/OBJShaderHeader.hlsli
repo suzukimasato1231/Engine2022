@@ -16,7 +16,7 @@ cbuffer cbuff1 : register(b1)
 }
 
 // 平行光源の数
-static const int DIRLIGHT_NUM = 3;
+static const int DIRLIGHT_NUM = 1;
 
 struct DirLight
 {
@@ -26,7 +26,7 @@ struct DirLight
 };
 
 // 点光源の数
-static const int POINTLIGHT_NUM = 3;
+static const int POINTLIGHT_NUM = 1;
 
 struct PointLight
 {
@@ -37,7 +37,7 @@ struct PointLight
 };
 
 // スポットライトの数
-static const int SPOTLIGHT_NUM = 3;
+static const int SPOTLIGHT_NUM = 1;
 
 struct SpotLight
 {
@@ -50,7 +50,7 @@ struct SpotLight
 };
 
 // 丸影の数
-static const int CIRCLESHADOW_NUM = 3;
+static const int CIRCLESHADOW_NUM = 1;
 
 struct CircleShadow
 {

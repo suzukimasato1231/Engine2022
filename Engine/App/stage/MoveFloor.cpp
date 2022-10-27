@@ -8,7 +8,7 @@ MoveFloor::~MoveFloor()
 
 void MoveFloor::Init()
 {
-	moveFloorOBJ = Shape::CreateOBJ("moveFloor");
+	moveFloorOBJ = Shape::CreateOBJ("ice");
 }
 
 void MoveFloor::Update(Floor* floorData)
@@ -37,5 +37,5 @@ void MoveFloor::Update(Floor* floorData)
 void MoveFloor::Draw(Floor* floorData, const bool shadowFlag)
 {
 	Object::Draw(moveFloorOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y - 15.0f, floorData->position.z),
-		Vec3(12.5f, 12.5f, 12.5f), floorData->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
+		Vec3(12.5f, 12.5f, 12.5f) * 2, floorData->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 }

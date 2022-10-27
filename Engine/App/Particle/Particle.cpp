@@ -43,7 +43,7 @@ void Particle::Update()
 			pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 			pos.y += 0.0f;
 			pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-			const float md_vec = 3.0f;
+			const float md_vec = 4.0f;
 			Vec3 velocity = Velocity;
 			velocity.x += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 			velocity.y += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;

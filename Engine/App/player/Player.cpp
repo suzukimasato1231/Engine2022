@@ -49,13 +49,13 @@ void Player::Update()
 
 void Player::Draw(bool shadowFlag)
 {
-	Object::Draw(playerObject, psr, position, scale, angle,Vec4(), playerObject.OBJTexture, shadowFlag);
+	//Object::Draw(playerObject, psr, Vec3(position.x, position.y - 2.0f, position.z), scale, angle, Vec4(), playerObject.OBJTexture, shadowFlag);
 	staging.Draw3D();
 	////FBXééÇµ
-	/*fbxObject1->SetPosition(position);
+	fbxObject1->SetPosition(position);
 	fbxObject1->Update();
 	fbxObject1->Draw();
-	Object::Get()->PreDraw(shadowFlag);*/
+	Object::Get()->PreDraw(shadowFlag);
 }
 
 void Player::DrawParticle()
@@ -150,6 +150,7 @@ void Player::Jump()
 			jumpPower = jumpPowerMax;
 		}
 		blockStepOnFlag = false;
+		fbxObject1->PlayAnimation(false);
 	}
 
 	//èdóÕâ¡éZ
@@ -182,7 +183,7 @@ void Player::FallDie()
 	if (dieType == EATDIE)
 	{
 		dieNowTime = dieTime;
-		
+
 		dieType = DIENOW;
 	}
 
