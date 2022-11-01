@@ -2,6 +2,7 @@
 #include <DirectXTex.h>
 #include<string>
 #include"ShadowMap.h"
+#include <Safe_delete.h>
 using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;

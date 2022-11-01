@@ -3,10 +3,12 @@
 #include <d3dcompiler.h>
 #include <cassert>
 #include"Object.h"
+#include <Safe_delete.h>
 ShadowMap::ShadowMap()
 {}
 ShadowMap::~ShadowMap()
-{}
+{
+}
 void ShadowMap::Init()
 {
 	ID3D12Device* dev=_DirectX::Get()->GetDevice();
@@ -164,7 +166,6 @@ void ShadowMap::Init()
 void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	HRESULT result = S_OK;
-
 	//定数バッファにデータ転送
 	ConstantBuffer_b0 data;
 	data.mat = XMMatrixIdentity();

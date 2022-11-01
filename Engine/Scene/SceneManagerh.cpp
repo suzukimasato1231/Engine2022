@@ -43,17 +43,18 @@ void SceneManagerh::Initialize()
 	//3Dオブジェクト初期化
 	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 
+	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
+	////影
+	ShadowMap::Get()->Init();
+	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
+
 	titleScene.Initialize();
-	//ゲームシーン
+	////ゲームシーン
 	gameScene.Initialize();
 	gameScene.Init(0);
 	stageScene.Initialize();
 	resultScene.Initialize();
 	resultScene.Init();
-	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
-	//影
-	ShadowMap::Get()->Init();
-	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
 	titleScene.Init();
 
 	changeBlack = Sprite::Get()->SpriteCreate(L"Resources/black.png");
@@ -176,7 +177,7 @@ void SceneManagerh::Update()
 
 void SceneManagerh::Draw()
 {
-	//影深度値取得
+	////影深度値取得
 	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
 	Object::Get()->PreDraw(), Object::InitDraw(), Sprite::Get()->PreDraw();
 	if (scene == Title)
@@ -193,6 +194,7 @@ void SceneManagerh::Draw()
 	}
 	else if (scene == Result)
 	{
+		resultScene.ShadowDraw();
 	}
 	ShadowMap::Get()->PostDraw(_DirectX::Get()->GetCmandList());
 
@@ -220,7 +222,7 @@ void SceneManagerh::Draw()
 	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
 
 	_DirectX::Get()->PreDraw();
-	//ポストエフェクトの描画
+	////ポストエフェクトの描画
 	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList(), changeSceneColor);
 	if (changeSceneFlag == ChangeFirst || changeSceneFlag == ChangeEnd)
 	{
