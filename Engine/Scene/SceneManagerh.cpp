@@ -181,6 +181,7 @@ void SceneManagerh::Draw()
 	Object::Get()->PreDraw(), Object::InitDraw(), Sprite::Get()->PreDraw();
 	if (scene == Title)
 	{
+		titleScene.ShadowDraw();
 	}
 	else if (scene == SelectScene)
 	{

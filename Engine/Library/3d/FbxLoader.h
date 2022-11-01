@@ -54,6 +54,7 @@ private:
 	// FBXインポータ
 	FbxImporter* fbxImporter = nullptr;
 
+	
 private:
 	// privateなコンストラクタ（シングルトンパターン）
 	FbxLoader() = default;

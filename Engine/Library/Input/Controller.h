@@ -37,8 +37,8 @@ class Controller
 {
 private:
 	// ゲームパッドの入力情報取得
-	DIJOYSTATE pad_data;
-	DIJOYSTATE oldpad_data;
+	DIJOYSTATE pad_data = {};
+	DIJOYSTATE oldpad_data={};
 	LPDIRECTINPUTDEVICE8 g_GamePadDevice = nullptr;
 	LPDIRECTINPUT8 g_InputInterface = nullptr;
 public://ゲームパッド

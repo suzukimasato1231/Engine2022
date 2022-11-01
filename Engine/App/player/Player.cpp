@@ -19,7 +19,7 @@ void Player::Init()
 
 	staging.Init();
 	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("uma");
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin");
 	//3Dオブジェクトの生成とモデルのセット
 	fbxObject1 = new FBXObject3d;
 	fbxObject1->Initialize();
@@ -49,13 +49,14 @@ void Player::Update()
 
 void Player::Draw(bool shadowFlag)
 {
-	//Object::Draw(playerObject, psr, Vec3(position.x, position.y - 2.0f, position.z), scale, angle, Vec4(), playerObject.OBJTexture, shadowFlag);
+	Object::Draw(playerObject, psr, Vec3(position.x, position.y - 2.0f, position.z), scale, angle, Vec4(), playerObject.OBJTexture, shadowFlag);
 	staging.Draw3D();
 	////FBX試し
-	fbxObject1->SetPosition(position);
+	/*fbxObject1->SetPosition(position);
+	fbxObject1->SetRotation(angle);
 	fbxObject1->Update();
 	fbxObject1->Draw();
-	Object::Get()->PreDraw(shadowFlag);
+	Object::Get()->PreDraw(shadowFlag);*/
 }
 
 void Player::DrawParticle()
@@ -150,7 +151,6 @@ void Player::Jump()
 			jumpPower = jumpPowerMax;
 		}
 		blockStepOnFlag = false;
-		fbxObject1->PlayAnimation(false);
 	}
 
 	//重力加算

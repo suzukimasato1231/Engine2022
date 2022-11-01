@@ -97,8 +97,8 @@ protected://メンバ変数
 	static ComPtr<ID3D12PipelineState>pipelinestate;
 
 	//ローカルスケール
-	//Vec3 scale = { 0.03f,0.03f,0.03f };//ペンギン
-	Vec3 scale = { 4.0f,4.0f,4.0f };//uma
+	Vec3 scale = { 0.03f,0.03f,0.03f };//ペンギン
+	//Vec3 scale = { 4.0f,4.0f,4.0f };//uma
 	//X,Y,Z軸回りのローカル回転角
 	Vec3 rotation = { 0.0f,180.0f,0.0f };
 	//ローカル座標
