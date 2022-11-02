@@ -60,11 +60,11 @@ public://メンバ関数
 	/// <summary>
 	/// 毎フレーム更新
 	/// </summary>
-	void Update();
+	void Update(bool shadowFlag);
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(bool shadowFlag);
+	void Draw();
 
 	/// <summary>
 	/// モデルのセット

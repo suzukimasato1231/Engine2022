@@ -210,7 +210,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 	if (FAILED(result)) { assert(0); }
 }
 
-void FBXObject3d::Update()
+void FBXObject3d::Update(bool shadowFlag)
 {
 	//アニメーション
 	if (isPlay)
@@ -259,7 +259,14 @@ void FBXObject3d::Update()
 	ConstBufferDataTransform* constMap = nullptr;
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		constMap->viewproj = matViewProjection;
+		if (shadowFlag == true)
+		{
+			constMap->viewproj = lightGroup->GetLightMatProjection();
+		}
+		else
+		{
+			constMap->viewproj = matViewProjection;
+		}
 		constMap->world = modelTransform * matWorld;
 		constMap->cameraPos = cameraPos;
 		constBuffTransform->Unmap(0, nullptr);
@@ -290,7 +297,7 @@ void FBXObject3d::Update()
 
 }
 
-void FBXObject3d::Draw(bool shadowFlag)
+void FBXObject3d::Draw()
 {
 	//モデルの割り当てがなければ描画しない
 	if (model == nullptr)

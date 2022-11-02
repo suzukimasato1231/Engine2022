@@ -30,7 +30,7 @@ public:
 
 	bool GetSelectFlag() { return selectFlag; }
 private://定義
-	static const int stageNumMax = 4;	//最大ステージ数
+	static const int stageNumMax = 3;	//最大ステージ数
 
 	bool selectFlag = false;
 

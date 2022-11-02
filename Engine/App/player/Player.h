@@ -62,7 +62,7 @@ private:
 	/// <summary>
 	/// FBXÇÃï`âÊ
 	/// </summary>
-	void FBXDraw(bool shadowFlag);
+	void FbxDraw(bool shadowFlag);
 	/// <summary>
 	/// ÉvÉåÉCÉÑÅ[à⁄ìÆ
 	/// </summary>
@@ -143,10 +143,16 @@ private:
 	//FBX
 	int fbxType = NULL;
 	bool fbxFlag[2] = {};
+
 	Model* model1 = nullptr;
 	FBXObject3d* fbxObject1 = nullptr;
+	Model* model2 = nullptr;
+	FBXObject3d* fbxObject2 = nullptr;
+
 	Model* stopModel = nullptr;
 	FBXObject3d* stopFbx = nullptr;
+	Model* stopModel2 = nullptr;
+	FBXObject3d* stopFbx2 = nullptr;
 
 
 	int dieType = DIENULL;

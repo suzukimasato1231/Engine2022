@@ -31,6 +31,21 @@ void Player::Init()
 	stopFbx = new FBXObject3d;
 	stopFbx->Initialize();
 	stopFbx->SetModel(stopModel);
+	///////////////////
+	//モデル名を指定してファイル読み込み
+	model2 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2");
+	//3Dオブジェクトの生成とモデルのセット
+	fbxObject2 = new FBXObject3d;
+	fbxObject2->Initialize();
+	fbxObject2->SetModel(model2);
+
+	//モデル名を指定してファイル読み込み
+	stopModel2 = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
+	//3Dオブジェクトの生成とモデルのセット
+	stopFbx2 = new FBXObject3d;
+	stopFbx2->Initialize();
+	stopFbx2->SetModel(stopModel2);
+	//////////////////////////
 }
 
 void Player::Update()
@@ -57,8 +72,8 @@ void Player::Draw(bool shadowFlag)
 {
 	//Object::Draw(playerObject, psr, Vec3(position.x, position.y - 2.0f, position.z), scale, angle, Vec4(), playerObject.OBJTexture, shadowFlag);
 	staging.Draw3D();
-	
-	FBXDraw(shadowFlag);
+
+	FbxDraw(shadowFlag);
 
 	Object::Get()->PreDraw(shadowFlag);
 }
@@ -97,35 +112,56 @@ void Player::Delete()
 	safe_delete(stopModel);
 }
 
-void Player::FBXDraw(bool shadowFlag)
+void Player::FbxDraw(bool shadowFlag)
 {
+	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };
 	//FBX試し
-	if (shadowFlag == false)
+	switch (fbxType)
 	{
-		switch (fbxType)
-		{
-		case None:
-			stopFbx->SetPosition(position);
-			stopFbx->SetRotation(angle);
-			stopFbx->Update();
-			stopFbx->Draw(shadowFlag);
-			break;
-		case Walk:
-			fbxObject1->SetPosition(position);
-			fbxObject1->SetRotation(angle);
-			fbxObject1->Update();
-			break;
-		default:
-			break;
-		}
+	case None:
+		stopFbx->SetPosition(fbxPos);
+		stopFbx->SetRotation(angle);
+		stopFbx2->SetPosition(fbxPos);
+		stopFbx2->SetRotation(angle);
+
+
+		stopFbx->Update(shadowFlag);
+		stopFbx2->Update(false);
+		break;
+	case Walk:
+		fbxObject1->SetPosition(fbxPos);
+		fbxObject1->SetRotation(angle);
+		fbxObject2->SetPosition(fbxPos);
+		fbxObject2->SetRotation(angle);
+
+
+		fbxObject1->Update(shadowFlag);
+		fbxObject2->Update(false);
+		break;
+	default:
+		break;
 	}
 	switch (fbxType)
 	{
 	case None:
-		stopFbx->Draw(shadowFlag);
+		if (shadowFlag == false)
+		{
+			stopFbx->Draw();
+		}
+		else
+		{
+			stopFbx2->Draw();
+		}
 		break;
 	case Walk:
-		fbxObject1->Draw(shadowFlag);
+		if (shadowFlag == false)
+		{
+			fbxObject1->Draw();
+		}
+		else
+		{
+			fbxObject2->Draw();
+		}
 		break;
 	default:
 		break;
@@ -178,7 +214,9 @@ void Player::Move()
 			if (fbxFlag[0] == false)
 			{//アニメーション開始
 				stopFbx->StopAnimation();
+				stopFbx2->StopAnimation();
 				fbxObject1->PlayAnimation(true);
+				fbxObject2->PlayAnimation(true);
 				fbxFlag[0] = true;
 			}
 			fbxFlag[1] = false;
@@ -189,10 +227,12 @@ void Player::Move()
 			fbxType = None;
 			fbxFlag[0] = false;
 			fbxObject1->StopAnimation();
+			fbxObject2->StopAnimation();
 			if (fbxFlag[1] == false)
 			{
 				fbxFlag[1] = true;
 				stopFbx->PlayAnimation(true);
+				stopFbx2->PlayAnimation(true);
 			}
 		}
 	}
