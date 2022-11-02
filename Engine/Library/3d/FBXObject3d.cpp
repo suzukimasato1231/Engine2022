@@ -181,7 +181,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[4];
+	CD3DX12_ROOT_PARAMETER rootparams[4]={};
 	// CBV（座標変換行列用）
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// SRV（テクスチャ）
@@ -290,7 +290,7 @@ void FBXObject3d::Update()
 
 }
 
-void FBXObject3d::Draw()
+void FBXObject3d::Draw(bool shadowFlag)
 {
 	//モデルの割り当てがなければ描画しない
 	if (model == nullptr)

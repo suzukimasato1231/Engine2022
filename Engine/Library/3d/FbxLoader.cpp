@@ -164,7 +164,7 @@ void FbxLoader::ParseMesh(Model* model, FbxNode* fbxNode)
 }
 
 void FbxLoader::ParseMeshVertices(Model* model, FbxMesh* fbxMesh)
-{
+{//ここが消えて
 	auto& vertices = model->vertices;
 
 	// 頂点座標データの数
@@ -202,7 +202,7 @@ void FbxLoader::ParseMeshFaces(Model* model, FbxMesh* fbxMesh)
 	// UV名リスト
 	FbxStringList uvNames;
 	fbxMesh->GetUVSetNames(uvNames);
-
+	//この辺に書く
 	// 面ごとの情報読み取り
 	for (int i = 0; i < polygonCount; i++) {
 		// 面を構成する頂点の数を取得（3なら三角形ポリゴン)
