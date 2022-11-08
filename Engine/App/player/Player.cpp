@@ -110,6 +110,10 @@ void Player::Delete()
 	safe_delete(model1);
 	safe_delete(stopFbx);
 	safe_delete(stopModel);
+	safe_delete(fbxObject2);
+	safe_delete(model2);
+	safe_delete(stopFbx2);
+	safe_delete(stopModel2);
 }
 
 void Player::FbxDraw(bool shadowFlag)

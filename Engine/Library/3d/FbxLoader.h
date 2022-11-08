@@ -53,7 +53,8 @@ private:
 	FbxManager* fbxManager = nullptr;
 	// FBXインポータ
 	FbxImporter* fbxImporter = nullptr;
-
+	// コントロールポイントのデータ
+	std::vector<std::vector<int>> controlPointsData_;
 
 private:
 	// privateなコンストラクタ（シングルトンパターン）
@@ -89,6 +90,8 @@ private:
 	void LoadTexture(Model* model, const std::string& fullpath);
 	//スキニング情報の読み取り
 	void ParseSkin(Model* model, FbxMesh* fbxMesh);
+
 	// ディレクトリを含んだファイルパスからファイル名を抽出する
 	std::string ExtractFileName(const std::string& path);
+
 };

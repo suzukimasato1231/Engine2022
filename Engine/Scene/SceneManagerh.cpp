@@ -173,6 +173,13 @@ void SceneManagerh::Update()
 			changeSceneFlag = ChangeStand;
 		}
 	}
+
+
+	if (Input::Get()->KeybordTrigger(DIK_T) == true)
+	{
+		scene = Title;
+		titleScene.Init();
+	}
 }
 
 void SceneManagerh::Draw()
@@ -200,18 +207,18 @@ void SceneManagerh::Draw()
 
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
 	Object::SetPipeline(Pipeline::OBJPipeline);
-	Object::Get()->PreDraw(true),Object::InitDraw(), Sprite::Get()->PreDraw();
+	Object::Get()->PreDraw(true), Object::InitDraw(), Sprite::Get()->PreDraw();
 	//ƒJƒƒ‰–Úü‚Ì•`‰æ
 	if (scene == Title)
 	{
 		titleScene.Draw();
 	}
 	else if (scene == SelectScene)
-	{	
+	{
 		stageScene.Draw();
 	}
 	else if (scene == GameScene)
-	{		
+	{
 		gameScene.Draw();
 	}
 	else if (scene == Result)
