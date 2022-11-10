@@ -4,16 +4,20 @@
 #include <cassert>
 #include"Object.h"
 #include <Safe_delete.h>
+ID3D12Device* ShadowMap::dev = nullptr;
 ShadowMap::ShadowMap()
 {}
 ShadowMap::~ShadowMap()
 {
+	
 }
 void ShadowMap::Init()
 {
-	ID3D12Device* dev=_DirectX::Get()->GetDevice();
+	ID3D12Device* dev = _DirectX::Get()->GetDevice();
 	HRESULT result;
-	
+#ifdef _DEBUG
+	dev->SetName(L"shadow");
+#endif
 	CreateGraphicsPipelineState(dev);
 
 	//頂点バッファ生成
@@ -25,7 +29,9 @@ void ShadowMap::Init()
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
 	assert(SUCCEEDED(result));
-
+#ifdef _DEBUG
+	vertBuff->SetName(L"ShadowVert");
+#endif
 	//頂点データ転送
 	VertexPosUv vertices[4];
 
@@ -62,7 +68,9 @@ void ShadowMap::Init()
 		IID_PPV_ARGS(&constBuff)
 	);
 	assert(SUCCEEDED(result));
-
+#ifdef _DEBUG
+	constBuff->SetName(L"shadowConst");
+#endif
 	//テクスチャリソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM,
@@ -82,7 +90,9 @@ void ShadowMap::Init()
 		IID_PPV_ARGS(&texbuff)
 	);
 	assert(SUCCEEDED(result));
-
+#ifdef _DEBUG
+	texbuff->SetName(L"shadowTex");
+#endif
 	//テクスチャを仮想生成
 	const UINT pixelCount = window_width * window_height;
 	//画像1行分のデータサイズ
@@ -111,10 +121,11 @@ void ShadowMap::Init()
 		IID_PPV_ARGS(&descHeapRTV)
 	);
 	assert(SUCCEEDED(result));
-	
-	
+#ifdef _DEBUG
+	descHeapRTV->SetName(L"ShadowRTV");
+#endif
 	dev->CreateRenderTargetView(
-		texbuff,
+		texbuff.Get(),
 		nullptr,
 		descHeapRTV->GetCPUDescriptorHandleForHeapStart()
 	);
@@ -140,7 +151,9 @@ void ShadowMap::Init()
 		IID_PPV_ARGS(&depthbuff)
 	);
 	assert(SUCCEEDED(result));
-	
+#ifdef _DEBUG
+	depthbuff->SetName(L"ShadowDepth");
+#endif
 	//DSV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC DescHeapDesc{};
 	DescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
@@ -161,6 +174,10 @@ void ShadowMap::Init()
 		&dsvDesc,
 		descHeapDSV->GetCPUDescriptorHandleForHeapStart()
 	);
+
+#ifdef _DEBUG
+	descHeapDSV->SetName(L"ShadowDSV");
+#endif
 }
 
 void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
@@ -187,7 +204,7 @@ void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 	//頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &this->vbView);
 
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap()};
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	//デスクリプタヒープをセット
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
@@ -207,7 +224,7 @@ void ShadowMap::PreDraw(ID3D12GraphicsCommandList* cmdList)
 	//リソースバリアを変更
 	cmdList->ResourceBarrier(
 		1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff,
+		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			D3D12_RESOURCE_STATE_RENDER_TARGET)
 	);
@@ -244,14 +261,14 @@ void ShadowMap::PostDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	cmdList->ResourceBarrier(
 		1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff,
+		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE)
 	);
 }
 
 
-void ShadowMap::CreateGraphicsPipelineState(ID3D12Device*dev)
+void ShadowMap::CreateGraphicsPipelineState(ID3D12Device* dev)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> vsBlob;
@@ -400,7 +417,6 @@ void ShadowMap::CreateGraphicsPipelineState(ID3D12Device*dev)
 	assert(SUCCEEDED(result));
 
 	gpipeline.pRootSignature = rootSignature.Get();
-
 	//グラフィックスパイプラインの生成
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));

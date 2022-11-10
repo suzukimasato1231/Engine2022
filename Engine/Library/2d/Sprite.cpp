@@ -191,6 +191,10 @@ void Sprite::CreateConstBuffer()
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffer[constBuffer.size() - 1]->constBuff));
+
+#ifdef _DEBUG
+	constBuffer[constBuffer.size() - 1]->constBuff->SetName(L"Sprite");
+#endif
 }
 
 //共通データを生成する関数を作成
@@ -202,7 +206,7 @@ Sprite::SpriteCommon Sprite::SpriteCommonCreate(int window_width, int window_hei
 	SpriteCommon spriteCommon{};
 
 	//スプライト用パイプライン生成
-	spriteCommon.pipelineSet = Pipeline::SpriteCreateGraphicsPipeline(dev,ShaderManager::spriteShader);
+	spriteCommon.pipelineSet = Pipeline::SpriteCreateGraphicsPipeline(dev, ShaderManager::spriteShader);
 
 	//平行投影の射影行列生成
 	spriteCommon.matProjection = XMMatrixOrthographicOffCenterLH(
@@ -306,7 +310,7 @@ void Sprite::Update(SpriteData& sprite, Vec2 position, float width, float height
 }
 
 //スプライト単体描画
-void Sprite::Draw(SpriteData& sprite,const Vec2 position,const float width,const float height,const Vec2 anchorpoint,const Vec4 color,const bool isFlipX,const bool isFlipY)
+void Sprite::Draw(SpriteData& sprite, const Vec2 position, const float width, const float height, const Vec2 anchorpoint, const Vec4 color, const bool isFlipX, const bool isFlipY)
 {
 	SpriteCommonBeginDraw();
 

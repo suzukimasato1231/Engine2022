@@ -18,34 +18,23 @@ void Player::Init()
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 
 	staging.Init();
+
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2");
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
-
 	//モデル名を指定してファイル読み込み
 	stopModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
-	//3Dオブジェクトの生成とモデルのセット
-	stopFbx = new FBXObject3d;
-	stopFbx->Initialize();
-	stopFbx->SetModel(stopModel);
-	///////////////////
-	//モデル名を指定してファイル読み込み
-	model2 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2");
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject2 = new FBXObject3d;
-	fbxObject2->Initialize();
-	fbxObject2->SetModel(model2);
+	for (int i = 0; i < 2; i++)
+	{
+		//3Dオブジェクトの生成とモデルのセット
+		fbxObject1[i] = new FBXObject3d;
+		fbxObject1[i]->Initialize();
+		fbxObject1[i]->SetModel(model1);
 
-	//モデル名を指定してファイル読み込み
-	stopModel2 = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
-	//3Dオブジェクトの生成とモデルのセット
-	stopFbx2 = new FBXObject3d;
-	stopFbx2->Initialize();
-	stopFbx2->SetModel(stopModel2);
-	//////////////////////////
+		//3Dオブジェクトの生成とモデルのセット
+		stopFbx[i] = new FBXObject3d;
+		stopFbx[i]->Initialize();
+		stopFbx[i]->SetModel(stopModel);
+	}
 }
 
 void Player::Update()
@@ -75,7 +64,6 @@ void Player::Draw(bool shadowFlag)
 
 	FbxDraw(shadowFlag);
 
-	Object::Get()->PreDraw(shadowFlag);
 }
 
 void Player::DrawParticle()
@@ -106,14 +94,13 @@ void Player::Reset()
 
 void Player::Delete()
 {
-	safe_delete(fbxObject1);
+	for (int i = 0; i < 2; i++)
+	{
+		safe_delete(fbxObject1[i]);
+		safe_delete(stopFbx[i]);
+	}	
 	safe_delete(model1);
-	safe_delete(stopFbx);
 	safe_delete(stopModel);
-	safe_delete(fbxObject2);
-	safe_delete(model2);
-	safe_delete(stopFbx2);
-	safe_delete(stopModel2);
 }
 
 void Player::FbxDraw(bool shadowFlag)
@@ -123,24 +110,23 @@ void Player::FbxDraw(bool shadowFlag)
 	switch (fbxType)
 	{
 	case None:
-		stopFbx->SetPosition(fbxPos);
-		stopFbx->SetRotation(angle);
-		stopFbx2->SetPosition(fbxPos);
-		stopFbx2->SetRotation(angle);
+		stopFbx[0]->SetPosition(fbxPos);
+		stopFbx[0]->SetRotation(angle);
+		stopFbx[1]->SetPosition(fbxPos);
+		stopFbx[1]->SetRotation(angle);
 
 
-		stopFbx->Update(shadowFlag);
-		stopFbx2->Update(false);
+		stopFbx[0]->Update(shadowFlag);
+		stopFbx[1]->Update(false);
 		break;
 	case Walk:
-		fbxObject1->SetPosition(fbxPos);
-		fbxObject1->SetRotation(angle);
-		fbxObject2->SetPosition(fbxPos);
-		fbxObject2->SetRotation(angle);
+		fbxObject1[0]->SetPosition(fbxPos);
+		fbxObject1[0]->SetRotation(angle);
+		fbxObject1[1]->SetPosition(fbxPos);
+		fbxObject1[1]->SetRotation(angle);
 
-
-		fbxObject1->Update(shadowFlag);
-		fbxObject2->Update(false);
+		fbxObject1[0]->Update(shadowFlag);
+		fbxObject1[1]->Update(false);
 		break;
 	default:
 		break;
@@ -150,26 +136,27 @@ void Player::FbxDraw(bool shadowFlag)
 	case None:
 		if (shadowFlag == false)
 		{
-			stopFbx->Draw();
+			stopFbx[0]->Draw();
 		}
 		else
 		{
-			stopFbx2->Draw();
+			stopFbx[1]->Draw();
 		}
 		break;
 	case Walk:
 		if (shadowFlag == false)
 		{
-			fbxObject1->Draw();
+			fbxObject1[0]->Draw();
 		}
 		else
 		{
-			fbxObject2->Draw();
+			fbxObject1[1]->Draw();
 		}
 		break;
 	default:
 		break;
 	}
+	Object::Get()->PreDraw(shadowFlag);
 }
 
 //移動
@@ -217,10 +204,10 @@ void Player::Move()
 
 			if (fbxFlag[0] == false)
 			{//アニメーション開始
-				stopFbx->StopAnimation();
-				stopFbx2->StopAnimation();
-				fbxObject1->PlayAnimation(true);
-				fbxObject2->PlayAnimation(true);
+				stopFbx[0]->StopAnimation();
+				stopFbx[1]->StopAnimation();
+				fbxObject1[0]->PlayAnimation(true);
+				fbxObject1[1]->PlayAnimation(true);
 				fbxFlag[0] = true;
 			}
 			fbxFlag[1] = false;
@@ -230,13 +217,13 @@ void Player::Move()
 		{
 			fbxType = None;
 			fbxFlag[0] = false;
-			fbxObject1->StopAnimation();
-			fbxObject2->StopAnimation();
+			fbxObject1[0]->StopAnimation();
+			fbxObject1[1]->StopAnimation();
 			if (fbxFlag[1] == false)
 			{
 				fbxFlag[1] = true;
-				stopFbx->PlayAnimation(true);
-				stopFbx2->PlayAnimation(true);
+				stopFbx[0]->PlayAnimation(true);
+				stopFbx[1]->PlayAnimation(true);
 			}
 		}
 	}

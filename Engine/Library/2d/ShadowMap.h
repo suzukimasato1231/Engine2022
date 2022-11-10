@@ -12,6 +12,7 @@ class ShadowMap :public Singleton<ShadowMap>
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
+	friend Singleton<ShadowMap>;
 	struct VertexPosUv
 	{
 		DirectX::XMFLOAT3 pos;			//xyz座標
@@ -23,9 +24,9 @@ public:
 		DirectX::XMMATRIX mat;			//変換行列
 	};
 private:
-	friend Singleton<ShadowMap>;
+	static ID3D12Device* dev;
 	//テクスチャバッファ
-	ID3D12Resource* texbuff;
+	ComPtr<ID3D12Resource> texbuff;
 	//SRv用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 	//深度バッファ

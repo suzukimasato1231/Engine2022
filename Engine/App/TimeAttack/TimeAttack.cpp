@@ -16,13 +16,13 @@ void TimeAttack::Init()
 
 void TimeAttack::Reset()
 {
-	//time = 0;
+	time = 0;
 }
 
 void TimeAttack::Update()
 {
 
-	//time += timeCount;
+	time += timeCount;
 
 
 
@@ -32,5 +32,5 @@ void TimeAttack::Update()
 void TimeAttack::Draw()
 {
 
-	//DebugText::Get()->Print(10, 60, 2, "time:%f", time / timeframe);
+	DebugText::Get()->Print(10, 60, 2, "time:%f", time / timeframe);
 }

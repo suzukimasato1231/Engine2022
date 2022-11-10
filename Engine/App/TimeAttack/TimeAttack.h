@@ -7,7 +7,6 @@ class TimeAttack :public Singleton<TimeAttack>
 private:
 	friend Singleton<TimeAttack>;
 public:
-
 	TimeAttack();
 	~TimeAttack();
 

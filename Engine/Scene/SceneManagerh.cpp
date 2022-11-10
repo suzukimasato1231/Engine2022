@@ -184,7 +184,7 @@ void SceneManagerh::Update()
 
 void SceneManagerh::Draw()
 {
-	////‰e[“x’lŽæ“¾
+	//‰e[“x’lŽæ“¾
 	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
 	Object::Get()->PreDraw(), Object::InitDraw(), Sprite::Get()->PreDraw();
 	if (scene == Title)
@@ -220,6 +220,7 @@ void SceneManagerh::Draw()
 	else if (scene == GameScene)
 	{
 		gameScene.Draw();
+		//ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
 	}
 	else if (scene == Result)
 	{

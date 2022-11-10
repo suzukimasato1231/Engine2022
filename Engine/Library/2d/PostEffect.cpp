@@ -35,7 +35,9 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		nullptr,
 		IID_PPV_ARGS(&sprite.vertBuff));
 	assert(SUCCEEDED(result));
-
+#ifdef _DEBUG
+	sprite.vertBuff->SetName(L"SpriteVert");
+#endif
 	//頂点バッファへのデータ転送
 	Sprite::VertexPosUv* vertMap = nullptr;
 	result = sprite.vertBuff->Map(0, nullptr, (void**)&vertMap);
@@ -60,7 +62,9 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	);
 	assert(SUCCEEDED(result));
 
-
+#ifdef _DEBUG
+	constBuff->SetName(L"SpriteConst");
+#endif
 
 	//テクスチャリソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -69,7 +73,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		window_height,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
-
+	
 	//テクスチャバッファの生成
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
@@ -80,6 +84,10 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
 		IID_PPV_ARGS(&texbuff));
 	assert(SUCCEEDED(result));
+
+#ifdef _DEBUG
+	texbuff->SetName(L"SpriteBuff");
+#endif
 
 	{//テクスチャを赤クリア
 		//画素数
@@ -107,7 +115,9 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	//SRV用デスクリプタヒープを生成
 	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
 	assert(SUCCEEDED(result));
-
+#ifdef _DEBUG
+	descHeapSRV->SetName(L"SpriteSRV");
+#endif
 
 	//SRV設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
@@ -120,7 +130,9 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	dev->CreateShaderResourceView(texbuff.Get(),
 		&srvDesc,
 		descHeapSRV->GetCPUDescriptorHandleForHeapStart());
-
+#ifdef _DEBUG
+	texbuff->SetName(L"SpriteBuff");
+#endif
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -128,7 +140,9 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	//RTV用デスクリプタヒープを生成
 	result = dev->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
 	assert(SUCCEEDED(result));
-
+#ifdef _DEBUG
+	descHeapRTV->SetName(L"SpriteRTV");
+#endif
 	//デスクリプタヒープにRTV作成
 	dev->CreateRenderTargetView(texbuff.Get(),
 		nullptr,
@@ -154,7 +168,9 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		IID_PPV_ARGS(&depthBuff));
 
 	assert(SUCCEEDED(result));
-
+#ifdef _DEBUG
+	depthBuff->SetName(L"SpriteDepth");
+#endif
 	//DSV用デスクリプタヒープ
 	D3D12_DESCRIPTOR_HEAP_DESC DescHeapDesc{};
 	DescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;

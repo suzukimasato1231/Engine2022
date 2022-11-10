@@ -35,6 +35,10 @@ void FBXObject3d::Initialize()
 		nullptr,
 		IID_PPV_ARGS(&constBufferSkin));
 
+#ifdef _DEBUG
+	constBuffTransform->SetName(L"FbxTransform");
+	constBufferSkin->SetName(L"FbxObject");
+#endif
 	//1ƒtƒŒ[ƒ€•ª‚ÌŠÔ‚ğ60FPS‚Åİ’è
 	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
 

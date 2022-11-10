@@ -47,6 +47,9 @@ void LightGroup::Initialize()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff));
+#ifdef _DEBUG
+	constBuff->SetName(L"Light");
+#endif
 	if (FAILED(result)) {
 		assert(0);
 	}

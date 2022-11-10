@@ -67,7 +67,9 @@ int Texture::LoadTexture(const wchar_t* filename)
 		D3D12_RESOURCE_STATE_GENERIC_READ,//テクスチャ用指定
 		nullptr,
 		IID_PPV_ARGS(&textureData[texNum]->texbuff));
-
+#ifdef _DEBUG
+	textureData[texNum]->texbuff->SetName(L"Texture");
+#endif
 	//テクスチャバッファにデータ転送
 	result = textureData[texNum]->texbuff->WriteToSubresource(
 		0,
