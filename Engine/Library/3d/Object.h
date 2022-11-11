@@ -162,18 +162,7 @@ public://オブジェクト関連
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
 	static	void Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0, bool shadowFlag = false);
-	/// <summary>
-	/// ノーマルマップ描画
-	/// </summary>
-	/// <param name="polygon">オブジェクトデータ</param>
-	/// <param name="position">座標</param>
-	/// <param name="scale">大きさ</param>
-	/// <param name="matRot">回転</param>
-	/// <param name="mask">マスク</param>
-	/// <param name="graph1">画像１</param>
-	/// <param name="graph2">画像２</param>
-	/// <param name="shadowFlag"></param>
-	static void DrawNormalMap(ObjectData& polygon, Vec3 position, Vec3 scale, Vec3 matRot, int mask, int graph1, int graph2, bool shadowFlag = false);
+	
 public:
 	static size_t OBJNum;//OBJ読み込みの数
 };

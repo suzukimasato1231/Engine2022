@@ -22,12 +22,24 @@ public:
 	void Update();
 
 	void Draw();
+
+	void ShadowDraw();
+private:
+	LightGroup* lightGroup = nullptr;
 private://’è‹`
+
 	ObjectData titlePlayer;
 	PSR titlePsr = {};
 	ObjectData box;
 	PSR boxPsr = {};
 	int boxGraph;
+
+	ObjectData wallObj;
+	PSR wallPsr;
+
+	ObjectData floorObj;
+
+	//UI
 	SpriteData titleGraph;
 	SpriteData titleButtonGraph;
 	int buttonTime = 0;

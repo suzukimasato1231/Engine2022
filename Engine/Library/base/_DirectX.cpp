@@ -4,7 +4,6 @@
 #include"_Window.h"
 _DirectX::_DirectX()
 {
-
 }
 void _DirectX::Initilize()
 {
@@ -12,21 +11,22 @@ void _DirectX::Initilize()
 #ifdef _DEBUG
 	//デバックレイヤーをオン
 	ComPtr<ID3D12Debug1> debugController;
-//	ComPtr<ID3D12DebugDevice> mDebugDevice;
+	//	ComPtr<ID3D12DebugDevice> mDebugDevice;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 	{
 		debugController->EnableDebugLayer();
 		//debugController->SetEnableGPUBasedValidation(TRUE);
 	}
+
 	//debugController->QueryInterface(mDebugDevice.GetAddressOf());
 	//mDebugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
+
 #endif
 	//アダプタの列挙
 	Adapter();
 
 	//コマンドリスト
 	CommandListInitilize();
-
 
 	//深度設定
 	DepthBuffer();
@@ -37,12 +37,21 @@ void _DirectX::Initilize()
 	//フェンスの生成
 	result = dev->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
+
 	// imgui初期化
 	if (!InitImgui()) {
 		assert(0);
 	}
 
 	FPS::Get()->Start();
+#ifdef _DEBUG
+	ID3D12DebugDevice* debugInterface;
+	if (SUCCEEDED(dev.Get()->QueryInterface(&debugInterface)))
+	{
+		debugInterface->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
+		debugInterface->Release();
+	}
+#endif
 }
 
 void _DirectX::Adapter()
@@ -341,7 +350,7 @@ void _DirectX::ResourceBarrier()
 	//命令のクローズ
 	cmdList->Close();
 	//コマンドリストの実行
-	ID3D12CommandList *cmdLists[] = { cmdList.Get() };//コマンドリストの配列
+	ID3D12CommandList* cmdLists[] = { cmdList.Get() };//コマンドリストの配列
 	cmdQueue->ExecuteCommandLists(1, cmdLists);
 	//バッファをフリップ(裏表の入替え)
 	swapchain->Present(1, 0);
@@ -359,12 +368,12 @@ void _DirectX::ResourceBarrier()
 	cmdList->Reset(cmdAllocator.Get(), nullptr);//再びコマンドリストを貯める準備
 }
 
-ID3D12Device *_DirectX::GetDevice()
+ID3D12Device* _DirectX::GetDevice()
 {
 	return dev.Get();
 }
 
-ID3D12GraphicsCommandList *_DirectX::GetCmandList()
+ID3D12GraphicsCommandList* _DirectX::GetCmandList()
 {
 	return cmdList.Get();
 }

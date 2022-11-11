@@ -354,6 +354,15 @@ void Stage::LoadStage(int stageNum)
 		//OBJ
 		FilepathOBJ = (char*)"Resources/map/OBJTitle3.csv";
 		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos3.csv";
+		break;
+	case 4:
+		//Floor
+		FilepathFloor = (char*)"Resources/map/Floor_Title4.csv";
+		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos4.csv";
+		//OBJ
+		FilepathOBJ = (char*)"Resources/map/OBJTitle4.csv";
+		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos4.csv";
+		break;
 	default:
 		break;
 	}

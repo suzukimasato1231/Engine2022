@@ -18,13 +18,23 @@ void Player::Init()
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 
 	staging.Init();
+
 	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("uma");
-	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = new FBXObject3d;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
-	//fishOBJ = Shape::CreateOBJ("fish", true);
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2");
+	//モデル名を指定してファイル読み込み
+	stopModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
+	for (int i = 0; i < 2; i++)
+	{
+		//3Dオブジェクトの生成とモデルのセット
+		fbxObject1[i] = new FBXObject3d;
+		fbxObject1[i]->Initialize();
+		fbxObject1[i]->SetModel(model1);
+
+		//3Dオブジェクトの生成とモデルのセット
+		stopFbx[i] = new FBXObject3d;
+		stopFbx[i]->Initialize();
+		stopFbx[i]->SetModel(stopModel);
+	}
 }
 
 void Player::Update()
@@ -51,11 +61,9 @@ void Player::Draw(bool shadowFlag)
 {
 	//Object::Draw(playerObject, psr, Vec3(position.x, position.y - 2.0f, position.z), scale, angle, Vec4(), playerObject.OBJTexture, shadowFlag);
 	staging.Draw3D();
-	////FBX試し
-	fbxObject1->SetPosition(position);
-	fbxObject1->Update();
-	fbxObject1->Draw();
-	Object::Get()->PreDraw(shadowFlag);
+
+	FbxDraw(shadowFlag);
+
 }
 
 void Player::DrawParticle()
@@ -86,8 +94,69 @@ void Player::Reset()
 
 void Player::Delete()
 {
-	safe_delete(fbxObject1);
+	for (int i = 0; i < 2; i++)
+	{
+		safe_delete(fbxObject1[i]);
+		safe_delete(stopFbx[i]);
+	}	
 	safe_delete(model1);
+	safe_delete(stopModel);
+}
+
+void Player::FbxDraw(bool shadowFlag)
+{
+	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };
+	//FBX試し
+	switch (fbxType)
+	{
+	case None:
+		stopFbx[0]->SetPosition(fbxPos);
+		stopFbx[0]->SetRotation(angle);
+		stopFbx[1]->SetPosition(fbxPos);
+		stopFbx[1]->SetRotation(angle);
+
+
+		stopFbx[0]->Update(shadowFlag);
+		stopFbx[1]->Update(false);
+		break;
+	case Walk:
+		fbxObject1[0]->SetPosition(fbxPos);
+		fbxObject1[0]->SetRotation(angle);
+		fbxObject1[1]->SetPosition(fbxPos);
+		fbxObject1[1]->SetRotation(angle);
+
+		fbxObject1[0]->Update(shadowFlag);
+		fbxObject1[1]->Update(false);
+		break;
+	default:
+		break;
+	}
+	switch (fbxType)
+	{
+	case None:
+		if (shadowFlag == false)
+		{
+			stopFbx[0]->Draw();
+		}
+		else
+		{
+			stopFbx[1]->Draw();
+		}
+		break;
+	case Walk:
+		if (shadowFlag == false)
+		{
+			fbxObject1[0]->Draw();
+		}
+		else
+		{
+			fbxObject1[1]->Draw();
+		}
+		break;
+	default:
+		break;
+	}
+	Object::Get()->PreDraw(shadowFlag);
 }
 
 //移動
@@ -124,13 +193,38 @@ void Player::Move()
 			{
 				vec.z = speed.z * cosf(rad);
 			}
-			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)) - 59.8f);
+			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));// -59.8f);
 			if (walkTime < 0)
 			{
 				staging.CreateWalk(position, vec);
 				walkTime = walkTimeMax;
 			}
 			walkTime--;
+
+
+			if (fbxFlag[0] == false)
+			{//アニメーション開始
+				stopFbx[0]->StopAnimation();
+				stopFbx[1]->StopAnimation();
+				fbxObject1[0]->PlayAnimation(true);
+				fbxObject1[1]->PlayAnimation(true);
+				fbxFlag[0] = true;
+			}
+			fbxFlag[1] = false;
+			fbxType = Walk;
+		}
+		else
+		{
+			fbxType = None;
+			fbxFlag[0] = false;
+			fbxObject1[0]->StopAnimation();
+			fbxObject1[1]->StopAnimation();
+			if (fbxFlag[1] == false)
+			{
+				fbxFlag[1] = true;
+				stopFbx[0]->PlayAnimation(true);
+				stopFbx[1]->PlayAnimation(true);
+			}
 		}
 	}
 }
@@ -150,7 +244,6 @@ void Player::Jump()
 			jumpPower = jumpPowerMax;
 		}
 		blockStepOnFlag = false;
-		fbxObject1->PlayAnimation(false);
 	}
 
 	//重力加算

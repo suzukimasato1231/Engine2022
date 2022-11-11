@@ -3,7 +3,7 @@
 Texture2D<float4> tex : register(t0);  // 0番スロットに設定されたテクスチャ
 SamplerState smp0 : register(s0);      // 0番スロットに設定されたサンプラー
 Texture2D<float> shadow : register(t1);  // 1番スロットに設定されたテクスチャ
-SamplerState smp1 : register(s1);
+
 
 float4 main(VSOutput input) : SV_TARGET
 {
@@ -136,7 +136,7 @@ float4 main(VSOutput input) : SV_TARGET
 		float shadowDepth = (shadow.Sample(smp0, shadowmap)).x;
 
 		//深度を比較
-		if (shadowDepth  < posFromLightVP.z - 0.001f)
+		if (shadowDepth  < posFromLightVP.z - 0.003f)
 		{
 			shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
 		}

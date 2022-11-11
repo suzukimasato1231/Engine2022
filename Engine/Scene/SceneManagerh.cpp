@@ -43,17 +43,18 @@ void SceneManagerh::Initialize()
 	//3Dオブジェクト初期化
 	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
 
+	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
+	////影
+	ShadowMap::Get()->Init();
+	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
+
 	titleScene.Initialize();
-	//ゲームシーン
+	////ゲームシーン
 	gameScene.Initialize();
 	gameScene.Init(0);
 	stageScene.Initialize();
 	resultScene.Initialize();
 	resultScene.Init();
-	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
-	//影
-	ShadowMap::Get()->Init();
-	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
 	titleScene.Init();
 
 	changeBlack = Sprite::Get()->SpriteCreate(L"Resources/black.png");
@@ -172,6 +173,13 @@ void SceneManagerh::Update()
 			changeSceneFlag = ChangeStand;
 		}
 	}
+
+
+	if (Input::Get()->KeybordTrigger(DIK_T) == true)
+	{
+		scene = Title;
+		titleScene.Init();
+	}
 }
 
 void SceneManagerh::Draw()
@@ -181,6 +189,7 @@ void SceneManagerh::Draw()
 	Object::Get()->PreDraw(), Object::InitDraw(), Sprite::Get()->PreDraw();
 	if (scene == Title)
 	{
+		titleScene.ShadowDraw();
 	}
 	else if (scene == SelectScene)
 	{
@@ -192,24 +201,26 @@ void SceneManagerh::Draw()
 	}
 	else if (scene == Result)
 	{
+		resultScene.ShadowDraw();
 	}
 	ShadowMap::Get()->PostDraw(_DirectX::Get()->GetCmandList());
 
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
 	Object::SetPipeline(Pipeline::OBJPipeline);
-	Object::Get()->PreDraw(true),Object::InitDraw(), Sprite::Get()->PreDraw();
+	Object::Get()->PreDraw(true), Object::InitDraw(), Sprite::Get()->PreDraw();
 	//カメラ目線の描画
 	if (scene == Title)
 	{
 		titleScene.Draw();
 	}
 	else if (scene == SelectScene)
-	{	
+	{
 		stageScene.Draw();
 	}
 	else if (scene == GameScene)
-	{		
+	{
 		gameScene.Draw();
+		//ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
 	}
 	else if (scene == Result)
 	{
@@ -219,7 +230,7 @@ void SceneManagerh::Draw()
 	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
 
 	_DirectX::Get()->PreDraw();
-	//ポストエフェクトの描画
+	////ポストエフェクトの描画
 	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList(), changeSceneColor);
 	if (changeSceneFlag == ChangeFirst || changeSceneFlag == ChangeEnd)
 	{

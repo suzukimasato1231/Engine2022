@@ -102,6 +102,9 @@
     <Filter Include="ソース ファイル\Stage\Floor">
       <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Particle">
+      <UniqueIdentifier>{78d97276-37bc-49ca-a367-288e53b89424}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -357,9 +360,6 @@
     <ClInclude Include="Library\2d\ShadowMap.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
-    <ClInclude Include="App\Particle\Particle.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="App\stage\FishBox.h">
       <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
@@ -389,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="Library\3d\Particle3D.h">
       <Filter>Library\3d\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="App\Particle\Particle.h">
+      <Filter>ソース ファイル\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -527,9 +530,6 @@
     <ClCompile Include="Library\2d\ShadowMap.cpp">
       <Filter>Library\2d</Filter>
     </ClCompile>
-    <ClCompile Include="App\Particle\Particle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="App\stage\FishBox.cpp">
       <Filter>ソース ファイル\Stage\Box</Filter>
     </ClCompile>
@@ -556,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="Library\3d\Particle3D.cpp">
       <Filter>Library\3d\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="App\Particle\Particle.cpp">
+      <Filter>ソース ファイル\Particle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

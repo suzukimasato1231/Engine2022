@@ -52,6 +52,17 @@ public:
 
 	void Delete();
 private:
+	enum PlayerFBX
+	{
+		None,
+		Walk,
+
+	};
+private:
+	/// <summary>
+	/// FBXの描画
+	/// </summary>
+	void FbxDraw(bool shadowFlag);
 	/// <summary>
 	/// プレイヤー移動
 	/// </summary>
@@ -95,16 +106,15 @@ private:
 	bool gameoverFlag = false;
 
 	ObjectData playerObject;			//プレイヤーオブジェクト
-	PSR psr = {};
+	PSR psr = {};						
 	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
-	Vec3 scale{ 2.0f,2.0f,2.0f };		//大きさ
-	Vec3 angle{ 0.0f,180.0f,0.0f };		//角度
+	Vec3 scale{ 2.5f,2.5f,2.5f };		//大きさ
+	Vec3 angle{ -30.0f,180.0f,0.0f };	//角度
 	Vec3 pScale = { 8.0f,7.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
-
 	Vec3 vec = {};
 
 	bool changeBreakFlag = false;
@@ -124,18 +134,21 @@ private:
 	bool blockStepOnFlag = false;		//ブロックを踏んで壊したかどうか
 
 	//魚
-	ObjectData fishOBJ = {};
-	int fishGraph = 0;
 	bool fishFlag = false;
 	int fishNum = 0;
 
 	//FBX
+	int fbxType = NULL;
+	bool fbxFlag[2] = {};
+	//歩きFBX
 	Model* model1 = nullptr;
-	FBXObject3d* fbxObject1 = nullptr;
-
-
+	FBXObject3d* fbxObject1[2] = {};
+	//停止FBX
+	Model* stopModel = nullptr;
+	FBXObject3d* stopFbx[2] = {};
 
 	int dieType = DIENULL;
+
 	//プレイヤー演出
 	Staging staging;
 	int dieNowTime = 0;

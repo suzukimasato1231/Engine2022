@@ -12,6 +12,8 @@ void Audio::Init()
 	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
+
+	
 }
 Audio *Audio::Create()
 {

@@ -23,8 +23,8 @@ void StageSelect::Initialize()
 	lightGroup = LightGroup::Create();
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,-1,0 });
-	lightGroup->SetShadowDir(Vec3(0, 1, 0));
+	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
+	lightGroup->SetShadowDir(Vec3(0, 1, -1));
 }
 
 void StageSelect::Init()
@@ -42,7 +42,9 @@ void StageSelect::Init()
 	selectFlag = false;
 	Stage::Get()->LoadStage(0);
 	Player::Get()->SetPosition(Vec3(20.0f, 10.0f, 150.0f));
+
 }
+
 
 void StageSelect::Update()
 {

@@ -113,6 +113,9 @@ int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
 	}
 
 	Vec3 setPosition = oldPosition;
+
+
+
 	if (Flag[0] == false)
 	{
 		setPosition.x += vec.x;
@@ -125,6 +128,7 @@ int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
 	{
 		setPosition.z += vec.z;
 	}
+
 	Player::Get()->SetPosition(setPosition);
 
 	return breakFlag;

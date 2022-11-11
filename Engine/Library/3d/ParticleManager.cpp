@@ -27,7 +27,7 @@ bool ParticleManager::StaticInitialize(ID3D12Device* device, ID3D12GraphicsComma
 	ParticleManager::cmdList = cmdList;
 
 	// パイプライン初期化
-	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device,ShaderManager::particleShader);
+	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device, ShaderManager::particleShader);
 	//PartclePipelineSet = Pipeline::ParticleCubeGraphicsPipeline(device);
 
 	return true;
@@ -157,8 +157,9 @@ void ParticleManager::CreateModel()
 		assert(0);
 		return;
 	}
-
-
+#ifdef _DEBUG
+	vertBuff->SetName(L"Particle");
+#endif
 	// 頂点バッファへのデータ転送
 	VertexPos* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
@@ -272,6 +273,10 @@ bool ParticleManager::Initialize()
 		nullptr,
 		IID_PPV_ARGS(&constBuff));
 
+#ifdef _DEBUG
+
+
+#endif
 	return true;
 }
 

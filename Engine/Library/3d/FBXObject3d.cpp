@@ -35,6 +35,10 @@ void FBXObject3d::Initialize()
 		nullptr,
 		IID_PPV_ARGS(&constBufferSkin));
 
+#ifdef _DEBUG
+	constBuffTransform->SetName(L"FbxTransform");
+	constBufferSkin->SetName(L"FbxObject");
+#endif
 	//1フレーム分の時間を60FPSで設定
 	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
 
@@ -181,7 +185,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[4];
+	CD3DX12_ROOT_PARAMETER rootparams[4]={};
 	// CBV（座標変換行列用）
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// SRV（テクスチャ）
@@ -210,7 +214,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 	if (FAILED(result)) { assert(0); }
 }
 
-void FBXObject3d::Update()
+void FBXObject3d::Update(bool shadowFlag)
 {
 	//アニメーション
 	if (isPlay)
@@ -259,7 +263,14 @@ void FBXObject3d::Update()
 	ConstBufferDataTransform* constMap = nullptr;
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		constMap->viewproj = matViewProjection;
+		if (shadowFlag == true)
+		{
+			constMap->viewproj = lightGroup->GetLightMatProjection();
+		}
+		else
+		{
+			constMap->viewproj = matViewProjection;
+		}
 		constMap->world = modelTransform * matWorld;
 		constMap->cameraPos = cameraPos;
 		constBuffTransform->Unmap(0, nullptr);
@@ -280,8 +291,11 @@ void FBXObject3d::Update()
 		//XMMATRIXに変換
 		FbxLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
 
+		//合成してスキニング行列に
+		XMMATRIX inverse = XMMatrixInverse(nullptr, model->GetModelTransform());
+		XMMATRIX trans = model->GetModelTransform();
 		//合成してスキニング行列
-		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
+		constMapSkin->bones[i] = trans * bones[i].invInitialPose * matCurrentPose * inverse;
 	}
 	constBufferSkin->Unmap(0, nullptr);
 
