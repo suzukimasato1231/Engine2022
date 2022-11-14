@@ -9,44 +9,44 @@ Electricity::Electricity()
 
 Electricity::~Electricity()
 {
-	safe_delete(electParicle);
+	safe_delete(m_electParicle);
 }
 
 void Electricity::Init()
 {
-	electOBJ = Shape::CreateOBJ("elect");
-	electShockOBJ = Shape::CreateOBJ("electShock");
-	electParicle = ParticleManager::Create();
-	electParicleGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/elect.png");
+	m_electOBJ = Shape::CreateOBJ("elect");
+	m_electShockOBJ = Shape::CreateOBJ("electShock");
+	m_electParicle = ParticleManager::Create();
+	m_electParicleGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/elect.png");
 }
 
 void Electricity::AllUpdate()
 {
 	//電気ON/OFFプログラム
-	if (electFlag == true)
+	if (m_electFlag == true)
 	{
-		electTime--;
-		if (electTime <= 0)
+		m_electTime--;
+		if (m_electTime <= 0)
 		{
-			electFlag = false;
-			electTime = electTimeMax;
+			m_electFlag = false;
+			m_electTime = c_electTimeMax;
 		}
 	}
 	else
 	{
-		electTime--;
-		if (electTime <= 0)
+		m_electTime--;
+		if (m_electTime <= 0)
 		{
-			electFlag = true;
-			electTime = electTimeMax;
+			m_electFlag = true;
+			m_electTime = c_electTimeMax;
 		}
 	}
-	electParicle->Update();
+	m_electParicle->Update();
 }
 
 void Electricity::Update(StageOBJ* stageObj, const int Z)
 {
-	if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 1 && electFlag == true)
+	if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 1 && m_electFlag == true)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
@@ -54,7 +54,7 @@ void Electricity::Update(StageOBJ* stageObj, const int Z)
 		}
 	}
 
-	if (((electFlag == FALSE && electTime < 50) || electFlag == true) &&
+	if (((m_electFlag == FALSE && m_electTime < 50) || m_electFlag == true) &&
 		(MAP_HEIGHT - 1 + Z) - 10 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 10)
 	{
 		AddElect(stageObj->position);
@@ -69,20 +69,20 @@ void Electricity::Draw(StageOBJ* stageObj, const bool shadowFlag)
 		assert(0);
 	}
 #endif
-	Object::Draw(electOBJ, stageObj->psr, stageObj->position, Vec3(2.0f, 2.0f, 2.0f),
+	Object::Draw(m_electOBJ, stageObj->psr, stageObj->position, Vec3(2.0f, 2.0f, 2.0f),
 		Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 
-	if (electFlag == true)
+	if (m_electFlag == true)
 	{
 		Vec3 pos = { 11.0f,5.0f,0.0f };
-		Object::Draw(electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
+		Object::Draw(m_electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
 			Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, false);
 	}
 }
 
 void Electricity::DrawParicle()
 {
-	electParicle->Draw(electParicleGraph);
+	m_electParicle->Draw(m_electParicleGraph);
 }
 
 StageOBJ Electricity::SetElect(const Vec3 position, const Vec3 scale, const Vec3 angle, const Vec2 map, const int type)
@@ -117,7 +117,7 @@ void Electricity::AddElect(Vec3 pos)
 	static const int onAddNum = 20;
 	static const int offAddNum = 40;
 	int addNum = 0;
-	if (electFlag == true) { addNum = 20; }
+	if (m_electFlag == true) { addNum = 20; }
 	else { addNum = 5; }
 
 	for (int i = 0; i < addNum; i++)
@@ -127,6 +127,6 @@ void Electricity::AddElect(Vec3 pos)
 		pos.x += (float)rand() / RAND_MAX * md_pos.x - md_pos.x / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * md_pos.y - md_pos.y / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos.z - md_pos.z / 2.0f;
-		electParicle->Add(particleTime, pos, velocity, accel, start_scale, end_scale, start_color, end_color);
+		m_electParicle->Add(particleTime, pos, velocity, accel, start_scale, end_scale, start_color, end_color);
 	}
 }

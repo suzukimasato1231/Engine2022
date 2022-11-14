@@ -10,7 +10,6 @@ TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
 {
-	safe_delete(lightGroup);
 }
 void TitleScene::Initialize()
 {
@@ -24,7 +23,8 @@ void TitleScene::Initialize()
 	floorObj = Shape::CreateOBJ("ice");
 
 	// ライトグループクラス作成
-	lightGroup = LightGroup::Create();
+	lightGroup = std::make_unique<LightGroup>();
+	lightGroup->Initialize();
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
@@ -36,8 +36,8 @@ void TitleScene::Init()
 {
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
 
-	FBXObject3d::SetLight(lightGroup);
-	Object::SetLight(lightGroup);
+	FBXObject3d::SetLight(lightGroup.get());
+	Object::SetLight(lightGroup.get());
 
 }
 

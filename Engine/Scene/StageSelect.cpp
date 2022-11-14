@@ -11,7 +11,6 @@ StageSelect::StageSelect()
 {}
 StageSelect::~StageSelect()
 {
-	safe_delete(lightGroup);
 }
 void StageSelect::Initialize()
 {
@@ -20,7 +19,8 @@ void StageSelect::Initialize()
 	selectGraph[1] = Texture::Get()->LoadTexture(L"Resources/select/select2.png");
 	selectGraph[2] = Texture::Get()->LoadTexture(L"Resources/select/select3.png");
 	// ライトグループクラス作成
-	lightGroup = LightGroup::Create();
+	lightGroup = std::make_unique<LightGroup>();
+	lightGroup->Initialize();
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
@@ -29,8 +29,8 @@ void StageSelect::Initialize()
 
 void StageSelect::Init()
 {
-	FBXObject3d::SetLight(lightGroup);
-	Object::SetLight(lightGroup);
+	FBXObject3d::SetLight(lightGroup.get());
+	Object::SetLight(lightGroup.get());
 
 	Player::Get()->ChangeMoveFlag(false);
 	for (size_t i = 0; i < stageNumMax; i++)

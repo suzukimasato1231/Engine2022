@@ -5,6 +5,7 @@
 #include"Audio.h"
 #include"FBXObject3d.h"
 #include"Object.h"
+#include<memory>
 extern const int window_width;
 extern const int window_height;
 class StageSelect 
@@ -24,7 +25,7 @@ public:
 	//‰e‚Ì•`‰æ
 	void DrawShadow();
 public:
-	LightGroup* lightGroup = nullptr;
+	std::unique_ptr<LightGroup>lightGroup;
 public:
 	int GetStageNum() { return stageNum; }
 

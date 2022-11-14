@@ -9,18 +9,16 @@ GameSceneManager::GameSceneManager()
 {}
 GameSceneManager::~GameSceneManager()
 {
-	safe_delete(lightGroup);
 	//XAudio2解放
 	audio->xAudio2.Reset();
-	//音データ解放
-	safe_delete(audio);
 }
 void GameSceneManager::Initialize()
 {
 	//Audioクラス作成
-	audio = Audio::Create();
+	audio = std::make_unique<Audio>();
 	//ライトグループクラス作成
-	lightGroup = LightGroup::Create();
+	lightGroup = std::make_unique<LightGroup>();
+	lightGroup->Initialize();
 	//音データ読み込み
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
@@ -42,8 +40,8 @@ void GameSceneManager::Initialize()
 
 void GameSceneManager::Init(int stageNum)
 {
-	FBXObject3d::SetLight(lightGroup);
-	Object::SetLight(lightGroup);
+	FBXObject3d::SetLight(lightGroup.get());
+	Object::SetLight(lightGroup.get());
 	changeScene = false;
 	Reset(stageNum);
 	this->stageNum = stageNum;

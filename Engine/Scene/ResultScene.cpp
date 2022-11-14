@@ -4,12 +4,9 @@
 #include"Shape.h"
 #include <FBXObject3d.h>
 ResultScene::ResultScene()
-{
-}
+{}
 ResultScene::~ResultScene()
-{
-	safe_delete(lightGroup);
-}
+{}
 void ResultScene::Initialize()
 {
 	boxGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/UIBox.png");
@@ -31,7 +28,8 @@ void ResultScene::Initialize()
 	penginObj = Shape::CreateOBJ("pengin");
 	floorObj = Shape::CreateOBJ("ice");
 	// ライトグループクラス作成
-	lightGroup = LightGroup::Create();
+	lightGroup = std::make_unique<LightGroup>();
+	lightGroup->Initialize();
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
@@ -41,8 +39,8 @@ void ResultScene::Init()
 {
 	resultTime = 0;
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
-	FBXObject3d::SetLight(lightGroup);
-	Object::SetLight(lightGroup);
+	FBXObject3d::SetLight(lightGroup.get());
+	Object::SetLight(lightGroup.get());
 }
 
 void ResultScene::Update()

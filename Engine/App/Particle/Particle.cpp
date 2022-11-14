@@ -1,24 +1,20 @@
 #include "Particle.h"
-#include <Safe_delete.h>
 #include"../Engine/App/player/Player.h"
 #include"../Engine/App/stage/Stage.h"
 #include"Shape.h"
 Particle::Particle()
-{
-}
+{}
 
 Particle::~Particle()
-{
-	safe_delete(breakBoxParticle);
-	safe_delete(break3DParticle);
-}
+{}
 
 void Particle::Init()
 {
 	graph = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
-	breakBoxParticle = ParticleManager::Create();
+	breakBoxParticle = std::make_unique<ParticleManager > ();
+	breakBoxParticle->Initialize();
 
-	break3DParticle = Particle3D::Create();
+	break3DParticle = std::make_unique<Particle3D>();
 	boxData = Shape::CreateSquare(2.0f, 2.0f, 1.0f);
 	boxGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/boxParticle.png");
 }

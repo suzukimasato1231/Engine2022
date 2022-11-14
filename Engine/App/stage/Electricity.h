@@ -24,18 +24,18 @@ private:
 	void AddElect(Vec3 pos);
 private:
 	//電気柱オブジェクト
-	ObjectData electOBJ;
+	ObjectData m_electOBJ;
 	//電気オブジェクト
-	ObjectData electShockOBJ;
+	ObjectData m_electShockOBJ;
 
 	//電気ON/OFF
-	bool electFlag = false;
+	bool m_electFlag = false;
 	//電気切り替え最大時間時間
-	const int electTimeMax = 150;
+	const int c_electTimeMax = 150;
 	//切り替えまでの時間
-	int electTime = 0;
+	int m_electTime = 0;
 	//電気びりびり
-	ParticleManager* electParicle = nullptr;
-	int electParicleGraph = 0;
+	ParticleManager* m_electParicle = nullptr;
+	int m_electParicleGraph = 0;
 };
 

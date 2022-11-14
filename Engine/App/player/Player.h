@@ -3,6 +3,7 @@
 #include"CollisionPrimitive.h"
 #include"FBXObject3d.h"
 #include"Staging.h"
+#include<memory>
 enum DieType
 {
 	DIENULL,
@@ -56,7 +57,7 @@ private:
 	{
 		None,
 		Walk,
-
+		ElectDie,
 	};
 private:
 	/// <summary>
@@ -106,7 +107,7 @@ private:
 	bool gameoverFlag = false;
 
 	ObjectData playerObject;			//プレイヤーオブジェクト
-	PSR psr = {};						
+	PSR psr = {};
 	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
@@ -142,10 +143,13 @@ private:
 	bool fbxFlag[2] = {};
 	//歩きFBX
 	Model* model1 = nullptr;
-	FBXObject3d* fbxObject1[2] = {};
+	std::unique_ptr<FBXObject3d> fbxObject1[2];
 	//停止FBX
 	Model* stopModel = nullptr;
-	FBXObject3d* stopFbx[2] = {};
+	std::unique_ptr<FBXObject3d> stopFbx[2];
+	//感電
+	Model* electModel = nullptr;
+	std::unique_ptr<FBXObject3d> electFbx[2];
 
 	int dieType = DIENULL;
 

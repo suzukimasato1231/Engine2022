@@ -263,6 +263,8 @@ bool ParticleManager::Initialize()
 	// nullptrチェック
 	assert(device);
 
+	CreateModel();
+
 	HRESULT result;
 	// 定数バッファの生成
 	result = device->CreateCommittedResource(

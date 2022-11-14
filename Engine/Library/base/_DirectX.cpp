@@ -17,10 +17,6 @@ void _DirectX::Initilize()
 		debugController->EnableDebugLayer();
 		//debugController->SetEnableGPUBasedValidation(TRUE);
 	}
-
-	//debugController->QueryInterface(mDebugDevice.GetAddressOf());
-	//mDebugDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
-
 #endif
 	//アダプタの列挙
 	Adapter();

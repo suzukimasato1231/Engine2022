@@ -1,6 +1,6 @@
 #include"Singleton.h"
 #include <Object.h>
-
+#include<memory>
 class ResultScene 
 {
 private:
@@ -20,7 +20,7 @@ public:
 
 	void ShadowDraw();
 private:
-	LightGroup* lightGroup = nullptr;
+	std::unique_ptr<LightGroup> lightGroup;
 private:
 	ObjectData resultOBJ;
 	int resultTime = 0;

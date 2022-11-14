@@ -8,9 +8,7 @@ ID3D12Device* ShadowMap::dev = nullptr;
 ShadowMap::ShadowMap()
 {}
 ShadowMap::~ShadowMap()
-{
-	
-}
+{}
 void ShadowMap::Init()
 {
 	ID3D12Device* dev = _DirectX::Get()->GetDevice();
@@ -33,7 +31,7 @@ void ShadowMap::Init()
 	vertBuff->SetName(L"ShadowVert");
 #endif
 	//頂点データ転送
-	VertexPosUv vertices[4];
+	VertexPosUv vertices[4] = {};
 
 	vertices[0].pos = { -1.0f, -1.0f , 0.0f };
 	vertices[1].pos = { -1.0f, 1.0, 0.0f };
@@ -184,7 +182,7 @@ void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	HRESULT result = S_OK;
 	//定数バッファにデータ転送
-	ConstantBuffer_b0 data;
+	ConstantBuffer_b0 data = {};
 	data.mat = XMMatrixIdentity();
 
 	//GPU上のバッファに対応した仮想メモリを取得
@@ -386,22 +384,22 @@ void ShadowMap::CreateGraphicsPipelineState(ID3D12Device* dev)
 	gpipeline.SampleDesc.Count = 1;							//1ピクセルにつき1回サンプリング
 
 	//デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV = {};
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); //t0レジスタ
 
 	//ルートパラメータ(定数バッファに送るやつの設定、最初の引数でregisterを選択)
 	//分けておくと必要な情報だけ転送したりできてエコ
-	CD3DX12_ROOT_PARAMETER rootparams[2];
+	CD3DX12_ROOT_PARAMETER rootparams[3] = {};
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
-	//rootparams[2].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 
 	//スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc =
 		CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_POINT); //s0レジスタ
 
 	//ルートシグネチャの設定
-	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 

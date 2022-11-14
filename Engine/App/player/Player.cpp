@@ -21,19 +21,25 @@ void Player::Init()
 
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2");
-	//モデル名を指定してファイル読み込み
 	stopModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
+	electModel = FbxLoader::GetInstance()->LoadModelFromFile("penginElect");
+
 	for (int i = 0; i < 2; i++)
 	{
 		//3Dオブジェクトの生成とモデルのセット
-		fbxObject1[i] = new FBXObject3d;
+		fbxObject1[i] = std::make_unique<FBXObject3d>();
 		fbxObject1[i]->Initialize();
 		fbxObject1[i]->SetModel(model1);
 
 		//3Dオブジェクトの生成とモデルのセット
-		stopFbx[i] = new FBXObject3d;
+		stopFbx[i] = std::make_unique<FBXObject3d>();
 		stopFbx[i]->Initialize();
 		stopFbx[i]->SetModel(stopModel);
+
+		//3Dオブジェクトの生成とモデルのセット
+		electFbx[i] = std::make_unique<FBXObject3d>();
+		electFbx[i]->Initialize();
+		electFbx[i]->SetModel(electModel);
 	}
 }
 
@@ -59,7 +65,6 @@ void Player::Update()
 
 void Player::Draw(bool shadowFlag)
 {
-	//Object::Draw(playerObject, psr, Vec3(position.x, position.y - 2.0f, position.z), scale, angle, Vec4(), playerObject.OBJTexture, shadowFlag);
 	staging.Draw3D();
 
 	FbxDraw(shadowFlag);
@@ -94,13 +99,9 @@ void Player::Reset()
 
 void Player::Delete()
 {
-	for (int i = 0; i < 2; i++)
-	{
-		safe_delete(fbxObject1[i]);
-		safe_delete(stopFbx[i]);
-	}	
 	safe_delete(model1);
 	safe_delete(stopModel);
+	safe_delete(electModel);
 }
 
 void Player::FbxDraw(bool shadowFlag)
@@ -128,6 +129,15 @@ void Player::FbxDraw(bool shadowFlag)
 		fbxObject1[0]->Update(shadowFlag);
 		fbxObject1[1]->Update(false);
 		break;
+	case ElectDie:
+		electFbx[0]->SetPosition(fbxPos);
+		electFbx[0]->SetRotation(angle);
+		electFbx[1]->SetPosition(fbxPos);
+		electFbx[1]->SetRotation(angle);
+
+		electFbx[0]->Update(shadowFlag);
+		electFbx[1]->Update(false);
+		break;
 	default:
 		break;
 	}
@@ -151,6 +161,16 @@ void Player::FbxDraw(bool shadowFlag)
 		else
 		{
 			fbxObject1[1]->Draw();
+		}
+		break;
+	case ElectDie:
+		if (shadowFlag == false)
+		{
+			electFbx[0]->Draw();
+		}
+		else
+		{
+			electFbx[1]->Draw();
 		}
 		break;
 	default:
@@ -258,23 +278,28 @@ void Player::Jump()
 
 void Player::FallDie()
 {
-	static const int dieTime = 30;	//死んだときの演出時間
-
 	if (position.y < -30.0f && dieType == DIENULL)
 	{
+		static const int dieTime = 30;	//死んだときの演出時間
 		dieNowTime = dieTime;
 		staging.CreateFallDown(position);
 		dieType = DIENOW;
 	}
 	if (dieType == ELECTDIE)
 	{
+		static const int dieTime = 200;	//死んだときの演出時間
 		dieNowTime = dieTime;
 		staging.CreateElect(position);
 		dieType = DIENOW;
-
+		fbxType = ElectDie;
+		for (int i = 0; i < 2; i++)
+		{
+			electFbx[i]->PlayAnimation(false);
+		}
 	}
 	if (dieType == EATDIE)
 	{
+		static const int dieTime = 30;	//死んだときの演出時間
 		dieNowTime = dieTime;
 
 		dieType = DIENOW;
