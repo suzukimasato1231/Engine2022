@@ -61,13 +61,13 @@ void Player::Update()
 	FallDie();
 	//ãõä÷òA
 	Fish();
+
+	RedFishDie();
 }
 
 void Player::Draw(bool shadowFlag)
 {
 	staging.Draw3D();
-
-	//Object::Draw(playerObject, psr, position, scale, angle);
 
 	FbxDraw(shadowFlag);
 
@@ -97,6 +97,7 @@ void Player::Reset()
 	remainLives = remainLivesMax;
 	fishNum = 0;
 	gameoverFlag = false;
+	dieType = DIENULL;
 }
 
 void Player::Delete()
@@ -301,10 +302,10 @@ void Player::FallDie()
 	}
 	if (dieType == EATDIE)
 	{
-		static const int dieTime = 30;	//éÄÇÒÇæÇ∆Ç´ÇÃââèoéûä‘
+		static const int dieTime = 100;	//éÄÇÒÇæÇ∆Ç´ÇÃââèoéûä‘
 		dieNowTime = dieTime;
-
 		dieType = DIENOW;
+		isFishDie = true;
 	}
 
 
@@ -320,6 +321,7 @@ void Player::FallDie()
 			oldPosition = position;
 			remainLives--;
 			dieType = DIENULL;
+			isFishDie = false;
 		}
 		else if (remainLives == 0)
 		{
@@ -350,6 +352,21 @@ void Player::Fish()
 	{
 		fishNum -= 100;
 		remainLives++;
+	}
+}
+
+void Player::RedFishDie()
+{
+	if (isFishDie == true && dieType == DIENOW)
+	{
+		position = fishDiePos;
+		oldPosition = position;
+
+		angle.x = fishDieAngle.x;
+		if (position.y < -30.0f && dieType == DIENOW)
+		{
+			isFishDie = false;
+		}
 	}
 }
 

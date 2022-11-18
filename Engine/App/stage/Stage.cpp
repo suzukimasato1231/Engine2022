@@ -93,6 +93,7 @@ void Stage::Update(Vec3 pPos)
 				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
 				{
 					Player::Get()->DieType(EATDIE);
+					Player::Get()->FishDie(stageObj[i]->actionPos, dangerFish.GetFishAngle());
 				}
 			}
 			dangerFish.Update(stageObj[i]);
@@ -102,7 +103,7 @@ void Stage::Update(Vec3 pPos)
 		}
 	}
 
-	if (blockBox.GetIs_Hit() == true)
+	if (blockBox.GetIs_Hit() == true && Player::Get()->GetIsFishDie() == false)
 	{
 		int breakNum = -1;
 		int breakFlag = PushCollision::PlayerBreakBox(blockBox.GetObj_Data(), breakNum);
@@ -170,7 +171,8 @@ void Stage::Update(Vec3 pPos)
 		case Floor169:
 		case FloorNormal:
 			if ((X - 1 <= floor[i]->map.x && floor[i]->map.x <= X + 1)
-				&& ((MAP_HEIGHT - 1 + Z) - 100 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 100))
+				&& ((MAP_HEIGHT - 1 + Z) - 100 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 100)
+				&&Player::Get()->GetIsFishDie() == false)
 			{
 				//プレイヤー
 				PushCollision::Player2Floor(floor[i]->position,
@@ -179,7 +181,8 @@ void Stage::Update(Vec3 pPos)
 			break;
 		case FloorMove:
 			if ((X - 3 <= floor[i]->map.x && floor[i]->map.x <= X + 3)
-				&& ((MAP_HEIGHT - 1 + Z) - 3 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 3))
+				&& ((MAP_HEIGHT - 1 + Z) - 3 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 3)
+				&& Player::Get()->GetIsFishDie() == false)
 			{
 				//プレイヤー
 				PushCollision::Player2Floor(floor[i]->position,
@@ -190,7 +193,8 @@ void Stage::Update(Vec3 pPos)
 		case FloorPitfall_A:
 		case FloorPitfall_B:
 			if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-				&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+				&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
+				&& Player::Get()->GetIsFishDie() == false)
 			{
 				if (floor[i]->moveFlag == 0)
 				{
@@ -220,7 +224,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	for (int i = 0; i < floorSize; i++)
 	{
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 30 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			&& ((MAP_HEIGHT - 1 + Z) - 33 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			switch (floor[i]->type)
 			{

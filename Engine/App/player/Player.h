@@ -52,6 +52,8 @@ public:
 	void DieType(int type) { if (dieType != DIENOW) { Player::dieType = type; } }
 
 	void Delete();
+
+	void FishDie(Vec3 pos, Vec3 angle) { fishDiePos = pos, this->fishDieAngle, angle; }
 private:
 	enum PlayerFBX
 	{
@@ -77,6 +79,8 @@ private:
 	void FallDie();
 
 	void Fish();
+
+	void RedFishDie();
 public://æ“¾Œn
 	//À•W
 	Vec3 GetPosition() { return position; }
@@ -100,6 +104,8 @@ public://æ“¾Œn
 	int GetFishNum() { return fishNum; }
 
 	bool GetGameoverFlag() { return gameoverFlag; }
+
+	bool GetIsFishDie() { return isFishDie; }
 private:
 	//2D false 3D true
 	bool moveFlag = false;
@@ -160,4 +166,8 @@ private:
 	const int walkTimeMax = 5;
 	int walkTime = walkTimeMax;
 
+	//‹›€–S‚Ìî•ñ
+	Vec3 fishDiePos = {};
+	Vec3 fishDieAngle = {};
+	bool isFishDie = false;
 };
