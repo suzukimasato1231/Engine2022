@@ -67,6 +67,8 @@ void Player::Draw(bool shadowFlag)
 {
 	staging.Draw3D();
 
+	//Object::Draw(playerObject, psr, position, scale, angle);
+
 	FbxDraw(shadowFlag);
 
 }

@@ -168,6 +168,10 @@ void LightGroup::DefaultLightSetting()
 	dirLights[0].SetActive(true);
 	dirLights[0].SetLightColor({ 1.0f, 1.0f, 1.0f });
 	dirLights[0].SetLightDir({ 1.0f, -1.0f, 0.0f, 0 });
+
+	circleShadows[0].SetActive(true);
+	circleShadows[0].GetCasterPos();
+
 }
 
 void LightGroup::SetAmbientColor(const Vec3& color)

@@ -170,7 +170,7 @@ void Stage::Update(Vec3 pPos)
 		case Floor169:
 		case FloorNormal:
 			if ((X - 1 <= floor[i]->map.x && floor[i]->map.x <= X + 1)
-				&& ((MAP_HEIGHT - 1 + Z) - 1 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
+				&& ((MAP_HEIGHT - 1 + Z) - 100 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 100))
 			{
 				//ƒvƒŒƒCƒ„[
 				PushCollision::Player2Floor(floor[i]->position,
@@ -220,23 +220,23 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	for (int i = 0; i < floorSize; i++)
 	{
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			&& ((MAP_HEIGHT - 1 + Z) - 30 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			switch (floor[i]->type)
 			{
 			case FloorNormal:
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 15.0f, floor[i]->position.z),
-					Vec3(25.0f, 30.0f, 25.0f),
+					Vec3(25.0f, 30.0f, 25.0f * (floor[i]->size + 1)),
 					floor[i]->angle, Vec4(), 0, shadowFlag);
 				break;
 			case Floor169:
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 15.7f, floor[i]->position.z + 4.5f),
-					Vec3(15.0f, 15.0f, 23.0f) * 2,
+				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z + 9.5f),
+					Vec3(25.0f, 30.0f, 32.1f),
 					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
 				break;
 			case Floor11:
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 16.0f, floor[i]->position.z - 4.5f),
-					Vec3(15.0f, 15.0f, 23.0f) * 2,
+				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z - 9.5f),
+					Vec3(25.0f, 30.0f, 32.1f),
 					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
 				break;
 			case FloorMove:
@@ -388,9 +388,18 @@ void Stage::LoadStage(int stageNum)
 			case NoneFloor:
 				break;
 			case FloorNormal:
+			{
+				int num_ = 1;
+
+				while (Map[y + num_][x] == FloorNormal)
+				{
+					Map[y + num_][x] = 0;
+					num_++;
+				}
 				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)), FloorNormal);
-				break;
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)), FloorNormal, num_ - 1);
+			}
+			break;
 			case Floor169:
 				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f - 10.0f, (MAP_HEIGHT - 1 - y) * mapSize),
 					Vec3(mapSize, 1.0f, 32.01f), Vec3(141.61f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)), Floor169);
@@ -458,15 +467,18 @@ void Stage::LoadStage(int stageNum)
 	}
 }
 
-void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type)
+void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type, int size)
 {
 	floor.push_back(new Floor);
 	size_t Num = floor.size() - 1;
 	floor[Num]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
 	floor[Num]->position = position;
+	floor[Num]->position.z -= size * scale.z / 2;
 	floor[Num]->scale = scale;
+	floor[Num]->scale.z += scale.z * size;
 	floor[Num]->angle = angle;
 	floor[Num]->type = type;
+	floor[Num]->size = size;
 }
 
 void Stage::SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)

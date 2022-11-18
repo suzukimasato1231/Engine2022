@@ -37,7 +37,7 @@ public://ƒ}ƒbƒv
 	int GetBlockNum() { return blockNum; }
 	int GetBlockMax() { return blockMax; }
 private:
-	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type);
+	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type, int size = 0);
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 

@@ -38,6 +38,7 @@ struct Floor
 	int moveFlag = 0;
 	Vec3 speed = { 0.0f,0.0f,0.5f };
 	Vec3 drawAngle = {};
+	int size = 0;
 };
 
 struct FloorPitfallData

@@ -24,6 +24,11 @@ void GameSceneManager::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(1, 1, 0));
+
+	lightGroup->SetCircleShadowActive(0, true);
+	lightGroup->SetCircleShadowDir(0, XMVECTOR{ 0,-1,0,0 });
+	lightGroup->SetCircleShadowAtten(0, Vec3(0.5f, 0.5f, 0.0f));
+	lightGroup->SetCircleShadowFactorAngle(0, Vec2(0.0f, 1.5f));
 	//カメラ位置をセット
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
@@ -71,6 +76,7 @@ void GameSceneManager::Update()
 	}
 	Particle::Get()->Update();
 	//ライト更新
+	lightGroup->SetCircleShadowCasterPos(0, Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y-2.0f, Player::Get()->GetPosition().z));
 	lightGroup->Update();
 
 	TimeAttack::Get()->Update();
