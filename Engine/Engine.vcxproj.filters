@@ -393,6 +393,9 @@
     <ClInclude Include="App\Particle\Particle.h">
       <Filter>ソース ファイル\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="DropPoint.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -559,6 +562,9 @@
     </ClCompile>
     <ClCompile Include="App\Particle\Particle.cpp">
       <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="DropPoint.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

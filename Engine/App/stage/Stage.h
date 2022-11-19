@@ -9,7 +9,9 @@
 #include"DangerFish.h"
 #include"MoveFloor.h"
 #include"FloorPitfall.h"
+#include"../Engine/DropPoint.h"
 class Player;
+
 class Stage :public Singleton<Stage>
 {
 private:
@@ -96,4 +98,6 @@ private:
 	ObjectData blackGround = {};
 	int blackGraph = 0;
 	PSR blackPsr[3] = {};
+
+	DropPoint dropPoint;
 };

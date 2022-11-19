@@ -43,6 +43,8 @@ void Stage::Init()
 	elect.Init();
 	//危険魚を初期化
 	dangerFish.Init();
+
+	dropPoint.Init();
 }
 
 void Stage::MainInit(int stageNum)
@@ -63,6 +65,8 @@ void Stage::Update(Vec3 pPos)
 	int Z = static_cast<int>(PPos.z / (-mapSize));
 	int X = static_cast<int>(PPos.x / mapSize);
 
+	dropPoint.ChangeFlag();
+
 	for (int i = 0; i < stageObj.size(); i++)
 	{
 		switch (stageObj[i]->type)
@@ -72,6 +76,8 @@ void Stage::Update(Vec3 pPos)
 		case BOXJUMP:
 		case BOXHARD:
 			blockBox.PlayerHit(stageObj[i], X, Z);
+			dropPoint.Update(PPos, stageObj[i]->position,
+				stageObj[i]->angle, stageObj[i]->scale);
 			break;
 		case Goal:
 			if ((X - 1 <= stageObj[i]->map.x && stageObj[i]->map.x <= X + 1)
@@ -161,18 +167,19 @@ void Stage::Update(Vec3 pPos)
 	elect.AllUpdate();
 
 	dangerFish.AllUpdate();
-
 	//床
 	for (int i = 0; i < floor.size(); i++)
 	{
 		switch (floor[i]->type)
 		{
+		case FloorNormal:
+			dropPoint.Update(PPos, floor[i]->position,
+				floor[i]->angle, floor[i]->scale);
 		case Floor11:
 		case Floor169:
-		case FloorNormal:
 			if ((X - 1 <= floor[i]->map.x && floor[i]->map.x <= X + 1)
 				&& ((MAP_HEIGHT - 1 + Z) - 100 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 100)
-				&&Player::Get()->GetIsFishDie() == false)
+				&& Player::Get()->GetIsFishDie() == false)
 			{
 				//プレイヤー
 				PushCollision::Player2Floor(floor[i]->position,
@@ -187,6 +194,9 @@ void Stage::Update(Vec3 pPos)
 				//プレイヤー
 				PushCollision::Player2Floor(floor[i]->position,
 					floor[i]->angle, floor[i]->scale, floor[i]->moveFlag);
+				dropPoint.Update(PPos, floor[i]->position,
+					floor[i]->angle, floor[i]->scale);
+
 			}
 			moveFloor.Update(floor[i]);
 			break;
@@ -200,6 +210,8 @@ void Stage::Update(Vec3 pPos)
 				{
 					PushCollision::Player2Floor(floor[i]->position,
 						floor[i]->angle, floor[i]->scale);
+					dropPoint.Update(PPos, floor[i]->position,
+						floor[i]->angle, floor[i]->scale);
 				}
 			}
 			floorPitfall.Update(floor[i]);
@@ -207,7 +219,6 @@ void Stage::Update(Vec3 pPos)
 		default:
 			break;
 		}
-
 	}
 	//魚の更新
 	fishBox.Update(pPos);
@@ -302,6 +313,8 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 
 	//箱壊した時に出る魚
 	fishBox.Draw();
+
+	dropPoint.Draw(Player::Get()->GetPosition());
 }
 
 void Stage::DrawParicle()
