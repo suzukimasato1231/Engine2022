@@ -33,16 +33,23 @@ public:
 private://定義
 	static const int stageNumMax = 3;	//最大ステージ数
 
-	bool selectFlag = false;
+	bool selectFlag = false;			//次のシーンへ移動
+	
+	ObjectData selectOBJ;				//セレクト数字のOBJ
+	int selectGraph[stageNumMax];		//セレクトOBJの画像
+	const float selectScale = 10.0f;			//セレクトOBJの大きさ
+	Vec3 selectPos[stageNumMax];		//セレクトOBJの座標
+	Box selectBox[stageNumMax];			//セレクトOBJのBOX
+	PSR selectPsr[stageNumMax];			//セレクトOBJのPSR
 
-	ObjectData selectOBJ;
-	int selectGraph[stageNumMax];
-	float selectScale = 10.0f;
-	Vec3 selectPos[stageNumMax];
-	Box selectBox[stageNumMax];
-	PSR selectPsr[stageNumMax];
+	int stageNum = 0;					//現在のステージ
 
-	int stageNum = 0;			//現在のステージ
+	//演出
+	bool productionFlag[3] = {};
+	const int productionTimeMax = 30;
+	int productionTime = 0;
+
+
 };
 
 

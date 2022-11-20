@@ -14,7 +14,7 @@ StageSelect::~StageSelect()
 }
 void StageSelect::Initialize()
 {
-	selectOBJ = Shape::CreateSquare(10.0f, 10.0f, 10.0f);
+	selectOBJ = Shape::CreateOBJ("cube");
 	selectGraph[0] = Texture::Get()->LoadTexture(L"Resources/select/select1.png");
 	selectGraph[1] = Texture::Get()->LoadTexture(L"Resources/select/select2.png");
 	selectGraph[2] = Texture::Get()->LoadTexture(L"Resources/select/select3.png");
@@ -43,6 +43,12 @@ void StageSelect::Init()
 	Stage::Get()->LoadStage(0);
 	Player::Get()->SetPosition(Vec3(20.0f, 10.0f, 150.0f));
 
+	//演出初期化
+	for (int i = 0; i < stageNumMax; i++)
+	{
+		productionFlag[i] = false;
+	}
+	productionTime = 0;
 }
 
 
@@ -55,15 +61,51 @@ void StageSelect::Update()
 	{
 		if (Collision::CheckBox2Box(Player::Get()->GetBox(), selectBox[i]))
 		{
-			stageNum = i + 1;
-			selectFlag = true;
-			break;
+			if (selectPos[i].y - selectScale / 2 > Player::Get()->GetOldPosition().y + Player::Get()->GetPSize().y / 2)
+			{
+				stageNum = i + 1;
+				productionFlag[i] = true;
+				productionTime = productionTimeMax;
+				Player::Get()->JumpPoweZero();
+			}
+			else
+			{
+				Player::Get()->SetPosition(Vec3(Player::Get()->GetOldPosition().x, Player::Get()->GetPosition().y, Player::Get()->GetPosition().z));
+			}
 		}
 	}
+
+	if (productionFlag[0] == true || productionFlag[1] == true || productionFlag[2] == true)
+	{
+		Player::Get()->DieType(1);
+	}
 	Player::Get()->Update();
+
 	Stage::Get()->Update(Player::Get()->GetPosition());
 	//ライト更新
 	lightGroup->Update();
+
+	for (int i = 0; i < stageNumMax; i++)
+	{
+		if (productionFlag[i] == true && productionTime > 0)
+		{
+			productionTime--;
+
+			if (productionTime > productionTimeMax - 10)
+			{
+				selectPos[i].y += 1.0f;
+			}
+			else if (productionTime > productionTimeMax - 20)
+			{
+				selectPos[i].y -= 1.0f;
+			}
+
+			if (productionTime <= 0)
+			{
+				selectFlag = true;
+			}
+		}
+	}
 }
 
 void StageSelect::Draw()
@@ -73,7 +115,7 @@ void StageSelect::Draw()
 	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
-		Object::Draw(selectOBJ,selectPsr[i], selectPos[i], Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), selectGraph[i], true);
+		Object::Draw(selectOBJ, selectPsr[i], selectPos[i], Vec3(selectScale, selectScale, selectScale), Vec3(), Vec4(), selectGraph[i], true);
 	}
 }
 

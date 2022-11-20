@@ -2,17 +2,13 @@
 #include"DebugText.h"
 #include"Input.h"
 TimeAttack::TimeAttack()
-{
-}
+{}
 
 TimeAttack::~TimeAttack()
-{
-}
+{}
 
 void TimeAttack::Init()
-{
-
-}
+{}
 
 void TimeAttack::Reset()
 {
@@ -21,12 +17,7 @@ void TimeAttack::Reset()
 
 void TimeAttack::Update()
 {
-
 	time += timeCount;
-
-
-
-
 }
 
 void TimeAttack::Draw()
