@@ -6,7 +6,9 @@
 ResultScene::ResultScene()
 {}
 ResultScene::~ResultScene()
-{}
+{
+	
+}
 void ResultScene::Initialize()
 {
 	boxGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/UIBox.png");
@@ -22,10 +24,20 @@ void ResultScene::Initialize()
 	uiNumber[9] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber10.png");
 	uiSlash = Sprite::Get()->SpriteCreate(L"Resources/UI/UISlash.png");
 
+	clearGraph = Sprite::Get()->SpriteCreate(L"Resources/clear.png");
+
 	buttonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
 
+	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
+	for (int i = 0; i < 2; i++)
+	{
+		//3Dオブジェクトの生成とモデルのセット
+		penginHandFbx[i] = std::make_unique<FBXObject3d>();
+		penginHandFbx[i]->Initialize();
+		penginHandFbx[i]->SetModel(penginModel);
+		penginHandFbx[i]->SetScale(Vec3(0.015f, 0.015f, 0.015f));
+	}
 	fishObj = Shape::CreateOBJ("fish");
-	penginObj = Shape::CreateOBJ("pengin");
 	floorObj = Shape::CreateOBJ("ice");
 	// ライトグループクラス作成
 	lightGroup = std::make_unique<LightGroup>();
@@ -41,6 +53,10 @@ void ResultScene::Init()
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
+	for (int i = 0; i < 2; i++)
+	{
+		penginHandFbx[i]->PlayAnimation(true);
+	}
 }
 
 void ResultScene::Update()
@@ -61,14 +77,23 @@ void ResultScene::Update()
 
 void ResultScene::Draw()
 {
-	Object::Draw(penginObj, objectPsr, Vec3(8.0f, -3.5f, 0.0f),
-		Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(),penginObj.OBJTexture, true);
+	penginHandFbx[1]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
+	penginHandFbx[1]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
+	penginHandFbx[1]->Update(false);
+	penginHandFbx[1]->Draw();
+	Object::Get()->PreDraw(true);
+
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
-		Vec3(1000.0f, 1.0f, 1000.0f), Vec3(),Vec4(),floorObj.OBJTexture,true);
+		Vec3(1000.0f, 1.0f, 1000.0f), Vec3(), Vec4(), floorObj.OBJTexture, true);
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),
 		Vec3(), Vec4(), floorObj.OBJTexture, true);
-	//UI
+
 	if (resultTime >= 30)
+	{
+		Sprite::Get()->Draw(clearGraph, Vec2(), static_cast<float>(window_width), static_cast<float>(window_height));
+	}
+	//UI
+	if (resultTime >= 60)
 	{
 		//箱
 		Sprite::Get()->Draw(boxGraph, Vec2(300.0f, 200.0f), 150.0f, 150.0f);
@@ -89,16 +114,25 @@ void ResultScene::Draw()
 		}
 		Sprite::Get()->Draw(uiNumber[Breaknumber], Vec2(850.0f, 200.0f), 128.0f, 128.0f);
 	}
-	if (resultTime >= 60 && buttonTime >= 30)
+	if (resultTime >= 90 && buttonTime >= 30)
 	{
 		Sprite::Get()->Draw(buttonGraph, Vec2(420.0f, 532.0f), 512.0f, 64.0f);
 	}
 }
 
+void ResultScene::Delete()
+{
+	safe_delete(penginModel);
+}
+
 void ResultScene::ShadowDraw()
 {
-	Object::Draw(penginObj, objectPsr, Vec3(8.0f, -3.5f, 0.0f),
-		Vec3(1.0f, 1.0f, 1.0f), Vec3());
+	penginHandFbx[0]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
+	penginHandFbx[0]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
+	penginHandFbx[0]->Update(true);
+	penginHandFbx[0]->Draw();
+	Object::Get()->PreDraw(false);
+
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3());
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),

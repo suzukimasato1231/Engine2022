@@ -61,4 +61,19 @@ private://定義
 	int changeSceneTime = 100;
 	//ゲームオーバー時
 	int changeNum = 0;
+
+	//ゴール時の演出はじめ
+	bool goalStagingFlag = false;
+	int goalStagingTime = 0;
+	const int goalStagingTimeMax = 200;
+	//カメラ角度
+	const float cameraAngle = 45.0f;
+	const float goalCamraAngleMax = 25.0f;
+	float goalCameraAngle = 0.0f;
+	//カメラ距離
+	const float goalDistanceMax = 100.0f;
+	const float goalDistanceMin = 50.0f;
+	float goalDistance = 0.0f;
+
+
 };

@@ -79,7 +79,7 @@ private://罠ブロック
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
 	//ゴール
 	ObjectData goalOBJ = {};
-	Vec3 goalScale = { 25.0f,25.0f,25.0f };
+	Vec3 goalScale = { 20.0f,25.0f,20.0f };
 	bool goalFlag = false;
 	//箱
 	BlockBox blockBox;

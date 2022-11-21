@@ -12,6 +12,14 @@ enum DieType
 	EATDIE,
 	DIENOW,
 };
+enum PlayerFBX
+{
+	None,
+	Walk,
+	ElectDie,
+	GoalJump,
+	GoalHand,
+};
 class Player :public Singleton<Player>
 {
 public:
@@ -54,13 +62,10 @@ public:
 	void Delete();
 
 	void FishDie(Vec3 pos, Vec3 angle) { fishDiePos = pos, this->fishDieAngle, angle; }
-private:
-	enum PlayerFBX
-	{
-		None,
-		Walk,
-		ElectDie,
-	};
+	//ゴール時の演出
+	void GoalStaging(int fbxType);
+
+	void GetClearFlag(bool flag) { clearFlag = flag; }
 private:
 	/// <summary>
 	/// FBXの描画
@@ -111,6 +116,7 @@ private:
 	bool moveFlag = false;
 
 	bool gameoverFlag = false;
+	bool clearFlag = false;
 
 	ObjectData playerObject;			//プレイヤーオブジェクト
 	PSR psr = {};
@@ -156,6 +162,12 @@ private:
 	//感電
 	Model* electModel = nullptr;
 	std::unique_ptr<FBXObject3d> electFbx[2];
+	//ゴール時の演出バク天
+	Model* goalJumpModel = nullptr;
+	std::unique_ptr<FBXObject3d> goalJumpFbx[2];
+	//ゴール時の演出ハンドサイン
+	Model* goalHandModel = nullptr;
+	std::unique_ptr<FBXObject3d> goalHandFbx[2];
 
 	int dieType = DIENULL;
 

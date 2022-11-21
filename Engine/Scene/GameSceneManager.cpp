@@ -57,23 +57,49 @@ void GameSceneManager::Update()
 	{
 		Reset(stageNum);
 	}
+
 	Player::Get()->Update();
 
 	Stage::Get()->Update(Player::Get()->GetPosition());
 	//残機が０にならない限り追跡
-	if (Player::Get()->GetGameoverFlag() == false && Player::Get()->GetPosition().y > 0)
+	if (Player::Get()->GetGameoverFlag() == false && Player::Get()->GetPosition().y > 0 && Stage::Get()->GetClearFlag() == false)
 	{
-		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-100 }, 0.0f, 45.0f);
+		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistanceMax }, 0.0f, cameraAngle);
 	}
 	//クリアしたらシーンチェンジ
 	if (Stage::Get()->GetClearFlag() == true)
 	{
-		changeScene = true;
-		changeNum = ChangeClear;
+		//プレイヤーゴールFbx始め
+		if (goalStagingTime <= 0 && changeScene == false)
+		{
+			goalStagingTime = goalStagingTimeMax;
+			Player::Get()->GoalStaging(GoalJump);
+			Player::Get()->GetClearFlag(true);
+			goalCameraAngle = cameraAngle;
+			goalDistance = goalDistanceMax;
+		}
+		goalStagingTime--;
+		if (goalCameraAngle >= goalCamraAngleMax)
+		{
+			goalCameraAngle -= 1.0f;
+		}
+		if (goalDistance >= goalDistanceMin)
+		{
+			goalDistance -= 1.0f;
+		}
+
+		//カメラ移動始め
+		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistance }, 0.0f, goalCameraAngle);
+
+		if (goalStagingTime == 0)
+		{
+			changeScene = true;
+			changeNum = ChangeClear;
+		}
 	}
 	Particle::Get()->Update();
 	//ライト更新
-	lightGroup->SetCircleShadowCasterPos(0, Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y-2.0f, Player::Get()->GetPosition().z));
+	lightGroup->SetCircleShadowCasterPos(0, Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y - 2.0f, Player::Get()->GetPosition().z));
 	lightGroup->Update();
 
 	TimeAttack::Get()->Update();

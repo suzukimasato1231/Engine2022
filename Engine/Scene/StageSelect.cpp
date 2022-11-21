@@ -33,6 +33,7 @@ void StageSelect::Init()
 	Object::SetLight(lightGroup.get());
 
 	Player::Get()->ChangeMoveFlag(false);
+	Player::Get()->GetClearFlag(false);
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
 		selectPos[i] = Vec3(50.0f + 50 * i, 30.0f, 150.0f);
@@ -61,7 +62,7 @@ void StageSelect::Update()
 	{
 		if (Collision::CheckBox2Box(Player::Get()->GetBox(), selectBox[i]))
 		{
-			if (selectPos[i].y - selectScale / 2 > Player::Get()->GetOldPosition().y + Player::Get()->GetPSize().y / 2)
+			if (selectPos[i].y - selectScale / 2 > Player::Get()->GetOldPosition().y + Player::Get()->GetPSize().y / 2 && productionTime == 0)
 			{
 				stageNum = i + 1;
 				productionFlag[i] = true;

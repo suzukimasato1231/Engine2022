@@ -5,7 +5,7 @@
 #include"Shape.h"
 #include"Input.h"
 #include"Texture.h"
-
+#include"../App/player/Player.h"
 TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
@@ -13,7 +13,6 @@ TitleScene::~TitleScene()
 }
 void TitleScene::Initialize()
 {
-	titlePlayer = Shape::CreateOBJ("pengin", true);
 	box = Shape::CreateOBJ("cube");
 	boxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
 	titleButtonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
@@ -21,7 +20,15 @@ void TitleScene::Initialize()
 
 	wallObj = Shape::CreateOBJ("iceWall");
 	floorObj = Shape::CreateOBJ("ice");
-
+	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
+	for (int i = 0; i < 2; i++)
+	{
+		//3Dオブジェクトの生成とモデルのセット
+		penginHandFbx[i] = std::make_unique<FBXObject3d>();
+		penginHandFbx[i]->Initialize();
+		penginHandFbx[i]->SetModel(penginModel);
+		penginHandFbx[i]->SetScale(Vec3(0.015f, 0.015f, 0.015f));
+	}
 	// ライトグループクラス作成
 	lightGroup = std::make_unique<LightGroup>();
 	lightGroup->Initialize();
@@ -38,7 +45,10 @@ void TitleScene::Init()
 
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
-
+	for (int i = 0; i < 2; i++)
+	{
+		penginHandFbx[i]->PlayAnimation(true);
+	}
 }
 
 void TitleScene::Update()
@@ -54,9 +64,11 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	//3D
-	Object::Draw(titlePlayer, titlePsr, Vec3(10.0f, -3.5f, 0.0f), Vec3(1, 1, 1),
-		Vec3(0.0f, 10.0f, 0.0f), Vec4(), titlePlayer.OBJTexture, true);
-
+	penginHandFbx[1]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
+	penginHandFbx[1]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
+	penginHandFbx[1]->Update(false);
+	penginHandFbx[1]->Draw();
+	Object::Get()->PreDraw(true);
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
 		Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph, true);
 
@@ -77,10 +89,18 @@ void TitleScene::Draw()
 void TitleScene::ShadowDraw()
 {
 	//3D
-	Object::Draw(titlePlayer, titlePsr, Vec3(10.0f, -3.5f, 0.0f), Vec3(1, 1, 1),
-		Vec3(0.0f, 10.0f, 0.0f), Vec4(), titlePlayer.OBJTexture);
+	penginHandFbx[0]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
+	penginHandFbx[0]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
+	penginHandFbx[0]->Update(true);
+	penginHandFbx[0]->Draw();
+	Object::Get()->PreDraw(false);
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
 		Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph);
 	Object::Draw(floorObj, wallPsr, Vec3(0.0f, -5.0f, 0.0f), Vec3(1000.0f, 1.0f, 1000.0f),
 		Vec3(), Vec4());
+}
+
+void TitleScene::Delete()
+{
+	safe_delete(penginModel);
 }

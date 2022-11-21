@@ -24,14 +24,18 @@ public:
 	void Draw();
 
 	void ShadowDraw();
+
+	void Delete();
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 private://定義
-	ObjectData titlePlayer;
-	PSR titlePsr = {};
 	ObjectData box;
 	PSR boxPsr = {};
 	int boxGraph;
+
+	//ゴール時の演出ハンドサイン
+	Model* penginModel = nullptr;
+	std::unique_ptr<FBXObject3d> penginHandFbx[2];
 
 	ObjectData wallObj;
 	PSR wallPsr;

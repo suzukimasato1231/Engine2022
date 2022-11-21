@@ -23,6 +23,8 @@ void Player::Init()
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2");
 	stopModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
 	electModel = FbxLoader::GetInstance()->LoadModelFromFile("penginElect");
+	goalJumpModel = FbxLoader::GetInstance()->LoadModelFromFile("goalJump");
+	goalHandModel = FbxLoader::GetInstance()->LoadModelFromFile("goalHand");
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -40,6 +42,15 @@ void Player::Init()
 		electFbx[i] = std::make_unique<FBXObject3d>();
 		electFbx[i]->Initialize();
 		electFbx[i]->SetModel(electModel);
+
+		goalJumpFbx[i] = std::make_unique<FBXObject3d>();
+		goalJumpFbx[i]->Initialize();
+		goalJumpFbx[i]->SetModel(goalJumpModel);
+
+		goalHandFbx[i] = std::make_unique<FBXObject3d>();
+		goalHandFbx[i]->Initialize();
+		goalHandFbx[i]->SetModel(goalHandModel);
+
 	}
 }
 
@@ -70,7 +81,6 @@ void Player::Draw(bool shadowFlag)
 	staging.Draw3D();
 
 	FbxDraw(shadowFlag);
-
 }
 
 void Player::DrawParticle()
@@ -98,6 +108,7 @@ void Player::Reset()
 	fishNum = 0;
 	gameoverFlag = false;
 	dieType = DIENULL;
+	clearFlag = false;
 }
 
 void Player::Delete()
@@ -105,6 +116,31 @@ void Player::Delete()
 	safe_delete(model1);
 	safe_delete(stopModel);
 	safe_delete(electModel);
+	safe_delete(goalJumpModel);
+	safe_delete(goalHandModel);
+}
+
+void Player::GoalStaging(int fbxType)
+{
+	this->fbxType = fbxType;
+	angle.y = 180.0f;
+	for (int i = 0; i < 2; i++)
+	{
+		switch (fbxType)
+		{
+		case GoalJump:
+			goalJumpFbx[i]->StopAnimation();
+			break;
+		case GoalHand:
+			goalHandFbx[i]->StopAnimation();
+			break;
+		}
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		goalJumpFbx[i]->PlayAnimation(false);
+		goalHandFbx[i]->PlayAnimation(false);
+	}
 }
 
 void Player::FbxDraw(bool shadowFlag)
@@ -141,6 +177,24 @@ void Player::FbxDraw(bool shadowFlag)
 		electFbx[0]->Update(shadowFlag);
 		electFbx[1]->Update(false);
 		break;
+	case GoalJump:
+		goalJumpFbx[0]->SetPosition(fbxPos);
+		goalJumpFbx[0]->SetRotation(angle);
+		goalJumpFbx[1]->SetPosition(fbxPos);
+		goalJumpFbx[1]->SetRotation(angle);
+
+		goalJumpFbx[0]->Update(shadowFlag);
+		goalJumpFbx[1]->Update(false);
+		break;
+	case GoalHand:
+		goalHandFbx[0]->SetPosition(fbxPos);
+		goalHandFbx[0]->SetRotation(angle);
+		goalHandFbx[1]->SetPosition(fbxPos);
+		goalHandFbx[1]->SetRotation(angle);
+
+		goalHandFbx[0]->Update(shadowFlag);
+		goalHandFbx[1]->Update(false);
+		break;
 	default:
 		break;
 	}
@@ -176,6 +230,26 @@ void Player::FbxDraw(bool shadowFlag)
 			electFbx[1]->Draw();
 		}
 		break;
+	case GoalJump:
+		if (shadowFlag == false)
+		{
+			goalJumpFbx[0]->Draw();
+		}
+		else
+		{
+			goalJumpFbx[1]->Draw();
+		}
+		break;
+	case GoalHand:
+		if (shadowFlag == false)
+		{
+			goalHandFbx[0]->Draw();
+		}
+		else
+		{
+			goalHandFbx[1]->Draw();
+		}
+		break;
 	default:
 		break;
 	}
@@ -185,7 +259,7 @@ void Player::FbxDraw(bool shadowFlag)
 //ˆÚ“®
 void Player::Move()
 {
-	if (dieType == DIENULL)
+	if (dieType == DIENULL && clearFlag == false)
 	{
 		if (moveFlag == true)
 		{
@@ -255,7 +329,7 @@ void Player::Move()
 void Player::Jump()
 {
 	//ƒWƒƒƒ“ƒv
-	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) && groundFlag == true) || blockStepOnFlag)
+	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) && groundFlag == true && clearFlag == false) || blockStepOnFlag)
 	{
 		if (jumpBoxFlag)
 		{

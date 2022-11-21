@@ -19,6 +19,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 #pragma region	//データ解放
 	Player::Get()->Delete();
+	SceneManagerh::Get()->Delete();
 	FbxLoader::GetInstance()->Finalize();
 
 	//ゲームウィンドウの破棄

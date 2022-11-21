@@ -1,6 +1,7 @@
 #include"Singleton.h"
 #include <Object.h>
 #include<memory>
+#include"FBXObject3d.h"
 class ResultScene 
 {
 private:
@@ -18,6 +19,8 @@ public:
 	//描画
 	void Draw();
 
+	void Delete();
+
 	void ShadowDraw();
 private:
 	std::unique_ptr<LightGroup> lightGroup;
@@ -25,7 +28,10 @@ private:
 	ObjectData resultOBJ;
 	int resultTime = 0;
 
-	ObjectData penginObj;
+	//ゴール時の演出ハンドサイン
+	Model* penginModel = nullptr;
+	std::unique_ptr<FBXObject3d> penginHandFbx[2];
+
 	PSR objectPsr = {};
 	ObjectData fishObj;
 	ObjectData floorObj;
@@ -34,6 +40,8 @@ private:
 	SpriteData uiNumber[10];
 	SpriteData uiSlash;
 	SpriteData boxGraph;
+
+	SpriteData clearGraph;
 
 	//ボタン
 	SpriteData buttonGraph;

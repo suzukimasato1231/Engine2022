@@ -34,6 +34,8 @@ public:
 	void Update();
 
 	void Draw();
+
+	void Delete();
 private://’è‹`
 	TitleScene titleScene;
 	StageSelect stageScene;

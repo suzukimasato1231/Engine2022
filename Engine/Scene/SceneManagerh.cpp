@@ -238,3 +238,9 @@ void SceneManagerh::Draw()
 	}
 	_DirectX::Get()->ResourceBarrier();
 }
+
+void SceneManagerh::Delete()
+{
+	titleScene.Delete();
+	resultScene.Delete();
+}
