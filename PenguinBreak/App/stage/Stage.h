@@ -9,7 +9,7 @@
 #include"DangerFish.h"
 #include"MoveFloor.h"
 #include"FloorPitfall.h"
-#include"../Engine/DropPoint.h"
+#include"../PenguinBreak/DropPoint.h"
 class Player;
 
 class Stage :public Singleton<Stage>

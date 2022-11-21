@@ -1,6 +1,6 @@
 #include "Particle.h"
-#include"../Engine/App/player/Player.h"
-#include"../Engine/App/stage/Stage.h"
+#include"../PenguinBreak/App/player/Player.h"
+#include"../PenguinBreak/App/stage/Stage.h"
 #include"Shape.h"
 Particle::Particle()
 {}

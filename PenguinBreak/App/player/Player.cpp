@@ -109,6 +109,7 @@ void Player::Reset()
 	gameoverFlag = false;
 	dieType = DIENULL;
 	clearFlag = false;
+	angle = { -30.0f,180.0f,0.0f };	//äpìx
 }
 
 void Player::Delete()
@@ -392,6 +393,7 @@ void Player::FallDie()
 		else if (remainLives > 0)
 		{
 			position = { 70.0f,20.0f,80.0f };	//ç¿ïW
+			angle = { -30.0f,180.0f,0.0f };	//äpìx
 			oldPosition = position;
 			remainLives--;
 			dieType = DIENULL;
