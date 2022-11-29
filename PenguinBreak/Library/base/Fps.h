@@ -4,6 +4,7 @@
 #include <sstream>
 #include <mmsystem.h>
 #pragma comment(lib,"winmm.lib")
+
 /// <summary>
 /// FPS管理用クラス
 /// </summary>
@@ -15,6 +16,7 @@ private:
 	LARGE_INTEGER timeStart;
 	LARGE_INTEGER timeEnd;
 	LARGE_INTEGER timeFreq;
+
 	// fpsを取得するなら0で初期化
 	float fps = 0;
 	//コンストラクタ、デストラクタを隠蔽

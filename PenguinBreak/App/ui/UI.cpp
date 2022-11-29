@@ -65,6 +65,8 @@ void UI::Draw(int pLives, int fishNum, bool gameoverFlag, int gameoverNum)
 		Sprite::Get()->Draw(uiNumber[boxremain], Vec2(74.0f, 0.0f), 64.0f, 64.0f);
 	}
 	Sprite::Get()->Draw(uiNumber[boxnumber], Vec2(106.0f, 0.0f), 64.0f, 64.0f);
+
+
 	//ゲームオーバー時の描画
 	if (gameoverFlag == true)
 	{

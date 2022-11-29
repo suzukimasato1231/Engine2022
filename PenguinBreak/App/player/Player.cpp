@@ -64,6 +64,8 @@ void Player::Update()
 	//ジャンプ
 	Jump();
 
+	staging.Update();
+
 	position += vec;
 	pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
@@ -110,6 +112,7 @@ void Player::Reset()
 	dieType = DIENULL;
 	clearFlag = false;
 	angle = { -30.0f,180.0f,0.0f };	//角度
+	decLifeTime = 0;
 }
 
 void Player::Delete()
@@ -389,26 +392,35 @@ void Player::FallDie()
 		if (dieNowTime > 0)
 		{
 			dieNowTime--;
+			//暗転開始
+			if (dieNowTime == 1)
+			{
+				decLifeTime = 50;
+			}
 		}
-		else if (remainLives > 0)
+		else
 		{
-			position = { 70.0f,20.0f,80.0f };	//座標
-			angle = { -30.0f,180.0f,0.0f };	//角度
-			oldPosition = position;
-			remainLives--;
-			dieType = DIENULL;
-			isFishDie = false;
-		}
-		else if (remainLives == 0)
-		{
-			gameoverFlag = true;
-			dieType = DIENULL;
+			if (remainLives > 0)
+			{
+				decLifeTime--;
+				if (decLifeTime <= 0)
+				{
+					position = { 70.0f,20.0f,80.0f };	//座標
+					angle = { -30.0f,180.0f,0.0f };	//角度
+					oldPosition = position;
+					remainLives--;
+					dieType = DIENULL;
+				}
+			}
+			else if (remainLives == 0)
+			{
+				gameoverFlag = true;
+				dieType = DIENULL;
+			}
 		}
 	}
-
-
-	staging.Update();
 }
+
 
 void Player::Fish()
 {
