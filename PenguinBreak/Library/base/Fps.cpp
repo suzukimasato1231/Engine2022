@@ -1,5 +1,6 @@
 #include "FPS.h"
 
+
 void FPS::Start()
 {
 	// メインループに入る前に精度を取得しておく
@@ -35,6 +36,7 @@ void FPS::run()
 	}
 
 	timeStart = timeEnd; // 入れ替え
+
 }
 
 FPS* FPS::Get()

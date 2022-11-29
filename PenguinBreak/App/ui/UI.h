@@ -1,10 +1,8 @@
 #pragma once
-#include"Singleton.h"
 #include"Sprite.h"
-class UI :public Singleton<UI>
+class UI 
 {
-private:
-	friend Singleton<UI>;
+
 public:
 	UI();
 	~UI();

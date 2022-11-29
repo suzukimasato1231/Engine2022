@@ -66,6 +66,8 @@ public:
 	void GoalStaging(int fbxType);
 
 	void GetClearFlag(bool flag) { clearFlag = flag; }
+
+	int GetDecLifeFlag() { return decLifeTime; }
 private:
 	/// <summary>
 	/// FBXÇÃï`âÊ
@@ -86,6 +88,7 @@ private:
 	void Fish();
 
 	void RedFishDie();
+
 public://éÊìæån
 	//ç¿ïW
 	Vec3 GetPosition() { return position; }
@@ -182,4 +185,6 @@ private:
 	Vec3 fishDiePos = {};
 	Vec3 fishDieAngle = {};
 	bool isFishDie = false;
+
+	int decLifeTime = 0;
 };

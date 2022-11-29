@@ -19,12 +19,11 @@ void GameSceneManager::Initialize()
 	//ライトグループクラス作成
 	lightGroup = std::make_unique<LightGroup>();
 	lightGroup->Initialize();
-	//音データ読み込み
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(1, 1, 0));
-
+	//音データ読み込み
 
 	//カメラ位置をセット
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
@@ -36,17 +35,19 @@ void GameSceneManager::Initialize()
 	//ステージ
 	Stage::Get()->Init();
 	Particle::Get()->Init();
-	TimeAttack::Get()->Init();
-	UI::Get()->Init();
+	ui.Init();
+
+	decLifeStaging.Init();
 }
 
 void GameSceneManager::Init(int stageNum)
 {
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
-	changeScene = false;
 	Reset(stageNum);
 	this->stageNum = stageNum;
+	decLifeStaging.Reset();
+	changeScene = false;
 	Player::Get()->ChangeMoveFlag(true);
 }
 
@@ -61,6 +62,7 @@ void GameSceneManager::Update()
 	Player::Get()->Update();
 
 	Stage::Get()->Update(Player::Get()->GetPosition());
+
 	//残機が０にならない限り追跡
 	if (Player::Get()->GetGameoverFlag() == false && Player::Get()->GetPosition().y > 0 && Stage::Get()->GetClearFlag() == false)
 	{
@@ -99,10 +101,7 @@ void GameSceneManager::Update()
 	}
 	Particle::Get()->Update();
 	//ライト更新
-	lightGroup->SetCircleShadowCasterPos(0, Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y - 2.0f, Player::Get()->GetPosition().z));
 	lightGroup->Update();
-
-	TimeAttack::Get()->Update();
 	//ゲームオーバー時のセレクト
 	if (Player::Get()->GetGameoverFlag() == true)
 	{
@@ -127,8 +126,9 @@ void GameSceneManager::Update()
 			changeNum = 2;
 		}
 	}
+	ui.Update();
 
-	UI::Get()->Update();
+	decLifeStaging.Update(Player::Get()->GetDecLifeFlag());
 }
 
 void GameSceneManager::Draw()
@@ -145,8 +145,10 @@ void GameSceneManager::Draw()
 	Player::Get()->DrawParticle();
 	Stage::Get()->DrawParicle();
 	//2D
-	UI::Get()->Draw(Player::Get()->GetRemanLives(), Player::Get()->GetFishNum(),
+	ui.Draw(Player::Get()->GetRemanLives(), Player::Get()->GetFishNum(),
 		Player::Get()->GetGameoverFlag(), changeNum);
+
+	decLifeStaging.Draw(Player::Get()->GetGameoverFlag());
 }
 
 void GameSceneManager::ShadowDraw()
@@ -160,6 +162,5 @@ void GameSceneManager::Reset(int stageNum)
 {
 	Player::Get()->Reset();
 	Stage::Get()->MainInit(stageNum);
-	TimeAttack::Get()->Reset();
 }
 

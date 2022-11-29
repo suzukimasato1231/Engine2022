@@ -10,7 +10,7 @@
 #include"../App/stage/PushCollision.h"
 #include"../App/stage/Stage.h"
 #include"../App/ui/UI.h"
-#include"../App/TimeAttack/TimeAttack.h"
+#include"../DecLifeStaging.h"
 #include<memory>
 extern const int window_width;
 extern const int window_height;
@@ -25,7 +25,6 @@ enum ChangeStatus
 /// </summary>
 class GameSceneManager
 {
-
 public:
 	GameSceneManager();
 	~GameSceneManager();
@@ -58,7 +57,6 @@ private://定義
 
 	//シーンが変わるかどうか
 	bool changeScene = false;
-	int changeSceneTime = 100;
 	//ゲームオーバー時
 	int changeNum = 0;
 
@@ -66,6 +64,7 @@ private://定義
 	bool goalStagingFlag = false;
 	int goalStagingTime = 0;
 	const int goalStagingTimeMax = 200;
+
 	//カメラ角度
 	const float cameraAngle = 45.0f;
 	const float goalCamraAngleMax = 25.0f;
@@ -74,6 +73,8 @@ private://定義
 	const float goalDistanceMax = 100.0f;
 	const float goalDistanceMin = 50.0f;
 	float goalDistance = 0.0f;
-
-
+	//UIクラス
+	UI ui;
+	//死亡時の演出クラス
+	DecLifeStaging decLifeStaging;
 };

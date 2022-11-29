@@ -259,6 +259,7 @@
     <ClInclude Include="App\stage\StegeObject.h" />
     <ClInclude Include="App\TimeAttack\TimeAttack.h" />
     <ClInclude Include="App\ui\UI.h" />
+    <ClInclude Include="DecLifeStaging.h" />
     <ClInclude Include="DropPoint.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
     <ClInclude Include="Library\2d\PostEffect.h" />
@@ -324,6 +325,7 @@
     <ClCompile Include="App\stage\Stage.cpp" />
     <ClCompile Include="App\TimeAttack\TimeAttack.cpp" />
     <ClCompile Include="App\ui\UI.cpp" />
+    <ClCompile Include="DecLifeStaging.cpp" />
     <ClCompile Include="DropPoint.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />
     <ClCompile Include="Library\2d\PostEffect.cpp" />
