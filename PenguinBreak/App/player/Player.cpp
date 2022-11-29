@@ -113,6 +113,7 @@ void Player::Reset()
 	clearFlag = false;
 	angle = { -30.0f,180.0f,0.0f };	//Šp“x
 	decLifeTime = 0;
+	isFishDie = false;
 }
 
 void Player::Delete()
@@ -405,10 +406,11 @@ void Player::FallDie()
 				decLifeTime--;
 				if (decLifeTime <= 0)
 				{
-					position = { 70.0f,20.0f,80.0f };	//À•W
+					position = { 70.0f,30.0f,80.0f };	//À•W
 					angle = { -30.0f,180.0f,0.0f };	//Šp“x
 					oldPosition = position;
 					remainLives--;
+					isFishDie = false;
 					dieType = DIENULL;
 				}
 			}
@@ -457,7 +459,3 @@ void Player::RedFishDie()
 		}
 	}
 }
-
-
-
-

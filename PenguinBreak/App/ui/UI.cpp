@@ -29,42 +29,101 @@ void UI::Init()
 	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/select.png");
 }
 
-void UI::Update()
+void UI::Update(int fishNum)
 {
+	//壊した箱の数	
+	int breaknumber = Stage::Get()->GetBlockNum() % 10;
+	if (breakNumber != breaknumber)
+	{
+		breakNumber = breaknumber;
+		stagingTime[0] = stagingTimeMax;
+		stagingFlag[0] = true;
+	}
+	int breakremain = Stage::Get()->GetBlockNum() / 10;
+	if (breakRemain != breakremain)
+	{
+		breakRemain = breakremain;
+		stagingTime[1] = stagingTimeMax;
+		stagingFlag[1] = true;
+	}
+	//最大箱の数
+	breakNumberMax = Stage::Get()->GetBlockMax() % 10;
+	breakRemainMax = Stage::Get()->GetBlockMax() / 10;
+	//魚数
+	int fishnumber = fishNum % 10;
+	if (fishNumber != fishnumber)
+	{
+		fishNumber = fishnumber;
+		stagingTime[2] = stagingTimeMax;
+		stagingFlag[2] = true;
+	}
+	int fishremain = fishNum / 10;
+	if (fishRemain != fishremain)
+	{
+		fishRemain = fishremain;
+		stagingTime[3] = stagingTimeMax;
+		stagingFlag[3] = true;
+	}
 
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (stagingFlag[i] == true)
+		{
+			stagingTime[i]--;
+			if (stagingTimeMax / 2 < stagingTime[i])
+			{
+				stagingScale[i] += 0.1f;
+				if (stagingScale[i] >= stagingScaleMax)
+				{
+					stagingScale[i] = stagingScaleMax;
+				}
+			}
+			else
+			{
+				stagingScale[i] -= 0.1f;
+				if (stagingScale[i] <= 1.0f)
+				{
+					stagingScale[i] = 1.0f;
+				}
+			}
+			if (stagingTime <= 0)
+			{
+				stagingFlag[i] = false;
+				stagingScale[i] = 1.0f;
+			}
+		}
+	}
 }
 
-void UI::Draw(int pLives, int fishNum, bool gameoverFlag, int gameoverNum)
+
+void UI::Draw(int pLives, bool gameoverFlag, int gameoverNum)
 {
 	//プレイヤー残機
-	Sprite::Get()->Draw(playerIcon, Vec2(1100.0f, 10.0f), 64.0f, 64.0f);
-	Sprite::Get()->Draw(uiNumber[pLives], Vec2(1196.0f, 10.0f), 64.0f, 64.0f);
+	Sprite::Get()->Draw(playerIcon, Vec2(1132.0f, 42.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
+	Sprite::Get()->Draw(uiNumber[pLives], Vec2(1228.0f, 42.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
 	//箱
-	Sprite::Get()->Draw(boxGraph, Vec2(10.0f, 100.0f), 70.0f, 70.0f);
-	//壊した箱の数
-	int breaknumber = Stage::Get()->GetBlockNum() % 10, breakremain = Stage::Get()->GetBlockNum() / 10;
-	if (breakremain >= 1)
-	{
-		Sprite::Get()->Draw(uiNumber[breakremain], Vec2(60.0f, 95.0f), 64.0f, 64.0f);
-	}
-	Sprite::Get()->Draw(uiNumber[breaknumber], Vec2(96.0f, 95.0f), 64.0f, 64.0f);
+	Sprite::Get()->Draw(boxGraph, Vec2(45.0f, 135.0f), 70.0f, 70.0f, Vec2(0.5f, 0.5f));
 
-	Sprite::Get()->Draw(uiSlash, Vec2(128.0f, 100.0f), 64.0f, 64.0f);
-	//最大箱の数
-	breaknumber = Stage::Get()->GetBlockMax() % 10, breakremain = Stage::Get()->GetBlockMax() / 10;
-	if (breakremain >= 1)
+	if (breakRemain >= 1)
 	{
-		Sprite::Get()->Draw(uiNumber[breakremain], Vec2(160.0f, 105.0f), 64.0f, 64.0f);
+		Sprite::Get()->Draw(uiNumber[breakRemain], Vec2(92.0f, 127.0f), 64.0f * stagingScale[1], 64.0f * stagingScale[1], Vec2(0.5f, 0.5f));
 	}
-	Sprite::Get()->Draw(uiNumber[breaknumber], Vec2(192.0f, 105.0f), 64.0f, 64.0f);
+	Sprite::Get()->Draw(uiNumber[breakNumber], Vec2(128.0f, 127.0f), 64.0f * stagingScale[0], 64.0f * stagingScale[0], Vec2(0.5f, 0.5f));
+
+	Sprite::Get()->Draw(uiSlash, Vec2(160.0f, 132.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
+
+	if (breakRemainMax >= 1)
+	{
+		Sprite::Get()->Draw(uiNumber[breakRemainMax], Vec2(192.0f, 137.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
+	}
+	Sprite::Get()->Draw(uiNumber[breakNumberMax], Vec2(224.0f, 137.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
 	//魚ゲット数	
-	Sprite::Get()->Draw(fishGraph, Vec2(10.0f, 10.0f), 83.0f, 54.0f);
-	int boxnumber = fishNum % 10, boxremain = fishNum / 10;
-	if (boxremain >= 1)
+	Sprite::Get()->Draw(fishGraph, Vec2(51.5f, 37.0f), 83.0f, 54.0f, Vec2(0.5f, 0.5f));
+	if (fishRemain >= 1)
 	{
-		Sprite::Get()->Draw(uiNumber[boxremain], Vec2(74.0f, 0.0f), 64.0f, 64.0f);
+		Sprite::Get()->Draw(uiNumber[fishRemain], Vec2(108.0f, 32.0f), 64.0f * stagingScale[3], 64.0f * stagingScale[3], Vec2(0.5f, 0.5f));
 	}
-	Sprite::Get()->Draw(uiNumber[boxnumber], Vec2(106.0f, 0.0f), 64.0f, 64.0f);
+	Sprite::Get()->Draw(uiNumber[fishNumber], Vec2(138.0f, 32.0f), 64.0f * stagingScale[2], 64.0f * stagingScale[2], Vec2(0.5f, 0.5f));
 
 
 	//ゲームオーバー時の描画
