@@ -24,9 +24,6 @@ void UI::Init()
 	uiNumber[8] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber9.png");
 	uiNumber[9] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber10.png");
 	uiSlash = Sprite::Get()->SpriteCreate(L"Resources/UI/UISlash.png");
-
-	gameoverGraph = Sprite::Get()->SpriteCreate(L"Resources/gameover.png");
-	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/select.png");
 }
 
 void UI::Update(int fishNum)
@@ -64,7 +61,7 @@ void UI::Update(int fishNum)
 		stagingTime[3] = stagingTimeMax;
 		stagingFlag[3] = true;
 	}
-
+	//数字強調処理
 	for (size_t i = 0; i < 4; i++)
 	{
 		if (stagingFlag[i] == true)
@@ -96,7 +93,7 @@ void UI::Update(int fishNum)
 }
 
 
-void UI::Draw(int pLives, bool gameoverFlag, int gameoverNum)
+void UI::Draw(int pLives, bool gameoverFlag)
 {
 	//プレイヤー残機
 	Sprite::Get()->Draw(playerIcon, Vec2(1132.0f, 42.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
@@ -125,18 +122,4 @@ void UI::Draw(int pLives, bool gameoverFlag, int gameoverNum)
 	}
 	Sprite::Get()->Draw(uiNumber[fishNumber], Vec2(138.0f, 32.0f), 64.0f * stagingScale[2], 64.0f * stagingScale[2], Vec2(0.5f, 0.5f));
 
-
-	//ゲームオーバー時の描画
-	if (gameoverFlag == true)
-	{
-		Sprite::Get()->Draw(gameoverGraph, Vec2(0.0f, 0.0f), 1280.0f, 720.0f);
-		if (gameoverNum == 2)
-		{
-			Sprite::Get()->Draw(selectGraph, Vec2(220.0f, 400.0f), 349.0f, 143.0f);
-		}
-		else if (gameoverNum == 1)
-		{
-			Sprite::Get()->Draw(selectGraph, Vec2(744.0f, 400.0f), 349.0f, 143.0f);
-		}
-	}
 }

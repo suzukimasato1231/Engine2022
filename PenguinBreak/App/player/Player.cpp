@@ -56,26 +56,29 @@ void Player::Init()
 
 void Player::Update()
 {
-	oldPosition = position;
-	oldGroundFlag = groundFlag;
-	vec = {};
-	//移動
-	Move();
-	//ジャンプ
-	Jump();
+	if (gameoverFlag == false)
+	{
+		oldPosition = position;
+		oldGroundFlag = groundFlag;
+		vec = {};
+		//移動
+		Move();
+		//ジャンプ
+		Jump();
 
-	staging.Update();
+		staging.Update();
 
-	position += vec;
-	pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
-	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
-	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
-	//落下死
-	FallDie();
-	//魚関連
-	Fish();
+		position += vec;
+		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
+		pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
+		pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+		//落下死
+		FallDie();
+		//魚関連
+		Fish();
 
-	RedFishDie();
+		RedFishDie();
+	}
 }
 
 void Player::Draw(bool shadowFlag)
@@ -114,6 +117,7 @@ void Player::Reset()
 	angle = { -30.0f,180.0f,0.0f };	//角度
 	decLifeTime = 0;
 	isFishDie = false;
+	fbxType = None;
 }
 
 void Player::Delete()
@@ -206,52 +210,42 @@ void Player::FbxDraw(bool shadowFlag)
 	switch (fbxType)
 	{
 	case None:
-		if (shadowFlag == false)
-		{
+		if (shadowFlag == false) {
 			stopFbx[0]->Draw();
 		}
-		else
-		{
+		else {
 			stopFbx[1]->Draw();
 		}
 		break;
 	case Walk:
-		if (shadowFlag == false)
-		{
+		if (shadowFlag == false) {
 			fbxObject1[0]->Draw();
 		}
-		else
-		{
+		else {
 			fbxObject1[1]->Draw();
 		}
 		break;
 	case ElectDie:
-		if (shadowFlag == false)
-		{
+		if (shadowFlag == false) {
 			electFbx[0]->Draw();
 		}
-		else
-		{
+		else {
 			electFbx[1]->Draw();
 		}
 		break;
 	case GoalJump:
-		if (shadowFlag == false)
-		{
+		if (shadowFlag == false) {
 			goalJumpFbx[0]->Draw();
 		}
-		else
-		{
+		else {
 			goalJumpFbx[1]->Draw();
 		}
 		break;
 	case GoalHand:
-		if (shadowFlag == false)
-		{
+		if (shadowFlag == false) {
 			goalHandFbx[0]->Draw();
 		}
-		else
-		{
+		else {
 			goalHandFbx[1]->Draw();
 		}
 		break;
@@ -264,7 +258,7 @@ void Player::FbxDraw(bool shadowFlag)
 //移動
 void Player::Move()
 {
-	if (dieType == DIENULL && clearFlag == false)
+	if (dieType == DIENULL && clearFlag == false && gameoverFlag == false)
 	{
 		if (moveFlag == true)
 		{

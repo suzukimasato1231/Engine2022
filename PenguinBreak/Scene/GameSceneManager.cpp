@@ -128,7 +128,7 @@ void GameSceneManager::Update()
 	}
 	ui.Update(Player::Get()->GetFishNum());
 
-	decLifeStaging.Update(Player::Get()->GetDecLifeFlag());
+	decLifeStaging.Update(Player::Get()->GetDecLifeFlag(), Player::Get()->GetGameoverFlag());
 }
 
 void GameSceneManager::Draw()
@@ -146,9 +146,9 @@ void GameSceneManager::Draw()
 	Stage::Get()->DrawParicle();
 	//2D
 	ui.Draw(Player::Get()->GetRemanLives(),
-		Player::Get()->GetGameoverFlag(), changeNum);
+		Player::Get()->GetGameoverFlag());
 
-	decLifeStaging.Draw(Player::Get()->GetGameoverFlag());
+	decLifeStaging.Draw(Player::Get()->GetGameoverFlag(), changeNum);
 }
 
 void GameSceneManager::ShadowDraw()

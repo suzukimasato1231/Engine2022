@@ -31,7 +31,7 @@ void StageSelect::Init()
 {
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
-
+	Player::Get()->Reset();
 	Player::Get()->ChangeMoveFlag(false);
 	Player::Get()->GetClearFlag(false);
 	for (size_t i = 0; i < stageNumMax; i++)

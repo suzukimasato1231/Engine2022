@@ -11,7 +11,7 @@ public:
 
 	void Update(int fishNum);
 
-	void Draw(int pLives, bool gameoverFlag, int gameoverNum = 0);
+	void Draw(int pLives, bool gameoverFlag);
 
 private:
 	SpriteData boxGraph;
@@ -22,10 +22,6 @@ private:
 
 	SpriteData uiNumber[10];
 	SpriteData uiSlash;
-	//ゲームオーバー時の
-	SpriteData gameoverGraph;
-	SpriteData selectGraph;
-
 
 	//演出
 	float fishPosPlas = 0.0f;
