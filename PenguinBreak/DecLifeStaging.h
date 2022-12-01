@@ -30,7 +30,6 @@ private:
 
 
 	//ゲームオーバー時の
-	SpriteData gameover2Graph;
 	SpriteData gameoverGraph[7];
 	SpriteData selectGraph;
 
@@ -39,6 +38,9 @@ private:
 	bool gameoverStartFlag = false;
 	const float gameoverTimeMax = 100.0f;
 	int gameoverTime = 0;
+	//セレクト時の演出
+	bool selectScaleFlag = false;
+	float selectScale = 1.0f;
 
 	//ゲームオーバーの文字の変化
 	float charColor[7] = {};
