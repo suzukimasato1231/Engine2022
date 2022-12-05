@@ -76,8 +76,11 @@ void Stage::Update(Vec3 pPos)
 		case BOXJUMP:
 		case BOXHARD:
 			blockBox.PlayerHit(stageObj[i], X, Z);
-			dropPoint.Update(PPos, stageObj[i]->position,
-				stageObj[i]->angle, stageObj[i]->scale);
+			if (stageObj[i]->type != Wall)
+			{
+				dropPoint.Update(PPos, stageObj[i]->position,
+					stageObj[i]->angle, stageObj[i]->scale);
+			}
 			break;
 		case Goal:
 			if ((X - 1 <= stageObj[i]->map.x && stageObj[i]->map.x <= X + 1)
@@ -246,7 +249,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 				break;
 			case Floor169:
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z + 9.5f),
-					Vec3(25.0f, 30.0f, 32.1f),
+					Vec3(25.0f, 30.0f, 32.1f*2),
 					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
 				break;
 			case Floor11:
@@ -418,8 +421,8 @@ void Stage::LoadStage(int stageNum)
 			}
 			break;
 			case Floor169:
-				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f - 10.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(mapSize, 1.0f, 32.01f), Vec3(141.61f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)), Floor169);
+				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f + 0.0f, (MAP_HEIGHT - 1 - y) * mapSize+12.3f),
+					Vec3(mapSize, 1.0f, 32.01f*2), Vec3(141.61f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)), Floor169);
 				break;
 			case Floor11:
 				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f - 10.0f, (MAP_HEIGHT - 1 - y) * mapSize),

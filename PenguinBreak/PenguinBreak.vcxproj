@@ -46,13 +46,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjecctDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(ProjectDir)lib\DirectXTex\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjecctDir)lib\fbx_sdk\lib;$(ProjectDir)lib\DirectXTex\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjecctDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(ProjectDir)lib\DirectXTex\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjecctDir)lib\fbx_sdk\lib;$(ProjectDir)lib\DirectXTex\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -72,7 +72,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)DirectXTex</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/IGNORE:4099,4098,4075 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -100,7 +100,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)DirectXTex</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/IGNORE:4099,4098,4075 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -370,11 +370,6 @@
     <ClCompile Include="Scene\SceneManagerh.cpp" />
     <ClCompile Include="Scene\StageSelect.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
-      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
