@@ -248,6 +248,7 @@
   <ItemGroup>
     <ClInclude Include="App\Particle\Particle.h" />
     <ClInclude Include="App\player\Player.h" />
+    <ClInclude Include="App\player\PlayerFBX.h" />
     <ClInclude Include="App\player\Staging.h" />
     <ClInclude Include="App\stage\BlockBox.h" />
     <ClInclude Include="App\stage\DangerFish.h" />
@@ -315,6 +316,7 @@
   <ItemGroup>
     <ClCompile Include="App\Particle\Particle.cpp" />
     <ClCompile Include="App\player\Player.cpp" />
+    <ClCompile Include="App\player\PlayerFBX.cpp" />
     <ClCompile Include="App\player\Staging.cpp" />
     <ClCompile Include="App\stage\BlockBox.cpp" />
     <ClCompile Include="App\stage\DangerFish.cpp" />

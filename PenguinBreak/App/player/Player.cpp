@@ -11,7 +11,7 @@ Player::~Player()
 
 void Player::Init()
 {
-	playerObject = Shape::CreateOBJ("pengin", true);
+	//playerObject = Shape::CreateOBJ("pengin", true);
 	oldPosition = position;
 	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
@@ -19,39 +19,9 @@ void Player::Init()
 
 	staging.Init();
 
-	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2");
-	stopModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
-	electModel = FbxLoader::GetInstance()->LoadModelFromFile("penginElect");
-	goalJumpModel = FbxLoader::GetInstance()->LoadModelFromFile("goalJump");
-	goalHandModel = FbxLoader::GetInstance()->LoadModelFromFile("goalHand");
 
-	for (int i = 0; i < 2; i++)
-	{
-		//3Dオブジェクトの生成とモデルのセット
-		fbxObject1[i] = std::make_unique<FBXObject3d>();
-		fbxObject1[i]->Initialize();
-		fbxObject1[i]->SetModel(model1);
-
-		//3Dオブジェクトの生成とモデルのセット
-		stopFbx[i] = std::make_unique<FBXObject3d>();
-		stopFbx[i]->Initialize();
-		stopFbx[i]->SetModel(stopModel);
-
-		//3Dオブジェクトの生成とモデルのセット
-		electFbx[i] = std::make_unique<FBXObject3d>();
-		electFbx[i]->Initialize();
-		electFbx[i]->SetModel(electModel);
-
-		goalJumpFbx[i] = std::make_unique<FBXObject3d>();
-		goalJumpFbx[i]->Initialize();
-		goalJumpFbx[i]->SetModel(goalJumpModel);
-
-		goalHandFbx[i] = std::make_unique<FBXObject3d>();
-		goalHandFbx[i]->Initialize();
-		goalHandFbx[i]->SetModel(goalHandModel);
-
-	}
+	walkSE = Audio::Get()->SoundLoadWave("Resources/sound/SE/walk.wav");
+	pFbx.Load();
 }
 
 void Player::Update()
@@ -78,6 +48,14 @@ void Player::Update()
 		Fish();
 
 		RedFishDie();
+
+		audioTime++;
+		if (audioTime >= 201)
+		{
+			audioTime = 0;
+		}
+
+		pFbx.Update();
 	}
 }
 
@@ -117,141 +95,25 @@ void Player::Reset()
 	angle = { -30.0f,180.0f,0.0f };	//角度
 	decLifeTime = 0;
 	isFishDie = false;
-	fbxType = None;
+	pFbx.Reset();
 }
 
 void Player::Delete()
 {
-	safe_delete(model1);
-	safe_delete(stopModel);
-	safe_delete(electModel);
-	safe_delete(goalJumpModel);
-	safe_delete(goalHandModel);
+	pFbx.Delete();
 }
 
 void Player::GoalStaging(int fbxType)
 {
-	this->fbxType = fbxType;
 	angle.y = 180.0f;
-	for (int i = 0; i < 2; i++)
-	{
-		switch (fbxType)
-		{
-		case GoalJump:
-			goalJumpFbx[i]->StopAnimation();
-			break;
-		case GoalHand:
-			goalHandFbx[i]->StopAnimation();
-			break;
-		}
-	}
-	for (int i = 0; i < 2; i++)
-	{
-		goalJumpFbx[i]->PlayAnimation(false);
-		goalHandFbx[i]->PlayAnimation(false);
-	}
+	pFbx.PlayFBX(fbxType);
 }
 
 void Player::FbxDraw(bool shadowFlag)
 {
 	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };
-	//FBX試し
-	switch (fbxType)
-	{
-	case None:
-		stopFbx[0]->SetPosition(fbxPos);
-		stopFbx[0]->SetRotation(angle);
-		stopFbx[1]->SetPosition(fbxPos);
-		stopFbx[1]->SetRotation(angle);
 
-
-		stopFbx[0]->Update(shadowFlag);
-		stopFbx[1]->Update(false);
-		break;
-	case Walk:
-		fbxObject1[0]->SetPosition(fbxPos);
-		fbxObject1[0]->SetRotation(angle);
-		fbxObject1[1]->SetPosition(fbxPos);
-		fbxObject1[1]->SetRotation(angle);
-
-		fbxObject1[0]->Update(shadowFlag);
-		fbxObject1[1]->Update(false);
-		break;
-	case ElectDie:
-		electFbx[0]->SetPosition(fbxPos);
-		electFbx[0]->SetRotation(angle);
-		electFbx[1]->SetPosition(fbxPos);
-		electFbx[1]->SetRotation(angle);
-
-		electFbx[0]->Update(shadowFlag);
-		electFbx[1]->Update(false);
-		break;
-	case GoalJump:
-		goalJumpFbx[0]->SetPosition(fbxPos);
-		goalJumpFbx[0]->SetRotation(angle);
-		goalJumpFbx[1]->SetPosition(fbxPos);
-		goalJumpFbx[1]->SetRotation(angle);
-
-		goalJumpFbx[0]->Update(shadowFlag);
-		goalJumpFbx[1]->Update(false);
-		break;
-	case GoalHand:
-		goalHandFbx[0]->SetPosition(fbxPos);
-		goalHandFbx[0]->SetRotation(angle);
-		goalHandFbx[1]->SetPosition(fbxPos);
-		goalHandFbx[1]->SetRotation(angle);
-
-		goalHandFbx[0]->Update(shadowFlag);
-		goalHandFbx[1]->Update(false);
-		break;
-	default:
-		break;
-	}
-	switch (fbxType)
-	{
-	case None:
-		if (shadowFlag == false) {
-			stopFbx[0]->Draw();
-		}
-		else {
-			stopFbx[1]->Draw();
-		}
-		break;
-	case Walk:
-		if (shadowFlag == false) {
-			fbxObject1[0]->Draw();
-		}
-		else {
-			fbxObject1[1]->Draw();
-		}
-		break;
-	case ElectDie:
-		if (shadowFlag == false) {
-			electFbx[0]->Draw();
-		}
-		else {
-			electFbx[1]->Draw();
-		}
-		break;
-	case GoalJump:
-		if (shadowFlag == false) {
-			goalJumpFbx[0]->Draw();
-		}
-		else {
-			goalJumpFbx[1]->Draw();
-		}
-		break;
-	case GoalHand:
-		if (shadowFlag == false) {
-			goalHandFbx[0]->Draw();
-		}
-		else {
-			goalHandFbx[1]->Draw();
-		}
-		break;
-	default:
-		break;
-	}
+	pFbx.Draw(fbxPos, angle, shadowFlag);
 	Object::Get()->PreDraw(shadowFlag);
 }
 
@@ -260,29 +122,36 @@ void Player::Move()
 {
 	if (dieType == DIENULL && clearFlag == false && gameoverFlag == false)
 	{
-		if (moveFlag == true)
+		if (Input::Get()->KeybordInputArrow() == true)
 		{
-			if (Input::Get()->KeybordPush(DIK_UP))
+			if (moveFlag == true)
 			{
-				vec.z += speed.z;
+				if (Input::Get()->KeybordPush(DIK_UP))
+				{
+					vec.z += speed.z;
+				}
+				if (Input::Get()->KeybordPush(DIK_DOWN))
+				{
+					vec.z -= speed.z;
+				}
 			}
-			if (Input::Get()->KeybordPush(DIK_DOWN))
+			//移動
+			if (Input::Get()->KeybordPush(DIK_RIGHT))
 			{
-				vec.z -= speed.z;
+				vec.x += speed.x;
 			}
-		}
-		//移動
-		if (Input::Get()->KeybordPush(DIK_RIGHT))
-		{
-			vec.x += speed.x;
-		}
-		if (Input::Get()->KeybordPush(DIK_LEFT))
-		{
-			vec.x -= speed.x;
+			if (Input::Get()->KeybordPush(DIK_LEFT))
+			{
+				vec.x -= speed.x;
+			}
 		}
 		//コントローラー移動
 		if (Input::Get()->ConLeftInput())
 		{
+			if (groundFlag == true && audioTime % 20 == 0)
+			{
+				Audio::Get()->SoundSEPlayWave(walkSE);
+			}
 			float rad = Input::Get()->GetLeftAngle();
 			vec.x = speed.x * sinf(-rad);
 			if (moveFlag == true)
@@ -297,30 +166,12 @@ void Player::Move()
 			}
 			walkTime--;
 
+			pFbx.PlayFBX(FbxWalk);
 
-			if (fbxFlag[0] == false)
-			{//アニメーション開始
-				stopFbx[0]->StopAnimation();
-				stopFbx[1]->StopAnimation();
-				fbxObject1[0]->PlayAnimation(true);
-				fbxObject1[1]->PlayAnimation(true);
-				fbxFlag[0] = true;
-			}
-			fbxFlag[1] = false;
-			fbxType = Walk;
 		}
 		else
 		{
-			fbxType = None;
-			fbxFlag[0] = false;
-			fbxObject1[0]->StopAnimation();
-			fbxObject1[1]->StopAnimation();
-			if (fbxFlag[1] == false)
-			{
-				fbxFlag[1] = true;
-				stopFbx[0]->PlayAnimation(true);
-				stopFbx[1]->PlayAnimation(true);
-			}
+			pFbx.PlayFBX(FbxNone);
 		}
 	}
 }
@@ -340,6 +191,8 @@ void Player::Jump()
 			jumpPower = jumpPowerMax;
 		}
 		blockStepOnFlag = false;
+
+		pFbx.PlayFBX(FbxJump);
 	}
 
 	//重力加算
@@ -367,11 +220,7 @@ void Player::FallDie()
 		dieNowTime = dieTime;
 		staging.CreateElect(position);
 		dieType = DIENOW;
-		fbxType = ElectDie;
-		for (int i = 0; i < 2; i++)
-		{
-			electFbx[i]->PlayAnimation(false);
-		}
+		pFbx.PlayFBX(FbxElectDie);
 	}
 	if (dieType == EATDIE)
 	{

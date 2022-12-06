@@ -7,6 +7,9 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 #include"_Window.h"
+/// <summary>
+/// キーボードクラス
+/// </summary>
 class Keybord
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

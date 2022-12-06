@@ -3,6 +3,9 @@
 #include <d3dx12.h>
 
 using namespace Microsoft::WRL;
+/// <summary>
+/// シェーダークラス
+/// </summary>
 class Shader
 {
 public:

@@ -73,7 +73,9 @@ struct ObjectData
 	//マテリアル
 	Material material;
 };
-
+/// <summary>
+/// 3Dオブジェクトクラス
+/// </summary>
 class Object :public Singleton<Object>
 {
 public:

@@ -3,6 +3,9 @@
 #include"Singleton.h"
 #include"Sprite.h"
 #include"Texture.h"
+/// <summary>
+/// ポストエフェクト
+/// </summary>
 class PostEffect : public Singleton<PostEffect>
 {
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;

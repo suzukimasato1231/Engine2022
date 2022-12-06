@@ -28,7 +28,7 @@ Audio *Audio::Create()
 }
 
 
-Audio::SoundData Audio::SoundLoadWave(const char *filename)
+SoundData Audio::SoundLoadWave(const char *filename)
 {
 	//ファイルオープン
 	std::ifstream file;

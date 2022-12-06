@@ -399,6 +399,9 @@
     <ClInclude Include="DecLifeStaging.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
+    <ClInclude Include="App\player\PlayerFBX.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -570,6 +573,9 @@
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="DecLifeStaging.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\player\PlayerFBX.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>

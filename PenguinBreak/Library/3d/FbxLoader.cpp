@@ -54,10 +54,10 @@ void FbxLoader::Finalize()
 	fbxManager->Destroy();
 }
 
-Model* FbxLoader::LoadModelFromFile(const string& modelName)
+Model* FbxLoader::LoadModelFromFile(const string& modelName, string file)
 {
 	// モデルと同じ名前のフォルダから読み込む
-	const string directoryPath = baseDirectory + modelName + "/";
+	const string directoryPath = baseDirectory + file + modelName + "/";
 	// 拡張子.fbxを付加
 	const string fileName = modelName + ".fbx";
 	// 連結してフルパスを得る
@@ -82,7 +82,7 @@ Model* FbxLoader::LoadModelFromFile(const string& modelName)
 	// あらかじめ必要数分のメモリを確保することで、アドレスがずれるのを予防
 	model->nodes.reserve(nodeCount);
 	// ルートノードから順に解析してモデルに流し込む
-	ParseNodeRecursive(model, fbxScene->GetRootNode());
+	ParseNodeRecursive(model, fbxScene->GetRootNode(), nullptr, file);
 	// FBXシーン解放
 	model->fbxScene = fbxScene;
 	// バッファ生成
@@ -91,7 +91,7 @@ Model* FbxLoader::LoadModelFromFile(const string& modelName)
 	return model;
 }
 
-void FbxLoader::ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent)
+void FbxLoader::ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent, string file)
 {
 	//// ノード名を取得
 	//string name = fbxNode->GetName();
@@ -138,27 +138,25 @@ void FbxLoader::ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent)
 		if (fbxNodeAttribute->GetAttributeType() == FbxNodeAttribute::eMesh)
 		{
 			model->meshNode = &node;
-			ParseMesh(model, fbxNode);
+			ParseMesh(model, fbxNode, file);
 		}
 	}
 
 	// 子ノードに対して再帰呼び出し
 	for (int i = 0; i < fbxNode->GetChildCount(); i++) {
-		ParseNodeRecursive(model, fbxNode->GetChild(i), &node);
+		ParseNodeRecursive(model, fbxNode->GetChild(i), &node, file);
 	}
 }
 
-void FbxLoader::ParseMesh(Model* model, FbxNode* fbxNode)
+void FbxLoader::ParseMesh(Model* model, FbxNode* fbxNode, const string& file)
 {
 	// ノードのメッシュを取得
 	FbxMesh* fbxMesh = fbxNode->GetMesh();
 
-	// 頂点座標読み取り
-	//ParseMeshVertices(model, fbxMesh);
 	// 面を構成するデータの読み取り
 	ParseMeshFaces(model, fbxMesh);
 	// マテリアルの読み取り
-	ParseMaterial(model, fbxNode);
+	ParseMaterial(model, fbxNode, file);
 	//スキニング情報の読み取り
 	ParseSkin(model, fbxMesh);
 }
@@ -258,7 +256,7 @@ void FbxLoader::ParseMeshFaces(Model* model, FbxMesh* fbxMesh)
 	}
 }
 
-void FbxLoader::ParseMaterial(Model* model, FbxNode* fbxNode)
+void FbxLoader::ParseMaterial(Model* model, FbxNode* fbxNode, const string& file)
 {
 	const int materialCount = fbxNode->GetMaterialCount();
 	if (materialCount > 0) {
@@ -298,7 +296,7 @@ void FbxLoader::ParseMaterial(Model* model, FbxNode* fbxNode)
 					string path_str(filepath);
 					string name = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					LoadTexture(model, baseDirectory + model->name + "/" + name);
+					LoadTexture(model, baseDirectory + file + model->name + "/" + name);
 					textureLoaded = true;
 				}
 			}
@@ -306,7 +304,7 @@ void FbxLoader::ParseMaterial(Model* model, FbxNode* fbxNode)
 
 		// テクスチャがない場合は白テクスチャを貼る
 		if (!textureLoaded) {
-			LoadTexture(model, baseDirectory + defaultTextureFileName);
+			LoadTexture(model, baseDirectory + file + defaultTextureFileName);
 		}
 	}
 }

@@ -20,7 +20,7 @@ void TitleScene::Initialize()
 
 	wallObj = Shape::CreateOBJ("iceWall");
 	floorObj = Shape::CreateOBJ("ice");
-	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
+	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin","FBX/");
 	for (int i = 0; i < 2; i++)
 	{
 		//3Dオブジェクトの生成とモデルのセット

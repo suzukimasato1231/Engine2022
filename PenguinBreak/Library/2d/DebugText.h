@@ -6,7 +6,9 @@
 
 extern const int window_width;
 extern const int window_height;
-
+/// <summary>
+/// デバックテキスト
+/// </summary>
 class DebugText :public Singleton<DebugText>
 {
 	friend Singleton<DebugText>;

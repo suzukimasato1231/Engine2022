@@ -1,6 +1,5 @@
 #pragma once
 #include<Singleton.h>
-using namespace std;
 
 class TimeAttack :public Singleton<TimeAttack>
 {

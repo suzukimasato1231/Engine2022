@@ -1,5 +1,6 @@
 #pragma once
 #include"Sprite.h"
+//UIƒNƒ‰ƒX
 class UI
 {
 

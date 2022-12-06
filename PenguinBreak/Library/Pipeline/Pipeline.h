@@ -9,7 +9,9 @@ using namespace DirectX;
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
-
+/// <summary>
+/// パイプラインクラス
+/// </summary>
 class Pipeline :public ShaderManager
 {
 public:

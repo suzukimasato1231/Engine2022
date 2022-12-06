@@ -4,6 +4,7 @@
 #include"StageSelect.h"
 #include"ResultScene.h"
 #include "ShadowMap.h"
+#include<Audio.h>
 enum Scene
 {
 	Title,
@@ -47,4 +48,7 @@ private://定義
 	int changeSceneFlag = false;
 	Vec4 changeSceneColor = { 1.0f,1.0f,1.0f,0.0f };//シーンが変わる時の色
 	bool Flag = false;
+
+	Audio* audio = nullptr;
+	SoundData bgm;
 };

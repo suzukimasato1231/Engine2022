@@ -4,6 +4,8 @@
 #include"FBXObject3d.h"
 #include"Staging.h"
 #include<memory>
+#include <Audio.h>
+#include"PlayerFBX.h"
 enum DieType
 {
 	DIENULL,
@@ -12,14 +14,10 @@ enum DieType
 	EATDIE,
 	DIENOW,
 };
-enum PlayerFBX
-{
-	None,
-	Walk,
-	ElectDie,
-	GoalJump,
-	GoalHand,
-};
+
+/// <summary>
+/// プレイヤークラス
+/// </summary>
 class Player :public Singleton<Player>
 {
 public:
@@ -153,30 +151,11 @@ private:
 	bool fishFlag = false;
 	int fishNum = 0;
 
-	//FBX
-	int fbxType = NULL;
-	bool fbxFlag[2] = {};
-	//歩きFBX
-	Model* model1 = nullptr;
-	std::unique_ptr<FBXObject3d> fbxObject1[2];
-	//停止FBX
-	Model* stopModel = nullptr;
-	std::unique_ptr<FBXObject3d> stopFbx[2];
-	//感電
-	Model* electModel = nullptr;
-	std::unique_ptr<FBXObject3d> electFbx[2];
-	//ゴール時の演出バク天
-	Model* goalJumpModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalJumpFbx[2];
-	//ゴール時の演出ハンドサイン
-	Model* goalHandModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalHandFbx[2];
-
-	int dieType = DIENULL;
 
 	//プレイヤー演出
 	Staging staging;
 	int dieNowTime = 0;
+	int dieType = DIENULL;
 
 	const int walkTimeMax = 5;
 	int walkTime = walkTimeMax;
@@ -187,4 +166,11 @@ private:
 	bool isFishDie = false;
 
 	int decLifeTime = 0;
+
+	//FBXクラス
+	PlayerFBX pFbx;
+
+	//音データ
+	int audioTime = 0;
+	SoundData walkSE;
 };

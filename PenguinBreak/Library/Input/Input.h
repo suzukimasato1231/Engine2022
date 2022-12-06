@@ -3,6 +3,9 @@
 #include "Keybord.h"
 #include"Mouse.h"
 #include"Singleton.h"
+/// <summary>
+/// “ü—ÍƒNƒ‰ƒX
+/// </summary>
 class Input :public Singleton<Input>
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

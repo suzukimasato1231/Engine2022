@@ -10,7 +10,9 @@
 #include <chrono>
 extern const int window_width;
 extern const int window_height;
-
+/// <summary>
+/// DirectX12クラス
+/// </summary>
 class _DirectX :public Singleton<_DirectX>
 {
 public:

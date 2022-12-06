@@ -13,7 +13,6 @@ public:
 
 	void Draw(Floor* floorData, const bool shadowFlag);
 private:
-
 	ObjectData pitfallOBJ;
 	int pitfallGraph = 0;
 };

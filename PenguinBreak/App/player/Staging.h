@@ -3,6 +3,9 @@
 #include"ParticleManager.h"
 #include<vector>
 #include"Particle3D.h"
+/// <summary>
+/// プレイヤー演出クラス
+/// </summary>
 class Staging
 {
 private://メンバ変数

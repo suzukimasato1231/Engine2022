@@ -2,6 +2,9 @@
 #include <d3dx12.h>
 #include"Singleton.h"
 #include"Sprite.h"
+/// <summary>
+/// テクスチャクラス
+/// </summary>
 class Texture :public Singleton<Texture>
 {
 public:

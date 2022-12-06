@@ -28,7 +28,7 @@ void ResultScene::Initialize()
 
 	buttonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
 
-	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin");
+	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin","FBX/");
 	for (int i = 0; i < 2; i++)
 	{
 		//3Dオブジェクトの生成とモデルのセット

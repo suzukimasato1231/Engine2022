@@ -32,7 +32,9 @@ enum ButtonState
 	ButtonStateUp,
 	ButtonStateMax,
 };
-
+/// <summary>
+/// コントロールクラス
+/// </summary>
 class Controller
 {
 private:

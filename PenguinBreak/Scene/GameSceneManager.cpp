@@ -75,7 +75,7 @@ void GameSceneManager::Update()
 		if (goalStagingTime <= 0 && changeScene == false)
 		{
 			goalStagingTime = goalStagingTimeMax;
-			Player::Get()->GoalStaging(GoalJump);
+			Player::Get()->GoalStaging(FbxGoalJump);
 			Player::Get()->GetClearFlag(true);
 			goalCameraAngle = cameraAngle;
 			goalDistance = goalDistanceMax;

@@ -11,7 +11,7 @@
 extern const int window_width;
 extern const int window_height;
 /// <summary>
-/// ライト
+/// ライトクラス
 /// </summary>
 class LightGroup
 {

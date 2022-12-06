@@ -8,6 +8,9 @@
 #include<string>
 #include"FbxLoader.h"
 #include"LightGroup.h"
+/// <summary>
+/// FBXオブジェクトクラス
+/// </summary>
 class FBXObject3d
 {
 protected://エイリアス

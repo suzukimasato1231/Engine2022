@@ -11,7 +11,9 @@
 
 extern const int window_width;
 extern const int window_height;
-
+/// <summary>
+/// スプライトデータ
+/// </summary>
 struct SpriteData
 {
 	//頂点バッファの生成
@@ -37,7 +39,9 @@ struct SpriteData
 	//親
 	SpriteData* parent = nullptr;
 };
-
+/// <summary>
+/// ２Dスプライトクラス
+/// </summary>
 class Sprite :public Singleton<Sprite>
 {
 	friend Singleton<Sprite>;

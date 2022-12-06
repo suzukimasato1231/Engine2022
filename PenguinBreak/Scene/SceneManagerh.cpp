@@ -8,6 +8,10 @@ SceneManagerh::SceneManagerh()
 {}
 SceneManagerh::~SceneManagerh()
 {
+	//XAudio2解放
+	Audio::Get()->xAudio2.Reset();
+	//音データ解放
+	Audio::SoundUnload(&bgm);
 }
 void SceneManagerh::Initialize()
 {
@@ -47,7 +51,8 @@ void SceneManagerh::Initialize()
 	////影
 	ShadowMap::Get()->Init();
 	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
-
+	//音作成
+	Audio::Get()->Init();
 	titleScene.Initialize();
 	////ゲームシーン
 	gameScene.Initialize();
@@ -58,6 +63,12 @@ void SceneManagerh::Initialize()
 	titleScene.Init();
 
 	changeBlack = Sprite::Get()->SpriteCreate(L"Resources/black.png");
+
+	//BGM
+	bgm = Audio::SoundLoadWave("Resources/sound/BGM/bgm.wav");
+	Audio::Get()->SoundBGMPlayLoopWave(bgm, 0);
+	Audio::Get()->SetVolume(0.001f);
+
 }
 
 void SceneManagerh::Update()
