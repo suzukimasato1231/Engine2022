@@ -67,8 +67,7 @@ void SceneManagerh::Initialize()
 	//BGM
 	bgm = Audio::SoundLoadWave("Resources/sound/BGM/bgm.wav");
 	Audio::Get()->SoundBGMPlayLoopWave(bgm, 0);
-	Audio::Get()->SetVolume(0.001f);
-
+	Audio::Get()->SetVolume(0.02f);
 }
 
 void SceneManagerh::Update()

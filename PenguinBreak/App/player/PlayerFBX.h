@@ -37,6 +37,8 @@ public:
 	void PlayFBX(int fbxType);
 	//アニメーションを止める
 	void StopAnimation();
+	//アニメーションスタート
+	void StartAnimation();
 private:
 	const int fbxNum = 2;
 
@@ -58,9 +60,11 @@ private:
 	Model* goalHandModel = nullptr;
 	std::unique_ptr<FBXObject3d> goalHandFbx[2];
 	//ジャンプ時の演出ハンドサイン
-	Model*jumpModel = nullptr;
+	Model* jumpModel = nullptr;
 	std::unique_ptr<FBXObject3d> jumpFbx[2];
 	const int jumpTimeMax = 30;
 	int jumpTime = 0;
+
+	bool menuStopFlag = false;
 };
 

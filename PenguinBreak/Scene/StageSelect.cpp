@@ -79,13 +79,16 @@ void StageSelect::Update()
 	if (productionFlag[0] == true || productionFlag[1] == true || productionFlag[2] == true)
 	{
 		Player::Get()->DieType(1);
+		Player::Get()->JumpPoweZero();
 	}
+
 	Player::Get()->Update();
 
 	Stage::Get()->Update(Player::Get()->GetPosition());
 	//ライト更新
 	lightGroup->Update();
 
+	//箱が上に上がる演出
 	for (int i = 0; i < stageNumMax; i++)
 	{
 		if (productionFlag[i] == true && productionTime > 0)

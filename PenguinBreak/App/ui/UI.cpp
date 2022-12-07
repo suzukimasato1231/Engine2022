@@ -28,7 +28,7 @@ void UI::Init()
 	menu.Init();
 }
 
-void UI::Update(int fishNum, bool& changeScene, int& sceneNum)
+void UI::Update(int fishNum, bool clearFlag, bool& changeScene, int& sceneNum)
 {
 	//壊した箱の数	
 	int breaknumber = Stage::Get()->GetBlockNum() % 10;
@@ -93,13 +93,14 @@ void UI::Update(int fishNum, bool& changeScene, int& sceneNum)
 		}
 	}
 
-
-	menu.Update(menuFlag, changeScene, sceneNum);
-
+	if (clearFlag == false)
+	{
+		menu.Update(menuFlag, changeScene, sceneNum);
+	}
 }
 
 
-void UI::Draw(const int pLives,const  bool gameoverFlag)
+void UI::Draw(const int pLives, const  bool gameoverFlag)
 {
 	//プレイヤー残機
 	Sprite::Get()->Draw(playerIcon, Vec2(1132.0f, 42.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
@@ -135,5 +136,5 @@ void UI::Reset()
 {
 	menuFlag = false;
 	menu.Reset();
-	
+
 }

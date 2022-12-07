@@ -253,13 +253,31 @@ void PlayerFBX::PlayFBX(int fbxType)
 
 void PlayerFBX::StopAnimation()
 {
+	menuStopFlag = true;
 	for (size_t i = 0; i < fbxNum; i++)
 	{
 		stopFbx[i]->StopAnimation();
 		fbxObject1[i]->StopAnimation();
+		fbxFlag[i] = false;
 		electFbx[i]->StopAnimation();
 		goalJumpFbx[i]->StopAnimation();
 		goalHandFbx[i]->StopAnimation();
 		jumpFbx[i]->StopAnimation();
+	}
+}
+
+void PlayerFBX::StartAnimation()
+{
+	if (menuStopFlag == true)
+	{
+		for (size_t i = 0; i < fbxNum; i++)
+		{
+			stopFbx[i]->PlayAnimation(true);
+			fbxObject1[i]->PlayAnimation(true);
+			electFbx[i]->PlayAnimation(false);
+			goalJumpFbx[i]->PlayAnimation(false);
+			goalHandFbx[i]->PlayAnimation(false);
+			jumpFbx[i]->PlayAnimation(false);
+		}
 	}
 }

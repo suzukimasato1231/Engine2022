@@ -7,11 +7,11 @@ class UI
 public:
 	UI();
 	~UI();
-
+	//‰Šú‰»
 	void Init();
-
-	void Update(int fishNum, bool& changeScene, int& sceneNum);
-
+	//XV
+	void Update(int fishNum, bool clearFlag, bool& changeScene, int& sceneNum);
+	//•`‰æ
 	void Draw(const int pLives, const  bool gameoverFlag);
 
 	void Reset();

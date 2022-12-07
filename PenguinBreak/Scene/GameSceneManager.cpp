@@ -135,7 +135,7 @@ void GameSceneManager::Update()
 			changeNum = 2;
 		}
 	}
-	ui.Update(Player::Get()->GetFishNum(), changeScene, changeNum);
+	ui.Update(Player::Get()->GetFishNum(), Stage::Get()->GetClearFlag(), changeScene, changeNum);
 
 	decLifeStaging.Update(Player::Get()->GetDecLifeFlag(), Player::Get()->GetGameoverFlag());
 }

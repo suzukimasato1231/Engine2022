@@ -201,4 +201,5 @@ void Menu::Reset()
 	m_startTime = 0.0f;
 	m_endTime = 0.0f;
 	audioFlag = false;
+	menuEasingFlag = false;
 }
