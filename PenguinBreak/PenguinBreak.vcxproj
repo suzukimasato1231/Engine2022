@@ -260,6 +260,7 @@
     <ClInclude Include="App\stage\Stage.h" />
     <ClInclude Include="App\stage\StegeObject.h" />
     <ClInclude Include="App\TimeAttack\TimeAttack.h" />
+    <ClInclude Include="App\ui\Menu.h" />
     <ClInclude Include="App\ui\UI.h" />
     <ClInclude Include="DecLifeStaging.h" />
     <ClInclude Include="DropPoint.h" />
@@ -327,6 +328,7 @@
     <ClCompile Include="App\stage\PushCollision.cpp" />
     <ClCompile Include="App\stage\Stage.cpp" />
     <ClCompile Include="App\TimeAttack\TimeAttack.cpp" />
+    <ClCompile Include="App\ui\Menu.cpp" />
     <ClCompile Include="App\ui\UI.cpp" />
     <ClCompile Include="DecLifeStaging.cpp" />
     <ClCompile Include="DropPoint.cpp" />

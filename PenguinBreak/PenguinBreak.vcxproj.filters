@@ -402,6 +402,9 @@
     <ClInclude Include="App\player\PlayerFBX.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
+    <ClInclude Include="App\ui\Menu.h">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -577,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="App\player\PlayerFBX.cpp">
       <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\ui\Menu.cpp">
+      <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

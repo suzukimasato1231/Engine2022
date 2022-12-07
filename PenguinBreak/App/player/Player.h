@@ -66,6 +66,8 @@ public:
 	void GetClearFlag(bool flag) { clearFlag = flag; }
 
 	int GetDecLifeFlag() { return decLifeTime; }
+
+	void StopAnimation();
 private:
 	/// <summary>
 	/// FBX‚Ì•`‰æ

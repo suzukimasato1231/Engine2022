@@ -109,6 +109,11 @@ void Player::GoalStaging(int fbxType)
 	pFbx.PlayFBX(fbxType);
 }
 
+void Player::StopAnimation()
+{
+	pFbx.StopAnimation();
+}
+
 void Player::FbxDraw(bool shadowFlag)
 {
 	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };

@@ -13,7 +13,7 @@ void Audio::Init()
 
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	
+
 }
 Audio *Audio::Create()
 {

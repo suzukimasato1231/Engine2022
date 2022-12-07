@@ -250,3 +250,16 @@ void PlayerFBX::PlayFBX(int fbxType)
 		break;
 	}
 }
+
+void PlayerFBX::StopAnimation()
+{
+	for (size_t i = 0; i < fbxNum; i++)
+	{
+		stopFbx[i]->StopAnimation();
+		fbxObject1[i]->StopAnimation();
+		electFbx[i]->StopAnimation();
+		goalJumpFbx[i]->StopAnimation();
+		goalHandFbx[i]->StopAnimation();
+		jumpFbx[i]->StopAnimation();
+	}
+}

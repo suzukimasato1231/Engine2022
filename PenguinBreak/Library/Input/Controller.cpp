@@ -453,6 +453,9 @@ void UpdateGamePad()
 		case 5:
 			is_push[ButtonKind::ButtonRB] = true;
 			break;
+		case 7:
+			is_push[ButtonKind::ButtonMenu] = true;
+			break;
 		}
 	}
 

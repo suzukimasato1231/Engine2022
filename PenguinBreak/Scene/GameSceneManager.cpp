@@ -49,6 +49,7 @@ void GameSceneManager::Init(int stageNum)
 	decLifeStaging.Reset();
 	changeScene = false;
 	Player::Get()->ChangeMoveFlag(true);
+	ui.Reset();
 }
 
 void GameSceneManager::Update()
@@ -58,50 +59,58 @@ void GameSceneManager::Update()
 	{
 		Reset(stageNum);
 	}
-
-	Player::Get()->Update();
-
-	Stage::Get()->Update(Player::Get()->GetPosition());
-
-	//残機が０にならない限り追跡
-	if (Player::Get()->GetGameoverFlag() == false && Player::Get()->GetPosition().y > 0 && Stage::Get()->GetClearFlag() == false)
+	if (ui.GetMenuFlag() == false)
 	{
-		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistanceMax }, 0.0f, cameraAngle);
+		Player::Get()->Update();
+
+		Stage::Get()->Update(Player::Get()->GetPosition());
+
+		//残機が０にならない限り追跡
+		if (Player::Get()->GetGameoverFlag() == false && Player::Get()->GetPosition().y > 0 && Stage::Get()->GetClearFlag() == false)
+		{
+			Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistanceMax }, 0.0f, cameraAngle);
+		}
+
+		//クリアしたらシーンチェンジ
+		if (Stage::Get()->GetClearFlag() == true)
+		{
+			//プレイヤーゴールFbx始め
+			if (goalStagingTime <= 0 && changeScene == false)
+			{
+				goalStagingTime = goalStagingTimeMax;
+				Player::Get()->GoalStaging(FbxGoalJump);
+				Player::Get()->GetClearFlag(true);
+				goalCameraAngle = cameraAngle;
+				goalDistance = goalDistanceMax;
+			}
+			goalStagingTime--;
+			if (goalCameraAngle >= goalCamraAngleMax)
+			{
+				goalCameraAngle -= 1.0f;
+			}
+			if (goalDistance >= goalDistanceMin)
+			{
+				goalDistance -= 1.0f;
+			}
+
+			//カメラ移動始め
+			Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistance }, 0.0f, goalCameraAngle);
+
+			if (goalStagingTime == 0)
+			{
+				changeScene = true;
+				changeNum = ChangeClear;
+			}
+		}
+		Particle::Get()->Update();
+		//ライト更新
+		lightGroup->Update();
 	}
-	//クリアしたらシーンチェンジ
-	if (Stage::Get()->GetClearFlag() == true)
+	else
 	{
-		//プレイヤーゴールFbx始め
-		if (goalStagingTime <= 0 && changeScene == false)
-		{
-			goalStagingTime = goalStagingTimeMax;
-			Player::Get()->GoalStaging(FbxGoalJump);
-			Player::Get()->GetClearFlag(true);
-			goalCameraAngle = cameraAngle;
-			goalDistance = goalDistanceMax;
-		}
-		goalStagingTime--;
-		if (goalCameraAngle >= goalCamraAngleMax)
-		{
-			goalCameraAngle -= 1.0f;
-		}
-		if (goalDistance >= goalDistanceMin)
-		{
-			goalDistance -= 1.0f;
-		}
-
-		//カメラ移動始め
-		Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistance }, 0.0f, goalCameraAngle);
-
-		if (goalStagingTime == 0)
-		{
-			changeScene = true;
-			changeNum = ChangeClear;
-		}
+		Player::Get()->StopAnimation();
 	}
-	Particle::Get()->Update();
-	//ライト更新
-	lightGroup->Update();
+
 	//ゲームオーバー時のセレクト
 	if (Player::Get()->GetGameoverFlag() == true)
 	{
@@ -126,7 +135,7 @@ void GameSceneManager::Update()
 			changeNum = 2;
 		}
 	}
-	ui.Update(Player::Get()->GetFishNum());
+	ui.Update(Player::Get()->GetFishNum(), changeScene, changeNum);
 
 	decLifeStaging.Update(Player::Get()->GetDecLifeFlag(), Player::Get()->GetGameoverFlag());
 }

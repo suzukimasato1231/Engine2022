@@ -35,6 +35,8 @@ public:
 	void Delete();
 	//FBXを動かす
 	void PlayFBX(int fbxType);
+	//アニメーションを止める
+	void StopAnimation();
 private:
 	const int fbxNum = 2;
 

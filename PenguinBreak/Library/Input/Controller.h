@@ -21,6 +21,7 @@ enum ButtonKind
 	ButtonLB,
 	ButtonRT,
 	ButtonLT,
+	ButtonMenu,
 	ButtonKindMax,
 };
 
