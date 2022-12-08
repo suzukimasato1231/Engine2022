@@ -1,16 +1,12 @@
 #pragma once
 #include"ParticleManager.h"
 #include"Particle3D.h"
-#include "Safe_delete.h"
-#include"Singleton.h"
 #include<memory>
-class Particle :public Singleton<Particle>
+class BoxStaring
 {
-private:
-	friend Singleton<Particle>;
 public:
-	Particle();
-	~Particle();
+	BoxStaring();
+	~BoxStaring();
 
 	void Init();
 

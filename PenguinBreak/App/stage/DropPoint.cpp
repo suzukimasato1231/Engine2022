@@ -1,7 +1,7 @@
 #include "DropPoint.h"
 #include"Collision.h"
 #include"Shape.h"
-#include"../PenguinBreak/App/player/Player.h"
+#include"../player/Player.h"
 #include"Texture.h"
 DropPoint::DropPoint()
 {

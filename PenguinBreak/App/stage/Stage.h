@@ -2,14 +2,15 @@
 #include"Object.h"
 #include<vector>
 #include <LoadCSV.h>
-#include"StegeObject.h"
 #include"FishBox.h"
 #include"BlockBox.h"
 #include"Electricity.h"
 #include"DangerFish.h"
 #include"MoveFloor.h"
 #include"FloorPitfall.h"
-#include"../PenguinBreak/DropPoint.h"
+#include"DropPoint.h"
+#include"GoalFish.h"
+#include"BoxStaring.h"
 class Player;
 
 class Stage :public Singleton<Stage>
@@ -77,10 +78,11 @@ private://罠ブロック
 	ObjectData wallOBJ = {};
 	int wallGraph = 0;
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
+	
 	//ゴール
-	ObjectData goalOBJ = {};
-	Vec3 goalScale = { 20.0f,25.0f,20.0f };
+	GoalFish goalFish;
 	bool goalFlag = false;
+
 	//箱
 	BlockBox blockBox;
 	//電撃の罠
@@ -91,13 +93,15 @@ private:
 	//壊した時に出る魚
 	FishBox fishBox;
 
-	int blockMax = 0;//ステージにある最大のブロック数
+	int blockMax = 0;	//ステージにある最大のブロック数
 	int blockNum = 0;	//壊したブロック
 
 
 	ObjectData blackGround = {};
 	int blackGraph = 0;
 	PSR blackPsr[3] = {};
-
+	//落下地点表示クラス
 	DropPoint dropPoint;
+
+	BoxStaring boxStaring;
 };

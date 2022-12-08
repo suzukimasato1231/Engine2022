@@ -4,7 +4,6 @@
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
-#include"../App/Particle/Particle.h"
 GameSceneManager::GameSceneManager()
 {}
 GameSceneManager::~GameSceneManager()
@@ -34,7 +33,6 @@ void GameSceneManager::Initialize()
 	Player::Get()->Init();
 	//ステージ
 	Stage::Get()->Init();
-	Particle::Get()->Init();
 	ui.Init();
 
 	decLifeStaging.Init();
@@ -102,7 +100,6 @@ void GameSceneManager::Update()
 				changeNum = ChangeClear;
 			}
 		}
-		Particle::Get()->Update();
 		//ライト更新
 		lightGroup->Update();
 	}
@@ -148,9 +145,7 @@ void GameSceneManager::Draw()
 	//プレイヤーの描画
 	Player::Get()->Draw(true);
 
-	Particle::Get()->Draw3D();
 	//パーティクル
-	Particle::Get()->Draw();
 	Player::Get()->DrawParticle();
 	Stage::Get()->DrawParicle();
 	//2D

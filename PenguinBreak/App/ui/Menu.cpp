@@ -41,7 +41,7 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 		if (Input::Get()->ControllerDown(ButtonB) == true)
 		{
 			menuFlag = false;
-			m_endTime = 0;
+			m_startTime = 0;
 		}
 		if (Input::Get()->ControllerDown(ButtonA) == true)
 		{
@@ -138,8 +138,8 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 		}
 		else
 		{
-			float t = min(m_endTime / c_endTimeMax, 1.0f);
-			m_endTime += 1.0f;
+			float t = min(m_startTime / c_startTimeMax, 1.0f);
+			m_startTime += 1.0f;
 			if (t >= 1.0f)
 			{
 				menuEasingFlag = false;
@@ -199,7 +199,6 @@ void Menu::Reset()
 {
 	menuNum = 0;
 	m_startTime = 0.0f;
-	m_endTime = 0.0f;
 	audioFlag = false;
 	menuEasingFlag = false;
 }

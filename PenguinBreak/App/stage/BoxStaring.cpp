@@ -1,14 +1,14 @@
-#include "Particle.h"
-#include"../PenguinBreak/App/player/Player.h"
-#include"../PenguinBreak/App/stage/Stage.h"
+#include "BoxStaring.h"
+#include"../player/Player.h"
+#include"Stage.h"
 #include"Shape.h"
-Particle::Particle()
+BoxStaring::BoxStaring()
 {}
 
-Particle::~Particle()
+BoxStaring::~BoxStaring()
 {}
 
-void Particle::Init()
+void BoxStaring::Init()
 {
 	graph = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
 	breakBoxParticle = std::make_unique<ParticleManager > ();
@@ -19,7 +19,7 @@ void Particle::Init()
 	boxGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/boxParticle.png");
 }
 
-void Particle::Update()
+void BoxStaring::Update()
 {
 	//箱が壊れるパーティクル
 	if (breakBoxFlag == true)
@@ -54,12 +54,12 @@ void Particle::Update()
 	break3DParticle->Update();
 }
 
-void Particle::Draw()
+void BoxStaring::Draw()
 {
 	breakBoxParticle->Draw(graph);
 }
 
-void Particle::Draw3D()
+void BoxStaring::Draw3D()
 {
 	break3DParticle->Draw(boxData,boxGraph);
 }

@@ -1,4 +1,3 @@
-#include"Singleton.h"
 #include <Object.h>
 #include<memory>
 #include"FBXObject3d.h"

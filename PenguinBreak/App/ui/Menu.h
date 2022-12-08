@@ -37,17 +37,14 @@ private:
 	//o‚Ä‚­‚é‚Æ‚«
 	const float c_startTimeMax = 20.0f;
 	float m_startTime = 0.0f;
-	//‚µ‚Ü‚¤‚Æ‚«
-	const float c_endTimeMax = 20.0f;
-	float m_endTime = 0.0f;
 
 	//‰¹
 	SpriteData menuAudioFream;
 	SpriteData menuAudioVolum;
 	SpriteData menuAudioLandmark;
-
+	//‰¹—Ê’²®ƒtƒ‰ƒO
 	bool audioFlag = false;
-
+	
 	const float volumMax = 0.10f;
 	const float volumMin = 0.0f;
 	float volum = 0.02f;

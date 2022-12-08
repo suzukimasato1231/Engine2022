@@ -2,7 +2,6 @@
 #include"Shape.h"
 #include <LoadCSV.h>
 #include"PushCollision.h"
-#include"../Particle/Particle.h"
 Stage::Stage()
 {}
 
@@ -26,16 +25,16 @@ void Stage::Init()
 	floorOBJ = Shape::CreateOBJ("ice");
 	floorGraph = Texture::Get()->LoadTexture(L"Resources/floor.png");
 	wallOBJ = Shape::CreateOBJ("iceWall");
-	//ゴール設定
-	goalOBJ = Shape::CreateOBJ("goal");
 
 	blackGround = Shape::CreateSquare(1.0f, 0.5f, 1.0f);
 	blackGraph = Texture::Get()->LoadTexture(L"Resources/black.png");
 
 	MainInit(0);
+
+	goalFish.Init();
 	//動く床を初期化
 	moveFloor.Init();
-
+	//反転床を初期化
 	floorPitfall.Init();
 	//魚を初期化
 	fishBox.Init();
@@ -43,8 +42,10 @@ void Stage::Init()
 	elect.Init();
 	//危険魚を初期化
 	dangerFish.Init();
-
+	//落下地点
 	dropPoint.Init();
+
+	boxStaring.Init();
 }
 
 void Stage::MainInit(int stageNum)
@@ -66,6 +67,8 @@ void Stage::Update(Vec3 pPos)
 	int X = static_cast<int>(PPos.x / mapSize);
 
 	dropPoint.ChangeFlag();
+
+	boxStaring.Update();
 
 	for (int i = 0; i < stageObj.size(); i++)
 	{
@@ -92,6 +95,7 @@ void Stage::Update(Vec3 pPos)
 					goalFlag = true;
 				}
 			}
+			goalFish.Update();
 			break;
 		case ELECTRICITY:
 			elect.Update(stageObj[i], Z);
@@ -127,7 +131,7 @@ void Stage::Update(Vec3 pPos)
 				{
 					Player::Get()->GetBlockStepOnFlag();
 					Player::Get()->ChangeBreakFlag();
-					Particle::Get()->BreakBoxFlag(stageObj[i]->position);
+					boxStaring.BreakBoxFlag(stageObj[i]->position);
 					fishBox.Create(stageObj[i]->position);
 					delete stageObj[i];
 					stageObj.erase(stageObj.begin() + i);
@@ -154,7 +158,7 @@ void Stage::Update(Vec3 pPos)
 					if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
 						BOX == stageObj[i]->type)
 					{
-						Particle::Get()->BreakBoxFlag(stageObj[i]->position);
+						boxStaring.BreakBoxFlag(stageObj[i]->position);
 						fishBox.Create(stageObj[i]->position);
 						delete stageObj[i];
 						stageObj.erase(stageObj.begin() + i);
@@ -249,7 +253,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 				break;
 			case Floor169:
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z + 9.5f),
-					Vec3(25.0f, 30.0f, 32.1f*2),
+					Vec3(25.0f, 30.0f, 32.1f * 2),
 					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
 				break;
 			case Floor11:
@@ -283,8 +287,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 					Vec3(12.0f, 12.0f, 12.0f), stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
 				break;
 			case  Goal:
-				Object::Draw(goalOBJ, stageObj[i]->psr, stageObj[i]->position, Vec3(5.0f, 5.0f, 5.0f),
-					stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
+				goalFish.Draw(stageObj[i], shadowFlag);
 				break;
 			case BOX:
 			case BOXJUMP:
@@ -318,11 +321,16 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	fishBox.Draw();
 
 	dropPoint.Draw(Player::Get()->GetPosition());
+
+	boxStaring.Draw3D();
 }
 
 void Stage::DrawParicle()
 {
+
 	elect.DrawParicle();
+	//パーティクル
+	boxStaring.Draw();
 }
 
 void Stage::LoadStage(int stageNum)
@@ -421,8 +429,8 @@ void Stage::LoadStage(int stageNum)
 			}
 			break;
 			case Floor169:
-				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f + 0.0f, (MAP_HEIGHT - 1 - y) * mapSize+12.3f),
-					Vec3(mapSize, 1.0f, 32.01f*2), Vec3(141.61f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)), Floor169);
+				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f + 0.0f, (MAP_HEIGHT - 1 - y) * mapSize + 12.3f),
+					Vec3(mapSize, 1.0f, 32.01f * 2), Vec3(141.61f, 0.0f, 0.0f), Vec2(static_cast<float>(x), static_cast<float>(y)), Floor169);
 				break;
 			case Floor11:
 				SetFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f - 10.0f, (MAP_HEIGHT - 1 - y) * mapSize),
@@ -453,7 +461,7 @@ void Stage::LoadStage(int stageNum)
 				break;
 			case Goal:
 				SetGoal(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20 + 5.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					goalScale, Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+					goalFish.GetGoalScale(), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
 				break;
 			case BOX:
 				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),

@@ -1,6 +1,6 @@
 #pragma once
 #include"Object.h"
-#include"../PenguinBreak/App/stage/StegeObject.h"
+#include"../stage/StegeObject.h"
 /// <summary>
 /// —Ž‰º’n“_
 /// </summary>

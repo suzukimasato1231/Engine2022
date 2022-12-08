@@ -102,8 +102,8 @@
     <Filter Include="ソース ファイル\Stage\Floor">
       <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Particle">
-      <UniqueIdentifier>{78d97276-37bc-49ca-a367-288e53b89424}</UniqueIdentifier>
+    <Filter Include="HLSL\OBJ\UVMove">
+      <UniqueIdentifier>{3c8691f2-46a2-4fe8-ade8-e7c9b7f551ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -390,20 +390,23 @@
     <ClInclude Include="Library\3d\Particle3D.h">
       <Filter>Library\3d\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="App\Particle\Particle.h">
-      <Filter>ソース ファイル\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="DropPoint.h">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="DecLifeStaging.h">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="App\player\PlayerFBX.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="App\ui\Menu.h">
       <Filter>ソース ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\GoalFish.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\player\DecLifeStaging.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\DropPoint.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\BoxStaring.h">
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -569,20 +572,23 @@
     <ClCompile Include="Library\3d\Particle3D.cpp">
       <Filter>Library\3d\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="App\Particle\Particle.cpp">
-      <Filter>ソース ファイル\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="DropPoint.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="DecLifeStaging.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="App\player\PlayerFBX.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="App\ui\Menu.cpp">
       <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\GoalFish.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="App\player\DecLifeStaging.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\DropPoint.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\BoxStaring.cpp">
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

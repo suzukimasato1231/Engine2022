@@ -246,24 +246,25 @@
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App\Particle\Particle.h" />
+    <ClInclude Include="App\player\DecLifeStaging.h" />
     <ClInclude Include="App\player\Player.h" />
     <ClInclude Include="App\player\PlayerFBX.h" />
     <ClInclude Include="App\player\Staging.h" />
     <ClInclude Include="App\stage\BlockBox.h" />
     <ClInclude Include="App\stage\DangerFish.h" />
+    <ClInclude Include="App\stage\DropPoint.h" />
     <ClInclude Include="App\stage\Electricity.h" />
     <ClInclude Include="App\stage\FishBox.h" />
     <ClInclude Include="App\stage\FloorPitfall.h" />
+    <ClInclude Include="App\stage\GoalFish.h" />
     <ClInclude Include="App\stage\MoveFloor.h" />
+    <ClInclude Include="App\stage\BoxStaring.h" />
     <ClInclude Include="App\stage\PushCollision.h" />
     <ClInclude Include="App\stage\Stage.h" />
     <ClInclude Include="App\stage\StegeObject.h" />
     <ClInclude Include="App\TimeAttack\TimeAttack.h" />
     <ClInclude Include="App\ui\Menu.h" />
     <ClInclude Include="App\ui\UI.h" />
-    <ClInclude Include="DecLifeStaging.h" />
-    <ClInclude Include="DropPoint.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
     <ClInclude Include="Library\2d\PostEffect.h" />
     <ClInclude Include="Library\2d\ShadowMap.h" />
@@ -315,23 +316,24 @@
     <ClInclude Include="Scene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="App\Particle\Particle.cpp" />
+    <ClCompile Include="App\player\DecLifeStaging.cpp" />
     <ClCompile Include="App\player\Player.cpp" />
     <ClCompile Include="App\player\PlayerFBX.cpp" />
     <ClCompile Include="App\player\Staging.cpp" />
     <ClCompile Include="App\stage\BlockBox.cpp" />
     <ClCompile Include="App\stage\DangerFish.cpp" />
+    <ClCompile Include="App\stage\DropPoint.cpp" />
     <ClCompile Include="App\stage\Electricity.cpp" />
     <ClCompile Include="App\stage\FishBox.cpp" />
     <ClCompile Include="App\stage\FloorPitfall.cpp" />
+    <ClCompile Include="App\stage\GoalFish.cpp" />
     <ClCompile Include="App\stage\MoveFloor.cpp" />
+    <ClCompile Include="App\stage\BoxStaring.cpp" />
     <ClCompile Include="App\stage\PushCollision.cpp" />
     <ClCompile Include="App\stage\Stage.cpp" />
     <ClCompile Include="App\TimeAttack\TimeAttack.cpp" />
     <ClCompile Include="App\ui\Menu.cpp" />
     <ClCompile Include="App\ui\UI.cpp" />
-    <ClCompile Include="DecLifeStaging.cpp" />
-    <ClCompile Include="DropPoint.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />
     <ClCompile Include="Library\2d\PostEffect.cpp" />
     <ClCompile Include="Library\2d\ShadowMap.cpp" />
