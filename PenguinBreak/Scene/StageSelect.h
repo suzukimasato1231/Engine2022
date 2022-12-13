@@ -8,7 +8,7 @@
 #include<memory>
 extern const int window_width;
 extern const int window_height;
-class StageSelect 
+class StageSelect
 {
 
 public:
@@ -24,6 +24,8 @@ public:
 	void Draw();
 	//影の描画
 	void DrawShadow();
+
+	void StagePlas() { stageNum++; }
 public:
 	std::unique_ptr<LightGroup>lightGroup;
 public:
@@ -34,7 +36,7 @@ private://定義
 	static const int stageNumMax = 3;	//最大ステージ数
 
 	bool selectFlag = false;			//次のシーンへ移動
-	
+
 	ObjectData selectOBJ;				//セレクト数字のOBJ
 	int selectGraph[stageNumMax];		//セレクトOBJの画像
 	const float selectScale = 10.0f;			//セレクトOBJの大きさ

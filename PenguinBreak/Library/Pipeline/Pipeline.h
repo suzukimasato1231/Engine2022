@@ -35,6 +35,8 @@ public:
 	//ポストエフェクト
 	//通常
 	static PipelineSet PostNormalCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+	//被写界深度
+	static PipelineSet DepthOfFieldPipelineCreateGraphicesPipeline(ID3D12Device* dev, Shader shader);
 public:
 	//オブジェクト描画
 	static PipelineSet OBJPipeline;
@@ -48,6 +50,8 @@ public:
 	static PipelineSet PostPipeline;
 	//深度値保存用
 	static PipelineSet ShadowMapPipeline;
+	//被写界深度
+	static PipelineSet DepthOfFieldPipeline;
 
 	static void CreatePipeline(ID3D12Device* dev);
 };

@@ -37,31 +37,36 @@ Shader ShaderManager::particleShader;
 Shader ShaderManager::postNormalShader;
 Shader ShaderManager::postTestShader;
 Shader ShaderManager::ShadowMapShader;
+Shader ShaderManager::DepthOfFieldShader;
 
 void ShaderManager::LoadShaders()
 {	
+	//スプライト
 	spriteShader.vsBlob = LoadShader(L"Resources/shaders/SpriteVS.hlsl", "vs_5_0");
 	spriteShader.psBlob = LoadShader(L"Resources/shaders/SpritePS.hlsl", "ps_5_0");
-
+	//OBJ
 	objShader.vsBlob = LoadShader(L"Resources/shaders/OBJVertexShader.hlsl", "vs_5_0");
 	objShader.psBlob = LoadShader(L"Resources/shaders/OBJPixelShader.hlsl", "ps_5_0");
-
+	//トゥーンシェーダー
 	toonObjShader.vsBlob = LoadShader(L"Resources/shaders/OBJToonVS.hlsl", "vs_5_0");
 	toonObjShader.psBlob = LoadShader(L"Resources/shaders/OBJToonPS.hlsl", "ps_5_0");
 
 	normalMapShader.vsBlob = LoadShader(L"Resources/shaders/Object/NormalMapVS.hlsl","vs_5_0");
 	normalMapShader.psBlob = LoadShader(L"Resources/shaders/Object/NormalMapPS.hlsl", "ps_5_0");
-
+	//パーティクル
 	particleShader.vsBlob = LoadShader(L"Resources/shaders/ParticleVS.hlsl", "vs_5_0");
 	particleShader.psBlob = LoadShader(L"Resources/shaders/ParticlePS.hlsl", "ps_5_0");
 	particleShader.gsBlob = LoadShader(L"Resources/shaders/ParticleGS.hlsl", "gs_5_0");
-
+	//ポストエフェクト通常
 	postNormalShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectNormalVS.hlsl", "vs_5_0");
 	postNormalShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectNormalPS.hlsl", "ps_5_0");
-
+	//ブルーム
 	postTestShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestVS.hlsl", "vs_5_0");
 	postTestShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestPS.hlsl", "ps_5_0");
-
+	//シャドウマップ
 	ShadowMapShader.vsBlob = LoadShader(L"Resources/shaders/ShadowMapVS.hlsl", "vs_5_0");
 	ShadowMapShader.psBlob = LoadShader(L"Resources/shaders/ShadowMapPS.hlsl", "ps_5_0");
+	//被写界深度
+	DepthOfFieldShader.vsBlob= LoadShader(L"Resources/shaders/PostEffect/DepthOfFieldVS.hlsl", "vs_5_0");;
+	DepthOfFieldShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/DepthOfFieldPS.hlsl", "ps_5_0");
 }

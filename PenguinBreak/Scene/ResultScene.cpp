@@ -3,11 +3,12 @@
 #include"../App/stage/Stage.h"
 #include"Shape.h"
 #include <FBXObject3d.h>
+#include<Input.h>
 ResultScene::ResultScene()
 {}
 ResultScene::~ResultScene()
 {
-	
+
 }
 void ResultScene::Initialize()
 {
@@ -25,10 +26,13 @@ void ResultScene::Initialize()
 	uiSlash = Sprite::Get()->SpriteCreate(L"Resources/UI/UISlash.png");
 
 	clearGraph = Sprite::Get()->SpriteCreate(L"Resources/clear.png");
+	nextGraph = Sprite::Get()->SpriteCreate(L"Resources/resultUI/retry.png");
+	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/resultUI/select.png");
 
 	buttonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
 
-	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin","FBX/");
+
+	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
 	for (int i = 0; i < 2; i++)
 	{
 		//3Dオブジェクトの生成とモデルのセット
@@ -72,10 +76,41 @@ void ResultScene::Update()
 	{
 		buttonTime = 0;
 	}
+
+	//次のシーン
+	if (Input::Get()->ControllerDown(LButtonLeft) || Input::Get()->ControllerDown(LButtonRight))
+	{
+		if (nextScene == ResultNextStage)
+		{
+			nextScene = ResultSelect;
+		}
+		else
+		{
+			nextScene = ResultNextStage;
+		}
+	}
+	//選択した方の大きさを変える
+	if (nextScaleFlag == false)
+	{
+		nextScale += 0.02f;
+		if (nextScale >= nextScaleMax)
+		{
+			nextScaleFlag = true;
+		}
+	}
+	else
+	{
+		nextScale -= 0.02f;
+		if (nextScale <= nextScaleMin)
+		{
+			nextScaleFlag = false;
+		}
+	}
+
 	lightGroup->Update();
 }
 
-void ResultScene::Draw()
+void ResultScene::Draw(const int stageNum)
 {
 	penginHandFbx[1]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
 	penginHandFbx[1]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
@@ -114,9 +149,28 @@ void ResultScene::Draw()
 		}
 		Sprite::Get()->Draw(uiNumber[Breaknumber], Vec2(850.0f, 200.0f), 128.0f, 128.0f);
 	}
+
+	//セレクト
+	if (stageNum == 3)
+	{
+		Sprite::Get()->Draw(selectGraph, Vec2(520.0f + 334.0f / 2, 450.0f + 128.0f / 2), 334.0f * nextScale, 128.0f * nextScale, Vec2(0.5f, 0.5f));
+	}
+	else
+	{
+		if (nextScene == ResultSelect)
+		{
+			Sprite::Get()->Draw(nextGraph, Vec2(120.0f + 533.0f / 2, 450.0f + 128.0f / 2), 533.0f, 128.0f, Vec2(0.5f, 0.5f));
+			Sprite::Get()->Draw(selectGraph, Vec2(820.0f + 334.0f / 2, 450.0f + 128.0f / 2), 334.0f * nextScale, 128.0f * nextScale, Vec2(0.5f, 0.5f));
+		}
+		else
+		{
+			Sprite::Get()->Draw(nextGraph, Vec2(120.0f + 533.0f / 2, 450.0f + 128.0f / 2), 533.0f * nextScale, 128.0f * nextScale, Vec2(0.5f, 0.5f));
+			Sprite::Get()->Draw(selectGraph, Vec2(820.0f + 334.0f / 2, 450.0f + 128.0f / 2), 334.0f, 128.0f, Vec2(0.5f, 0.5f));
+		}
+	}
 	if (resultTime >= 90 && buttonTime >= 30)
 	{
-		Sprite::Get()->Draw(buttonGraph, Vec2(420.0f, 532.0f), 512.0f, 64.0f);
+		Sprite::Get()->Draw(buttonGraph, Vec2(420.0f, 632.0f), 512.0f, 64.0f);
 	}
 }
 

@@ -102,9 +102,6 @@
     <Filter Include="ソース ファイル\Stage\Floor">
       <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HLSL\OBJ\UVMove">
-      <UniqueIdentifier>{3c8691f2-46a2-4fe8-ade8-e7c9b7f551ae}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -170,6 +167,12 @@
     <FxCompile Include="Resources\shaders\Object\NormalMapVS.hlsl">
       <Filter>HLSL\OBJ</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffect\DepthOfFieldPS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffect\DepthOfFieldVS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Sprite.hlsli">
@@ -201,6 +204,9 @@
     </None>
     <None Include="Resources\shaders\Object\NormalMap.hlsli">
       <Filter>HLSL\OBJ</Filter>
+    </None>
+    <None Include="Resources\shaders\PostEffect\DepthOfField.hlsli">
+      <Filter>HLSL\PostEffect</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

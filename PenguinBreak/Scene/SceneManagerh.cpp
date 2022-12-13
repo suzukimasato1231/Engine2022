@@ -51,6 +51,8 @@ void SceneManagerh::Initialize()
 	////影
 	ShadowMap::Get()->Init();
 	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
+	Texture::Get()->LoadCameraTexture(PostEffect::Get()->GetDepth());
+
 	//音作成
 	Audio::Get()->Init();
 	titleScene.Initialize();
@@ -114,7 +116,14 @@ void SceneManagerh::Update()
 	{
 		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
 		{
-			sceneMe = Title;
+			if (resultScene.GetScene() == ResultNextStage&&stageScene.GetStageNum()!=3)
+			{
+				sceneMe = GameScene;
+			}
+			if (resultScene.GetScene() == ResultSelect || stageScene.GetStageNum() == 3)
+			{
+				sceneMe = SelectScene;
+			}
 			changeSceneFlag = ChangeFirst;
 		}
 	}
@@ -167,7 +176,16 @@ void SceneManagerh::Update()
 				}
 				break;
 			case Result:
-				titleScene.Init();
+				if (sceneMe == GameScene)
+				{
+					stageScene.StagePlas();
+					gameScene.Init(stageScene.GetStageNum());
+					
+				}
+				else if (sceneMe == SelectScene)
+				{
+					stageScene.Init();
+				}
 				break;
 			default:
 				break;
@@ -234,18 +252,21 @@ void SceneManagerh::Draw()
 	}
 	else if (scene == Result)
 	{
-		resultScene.Draw();
+		resultScene.Draw(stageScene.GetStageNum());
 	}
 	DebugText::Get()->DrawAll();
-	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
-
-	_DirectX::Get()->PreDraw();
-	////ポストエフェクトの描画
-	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList(), changeSceneColor);
 	if (changeSceneFlag == ChangeFirst || changeSceneFlag == ChangeEnd)
 	{
 		Sprite::Get()->Draw(changeBlack, Vec2(), static_cast<float>(window_width), static_cast<float>(window_height), Vec2(), changeSceneColor);
 	}
+	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
+
+	_DirectX::Get()->PreDraw();
+
+	////ポストエフェクトの描画
+	//PostEffect::Get()->SetPipeline(1);
+	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList());
+
 	_DirectX::Get()->ResourceBarrier();
 }
 

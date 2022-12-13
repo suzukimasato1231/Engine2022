@@ -24,6 +24,7 @@ public:
 	static Shader postNormalShader;
 	static Shader postTestShader;
 	static Shader ShadowMapShader;
+	static Shader DepthOfFieldShader;//”íÊŠE[“x
 	//3D
 	static Shader objShader;
 	static Shader toonObjShader;

@@ -73,7 +73,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		window_height,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
-	
+
 	//テクスチャバッファの生成
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
@@ -111,7 +111,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
 	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDescHeapDesc.NumDescriptors = 1;
+	srvDescHeapDesc.NumDescriptors = 2;
 	//SRV用デスクリプタヒープを生成
 	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
 	assert(SUCCEEDED(result));
@@ -126,10 +126,13 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	//デスクリプタヒープにSRV作成
 	dev->CreateShaderResourceView(texbuff.Get(),
 		&srvDesc,
-		descHeapSRV->GetCPUDescriptorHandleForHeapStart());
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 0,
+			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		));
+	
 #ifdef _DEBUG
 	texbuff->SetName(L"SpriteBuff");
 #endif
@@ -186,19 +189,19 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	dev->CreateDepthStencilView(depthBuff.Get(),
 		&dsvDesc,
 		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
-
-
-
 }
 
 void PostEffect::CreatePipeline(ID3D12Device* dev)
 {
-	pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev,ShaderManager::postNormalShader);
+	pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
+	SetPipeline(2);
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList,Vec4 color)
+void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, Vec4 color)
 {
+
 	DrawPost(sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false);
+
 }
 
 void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
@@ -257,18 +260,29 @@ void PostEffect::DrawPost(SpriteData& sprite, Vec2 position, float width, float 
 	//プリミティブ形状を設定
 	Sprite::cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
-	Sprite::cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-
 	UpdatePost(sprite, position, width, height, anchorpoint, color, isFlipX, isFlipY);
 	//頂点バッファをセット
 	Sprite::cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
 	//定数バッファをセット
 	Sprite::cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
-	Sprite::cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+
+	//テクスチャ用デスクリプタヒープの設定
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
+	Sprite::cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	//シェーダーリソースビューをセット
+	Sprite::cmdList->SetGraphicsRootDescriptorTable(1,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetGPUDescriptorHandleForHeapStart(),
+			0,
+			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+
+	/*Sprite::cmdList->SetGraphicsRootDescriptorTable(2,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetGPUDescriptorHandleForHeapStart(),
+			1,
+			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));*/
 
 	//ポリゴンの描画（４頂点で四角形）
 	Sprite::cmdList->DrawInstanced(4, 1, 0, 0);
@@ -279,10 +293,13 @@ void PostEffect::SetPipeline(int num)
 	switch (num)
 	{
 	case 0:
-		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev,ShaderManager::postNormalShader);
+		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
 		break;
 	case 1:
 		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postTestShader);
+		break;
+	case 2:
+		pipelineSet = Pipeline::DepthOfFieldPipelineCreateGraphicesPipeline(dev, ShaderManager::DepthOfFieldShader);
 		break;
 	}
 }

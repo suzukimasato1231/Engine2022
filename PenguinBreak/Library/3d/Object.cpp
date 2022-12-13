@@ -162,8 +162,8 @@ void Object::OBJConstantBuffer()
 		IID_PPV_ARGS(&Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB1));
 
 #ifdef _DEBUG
-	Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB0->SetName(L"Object");
-	Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB1->SetName(L"Object");
+	Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB0->SetName(L"ObjectB0");
+	Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB1->SetName(L"ObjectB1");
 #endif
 
 }
@@ -209,13 +209,6 @@ void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3
 	//‰e‚ð•`‰æ‚·‚é‚©
 	if (shadowFlag == true)
 	{
-	/*	cmdList->SetGraphicsRootDescriptorTable(4,
-			CD3DX12_GPU_DESCRIPTOR_HANDLE(
-				Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()),
-				0,
-				dev->GetDescriptorHandleIncrementSize(
-					D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV
-				)));*/
 		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
 	}
 	else
