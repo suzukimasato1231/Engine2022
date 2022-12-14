@@ -119,7 +119,7 @@ void StageSelect::Draw()
 	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
-		Object::Draw(selectOBJ, selectPsr[i], selectPos[i], Vec3(selectScale, selectScale, selectScale), Vec3(), Vec4(), selectGraph[i], true);
+		Object::Draw(selectOBJ, selectPsr[i], selectPos[i], Vec3(selectScale, selectScale, selectScale), Vec3(), Vec2(), selectGraph[i], true);
 	}
 }
 

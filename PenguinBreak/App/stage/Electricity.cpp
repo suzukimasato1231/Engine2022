@@ -4,6 +4,7 @@
 #include"../player/Player.h"
 #include"Collision.h"
 #include <LoadCSV.h>
+#include<Input.h>
 Electricity::Electricity()
 {}
 
@@ -42,6 +43,13 @@ void Electricity::AllUpdate()
 		}
 	}
 	m_electParicle->Update();
+	//UVƒXƒNƒ[ƒ‹
+	uvScroll += {0.0f, 0.002f};
+	if (uvScroll.y >= 1.0f)
+	{
+		uvScroll.y = 0.0f;
+	}
+
 }
 
 void Electricity::Update(StageOBJ* stageObj, const int Z)
@@ -70,13 +78,13 @@ void Electricity::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	}
 #endif
 	Object::Draw(m_electOBJ, stageObj->psr, stageObj->position, Vec3(2.0f, 2.0f, 2.0f),
-		Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
+		Vec3(0.0f, 90.0f, 0.0f), Vec2(), 0, shadowFlag);
 
 	if (m_electFlag == true)
 	{
 		Vec3 pos = { 11.0f,5.0f,0.0f };
-		Object::NoShadowDraw(m_electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
-			Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0);
+		Object::DrawUVScroll(m_electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
+			Vec3(0.0f, 90.0f, 0.0f), uvScroll, 0, shadowFlag);
 	}
 }
 

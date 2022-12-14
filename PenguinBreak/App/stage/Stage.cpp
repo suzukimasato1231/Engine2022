@@ -249,17 +249,17 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			case FloorNormal:
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 15.0f, floor[i]->position.z),
 					Vec3(25.0f, 30.0f, 25.0f * (floor[i]->size + 1)),
-					floor[i]->angle, Vec4(), 0, shadowFlag);
+					floor[i]->angle, Vec2(), 0, shadowFlag);
 				break;
 			case Floor169:
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z + 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f * 2),
-					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
+					floor[i]->angle, Vec2(), floorGraph, shadowFlag);
 				break;
 			case Floor11:
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z - 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f),
-					floor[i]->angle, Vec4(), floorGraph, shadowFlag);
+					floor[i]->angle, Vec2(), floorGraph, shadowFlag);
 				break;
 			case FloorMove:
 				moveFloor.Draw(floor[i], shadowFlag);
@@ -284,7 +284,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			{
 			case Wall:
 				Object::Draw(wallOBJ, stageObj[i]->psr, Vec3(stageObj[i]->position.x, stageObj[i]->position.y - 30.0f, stageObj[i]->position.z),
-					Vec3(12.0f, 12.0f, 12.0f), stageObj[i]->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
+					Vec3(12.0f, 12.0f, 12.0f), stageObj[i]->angle, Vec2(), 0, shadowFlag);
 				break;
 			case  Goal:
 				goalFish.Draw(stageObj[i], shadowFlag);
@@ -307,15 +307,15 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	}
 	//à≈
 	Object::NoShadowDraw(blackGround, blackPsr[0], Vec3(pPos.x, -50.0f, pPos.z + 1000.0f),
-		Vec3(10000.0f, 1.0f, 100000.0f), Vec3(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), blackGraph);
+		Vec3(10000.0f, 1.0f, 100000.0f), Vec3(), Vec2(), blackGraph);
 
 	//ç∂âEÇÃè∞ÇÃï`âÊ
 	Object::Draw(floorOBJ, blackPsr[1], Vec3(-280.0f, 5.0f, 1200.0f),
 		Vec3(550.0f, 15.0f, 5500.0f),
-		Vec3(), Vec4(), 0, shadowFlag);
+		Vec3(), Vec2(), 0, shadowFlag);
 	Object::Draw(floorOBJ, blackPsr[2], Vec3(500.0f, 5.0f, 1200.0f),
 		Vec3(550.0f, 15.0f, 5500.0f),
-		Vec3(), Vec4(), 0, shadowFlag);
+		Vec3(), Vec2(), 0, shadowFlag);
 
 	//î†âÛÇµÇΩéûÇ…èoÇÈãõ
 	fishBox.Draw();

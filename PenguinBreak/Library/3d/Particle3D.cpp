@@ -39,7 +39,7 @@ void Particle3D::Draw(ObjectData objectData,int graph)
 	for (size_t i = 0; i < particle.size(); i++)
 	{
 		Object::NoShadowDraw(objectData, particle[i]->psr,
-			particle[i]->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f),Vec4(),graph);
+			particle[i]->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f),Vec2(),graph);
 	}
 }
 

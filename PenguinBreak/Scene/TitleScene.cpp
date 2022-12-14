@@ -69,13 +69,13 @@ void TitleScene::Draw()
 	penginHandFbx[1]->Update(false);
 	penginHandFbx[1]->Draw();
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
-		Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph, true);
+		Vec3(0.0f, 10.0f, 0.0f), Vec2(), boxGraph, true);
 
 	Object::Draw(floorObj, wallPsr, Vec3(0.0f, -5.0f, 0.0f), Vec3(1000.0f, 1.0f, 1000.0f),
-		Vec3(), Vec4(), floorObj.OBJTexture, true);
+		Vec3(), Vec2(), floorObj.OBJTexture, true);
 
 	Object::Draw(floorObj, wallPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),
-		Vec3(), Vec4(), floorObj.OBJTexture, true);
+		Vec3(), Vec2(), floorObj.OBJTexture, true);
 
 	//UI
 	Sprite::Get()->Draw(titleGraph, Vec2(0.0f, 0.0f), static_cast<float>(window_width), static_cast<float>(window_height));
@@ -93,9 +93,9 @@ void TitleScene::ShadowDraw()
 	penginHandFbx[0]->Update(true);
 	penginHandFbx[0]->Draw();
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
-		Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph);
+		Vec3(0.0f, 10.0f, 0.0f), Vec2(), boxGraph);
 	Object::Draw(floorObj, wallPsr, Vec3(0.0f, -5.0f, 0.0f), Vec3(1000.0f, 1.0f, 1000.0f),
-		Vec3(), Vec4());
+		Vec3(), Vec2());
 }
 
 void TitleScene::Delete()

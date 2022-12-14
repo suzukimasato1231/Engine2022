@@ -8,7 +8,7 @@ Texture2D<float> shadow : register(t1);  // 1番スロットに設定された�
 float4 main(VSOutput input) : SV_TARGET
 {
 	// テクスチャマッピング
-	float4 texcolor = tex.Sample(smp0, input.uv);
+	float4 texcolor = tex.Sample(smp0, input.uv + uvMove);
 
 	// 光沢度
 	const float shininess = 4.0f;
@@ -28,16 +28,16 @@ float4 main(VSOutput input) : SV_TARGET
 		   float3 dotlightnormal = dot(dirLights[i].lightv, input.normal);
 		   // 反射光ベクトル
 		  float3 reflect = normalize(-dirLights[i].lightv + 2 * dotlightnormal * input.normal);
-		   // 拡散反射光
-		   float3 diffuse = dotlightnormal * m_diffuse;
-		   // 鏡面反射光
-		   float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+		  // 拡散反射光
+		  float3 diffuse = dotlightnormal * m_diffuse;
+		  // 鏡面反射光
+		  float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
 
-		   // 全て加算する
-		   shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor;
-	   }
-   }
-
+		  // 全て加算する
+		  shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor;
+	  }
+  }
+   
 	////ライト視点から見た位置を求める
 	float3 posFromLightVP = input.posInLVP.xyz / input.posInLVP.w;
 	float2 shadowmap = (posFromLightVP + float2(1,-1)) * float2(0.5,-0.5);
@@ -47,14 +47,13 @@ float4 main(VSOutput input) : SV_TARGET
 	{
 		float shadowDepth = (shadow.Sample(smp0, shadowmap)).x;
 		//深度を比較
-		if (shadowDepth  < posFromLightVP.z - 0.003f)
+		if (shadowDepth < posFromLightVP.z - 0.003f)
 		{
 			shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
 		}
 	}
 	// シェーディングによる色で描画
 	 return shadecolor * texcolor;
-
 }
 
 

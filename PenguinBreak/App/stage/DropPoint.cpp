@@ -42,6 +42,6 @@ void DropPoint::Draw(Vec3 pPos)
 	{
 		Object::NoShadowDraw(dropPointOBJ, dropPointPSR,
 			Vec3(pPos.x, groundDistance, pPos.z),
-			Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), dropPointGraph);
+			Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec2(), dropPointGraph);
 	}
 }

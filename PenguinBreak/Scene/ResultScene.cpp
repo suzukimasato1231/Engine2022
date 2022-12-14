@@ -118,9 +118,9 @@ void ResultScene::Draw(const int stageNum)
 	penginHandFbx[1]->Draw();
 
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
-		Vec3(1000.0f, 1.0f, 1000.0f), Vec3(), Vec4(), floorObj.OBJTexture, true);
+		Vec3(1000.0f, 1.0f, 1000.0f), Vec3(), Vec2(), floorObj.OBJTexture, true);
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),
-		Vec3(), Vec4(), floorObj.OBJTexture, true);
+		Vec3(), Vec2(), floorObj.OBJTexture, true);
 
 	if (resultTime >= 30)
 	{
@@ -188,5 +188,5 @@ void ResultScene::ShadowDraw()
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3());
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),
-		Vec3(), Vec4(), floorObj.OBJTexture, true);
+		Vec3(), Vec2(), floorObj.OBJTexture, true);
 }

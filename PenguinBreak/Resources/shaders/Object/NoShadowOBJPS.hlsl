@@ -6,7 +6,7 @@ SamplerState smp0 : register(s0);      // 0番スロットに設定されたサ�
 float4 main(VSOutput input) : SV_TARGET
 {
 	// テクスチャマッピング
-	float4 texcolor = tex.Sample(smp0, input.uv);
+	float4 texcolor = tex.Sample(smp0, input.uv + uvMove);
 
 	// 光沢度
 	const float shininess = 4.0f;
@@ -26,18 +26,18 @@ float4 main(VSOutput input) : SV_TARGET
 		   float3 dotlightnormal = dot(dirLights[i].lightv, input.normal);
 		   // 反射光ベクトル
 		  float3 reflect = normalize(-dirLights[i].lightv + 2 * dotlightnormal * input.normal);
-		   // 拡散反射光
-		   float3 diffuse = dotlightnormal * m_diffuse;
-		   // 鏡面反射光
-		   float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+		  // 拡散反射光
+		  float3 diffuse = dotlightnormal * m_diffuse;
+		  // 鏡面反射光
+		  float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
 
-		   // 全て加算する
-		   shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor;
-	   }
-   }
+		  // 全て加算する
+		  shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor;
+	  }
+  }
 
-	// シェーディングによる色で描画
-	 return shadecolor * texcolor;
+   // シェーディングによる色で描画
+	return shadecolor * texcolor;
 
 }
 

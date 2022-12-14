@@ -26,5 +26,5 @@ void GoalFish::Update()
 void GoalFish::Draw(StageOBJ* stageObj, const bool shadowFlag)
 {
 	Object::Draw(goalOBJ, stageObj->psr, stageObj->position, Vec3(3.0f, 3.0f, 3.0f),
-		Vec3(0.0f, goalScale.y, 180.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
+		Vec3(0.0f, goalScale.y, 180.0f), Vec2(), 0, shadowFlag);
 }
