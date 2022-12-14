@@ -38,19 +38,22 @@ Shader ShaderManager::postNormalShader;
 Shader ShaderManager::postTestShader;
 Shader ShaderManager::ShadowMapShader;
 Shader ShaderManager::DepthOfFieldShader;
-
+Shader ShaderManager::noShadowOBJShader;
 void ShaderManager::LoadShaders()
 {	
 	//スプライト
 	spriteShader.vsBlob = LoadShader(L"Resources/shaders/SpriteVS.hlsl", "vs_5_0");
 	spriteShader.psBlob = LoadShader(L"Resources/shaders/SpritePS.hlsl", "ps_5_0");
 	//OBJ
-	objShader.vsBlob = LoadShader(L"Resources/shaders/OBJVertexShader.hlsl", "vs_5_0");
-	objShader.psBlob = LoadShader(L"Resources/shaders/OBJPixelShader.hlsl", "ps_5_0");
+	objShader.vsBlob = LoadShader(L"Resources/shaders/Object/OBJVertexShader.hlsl", "vs_5_0");
+	objShader.psBlob = LoadShader(L"Resources/shaders/Object/OBJPixelShader.hlsl", "ps_5_0");
+	//影無しOBJ
+	noShadowOBJShader.vsBlob = LoadShader(L"Resources/shaders/Object/NoShadowOBJVS.hlsl", "vs_5_0");
+	noShadowOBJShader.psBlob = LoadShader(L"Resources/shaders/Object/NoShadowOBJPS.hlsl", "ps_5_0");
 	//トゥーンシェーダー
-	toonObjShader.vsBlob = LoadShader(L"Resources/shaders/OBJToonVS.hlsl", "vs_5_0");
-	toonObjShader.psBlob = LoadShader(L"Resources/shaders/OBJToonPS.hlsl", "ps_5_0");
-
+	toonObjShader.vsBlob = LoadShader(L"Resources/shaders/Object/OBJToonVS.hlsl", "vs_5_0");
+	toonObjShader.psBlob = LoadShader(L"Resources/shaders/Object/OBJToonPS.hlsl", "ps_5_0");
+	//ノーマルマップ
 	normalMapShader.vsBlob = LoadShader(L"Resources/shaders/Object/NormalMapVS.hlsl","vs_5_0");
 	normalMapShader.psBlob = LoadShader(L"Resources/shaders/Object/NormalMapPS.hlsl", "ps_5_0");
 	//パーティクル

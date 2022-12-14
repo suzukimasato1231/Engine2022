@@ -1,5 +1,6 @@
 #include<FBXObject3d.h>
 #include"Camera.h"
+#include<Pipeline.h>
 ///<summary>
 ///静的メンバ変数の実体
 ///</summary>
@@ -62,7 +63,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/FBXVS.hlsl",    // シェーダファイル名
+		L"Resources/shaders/FBX/FBXVS.hlsl",    // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
@@ -85,7 +86,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/FBXPS.hlsl",    // シェーダファイル名
+		L"Resources/shaders/FBX/FBXPS.hlsl",    // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
@@ -308,6 +309,7 @@ void FBXObject3d::Draw()
 	{
 		return;
 	}
+	Pipeline::SetPipeline(PipelineFBX);
 	//パイプライトステートの設定
 	cmdList->SetPipelineState(pipelinestate.Get());
 	//ルートシグネチャの設定

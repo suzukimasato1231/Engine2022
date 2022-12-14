@@ -119,7 +119,6 @@ void Player::FbxDraw(bool shadowFlag)
 	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };
 
 	pFbx.Draw(fbxPos, angle, shadowFlag);
-	Object::Get()->PreDraw(shadowFlag);
 }
 
 //ˆÚ“®

@@ -19,17 +19,28 @@ ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName = L"", LPCSTR Vtarget = "", LPCS
 class ShaderManager
 {
 public:
-	//2D
-	static Shader spriteShader;
-	static Shader postNormalShader;
-	static Shader postTestShader;
-	static Shader ShadowMapShader;
+	/// <summary>
+	/// スプライト
+	/// </summary>
+	static Shader spriteShader;		//スプライト
+	/// <summary>
+	/// ポストエフェクト
+	/// </summary>
+	static Shader postNormalShader;	//ポストエフェクト（通常）
+	static Shader postTestShader;	//ブルーム
+	static Shader ShadowMapShader;	//影シェーダー
 	static Shader DepthOfFieldShader;//被写界深度
-	//3D
-	static Shader objShader;
-	static Shader toonObjShader;
-	static Shader normalMapShader;
-	static Shader particleShader;
+	/// <summary>
+	/// オブジェクト
+	/// </summary>
+	static Shader objShader;		//通常OBJ
+	static Shader noShadowOBJShader;//影無しOBJ
+	static Shader toonObjShader;	//トゥーンシェーダー
+	static Shader normalMapShader;	//ノーマルマップ
+	/// <summary>
+	/// パーティクル
+	/// </summary>
+	static Shader particleShader;	//パーティクル
 
 	static void LoadShaders();
 };

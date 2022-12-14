@@ -75,8 +75,8 @@ void Electricity::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	if (m_electFlag == true)
 	{
 		Vec3 pos = { 11.0f,5.0f,0.0f };
-		Object::Draw(m_electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
-			Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, false);
+		Object::NoShadowDraw(m_electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
+			Vec3(0.0f, 90.0f, 0.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0);
 	}
 }
 

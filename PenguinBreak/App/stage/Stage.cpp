@@ -306,7 +306,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 		}
 	}
 	//à≈
-	Object::Draw(blackGround, blackPsr[0], Vec3(pPos.x, -50.0f, pPos.z + 1000.0f),
+	Object::NoShadowDraw(blackGround, blackPsr[0], Vec3(pPos.x, -50.0f, pPos.z + 1000.0f),
 		Vec3(10000.0f, 1.0f, 100000.0f), Vec3(), Vec4(1.0f, 1.0f, 1.0f, 1.0f), blackGraph);
 
 	//ç∂âEÇÃè∞ÇÃï`âÊ

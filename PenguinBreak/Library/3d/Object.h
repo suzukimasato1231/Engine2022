@@ -96,9 +96,9 @@ public://構造体
 	// 定数バッファ用データ構造体
 	struct ConstBufferDataB0
 	{
-		XMMATRIX viewproj;//ビュープロジェクション行列
-		XMMATRIX world;//ワールド座標
-		Vec3 cameraPos;//カメラ座標(ワールド座標)
+		XMMATRIX viewproj;	//ビュープロジェクション行列
+		XMMATRIX world;		//ワールド座標
+		Vec3 cameraPos;		//カメラ座標(ワールド座標)
 		Vec4 color;
 		XMMATRIX lightproj;//ビュープロジェクション行列
 	};
@@ -118,13 +118,12 @@ public://構造体
 		ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 		ComPtr<ID3D12Resource> constBuffB1; // 定数バッファ
 	};
-public://パイプライン設定
-	static Pipeline::PipelineSet objPipelineSet;		//OBJ読み込み
 public://変数	
 	//OBJデータ
 	static std::vector<OBJBuffer*> OBJbuffer;
 public:
 	Object() {};
+
 	~Object();
 	//初期化
 	static void Init(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
@@ -136,14 +135,12 @@ public:
 
 	static void SetLight(LightGroup* light) { Object::lightGroup = light; }
 
-	static void SetPipeline(Pipeline::PipelineSet piepline) { Object::objPipelineSet = piepline; }
+	static void Delete();
 public:
 	//ライトクラス
 	static LightGroup* lightGroup;
 public://オブジェクト関連
 	//オブジェクト描画前
-	static void PreDraw(bool shadowFlag = false);
-
 	static void InitDraw();
 	//定数バッファ設定
 	static void OBJConstantBuffer();
@@ -165,6 +162,25 @@ public://オブジェクト関連
 	/// <param name="color">色</param>
 	static	void Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0, bool shadowFlag = false);
 	
+	/// <summary>
+	/// 影無しオブジェクトのデータ更新
+	/// </summary>
+	/// <param name="position">座標</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="matRot">回転</param>
+	/// <param name="color">色</param>
+	static void NoShadowMatWorld(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color);
+
+	/// <summary>
+	/// 影無しOBJ描画
+	/// </summary>
+	/// <param name="polygon">オブジェクトデータ</param>
+	/// <param name="position">座標</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="matRot">回転</param>
+	/// <param name="color">色</param>
+	static	void NoShadowDraw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 matRot, Vec4 color = { 1,1,1,1 }, int graph = 0);
+
 public:
 	static size_t OBJNum;//OBJ読み込みの数
 };

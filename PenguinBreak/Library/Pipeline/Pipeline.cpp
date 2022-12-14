@@ -1,19 +1,37 @@
 #include"Pipeline.h"
 
 Pipeline::PipelineSet Pipeline::OBJPipeline;
+Pipeline::PipelineSet Pipeline::NoShadowOBJPipeline;
 Pipeline::PipelineSet Pipeline::ShadowMapPipeline;
 Pipeline::PipelineSet Pipeline::NormalMapPipeline;
 Pipeline::PipelineSet Pipeline::DepthOfFieldPipeline;
+int Pipeline::pipelineType;
 void Pipeline::CreatePipeline(ID3D12Device* dev)
 {
 	OBJPipeline = OBJCreateGraphicsPipeline(dev, ShaderManager::objShader);
+	NoShadowOBJPipeline = NoShadowOBJCreateGraphicsPipeline(dev, ShaderManager::noShadowOBJShader);
 	ShadowMapPipeline = OBJCreateGraphicsPipeline(dev, ShaderManager::ShadowMapShader);
 	NormalMapPipeline = NormalMapCreatePipeline(dev, ShaderManager::normalMapShader);
 	DepthOfFieldPipeline = DepthOfFieldPipelineCreateGraphicesPipeline(dev, ShaderManager::DepthOfFieldShader);
 }
 
+bool Pipeline::SetPipeline(int type)
+{
+	switch (type)
+	{
+	case PipelineNormal:
+		pipelineType = PipelineNormal;
+		return true;
+		break;
+	case PipelineNoShadow:
+		pipelineType = PipelineNoShadow;
+		return true;
+		break;
+	}
 
-//スプライト
+	return false;
+}
+
 Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
 {
 	HRESULT result;
@@ -118,7 +136,7 @@ Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev,
 	CD3DX12_DESCRIPTOR_RANGE  descRangeSRV{};//定数用
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);//t0レジスタ
 	//ルートパラメータの設定
-	CD3DX12_ROOT_PARAMETER rootparams[2]={};
+	CD3DX12_ROOT_PARAMETER rootparams[2] = {};
 	rootparams[0].InitAsConstantBufferView(0);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 	//テクスチャサンプラーの作成
@@ -232,12 +250,130 @@ Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, Sh
 	descRangeSRV1.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[5]={};
+	CD3DX12_ROOT_PARAMETER rootparams[5] = {};
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV1, D3D12_SHADER_VISIBILITY_ALL);
+	// スタティックサンプラー
+	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+
+	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+	ComPtr<ID3DBlob >rootSigBlob;
+	//バージョン自動判定でのシリアライズ
+	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
+	if (FAILED(result)) {
+		assert(0);
+	}
+	//ルートシグネチャの生成
+	result = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+		IID_PPV_ARGS(&pipelineSet.rootsignature));
+	if (FAILED(result)) {
+		assert(0);
+	}
+	//パイプラインにルートシグネチャをセット
+	gpipeline.pRootSignature = pipelineSet.rootsignature.Get();
+
+	//パイプラインステートの生成
+	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineSet.pipelinestate));
+	if (FAILED(result)) {
+		assert(0);
+	}
+	//パイプラインとルートシグネチャを表す
+	return pipelineSet;
+}
+
+Pipeline::PipelineSet Pipeline::NoShadowOBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
+{
+	HRESULT result = S_FALSE;
+	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
+	if (shader.vsBlob == nullptr)
+	{
+		assert(0);
+	}
+	if (shader.psBlob == nullptr)
+	{
+		assert(0);
+	}
+
+
+	// 頂点レイアウト
+	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+		{ // xy座標(1行で書いたほうが見やすい)
+			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+		{ // 法線ベクトル(1行で書いたほうが見やすい)
+			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+		{ // uv座標(1行で書いたほうが見やすい)
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+	};
+
+	// グラフィックスパイプラインの流れを設定
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
+	gpipeline.VS = CD3DX12_SHADER_BYTECODE(shader.vsBlob.Get());
+	gpipeline.PS = CD3DX12_SHADER_BYTECODE(shader.psBlob.Get());
+
+	// サンプルマスク
+	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
+	// ラスタライザステート
+	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+	// デプスステンシルステート
+	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+
+	// レンダーターゲットのブレンド設定
+	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
+	blenddesc.BlendEnable = true;
+	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+
+	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	// ブレンドステートの設定
+	gpipeline.BlendState.RenderTarget[0] = blenddesc;
+
+	// 深度バッファのフォーマット
+	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+
+	// 頂点レイアウトの設定
+	gpipeline.InputLayout.pInputElementDescs = inputLayout;
+	gpipeline.InputLayout.NumElements = _countof(inputLayout);
+
+	// 図形の形状設定（三角形）
+	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
+	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
+	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
+#pragma region//パイプラインルートシグネチャのセット
+	PipelineSet pipelineSet;
+#pragma region//ルートシグネチャの生成
+	// デスクリプタレンジ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV0;
+	descRangeSRV0.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+	// ルートパラメータ
+	CD3DX12_ROOT_PARAMETER rootparams[4] = {};
+	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
@@ -361,7 +497,7 @@ Pipeline::PipelineSet Pipeline::NormalMapCreatePipeline(ID3D12Device* dev, Shade
 	descRangeSRV3.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[7]={};
+	CD3DX12_ROOT_PARAMETER rootparams[7] = {};
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
@@ -506,7 +642,7 @@ Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device* dev
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[2]={};
+	CD3DX12_ROOT_PARAMETER rootparams[2] = {};
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
@@ -531,7 +667,6 @@ Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device* dev
 	//パイプラインとルートシグネチャを表す
 	return pipelineSet;
 }
-
 
 Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
 {
@@ -640,7 +775,7 @@ Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* d
 	CD3DX12_DESCRIPTOR_RANGE  descRangeSRV{};//定数用
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);//t0レジスタ
 	//ルートパラメータの設定
-	CD3DX12_ROOT_PARAMETER rootparams[2]={};
+	CD3DX12_ROOT_PARAMETER rootparams[2] = {};
 	rootparams[0].InitAsConstantBufferView(0);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 	//テクスチャサンプラーの作成
@@ -778,7 +913,7 @@ Pipeline::PipelineSet Pipeline::DepthOfFieldPipelineCreateGraphicesPipeline(ID3D
 	CD3DX12_DESCRIPTOR_RANGE  descRangeSRV2{};//定数用
 	descRangeSRV2.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);//t1レジスタ
 	//ルートパラメータの設定
-	CD3DX12_ROOT_PARAMETER rootparams[3]={};
+	CD3DX12_ROOT_PARAMETER rootparams[3] = {};
 	rootparams[0].InitAsConstantBufferView(0);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV2, D3D12_SHADER_VISIBILITY_ALL);

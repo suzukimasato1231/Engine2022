@@ -9,13 +9,13 @@ void _DirectX::Initilize()
 {
 	HRESULT result;
 #ifdef _DEBUG
-	////デバックレイヤーをオン
-	//ComPtr<ID3D12Debug1> debugController;
-	////	ComPtr<ID3D12DebugDevice> mDebugDevice;
-	//if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-	//{
-	//	debugController->EnableDebugLayer();
-	//}
+	//デバックレイヤーをオン
+	ComPtr<ID3D12Debug1> debugController;
+	ComPtr<ID3D12DebugDevice> mDebugDevice;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	{
+		debugController->EnableDebugLayer();
+	}
 #endif
 	//アダプタの列挙
 	Adapter();

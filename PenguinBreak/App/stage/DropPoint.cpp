@@ -40,8 +40,8 @@ void DropPoint::Draw(Vec3 pPos)
 {
 	if (Player::Get()->GetGroundFlag() == false && isPointFlag == true)
 	{
-		Object::Draw(dropPointOBJ, dropPointPSR,
+		Object::NoShadowDraw(dropPointOBJ, dropPointPSR,
 			Vec3(pPos.x, groundDistance, pPos.z),
-			Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), dropPointGraph, true);
+			Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec4(), dropPointGraph);
 	}
 }

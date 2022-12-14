@@ -116,7 +116,6 @@ void ResultScene::Draw(const int stageNum)
 	penginHandFbx[1]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
 	penginHandFbx[1]->Update(false);
 	penginHandFbx[1]->Draw();
-	Object::Get()->PreDraw(true);
 
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3(), Vec4(), floorObj.OBJTexture, true);
@@ -185,7 +184,6 @@ void ResultScene::ShadowDraw()
 	penginHandFbx[0]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
 	penginHandFbx[0]->Update(true);
 	penginHandFbx[0]->Draw();
-	Object::Get()->PreDraw(false);
 
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3());

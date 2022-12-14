@@ -102,6 +102,21 @@
     <Filter Include="ソース ファイル\Stage\Floor">
       <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL\OBJ\NormalMap">
+      <UniqueIdentifier>{153b2164-6bd9-4e26-956b-16936230434e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\Toon">
+      <UniqueIdentifier>{4f73b161-7bcd-4a81-85c6-becf920884ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\ShadowMap">
+      <UniqueIdentifier>{c71b2704-fa54-4435-84a1-2845342152c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\OBJShadow">
+      <UniqueIdentifier>{aacc61b8-3156-47b8-b887-f949a89c5b6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\NoShadowOBJ">
+      <UniqueIdentifier>{f1a338d2-d341-4543-9b38-945ee078f412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -109,12 +124,6 @@
     </FxCompile>
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>HLSL\Sprite</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJPixelShader.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJVertexShader.hlsl">
-      <Filter>HLSL\OBJ</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
       <Filter>HLSL\Particle</Filter>
@@ -124,12 +133,6 @@
     </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
       <Filter>HLSL\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
-      <Filter>HLSL\FBX</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\FBXVS.hlsl">
-      <Filter>HLSL\FBX</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffect\PostEffectNormalPS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
@@ -143,29 +146,11 @@
     <FxCompile Include="Resources\shaders\PostEffect\PostEffectTestVS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJToonPS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJToonVS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMap\ShadowMapPS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMap\ShadowMapVS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\Object\NormalMapPS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\Object\NormalMapVS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffect\DepthOfFieldPS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
@@ -173,19 +158,49 @@
     <FxCompile Include="Resources\shaders\PostEffect\DepthOfFieldVS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\FBX\FBXPS.hlsl">
+      <Filter>HLSL\FBX</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBX\FBXVS.hlsl">
+      <Filter>HLSL\FBX</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NormalMapPS.hlsl">
+      <Filter>HLSL\OBJ\NormalMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NormalMapVS.hlsl">
+      <Filter>HLSL\OBJ\NormalMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJToonPS.hlsl">
+      <Filter>HLSL\OBJ\Toon</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJToonVS.hlsl">
+      <Filter>HLSL\OBJ\Toon</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
+      <Filter>HLSL\OBJ\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
+      <Filter>HLSL\OBJ\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJPixelShader.hlsl">
+      <Filter>HLSL\OBJ\OBJShadow</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJVertexShader.hlsl">
+      <Filter>HLSL\OBJ\OBJShadow</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NoShadowOBJPS.hlsl">
+      <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NoShadowOBJVS.hlsl">
+      <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Sprite.hlsli">
       <Filter>HLSL\Sprite</Filter>
     </None>
-    <None Include="Resources\shaders\OBJShaderHeader.hlsli">
-      <Filter>HLSL\OBJ</Filter>
-    </None>
     <None Include="Resources\shaders\Particle.hlsli">
       <Filter>HLSL\Particle</Filter>
-    </None>
-    <None Include="Resources\shaders\FBX.hlsli">
-      <Filter>HLSL\FBX</Filter>
     </None>
     <None Include="Resources\shaders\PostEffect\PostEffectNormal.hlsli">
       <Filter>HLSL\PostEffect</Filter>
@@ -193,20 +208,29 @@
     <None Include="Resources\shaders\PostEffect\PostEffectTest.hlsli">
       <Filter>HLSL\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\OBJToon.hlsli">
-      <Filter>HLSL\OBJ</Filter>
-    </None>
-    <None Include="Resources\shaders\ShadowMap.hlsli">
-      <Filter>HLSL\OBJ</Filter>
-    </None>
     <None Include="Resources\shaders\ShadowMap\ShadowMap.hlsli">
       <Filter>HLSL\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\Object\NormalMap.hlsli">
-      <Filter>HLSL\OBJ</Filter>
-    </None>
     <None Include="Resources\shaders\PostEffect\DepthOfField.hlsli">
       <Filter>HLSL\PostEffect</Filter>
+    </None>
+    <None Include="Resources\shaders\FBX\FBX.hlsli">
+      <Filter>HLSL\FBX</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\NormalMap.hlsli">
+      <Filter>HLSL\OBJ\NormalMap</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\OBJToon.hlsli">
+      <Filter>HLSL\OBJ\Toon</Filter>
+    </None>
+    <None Include="Resources\shaders\ShadowMap.hlsli">
+      <Filter>HLSL\OBJ\ShadowMap</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\OBJShaderHeader.hlsli">
+      <Filter>HLSL\OBJ\OBJShadow</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\NoShadowOBJ.hlsli">
+      <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

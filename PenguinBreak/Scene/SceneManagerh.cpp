@@ -51,16 +51,16 @@ void SceneManagerh::Initialize()
 	////影
 	ShadowMap::Get()->Init();
 	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
-	Texture::Get()->LoadCameraTexture(PostEffect::Get()->GetDepth());
+	//Texture::Get()->LoadCameraTexture(PostEffect::Get()->GetDepth());
 
 	//音作成
 	Audio::Get()->Init();
-	titleScene.Initialize();
 	////ゲームシーン
+	titleScene.Initialize();
 	gameScene.Initialize();
-	gameScene.Init(0);
 	stageScene.Initialize();
 	resultScene.Initialize();
+	gameScene.Init(0);
 	resultScene.Init();
 	titleScene.Init();
 
@@ -116,7 +116,7 @@ void SceneManagerh::Update()
 	{
 		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
 		{
-			if (resultScene.GetScene() == ResultNextStage&&stageScene.GetStageNum()!=3)
+			if (resultScene.GetScene() == ResultNextStage && stageScene.GetStageNum() != 3)
 			{
 				sceneMe = GameScene;
 			}
@@ -180,7 +180,7 @@ void SceneManagerh::Update()
 				{
 					stageScene.StagePlas();
 					gameScene.Init(stageScene.GetStageNum());
-					
+
 				}
 				else if (sceneMe == SelectScene)
 				{
@@ -214,7 +214,7 @@ void SceneManagerh::Draw()
 {
 	//影深度値取得
 	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
-	Object::Get()->PreDraw(), Object::InitDraw(), Sprite::Get()->PreDraw();
+	Object::InitDraw(), Sprite::Get()->PreDraw();
 	if (scene == Title)
 	{
 		titleScene.ShadowDraw();
@@ -234,8 +234,7 @@ void SceneManagerh::Draw()
 	ShadowMap::Get()->PostDraw(_DirectX::Get()->GetCmandList());
 
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
-	Object::SetPipeline(Pipeline::OBJPipeline);
-	Object::Get()->PreDraw(true), Object::InitDraw(), Sprite::Get()->PreDraw();
+	Object::InitDraw(), Sprite::Get()->PreDraw();
 	//カメラ目線の描画
 	if (scene == Title)
 	{
@@ -264,7 +263,6 @@ void SceneManagerh::Draw()
 	_DirectX::Get()->PreDraw();
 
 	////ポストエフェクトの描画
-	//PostEffect::Get()->SetPipeline(1);
 	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList());
 
 	_DirectX::Get()->ResourceBarrier();
@@ -274,4 +272,5 @@ void SceneManagerh::Delete()
 {
 	titleScene.Delete();
 	resultScene.Delete();
+	Object::Delete();
 }

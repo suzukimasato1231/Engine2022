@@ -68,7 +68,6 @@ void TitleScene::Draw()
 	penginHandFbx[1]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
 	penginHandFbx[1]->Update(false);
 	penginHandFbx[1]->Draw();
-	Object::Get()->PreDraw(true);
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
 		Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph, true);
 
@@ -93,7 +92,6 @@ void TitleScene::ShadowDraw()
 	penginHandFbx[0]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
 	penginHandFbx[0]->Update(true);
 	penginHandFbx[0]->Draw();
-	Object::Get()->PreDraw(false);
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
 		Vec3(0.0f, 10.0f, 0.0f), Vec4(), boxGraph);
 	Object::Draw(floorObj, wallPsr, Vec3(0.0f, -5.0f, 0.0f), Vec3(1000.0f, 1.0f, 1000.0f),
