@@ -10,6 +10,7 @@ private:
 		Vec3 position = {};
 		Vec3 velocity = {};
 		Vec3 accel = {};
+		int graph = 0;
 		int framNow = 0;
 		int framMax;
 	};
@@ -25,7 +26,7 @@ public:
 	//ï`âÊ
 	void Draw(ObjectData objectData, int graph = 0);
 	//çÏê¨
-	void Create(Vec3 pos, Vec3 velocity, Vec3 accel, int time);
+	void Create(Vec3 pos, Vec3 velocity, Vec3 accel, int time, int graph = 0);
 
 	static Particle3D* Create();
 private:

@@ -281,7 +281,7 @@ void Object::DrawUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 sca
 		//定数バッファ
 		OBJConstantBuffer();
 	}
-	if (Pipeline::SetPipeline(PipelineNormal))
+	if (Pipeline::SetPipeline(PipelineNoShadow))
 	{
 		//プリミティブ形状の設定コマンド（三角形リスト）
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -292,16 +292,8 @@ void Object::DrawUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 sca
 		{
 			assert(0);
 		}
-		if (shadowFlag == true)
-		{
-			cmdList->SetPipelineState(Pipeline::OBJPipeline.pipelinestate.Get());
-			cmdList->SetGraphicsRootSignature(Pipeline::OBJPipeline.rootsignature.Get());
-		}
-		else
-		{
-			cmdList->SetPipelineState(Pipeline::ShadowMapPipeline.pipelinestate.Get());
-			cmdList->SetGraphicsRootSignature(Pipeline::ShadowMapPipeline.rootsignature.Get());
-		}
+		cmdList->SetPipelineState(Pipeline::NoShadowOBJPipeline.pipelinestate.Get());
+		cmdList->SetGraphicsRootSignature(Pipeline::NoShadowOBJPipeline.rootsignature.Get());
 	}
 	//更新
 	MatWordUVScroll(polygon, psr, position, scale, rotation, uv);
@@ -333,16 +325,16 @@ void Object::DrawUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 sca
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
 
-	//影を描画するか
-	if (shadowFlag == true)
-	{
-		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
-	}
-	else
-	{
-		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(graph));
-	}
+	////影を描画するか
+	//if (shadowFlag == true)
+	//{
+	//	cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
+	//}
+	//else
+	//{
+	//	//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+	//	cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(graph));
+	//}
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
 	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
 	OBJNum++;

@@ -123,7 +123,7 @@ private:
 
 	ObjectData playerObject;			//プレイヤーオブジェクト
 	PSR psr = {};
-	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
+	Vec3 position{ 94.0f,14.0f,80.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
 	Vec3 scale{ 2.5f,2.5f,2.5f };		//大きさ
@@ -161,7 +161,10 @@ private:
 
 	const int walkTimeMax = 5;
 	int walkTime = walkTimeMax;
-
+	//ステージ開始時の演出フラグ
+	bool starStaging = false;
+	const int startTimeMax = 60;
+	int startTime = 0;
 	//魚死亡時の情報
 	Vec3 fishDiePos = {};
 	Vec3 fishDieAngle = {};

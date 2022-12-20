@@ -11,14 +11,12 @@ Player::~Player()
 
 void Player::Init()
 {
-	//playerObject = Shape::CreateOBJ("pengin", true);
 	oldPosition = position;
 	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 
 	staging.Init();
-
 
 	walkSE = Audio::Get()->SoundLoadWave("Resources/sound/SE/walk.wav");
 	pFbx.Load();
@@ -56,14 +54,31 @@ void Player::Update()
 		}
 
 		pFbx.Update();
+		//開始時のアニメーション
+		if (starStaging == true && moveFlag == true)
+		{
+			if (startTime >= startTimeMax - 40)
+			{
+				staging.CreateStart(position);
+			}
+			startTime++;
+			if (startTime >= startTimeMax)
+			{
+				starStaging = false;
+				startTime = 0;
+			}
+		}
 	}
 }
 
 void Player::Draw(bool shadowFlag)
 {
 	staging.Draw3D();
+	if (starStaging == false || moveFlag == false)
+	{
+		FbxDraw(shadowFlag);
+	}
 
-	FbxDraw(shadowFlag);
 }
 
 void Player::DrawParticle()
@@ -85,7 +100,7 @@ void Player::GroundFlag()
 
 void Player::Reset()
 {
-	position = { 70.0f,25.0f,80.0f };	//座標
+	position = { 90.0f,25.0f,80.0f };	//座標
 	oldPosition = position;
 	remainLives = remainLivesMax;
 	fishNum = 0;
@@ -96,6 +111,15 @@ void Player::Reset()
 	decLifeTime = 0;
 	isFishDie = false;
 	pFbx.Reset();
+	if (moveFlag == true)
+	{
+		starStaging = true;
+		startTime = 0;
+	}
+	else
+	{
+		starStaging = false;
+	}
 }
 
 void Player::Delete()
@@ -124,7 +148,7 @@ void Player::FbxDraw(bool shadowFlag)
 //移動
 void Player::Move()
 {
-	if (dieType == DIENULL && clearFlag == false && gameoverFlag == false)
+	if (dieType == DIENULL && clearFlag == false && gameoverFlag == false && starStaging == false)
 	{
 		if (Input::Get()->KeybordInputArrow() == true)
 		{
@@ -253,12 +277,13 @@ void Player::FallDie()
 				decLifeTime--;
 				if (decLifeTime <= 0)
 				{
-					position = { 70.0f,30.0f,80.0f };	//座標
+					position = { 90.0f,30.0f,80.0f };	//座標
 					angle = { -30.0f,180.0f,0.0f };	//角度
 					oldPosition = position;
 					remainLives--;
 					isFishDie = false;
 					dieType = DIENULL;
+					starStaging = true;
 				}
 			}
 			else if (remainLives == 0)

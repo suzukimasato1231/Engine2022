@@ -242,7 +242,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	for (int i = 0; i < floorSize; i++)
 	{
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 33 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			&& ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			switch (floor[i]->type)
 			{
