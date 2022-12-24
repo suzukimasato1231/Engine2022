@@ -2,11 +2,11 @@
 #include<fstream>
 #include<sstream>
 using namespace std;
-ID3D12Device *Shape::dev = nullptr;
+ID3D12Device* Shape::dev = nullptr;
 Shape::Shape()
 {}
 
-void Shape::Init(ID3D12Device *dev)
+void Shape::Init(ID3D12Device* dev)
 {
 	Shape::dev = dev;
 }
@@ -356,7 +356,7 @@ ObjectData Shape::CreateCylinder(int division, int prizmHeight, int radius)
 	return polygon;
 }
 
-ObjectData Shape::CreateOBJ(const std::string filename, bool smoothing)
+ObjectData Shape::CreateOBJ(const std::string filename, bool smoothing, const std::string filePath)
 {
 	ObjectData polygon;
 
@@ -364,7 +364,7 @@ ObjectData Shape::CreateOBJ(const std::string filename, bool smoothing)
 	//ファイルストリーム
 	std::ifstream file;
 	//.objファイルを開く
-	std::string directoryPath = "Resources/" + filename + "/";
+	std::string directoryPath = "Resources/" + filePath + filename + "/";
 	file.open(directoryPath + filename + ".obj");
 	//ファイルオープン失敗をチェック
 	if (file.fail())
@@ -562,7 +562,7 @@ int Shape::LoadMaterial(const std::string& directoryPath, const std::string& fil
 	return  0;
 }
 
-void Shape::CreateModel(ObjectData &polygon)
+void Shape::CreateModel(ObjectData& polygon)
 {
 	HRESULT result = S_FALSE;
 	for (size_t i = 0; i < polygon.indices.size() / 3; i++)
@@ -614,9 +614,9 @@ void Shape::CreateModel(ObjectData &polygon)
 		nullptr,
 		IID_PPV_ARGS(&polygon.indexBuff));
 
-	Vertex *vertMap = nullptr;
+	Vertex* vertMap = nullptr;
 	//GPU上のバッファに対応した仮想メモリを取得
-	result = polygon.vertBuff->Map(0, nullptr, (void **)&vertMap);
+	result = polygon.vertBuff->Map(0, nullptr, (void**)&vertMap);
 
 	//全頂点に対して
 	for (size_t i = 0; i < polygon.vertices.size(); i++)
@@ -628,8 +628,8 @@ void Shape::CreateModel(ObjectData &polygon)
 	polygon.vertBuff->Unmap(0, nullptr);
 
 	//GPU上のバッファに対応した仮想メモリを取得
-	unsigned short *indexMap = nullptr;
-	result = polygon.indexBuff->Map(0, nullptr, (void **)&indexMap);
+	unsigned short* indexMap = nullptr;
+	result = polygon.indexBuff->Map(0, nullptr, (void**)&indexMap);
 
 	//全インデックスに対して
 	for (size_t i = 0; i < polygon.indices.size(); i++)

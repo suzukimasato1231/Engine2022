@@ -16,7 +16,7 @@ FishBox::~FishBox()
 
 void FishBox::Init()
 {
-	fishOBJ = Shape::CreateOBJ("fish", true);
+	fishOBJ = Shape::CreateOBJ("fish", true,"OBJ/");
 }
 
 void FishBox::Update(Vec3 pPos)

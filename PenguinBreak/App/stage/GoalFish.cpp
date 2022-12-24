@@ -10,7 +10,7 @@ GoalFish::~GoalFish()
 
 void GoalFish::Init()
 {
-	goalOBJ = Shape::CreateOBJ("goldFish");
+	goalOBJ = Shape::CreateOBJ("goldFish", true, "OBJ/");
 }
 
 void GoalFish::Update()

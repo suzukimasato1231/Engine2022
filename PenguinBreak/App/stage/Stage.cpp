@@ -22,9 +22,9 @@ Stage::~Stage()
 void Stage::Init()
 {
 	blockBox.Init();
-	floorOBJ = Shape::CreateOBJ("ice");
+	floorOBJ = Shape::CreateOBJ("ice",false,"OBJ/");
 	floorGraph = Texture::Get()->LoadTexture(L"Resources/floor.png");
-	wallOBJ = Shape::CreateOBJ("iceWall");
+	wallOBJ = Shape::CreateOBJ("iceWall", false, "OBJ/");
 
 	blackGround = Shape::CreateSquare(1.0f, 0.5f, 1.0f);
 	blackGraph = Texture::Get()->LoadTexture(L"Resources/black.png");

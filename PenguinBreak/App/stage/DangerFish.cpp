@@ -9,7 +9,7 @@ DangerFish::~DangerFish()
 
 void DangerFish::Init()
 {
-	m_dangerFishOBJ = Shape::CreateOBJ("dangerFish", true);
+	m_dangerFishOBJ = Shape::CreateOBJ("dangerFish", true,  "OBJ/");
 }
 
 void DangerFish::Update(StageOBJ* stageObj)

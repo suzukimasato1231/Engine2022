@@ -132,7 +132,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 			descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 0,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 		));
-	
+
 #ifdef _DEBUG
 	texbuff->SetName(L"SpriteBuff");
 #endif
@@ -154,7 +154,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	//深度バッファリソース設定
 	CD3DX12_RESOURCE_DESC depthResDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
-			DXGI_FORMAT_D32_FLOAT,
+			DXGI_FORMAT_R32_TYPELESS,
 			window_width,
 			window_height,
 			1, 0,
@@ -189,6 +189,13 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	dev->CreateDepthStencilView(depthBuff.Get(),
 		&dsvDesc,
 		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
+
+	/*dev->CreateShaderResourceView(depthBuff.Get(),
+		&srvDesc,
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 1,
+			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		));*/
 }
 
 void PostEffect::CreatePipeline(ID3D12Device* dev)

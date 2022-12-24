@@ -8,7 +8,7 @@ MoveFloor::~MoveFloor()
 
 void MoveFloor::Init()
 {
-	moveFloorOBJ = Shape::CreateOBJ("ice");
+	moveFloorOBJ = Shape::CreateOBJ("ice", false, "OBJ/");
 }
 
 void MoveFloor::Update(Floor* floorData)

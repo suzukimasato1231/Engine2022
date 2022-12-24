@@ -25,11 +25,11 @@ void ResultScene::Initialize()
 	uiNumber[9] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber10.png");
 	uiSlash = Sprite::Get()->SpriteCreate(L"Resources/UI/UISlash.png");
 
-	clearGraph = Sprite::Get()->SpriteCreate(L"Resources/clear.png");
-	nextGraph = Sprite::Get()->SpriteCreate(L"Resources/resultUI/retry.png");
-	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/resultUI/select.png");
+	clearGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/clear.png");
+	nextGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/retry.png");
+	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/select.png");
 
-	buttonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
+	buttonGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/titleButton.png");
 
 
 	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
@@ -41,8 +41,8 @@ void ResultScene::Initialize()
 		penginHandFbx[i]->SetModel(penginModel);
 		penginHandFbx[i]->SetScale(Vec3(0.015f, 0.015f, 0.015f));
 	}
-	fishObj = Shape::CreateOBJ("fish");
-	floorObj = Shape::CreateOBJ("ice");
+	fishObj = Shape::CreateOBJ("fish", false, "OBJ/");
+	floorObj = Shape::CreateOBJ("ice", false, "OBJ/");
 	// ライトグループクラス作成
 	lightGroup = std::make_unique<LightGroup>();
 	lightGroup->Initialize();

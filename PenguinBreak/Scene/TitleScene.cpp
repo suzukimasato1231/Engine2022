@@ -15,11 +15,11 @@ void TitleScene::Initialize()
 {
 	box = Shape::CreateOBJ("cube");
 	boxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
-	titleButtonGraph = Sprite::Get()->SpriteCreate(L"Resources/titleButton.png");
+	titleButtonGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/titleButton.png");
 	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title.png");
 
-	wallObj = Shape::CreateOBJ("iceWall");
-	floorObj = Shape::CreateOBJ("ice");
+	wallObj = Shape::CreateOBJ("iceWall", false, "OBJ/");
+	floorObj = Shape::CreateOBJ("ice", false, "OBJ/");
 	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin","FBX/");
 	for (int i = 0; i < 2; i++)
 	{

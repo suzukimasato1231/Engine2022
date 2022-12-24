@@ -15,8 +15,8 @@ Electricity::~Electricity()
 
 void Electricity::Init()
 {
-	m_electOBJ = Shape::CreateOBJ("elect");
-	m_electShockOBJ = Shape::CreateOBJ("electShock");
+	m_electOBJ = Shape::CreateOBJ("elect", false, "OBJ/");
+	m_electShockOBJ = Shape::CreateOBJ("electShock", false, "OBJ/");
 	m_electParicle = ParticleManager::Create();
 	m_electParicleGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/elect.png");
 }
