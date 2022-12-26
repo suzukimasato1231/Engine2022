@@ -55,6 +55,8 @@ public://ゲームパッド
 	//右スティック入力してるか
 	bool ConRightInput();
 
+	bool ConLeftInputS();
+
 	//左スティックを入力してるか
 	bool ConLeftInput();
 public://マウス

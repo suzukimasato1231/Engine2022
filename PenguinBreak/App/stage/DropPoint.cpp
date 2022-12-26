@@ -16,7 +16,7 @@ DropPoint::~DropPoint()
 void DropPoint::Init()
 {
 	dropPointOBJ = Shape::CreateSquare(10.0f, 0.05f, 10.0f);
-	dropPointGraph = Texture::Get()->LoadTexture(L"Resources/dropPoint.png");
+	dropPointGraph = Texture::Get()->LoadTexture(L"Resources/UI/dropPoint.png");
 }
 
 void DropPoint::Update(Vec3 pPos, Vec3 pos, Vec3 angle, Vec3 scale)

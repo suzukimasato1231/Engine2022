@@ -197,6 +197,29 @@ void Player::Move()
 			pFbx.PlayFBX(FbxWalk);
 
 		}
+		else if (Input::Get()->ConLeftInputS())
+		{
+			if (groundFlag == true && audioTime % 20 == 0)
+			{
+				Audio::Get()->SoundSEPlayWave(walkSE);
+			}
+			float rad = Input::Get()->GetLeftAngle();
+			Vec3 speeds = { 1.0f,1.0f,1.0f };
+			vec.x = speeds.x * sinf(-rad);
+			if (moveFlag == true)
+			{
+				vec.z = speeds.z * cosf(rad);
+			}
+			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));// -59.8f);
+			if (walkTime < 0)
+			{
+				staging.CreateWalk(position, vec);
+				walkTime = walkTimeMax;
+			}
+			walkTime--;
+
+			pFbx.PlayFBX(FbxWalk);
+		}
 		else
 		{
 			pFbx.PlayFBX(FbxNone);

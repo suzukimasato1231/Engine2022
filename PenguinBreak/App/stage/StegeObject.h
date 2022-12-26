@@ -11,6 +11,7 @@ enum StageFloor
 	FloorMove,		//ˆÚ“®°
 	FloorPitfall_A,	//—‚Æ‚µŒŠA
 	FloorPitfall_B,	//—‚Æ‚µŒŠB
+	FloorMove2,		//ˆÚ“®°
 };
 
 enum StageType

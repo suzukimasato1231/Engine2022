@@ -54,6 +54,8 @@ private:
 
 	void SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
+	void SetMoveFloor2(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
 	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time);
 
 	void SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);

@@ -195,7 +195,7 @@ void Stage::Update(Vec3 pPos)
 			break;
 		case FloorMove:
 			if ((X - 3 <= floor[i]->map.x && floor[i]->map.x <= X + 3)
-				&& ((MAP_HEIGHT - 1 + Z) - 3 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 3)
+				&& ((MAP_HEIGHT - 1 + Z) - 4 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
 				&& Player::Get()->GetIsFishDie() == false)
 			{
 				//ÉvÉåÉCÉÑÅ[
@@ -448,6 +448,10 @@ void Stage::LoadStage(int stageNum)
 				SetPitfallFloor(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
 					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)), 100);
 				break;
+			case FloorMove2:
+				SetMoveFloor2(Vec3(static_cast<float>(x) * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), Vec2(static_cast<float>(x), static_cast<float>(y)));
+				break;
 			default:
 				break;
 			}
@@ -578,6 +582,18 @@ void Stage::SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	floor[NUM]->scale = scale;
 	floor[NUM]->angle = angle;
 	floor[NUM]->type = FloorMove;
+}
+
+void Stage::SetMoveFloor2(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+{
+	floor.push_back(new Floor);
+	size_t NUM = floor.size() - 1;
+	floor[NUM]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
+	floor[NUM]->position = position;
+	floor[NUM]->scale = scale;
+	floor[NUM]->angle = angle;
+	floor[NUM]->type = FloorMove;
+	floor[NUM]->moveFlag = 1;
 }
 
 void Stage::SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time)
