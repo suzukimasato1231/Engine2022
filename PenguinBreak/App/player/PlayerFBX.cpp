@@ -18,6 +18,7 @@ void PlayerFBX::Load()
 	goalJumpModel = FbxLoader::GetInstance()->LoadModelFromFile("goalJump", "FBX/");
 	goalHandModel = FbxLoader::GetInstance()->LoadModelFromFile("goalHand", "FBX/");
 	jumpModel = FbxLoader::GetInstance()->LoadModelFromFile("jumpFbx", "FBX/");
+	walkModel = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "FBX/");
 	for (int i = 0; i < 2; i++)
 	{
 		//3Dオブジェクトの生成とモデルのセット
@@ -46,6 +47,10 @@ void PlayerFBX::Load()
 		jumpFbx[i] = std::make_unique<FBXObject3d>();
 		jumpFbx[i]->Initialize();
 		jumpFbx[i]->SetModel(jumpModel);
+
+		walkFbx[i] = std::make_unique<FBXObject3d>();
+		walkFbx[i]->Initialize();
+		walkFbx[i]->SetModel(walkModel);
 
 	}
 }
@@ -114,6 +119,15 @@ void PlayerFBX::Draw(Vec3 fbxPos, Vec3 angle, bool shadowFlag)
 		jumpFbx[0]->Update(shadowFlag);
 		jumpFbx[1]->Update(false);
 		break;
+	case FbxWalking:
+		for (int i = 0; i < fbxNum; i++)
+		{
+			walkFbx[i]->SetPosition(fbxPos);
+			walkFbx[i]->SetRotation(angle);
+		}
+		walkFbx[0]->Update(shadowFlag);
+		walkFbx[1]->Update(false);
+		break;
 	default:
 		break;
 	}
@@ -167,6 +181,14 @@ void PlayerFBX::Draw(Vec3 fbxPos, Vec3 angle, bool shadowFlag)
 			jumpFbx[1]->Draw();
 		}
 		break;
+	case FbxWalking:
+		if (shadowFlag == false) {
+			walkFbx[0]->Draw();
+		}
+		else {
+			walkFbx[1]->Draw();
+		}
+		break;
 	default:
 		break;
 	}
@@ -185,6 +207,7 @@ void PlayerFBX::Delete()
 	safe_delete(goalJumpModel);
 	safe_delete(goalHandModel);
 	safe_delete(jumpModel);
+	safe_delete(walkModel);
 }
 
 void PlayerFBX::PlayFBX(int fbxType)
@@ -194,10 +217,9 @@ void PlayerFBX::PlayFBX(int fbxType)
 	case FbxNone:
 		if (jumpTime <= 0)
 		{
-			fbxFlag[0] = false;
-			if (fbxFlag[1] == false)
+			if (fbxFlag != FbxLoopStop)
 			{
-				fbxFlag[1] = true;
+				fbxFlag = FbxLoopStop;
 				stopFbx[0]->PlayAnimation(true);
 				stopFbx[1]->PlayAnimation(true);
 			}
@@ -207,13 +229,12 @@ void PlayerFBX::PlayFBX(int fbxType)
 	case FbxWalk:
 		if (jumpTime <= 0)
 		{
-			if (fbxFlag[0] == false)
+			if (fbxFlag != FbxLoopRun)
 			{//アニメーション開始
 				fbxObject1[0]->PlayAnimation(true);
 				fbxObject1[1]->PlayAnimation(true);
-				fbxFlag[0] = true;
+				fbxFlag = FbxLoopRun;
 			}
-			fbxFlag[1] = false;
 			this->fbxType = fbxType;
 		}
 		break;
@@ -246,6 +267,20 @@ void PlayerFBX::PlayFBX(int fbxType)
 		jumpTime = jumpTimeMax;
 		this->fbxType = fbxType;
 		break;
+	case FbxWalking:
+		if (jumpTime <= 0)
+		{
+			if (fbxFlag != FbxLoopWalk)
+			{
+				for (int i = 0; i < 2; i++)
+				{
+					walkFbx[i]->PlayAnimation(true);
+				}
+				fbxFlag = FbxLoopWalk;
+			}
+			this->fbxType = fbxType;
+		}
+		break;
 	default:
 		break;
 	}
@@ -254,15 +289,16 @@ void PlayerFBX::PlayFBX(int fbxType)
 void PlayerFBX::StopAnimation()
 {
 	menuStopFlag = true;
+	fbxFlag = FbxLoopMax;
 	for (size_t i = 0; i < fbxNum; i++)
 	{
 		stopFbx[i]->StopAnimation();
 		fbxObject1[i]->StopAnimation();
-		fbxFlag[i] = false;
 		electFbx[i]->StopAnimation();
 		goalJumpFbx[i]->StopAnimation();
 		goalHandFbx[i]->StopAnimation();
 		jumpFbx[i]->StopAnimation();
+		walkFbx[i]->StopAnimation();
 	}
 }
 
@@ -278,6 +314,7 @@ void PlayerFBX::StartAnimation()
 			goalJumpFbx[i]->PlayAnimation(false);
 			goalHandFbx[i]->PlayAnimation(false);
 			jumpFbx[i]->PlayAnimation(false);
+			walkFbx[i]->PlayAnimation(true);
 		}
 	}
 }

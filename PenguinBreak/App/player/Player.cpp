@@ -218,7 +218,7 @@ void Player::Move()
 			}
 			walkTime--;
 
-			pFbx.PlayFBX(FbxWalk);
+			pFbx.PlayFBX(FbxWalking);
 		}
 		else
 		{

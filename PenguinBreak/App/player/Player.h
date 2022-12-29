@@ -128,7 +128,7 @@ private:
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
 	Vec3 scale{ 2.5f,2.5f,2.5f };		//大きさ
 	Vec3 angle{ -30.0f,180.0f,0.0f };	//角度
-	Vec3 pScale = { 8.0f,7.0f,10.0f };	//プレイヤー大きさ
+	Vec3 pScale = { 8.0f,5.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
 	Vec3 vec = {};

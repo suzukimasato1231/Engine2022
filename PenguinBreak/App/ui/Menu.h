@@ -21,6 +21,7 @@ private:
 	//ƒƒjƒ…[ŠÖ˜A
 	SpriteData menuButton;
 	SpriteData menuFream;
+	SpriteData menuFreamFish;
 	SpriteData menuRetry;
 	SpriteData menuVolum;
 	SpriteData menuStageSelect;

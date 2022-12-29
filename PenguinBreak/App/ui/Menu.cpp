@@ -14,6 +14,7 @@ void Menu::Init()
 {
 	menuButton = Sprite::Get()->SpriteCreate(L"Resources/UI/menuButton.png");
 	menuFream = Sprite::Get()->SpriteCreate(L"Resources/UI/menuFrame.png");
+	menuFreamFish = Sprite::Get()->SpriteCreate(L"Resources/UI/menuFrameFish.png");
 	menuRetry = Sprite::Get()->SpriteCreate(L"Resources/UI/menuRetry.png");
 	menuVolum = Sprite::Get()->SpriteCreate(L"Resources/UI/menuVolume.png");
 	menuStageSelect = Sprite::Get()->SpriteCreate(L"Resources/UI/menuStageSelect.png");
@@ -157,8 +158,8 @@ void Menu::Draw(const bool gameoverFlag)
 	if (menuEasingFlag == true && gameoverFlag == false && audioFlag == false)
 	{
 
-		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x, 300.5), 512.0, 547.0f, Vec2(0.5f, 0.5f));
-
+		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x + 26.5f, 300.5), 459.0, 547.0f, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(menuFreamFish, Vec2(menuPos.x , 300.5), 512.0f, 549.0f, Vec2(0.5f, 0.5f));
 		float UIPosX = 50.0f + menuPos.x;
 		if (menuNum == 0)
 		{
@@ -188,7 +189,8 @@ void Menu::Draw(const bool gameoverFlag)
 	}
 	if (audioFlag == true)
 	{
-		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x, 300.5), 512.0, 547.0f, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x + 26.5f, 300.5), 459.0f, 549.0f, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(menuFreamFish, Vec2(menuPos.x, 300.5), 512.0f, 549.0f, Vec2(0.5f, 0.5f));
 		Sprite::Get()->Draw(menuAudioFream, Vec2(menuPos.x, 300.5), 512.0, 547.0f, Vec2(0.5f, 0.5f));
 		Sprite::Get()->Draw(menuAudioVolum, Vec2(menuPos.x - 133.0f, 285.0f), 372.0f * volum * 10, 28.0f, Vec2(0.0f, 0.0f));
 		Sprite::Get()->Draw(menuAudioLandmark, Vec2(menuPos.x - 133.0f + 372.0f * volum * 10, 295.0f), 12.0f, 68.0f, Vec2(0.5f, 0.5f));

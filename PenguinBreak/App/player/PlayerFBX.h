@@ -12,12 +12,21 @@ enum PlayerFBXType
 	FbxGoalJump,
 	FbxGoalHand,
 	FbxJump,
+	FbxWalking,
 };
 /// <summary>
 /// プレイヤーのFBXクラス
 /// </summary>
 class PlayerFBX
 {
+private:
+	enum LoopFbx
+	{
+		FbxLoopStop,
+		FbxLoopWalk,
+		FbxLoopRun,
+		FbxLoopMax,
+	};
 
 public:
 	PlayerFBX();
@@ -43,10 +52,13 @@ private:
 	const int fbxNum = 2;
 
 	int fbxType = NULL;
-	bool fbxFlag[2] = {};
+	int fbxFlag = 1;
 	//歩きFBX
 	Model* model1 = nullptr;
 	std::unique_ptr<FBXObject3d> fbxObject1[2];
+	//歩きFBX
+	Model* walkModel = nullptr;
+	std::unique_ptr<FBXObject3d> walkFbx[2];
 	//停止FBX
 	Model* stopModel = nullptr;
 	std::unique_ptr<FBXObject3d> stopFbx[2];
