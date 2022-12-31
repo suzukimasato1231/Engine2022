@@ -82,6 +82,19 @@ bool Input::ConRightInput()
 	return isHit;
 }
 
+bool Input::ConLeftInputS()
+{
+	bool isHit = false;
+	if (ControllerPush(LButtonUpS) == true ||
+		ControllerPush(LButtonDownS) == true ||
+		ControllerPush(LButtonLeftS) == true ||
+		ControllerPush(LButtonRightS) == true)
+	{
+		isHit = true;
+	}
+	return isHit;
+}
+
 bool Input::ConLeftInput()
 {
 	bool isHit = false;

@@ -4,6 +4,8 @@
 #include"FBXObject3d.h"
 #include"Staging.h"
 #include<memory>
+#include <Audio.h>
+#include"PlayerFBX.h"
 enum DieType
 {
 	DIENULL,
@@ -12,14 +14,10 @@ enum DieType
 	EATDIE,
 	DIENOW,
 };
-enum PlayerFBX
-{
-	None,
-	Walk,
-	ElectDie,
-	GoalJump,
-	GoalHand,
-};
+
+/// <summary>
+/// プレイヤークラス
+/// </summary>
 class Player :public Singleton<Player>
 {
 public:
@@ -68,6 +66,8 @@ public:
 	void GetClearFlag(bool flag) { clearFlag = flag; }
 
 	int GetDecLifeFlag() { return decLifeTime; }
+
+	void StopAnimation();
 private:
 	/// <summary>
 	/// FBXの描画
@@ -123,12 +123,12 @@ private:
 
 	ObjectData playerObject;			//プレイヤーオブジェクト
 	PSR psr = {};
-	Vec3 position{ 64.0f,14.0f,80.0f };	//座標
+	Vec3 position{ 94.0f,14.0f,80.0f };	//座標
 	Vec3 oldPosition{};					//1つ前の座標
 	Vec3 speed{ 2.0f,2.0f,2.0f };		//プレイヤースピード
 	Vec3 scale{ 2.5f,2.5f,2.5f };		//大きさ
 	Vec3 angle{ -30.0f,180.0f,0.0f };	//角度
-	Vec3 pScale = { 8.0f,7.0f,10.0f };	//プレイヤー大きさ
+	Vec3 pScale = { 8.0f,5.0f,10.0f };	//プレイヤー大きさ
 	Sphere pSphere;						//プレイヤーの球
 	Box pBox;							//プレイヤーの箱
 	Vec3 vec = {};
@@ -153,38 +153,29 @@ private:
 	bool fishFlag = false;
 	int fishNum = 0;
 
-	//FBX
-	int fbxType = NULL;
-	bool fbxFlag[2] = {};
-	//歩きFBX
-	Model* model1 = nullptr;
-	std::unique_ptr<FBXObject3d> fbxObject1[2];
-	//停止FBX
-	Model* stopModel = nullptr;
-	std::unique_ptr<FBXObject3d> stopFbx[2];
-	//感電
-	Model* electModel = nullptr;
-	std::unique_ptr<FBXObject3d> electFbx[2];
-	//ゴール時の演出バク天
-	Model* goalJumpModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalJumpFbx[2];
-	//ゴール時の演出ハンドサイン
-	Model* goalHandModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalHandFbx[2];
-
-	int dieType = DIENULL;
 
 	//プレイヤー演出
 	Staging staging;
 	int dieNowTime = 0;
+	int dieType = DIENULL;
 
 	const int walkTimeMax = 5;
 	int walkTime = walkTimeMax;
-
+	//ステージ開始時の演出フラグ
+	bool starStaging = false;
+	const int startTimeMax = 60;
+	int startTime = 0;
 	//魚死亡時の情報
 	Vec3 fishDiePos = {};
 	Vec3 fishDieAngle = {};
 	bool isFishDie = false;
 
 	int decLifeTime = 0;
+
+	//FBXクラス
+	PlayerFBX pFbx;
+
+	//音データ
+	int audioTime = 0;
+	SoundData walkSE;
 };

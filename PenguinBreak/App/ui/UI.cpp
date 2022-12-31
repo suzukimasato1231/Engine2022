@@ -24,9 +24,11 @@ void UI::Init()
 	uiNumber[8] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber9.png");
 	uiNumber[9] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber10.png");
 	uiSlash = Sprite::Get()->SpriteCreate(L"Resources/UI/UISlash.png");
+
+	menu.Init();
 }
 
-void UI::Update(int fishNum)
+void UI::Update(int fishNum, bool clearFlag, bool& changeScene, int& sceneNum)
 {
 	//壊した箱の数	
 	int breaknumber = Stage::Get()->GetBlockNum() % 10;
@@ -90,10 +92,15 @@ void UI::Update(int fishNum)
 			}
 		}
 	}
+
+	if (clearFlag == false)
+	{
+		menu.Update(menuFlag, changeScene, sceneNum);
+	}
 }
 
 
-void UI::Draw(int pLives, bool gameoverFlag)
+void UI::Draw(const int pLives, const  bool gameoverFlag)
 {
 	//プレイヤー残機
 	Sprite::Get()->Draw(playerIcon, Vec2(1132.0f, 42.0f), 64.0f, 64.0f, Vec2(0.5f, 0.5f));
@@ -121,5 +128,13 @@ void UI::Draw(int pLives, bool gameoverFlag)
 		Sprite::Get()->Draw(uiNumber[fishRemain], Vec2(108.0f, 32.0f), 64.0f * stagingScale[3], 64.0f * stagingScale[3], Vec2(0.5f, 0.5f));
 	}
 	Sprite::Get()->Draw(uiNumber[fishNumber], Vec2(138.0f, 32.0f), 64.0f * stagingScale[2], 64.0f * stagingScale[2], Vec2(0.5f, 0.5f));
+
+	menu.Draw(gameoverFlag);
+}
+
+void UI::Reset()
+{
+	menuFlag = false;
+	menu.Reset();
 
 }

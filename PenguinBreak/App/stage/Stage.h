@@ -2,14 +2,16 @@
 #include"Object.h"
 #include<vector>
 #include <LoadCSV.h>
-#include"StegeObject.h"
 #include"FishBox.h"
 #include"BlockBox.h"
 #include"Electricity.h"
 #include"DangerFish.h"
 #include"MoveFloor.h"
 #include"FloorPitfall.h"
-#include"../PenguinBreak/DropPoint.h"
+#include"DropPoint.h"
+#include"GoalFish.h"
+#include"BoxStaring.h"
+#include"FigurineOBJ.h"
 class Player;
 
 class Stage :public Singleton<Stage>
@@ -53,15 +55,21 @@ private:
 
 	void SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
+	void SetMoveFloor2(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
 	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time);
 
 	void SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
+	void SetFigrineOBJ(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int type);
+
+	void SetStlon(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 9;
-	const int drawNumY = 20;
+	const int drawNumY = 40;
 private://床関連
 	//雪の床
 	ObjectData floorOBJ;
@@ -74,30 +82,34 @@ private://床関連
 private://罠ブロック
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
-	ObjectData wallOBJ = {};
 	int wallGraph = 0;
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
+	
 	//ゴール
-	ObjectData goalOBJ = {};
-	Vec3 goalScale = { 20.0f,25.0f,20.0f };
+	GoalFish goalFish;
 	bool goalFlag = false;
+
 	//箱
 	BlockBox blockBox;
 	//電撃の罠
 	Electricity elect;
 	//危険魚
 	DangerFish dangerFish;
+	//置物
+	FigurineOBJ figurineOBJ;
 private:
 	//壊した時に出る魚
 	FishBox fishBox;
 
-	int blockMax = 0;//ステージにある最大のブロック数
+	int blockMax = 0;	//ステージにある最大のブロック数
 	int blockNum = 0;	//壊したブロック
 
 
 	ObjectData blackGround = {};
 	int blackGraph = 0;
 	PSR blackPsr[3] = {};
-
+	//落下地点表示クラス
 	DropPoint dropPoint;
+
+	BoxStaring boxStaring;
 };

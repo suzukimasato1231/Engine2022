@@ -6,7 +6,9 @@
 #include"_DirectX.h"
 extern const int window_width;
 extern const int window_height;
-
+/// <summary>
+/// シャドウマップ
+/// </summary>
 class ShadowMap :public Singleton<ShadowMap>
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

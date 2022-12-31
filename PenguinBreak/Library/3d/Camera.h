@@ -5,7 +5,9 @@
 #include"Singleton.h"
 extern const int window_width;
 extern const int window_height;
-
+/// <summary>
+/// ƒJƒƒ‰ƒNƒ‰ƒX
+/// </summary>
 class Camera :public Singleton<Camera>
 {
 	using XMMATRIX = DirectX::XMMATRIX;

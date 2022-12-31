@@ -4,7 +4,9 @@
 #include"_Window.h"
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
-
+/// <summary>
+/// マウスクラス
+/// </summary>
 class Mouse
 {
 public:

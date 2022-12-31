@@ -9,7 +9,7 @@ DangerFish::~DangerFish()
 
 void DangerFish::Init()
 {
-	m_dangerFishOBJ = Shape::CreateOBJ("dangerFish", true);
+	m_dangerFishOBJ = Shape::CreateOBJ("dangerFish", true,  "OBJ/");
 }
 
 void DangerFish::Update(StageOBJ* stageObj)
@@ -92,7 +92,7 @@ void DangerFish::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	}
 #endif
 	Object::Draw(m_dangerFishOBJ, stageObj->psr, stageObj->actionPos, Vec3(2.0f, 2.0f, 2.0f),
-		m_rotation, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 0, shadowFlag);
+		m_rotation, Vec2(), 0, shadowFlag);
 }
 
 StageOBJ DangerFish::SetDangerFish(const Vec3 position, const Vec3 scale, const Vec3 angle, const Vec2 map, const int type)

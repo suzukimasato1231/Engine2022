@@ -9,6 +9,9 @@
 #pragma comment(lib,"dxgi.lib")
 extern const int window_width;
 extern const int window_height;
+/// <summary>
+/// ウィンドウクラス
+/// </summary>
 class _Window:public Singleton<_Window>
 {
 	friend Singleton<_Window>;

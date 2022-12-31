@@ -1,16 +1,11 @@
 #pragma once
 #include "_DirectX.h"
-#include "Safe_delete.h"
 #include"DebugText.h"
 #include"ParticleManager.h"
-#include"Collision.h"
-#include"Audio.h"
-#include"FBXObject3d.h"
 #include"../App/player/Player.h"
-#include"../App/stage/PushCollision.h"
 #include"../App/stage/Stage.h"
 #include"../App/ui/UI.h"
-#include"../DecLifeStaging.h"
+#include"../App/player/DecLifeStaging.h"
 #include<memory>
 extern const int window_width;
 extern const int window_height;

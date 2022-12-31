@@ -87,9 +87,6 @@
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{6f3fbcb8-b526-4612-b475-74afa45a70d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\TimeAttack">
-      <UniqueIdentifier>{58a7077a-6d0a-4bfd-97a0-e4f64c828b7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Stage\Box">
       <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
     </Filter>
@@ -102,8 +99,23 @@
     <Filter Include="ソース ファイル\Stage\Floor">
       <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Particle">
-      <UniqueIdentifier>{78d97276-37bc-49ca-a367-288e53b89424}</UniqueIdentifier>
+    <Filter Include="HLSL\OBJ\NormalMap">
+      <UniqueIdentifier>{153b2164-6bd9-4e26-956b-16936230434e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\Toon">
+      <UniqueIdentifier>{4f73b161-7bcd-4a81-85c6-becf920884ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\ShadowMap">
+      <UniqueIdentifier>{c71b2704-fa54-4435-84a1-2845342152c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\OBJShadow">
+      <UniqueIdentifier>{aacc61b8-3156-47b8-b887-f949a89c5b6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\OBJ\NoShadowOBJ">
+      <UniqueIdentifier>{f1a338d2-d341-4543-9b38-945ee078f412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\FigurineOBJ">
+      <UniqueIdentifier>{cbbff795-80aa-41de-a65b-c52bbad997cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -113,12 +125,6 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>HLSL\Sprite</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJPixelShader.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJVertexShader.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
       <Filter>HLSL\Particle</Filter>
     </FxCompile>
@@ -127,12 +133,6 @@
     </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
       <Filter>HLSL\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
-      <Filter>HLSL\FBX</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\FBXVS.hlsl">
-      <Filter>HLSL\FBX</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffect\PostEffectNormalPS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
@@ -146,43 +146,61 @@
     <FxCompile Include="Resources\shaders\PostEffect\PostEffectTestVS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJToonPS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJToonVS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMap\ShadowMapPS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMap\ShadowMapVS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffect\DepthOfFieldPS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffect\DepthOfFieldVS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBX\FBXPS.hlsl">
+      <Filter>HLSL\FBX</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBX\FBXVS.hlsl">
+      <Filter>HLSL\FBX</Filter>
+    </FxCompile>
     <FxCompile Include="Resources\shaders\Object\NormalMapPS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
+      <Filter>HLSL\OBJ\NormalMap</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\Object\NormalMapVS.hlsl">
-      <Filter>HLSL\OBJ</Filter>
+      <Filter>HLSL\OBJ\NormalMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJToonPS.hlsl">
+      <Filter>HLSL\OBJ\Toon</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJToonVS.hlsl">
+      <Filter>HLSL\OBJ\Toon</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
+      <Filter>HLSL\OBJ\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
+      <Filter>HLSL\OBJ\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJPixelShader.hlsl">
+      <Filter>HLSL\OBJ\OBJShadow</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\OBJVertexShader.hlsl">
+      <Filter>HLSL\OBJ\OBJShadow</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NoShadowOBJPS.hlsl">
+      <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Object\NoShadowOBJVS.hlsl">
+      <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Sprite.hlsli">
       <Filter>HLSL\Sprite</Filter>
     </None>
-    <None Include="Resources\shaders\OBJShaderHeader.hlsli">
-      <Filter>HLSL\OBJ</Filter>
-    </None>
     <None Include="Resources\shaders\Particle.hlsli">
       <Filter>HLSL\Particle</Filter>
-    </None>
-    <None Include="Resources\shaders\FBX.hlsli">
-      <Filter>HLSL\FBX</Filter>
     </None>
     <None Include="Resources\shaders\PostEffect\PostEffectNormal.hlsli">
       <Filter>HLSL\PostEffect</Filter>
@@ -190,17 +208,29 @@
     <None Include="Resources\shaders\PostEffect\PostEffectTest.hlsli">
       <Filter>HLSL\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\OBJToon.hlsli">
-      <Filter>HLSL\OBJ</Filter>
-    </None>
-    <None Include="Resources\shaders\ShadowMap.hlsli">
-      <Filter>HLSL\OBJ</Filter>
-    </None>
     <None Include="Resources\shaders\ShadowMap\ShadowMap.hlsli">
       <Filter>HLSL\PostEffect</Filter>
     </None>
+    <None Include="Resources\shaders\PostEffect\DepthOfField.hlsli">
+      <Filter>HLSL\PostEffect</Filter>
+    </None>
+    <None Include="Resources\shaders\FBX\FBX.hlsli">
+      <Filter>HLSL\FBX</Filter>
+    </None>
     <None Include="Resources\shaders\Object\NormalMap.hlsli">
-      <Filter>HLSL\OBJ</Filter>
+      <Filter>HLSL\OBJ\NormalMap</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\OBJToon.hlsli">
+      <Filter>HLSL\OBJ\Toon</Filter>
+    </None>
+    <None Include="Resources\shaders\ShadowMap.hlsli">
+      <Filter>HLSL\OBJ\ShadowMap</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\OBJShaderHeader.hlsli">
+      <Filter>HLSL\OBJ\OBJShadow</Filter>
+    </None>
+    <None Include="Resources\shaders\Object\NoShadowOBJ.hlsli">
+      <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -351,9 +381,6 @@
     <ClInclude Include="App\player\Staging.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="App\TimeAttack\TimeAttack.h">
-      <Filter>ソース ファイル\TimeAttack</Filter>
-    </ClInclude>
     <ClInclude Include="App\ui\UI.h">
       <Filter>ソース ファイル\UI</Filter>
     </ClInclude>
@@ -390,14 +417,26 @@
     <ClInclude Include="Library\3d\Particle3D.h">
       <Filter>Library\3d\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="App\Particle\Particle.h">
-      <Filter>ソース ファイル\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="DropPoint.h">
+    <ClInclude Include="App\player\PlayerFBX.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="DecLifeStaging.h">
+    <ClInclude Include="App\ui\Menu.h">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\GoalFish.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\player\DecLifeStaging.h">
       <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\DropPoint.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\BoxStaring.h">
+      <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\FigurineOBJ.h">
+      <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -527,9 +566,6 @@
     <ClCompile Include="App\player\Staging.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="App\TimeAttack\TimeAttack.cpp">
-      <Filter>ソース ファイル\TimeAttack</Filter>
-    </ClCompile>
     <ClCompile Include="App\ui\UI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
@@ -563,14 +599,26 @@
     <ClCompile Include="Library\3d\Particle3D.cpp">
       <Filter>Library\3d\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="App\Particle\Particle.cpp">
-      <Filter>ソース ファイル\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="DropPoint.cpp">
+    <ClCompile Include="App\player\PlayerFBX.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="DecLifeStaging.cpp">
+    <ClCompile Include="App\ui\Menu.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\GoalFish.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="App\player\DecLifeStaging.cpp">
       <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\DropPoint.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\BoxStaring.cpp">
+      <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\FigurineOBJ.cpp">
+      <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

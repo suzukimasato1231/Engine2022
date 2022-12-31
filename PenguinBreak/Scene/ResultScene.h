@@ -1,8 +1,15 @@
-#include"Singleton.h"
 #include <Object.h>
 #include<memory>
 #include"FBXObject3d.h"
-class ResultScene 
+
+enum ResultNext
+{
+	ResultNextStage,
+	ResultSelect,
+};
+
+
+class ResultScene
 {
 private:
 
@@ -17,11 +24,13 @@ public:
 	//更新
 	void Update();
 	//描画
-	void Draw();
+	void Draw(const int stageNum);
 
 	void Delete();
 
 	void ShadowDraw();
+
+	bool GetScene() { return nextScene; }
 private:
 	std::unique_ptr<LightGroup> lightGroup;
 private:
@@ -42,6 +51,13 @@ private:
 	SpriteData boxGraph;
 
 	SpriteData clearGraph;
+	SpriteData selectGraph;
+	SpriteData nextGraph;
+	int nextScene = 0;
+	const float nextScaleMax = 1.2f;
+	const float nextScaleMin = 0.8f;
+	bool nextScaleFlag = false;
+	float nextScale = 1.0f;
 
 	//ボタン
 	SpriteData buttonGraph;

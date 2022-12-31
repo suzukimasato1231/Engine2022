@@ -327,7 +327,7 @@ void UpdateGamePad()
 		return;
 	}
 
-	DIJOYSTATE pad_data;
+	DIJOYSTATE pad_data={};
 
 	// デバイス取得
 	HRESULT hr = g_GamePadDevice->GetDeviceState(sizeof(DIJOYSTATE), &pad_data);
@@ -347,7 +347,7 @@ void UpdateGamePad()
 
 	bool is_push[ButtonKind::ButtonKindMax] = {};
 	// スティック判定
-	int unresponsive_range = 200;
+	int unresponsive_range = 300;
 	//左スティック
 	if (pad_data.lX < -unresponsive_range)
 	{
@@ -365,6 +365,15 @@ void UpdateGamePad()
 	else if (pad_data.lY > unresponsive_range)
 	{
 		is_push[ButtonKind::LButtonDown] = true;
+	}
+	//右スティック
+	if (pad_data.lRx < -unresponsive_range)
+	{
+		is_push[ButtonKind::RButtonLeft] = true;
+	}
+	else if (pad_data.lRx > unresponsive_range)
+	{
+		is_push[ButtonKind::RButtonRight] = true;
 	}
 	//右スティック
 	if (pad_data.lRx < -unresponsive_range)
@@ -393,6 +402,25 @@ void UpdateGamePad()
 	{
 		is_push[ButtonKind::ButtonRT] = true;
 	}
+	unresponsive_range = 150;
+	if (pad_data.lX < -unresponsive_range)
+	{
+		is_push[ButtonKind::LButtonLeftS] = true;
+	}
+	else if (pad_data.lX > unresponsive_range)
+	{
+		is_push[ButtonKind::LButtonRightS] = true;
+	}
+
+	if (pad_data.lY < -unresponsive_range)
+	{
+		is_push[ButtonKind::LButtonUpS] = true;
+	}
+	else if (pad_data.lY > unresponsive_range)
+	{
+		is_push[ButtonKind::LButtonDownS] = true;
+	}
+
 	//角度を取得
 #define PI 3.141592653589793
 	leftAngle = static_cast<float>(atan2(0 - pad_data.lX, 0 - pad_data.lY));
@@ -452,6 +480,9 @@ void UpdateGamePad()
 			break;
 		case 5:
 			is_push[ButtonKind::ButtonRB] = true;
+			break;
+		case 7:
+			is_push[ButtonKind::ButtonMenu] = true;
 			break;
 		}
 	}

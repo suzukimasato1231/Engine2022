@@ -11,11 +11,10 @@ void _DirectX::Initilize()
 #ifdef _DEBUG
 	//デバックレイヤーをオン
 	ComPtr<ID3D12Debug1> debugController;
-	//	ComPtr<ID3D12DebugDevice> mDebugDevice;
+	ComPtr<ID3D12DebugDevice> mDebugDevice;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 	{
 		debugController->EnableDebugLayer();
-		//debugController->SetEnableGPUBasedValidation(TRUE);
 	}
 #endif
 	//アダプタの列挙

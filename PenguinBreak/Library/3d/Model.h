@@ -28,7 +28,9 @@ struct Node
 	Node *parent = nullptr;
 };
 
-
+/// <summary>
+/// FBXƒ‚ƒfƒ‹ƒNƒ‰ƒX
+/// </summary>
 class Model
 {
 public:

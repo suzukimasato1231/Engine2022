@@ -31,8 +31,8 @@ void StageSelect::Init()
 {
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
-	Player::Get()->Reset();
 	Player::Get()->ChangeMoveFlag(false);
+	Player::Get()->Reset();
 	Player::Get()->GetClearFlag(false);
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
@@ -79,13 +79,16 @@ void StageSelect::Update()
 	if (productionFlag[0] == true || productionFlag[1] == true || productionFlag[2] == true)
 	{
 		Player::Get()->DieType(1);
+		Player::Get()->JumpPoweZero();
 	}
+
 	Player::Get()->Update();
 
 	Stage::Get()->Update(Player::Get()->GetPosition());
 	//ライト更新
 	lightGroup->Update();
 
+	//箱が上に上がる演出
 	for (int i = 0; i < stageNumMax; i++)
 	{
 		if (productionFlag[i] == true && productionTime > 0)
@@ -116,7 +119,7 @@ void StageSelect::Draw()
 	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
 	for (size_t i = 0; i < stageNumMax; i++)
 	{
-		Object::Draw(selectOBJ, selectPsr[i], selectPos[i], Vec3(selectScale, selectScale, selectScale), Vec3(), Vec4(), selectGraph[i], true);
+		Object::Draw(selectOBJ, selectPsr[i], selectPos[i], Vec3(selectScale, selectScale, selectScale), Vec3(), Vec2(), selectGraph[i], true);
 	}
 }
 

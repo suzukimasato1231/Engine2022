@@ -16,7 +16,7 @@ FishBox::~FishBox()
 
 void FishBox::Init()
 {
-	fishOBJ = Shape::CreateOBJ("fish", true);
+	fishOBJ = Shape::CreateOBJ("fish", true,"OBJ/");
 }
 
 void FishBox::Update(Vec3 pPos)
@@ -42,7 +42,7 @@ void FishBox::Draw()
 {
 	for (int i = 0; i < fishData.size(); i++)
 	{
-		Object::Draw(fishOBJ, fishData[i]->psr, fishData[i]->position, scale, Vec3(180.0f, 0.0f, 0.0f), Vec4());
+		Object::NoShadowDraw(fishOBJ, fishData[i]->psr, fishData[i]->position, scale, Vec3(180.0f, 0.0f, 0.0f), Vec2());
 	}
 }
 

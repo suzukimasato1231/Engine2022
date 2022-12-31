@@ -7,6 +7,9 @@
 #include<forward_list>
 #include"Camera.h"
 #include"Pipeline.h"
+/// <summary>
+/// パーティクルマネジャー
+/// </summary>
 class ParticleManager 
 {
 private: // エイリアス

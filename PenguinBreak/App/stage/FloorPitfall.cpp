@@ -47,11 +47,11 @@ void FloorPitfall::Draw(Floor* floorData, const bool shadowFlag)
 	if (floorData->moveFlag == 0)
 	{
 		Object::Draw(pitfallOBJ, floorData->psr, floorData->position, floorData->scale,
-			floorData->drawAngle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), pitfallGraph, shadowFlag);
+			floorData->drawAngle, Vec2(), pitfallGraph, shadowFlag);
 	}//•Â‚¶‚Ä‚¢‚é
 	else if (floorData->moveFlag == 1)
 	{
 		Object::Draw(pitfallOBJ, floorData->psr, floorData->position, floorData->scale,
-			floorData->drawAngle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), pitfallGraph, shadowFlag);
+			floorData->drawAngle, Vec2(), pitfallGraph, shadowFlag);
 	}
 }

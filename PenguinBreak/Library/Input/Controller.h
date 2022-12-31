@@ -9,6 +9,10 @@ enum ButtonKind
 	LButtonDown,
 	LButtonLeft,
 	LButtonRight,
+	LButtonUpS,
+	LButtonDownS,
+	LButtonLeftS,
+	LButtonRightS,
 	RButtonUp,
 	RButtonDown,
 	RButtonLeft,
@@ -21,6 +25,7 @@ enum ButtonKind
 	ButtonLB,
 	ButtonRT,
 	ButtonLT,
+	ButtonMenu,
 	ButtonKindMax,
 };
 
@@ -32,7 +37,9 @@ enum ButtonState
 	ButtonStateUp,
 	ButtonStateMax,
 };
-
+/// <summary>
+/// コントロールクラス
+/// </summary>
 class Controller
 {
 private:

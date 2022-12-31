@@ -4,7 +4,9 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <string>
-
+/// <summary>
+/// FBX設定クラス
+/// </summary>
 class FbxLoader
 {
 private: // エイリアス
@@ -44,7 +46,7 @@ public:
 	/// ファイルからFBXモデル読込
 	/// </summary>
 	/// <param name="modelName">モデル名</param>
-	Model* LoadModelFromFile(const string& modelName);
+	Model* LoadModelFromFile(const string& modelName, string file = "");
 
 private:
 	// D3D12デバイス
@@ -72,19 +74,19 @@ private:
 	/// <param name="model">読み込み先モデルオブジェクト</param>
 	/// <param name="fbxNode">解析対象のノード</param>
 	/// <param name="parent">親ノード</param>
-	void ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent = nullptr);
+	void ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent = nullptr,  string file = "");
 
 	/// <summary>
 	/// メッシュ読み取り
 	/// </summary>
 	/// <param name="model">読み込み先モデルオブジェクト</param>
 	/// <param name="fbxNode">解析対象のノード</param>
-	void ParseMesh(Model* model, FbxNode* fbxNode);
+	void ParseMesh(Model* model, FbxNode* fbxNode, const string& file);
 
 	// 面情報読み取り
 	void ParseMeshFaces(Model* model, FbxMesh* fbxMesh);
 	// マテリアル読み取り
-	void ParseMaterial(Model* model, FbxNode* fbxNode);
+	void ParseMaterial(Model* model, FbxNode* fbxNode, const string& file);
 	// テクスチャ読み込み
 	void LoadTexture(Model* model, const std::string& fullpath);
 	//スキニング情報の読み取り

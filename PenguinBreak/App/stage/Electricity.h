@@ -37,5 +37,7 @@ private:
 	//“d‹C‚Ñ‚è‚Ñ‚è
 	ParticleManager* m_electParicle = nullptr;
 	int m_electParicleGraph = 0;
+
+	Vec2 uvScroll = { 0.0f ,0.0f };
 };
 

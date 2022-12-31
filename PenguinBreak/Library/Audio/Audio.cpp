@@ -13,7 +13,7 @@ void Audio::Init()
 
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	
+
 }
 Audio *Audio::Create()
 {
@@ -28,7 +28,7 @@ Audio *Audio::Create()
 }
 
 
-Audio::SoundData Audio::SoundLoadWave(const char *filename)
+SoundData Audio::SoundLoadWave(const char *filename)
 {
 	//ファイルオープン
 	std::ifstream file;

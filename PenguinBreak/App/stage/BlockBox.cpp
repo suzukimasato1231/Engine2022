@@ -3,7 +3,6 @@
 #include"Texture.h"
 #include"../PenguinBreak/App/player/Player.h"
 #include"PushCollision.h"
-#include"../Particle/Particle.h"
 void BlockBox::Init()
 {
 	breakBoxOBJ = Shape::CreateOBJ("cube");
@@ -42,15 +41,15 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	{
 	case BOX:
 		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), normalBoxGraph, shadowFlag);
+			stageObj->angle, Vec2(), normalBoxGraph, shadowFlag);
 		break;
 	case BOXJUMP:
 		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), jumpBoxgraph, shadowFlag);
+			stageObj->angle, Vec2(), jumpBoxgraph, shadowFlag);
 		break;
 	case BOXHARD:
 		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec4(1.0f, 1.0f, 1.0f, 1.0f), hardBoxGraph, shadowFlag);
+			stageObj->angle, Vec2(), hardBoxGraph, shadowFlag);
 		break;
 	}
 }

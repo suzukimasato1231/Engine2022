@@ -3,6 +3,9 @@
 #include "Keybord.h"
 #include"Mouse.h"
 #include"Singleton.h"
+/// <summary>
+/// 入力クラス
+/// </summary>
 class Input :public Singleton<Input>
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -51,6 +54,8 @@ public://ゲームパッド
 	float GetRightAngle();
 	//右スティック入力してるか
 	bool ConRightInput();
+
+	bool ConLeftInputS();
 
 	//左スティックを入力してるか
 	bool ConLeftInput();

@@ -1,5 +1,8 @@
 #pragma once
 #include"./StegeObject.h"
+/// <summary>
+/// ìÆÇ≠è∞ÉNÉâÉX
+/// </summary>
 class MoveFloor
 {
 public:
@@ -16,6 +19,5 @@ private:
 	ObjectData moveFloorOBJ;
 
 	Vec3 speed = { 0.0f,0.0f,0.5f };
-
 };
 
