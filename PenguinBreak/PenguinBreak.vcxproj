@@ -280,6 +280,7 @@
     <ClInclude Include="App\stage\DangerFish.h" />
     <ClInclude Include="App\stage\DropPoint.h" />
     <ClInclude Include="App\stage\Electricity.h" />
+    <ClInclude Include="App\stage\FigurineOBJ.h" />
     <ClInclude Include="App\stage\FishBox.h" />
     <ClInclude Include="App\stage\FloorPitfall.h" />
     <ClInclude Include="App\stage\GoalFish.h" />
@@ -288,7 +289,6 @@
     <ClInclude Include="App\stage\PushCollision.h" />
     <ClInclude Include="App\stage\Stage.h" />
     <ClInclude Include="App\stage\StegeObject.h" />
-    <ClInclude Include="App\TimeAttack\TimeAttack.h" />
     <ClInclude Include="App\ui\Menu.h" />
     <ClInclude Include="App\ui\UI.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
@@ -350,6 +350,7 @@
     <ClCompile Include="App\stage\DangerFish.cpp" />
     <ClCompile Include="App\stage\DropPoint.cpp" />
     <ClCompile Include="App\stage\Electricity.cpp" />
+    <ClCompile Include="App\stage\FigurineOBJ.cpp" />
     <ClCompile Include="App\stage\FishBox.cpp" />
     <ClCompile Include="App\stage\FloorPitfall.cpp" />
     <ClCompile Include="App\stage\GoalFish.cpp" />
@@ -357,7 +358,6 @@
     <ClCompile Include="App\stage\BoxStaring.cpp" />
     <ClCompile Include="App\stage\PushCollision.cpp" />
     <ClCompile Include="App\stage\Stage.cpp" />
-    <ClCompile Include="App\TimeAttack\TimeAttack.cpp" />
     <ClCompile Include="App\ui\Menu.cpp" />
     <ClCompile Include="App\ui\UI.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />

@@ -914,7 +914,7 @@ Pipeline::PipelineSet Pipeline::DepthOfFieldPipelineCreateGraphicesPipeline(ID3D
 	descRangeSRV2.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);//t1レジスタ
 	//ルートパラメータの設定
 	CD3DX12_ROOT_PARAMETER rootparams[3] = {};
-	rootparams[0].InitAsConstantBufferView(0);
+	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV2, D3D12_SHADER_VISIBILITY_ALL);
 	//テクスチャサンプラーの作成

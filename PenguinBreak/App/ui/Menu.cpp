@@ -3,12 +3,10 @@
 #include <Easing.h>
 #include<Audio.h>
 Menu::Menu()
-{
-}
+{}
 
 Menu::~Menu()
-{
-}
+{}
 
 void Menu::Init()
 {

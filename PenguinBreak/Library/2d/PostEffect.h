@@ -55,7 +55,7 @@ public:
 private:
 
 	//テクスチャバッファ
-	ComPtr<ID3D12Resource>texbuff;
+	ComPtr<ID3D12Resource>texbuff[2];
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap>descHeapSRV;
 	//深度バッファ

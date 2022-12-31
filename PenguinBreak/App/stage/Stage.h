@@ -11,6 +11,7 @@
 #include"DropPoint.h"
 #include"GoalFish.h"
 #include"BoxStaring.h"
+#include"FigurineOBJ.h"
 class Player;
 
 class Stage :public Singleton<Stage>
@@ -61,6 +62,10 @@ private:
 	void SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+
+	void SetFigrineOBJ(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int type);
+
+	void SetStlon(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumX = 9;
@@ -77,7 +82,6 @@ private://床関連
 private://罠ブロック
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
-	ObjectData wallOBJ = {};
 	int wallGraph = 0;
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
 	
@@ -91,6 +95,8 @@ private://罠ブロック
 	Electricity elect;
 	//危険魚
 	DangerFish dangerFish;
+	//置物
+	FigurineOBJ figurineOBJ;
 private:
 	//壊した時に出る魚
 	FishBox fishBox;

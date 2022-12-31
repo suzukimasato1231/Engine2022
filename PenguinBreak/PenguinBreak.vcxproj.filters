@@ -87,9 +87,6 @@
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{6f3fbcb8-b526-4612-b475-74afa45a70d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\TimeAttack">
-      <UniqueIdentifier>{58a7077a-6d0a-4bfd-97a0-e4f64c828b7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Stage\Box">
       <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
     </Filter>
@@ -116,6 +113,9 @@
     </Filter>
     <Filter Include="HLSL\OBJ\NoShadowOBJ">
       <UniqueIdentifier>{f1a338d2-d341-4543-9b38-945ee078f412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\FigurineOBJ">
+      <UniqueIdentifier>{cbbff795-80aa-41de-a65b-c52bbad997cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -381,9 +381,6 @@
     <ClInclude Include="App\player\Staging.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="App\TimeAttack\TimeAttack.h">
-      <Filter>ソース ファイル\TimeAttack</Filter>
-    </ClInclude>
     <ClInclude Include="App\ui\UI.h">
       <Filter>ソース ファイル\UI</Filter>
     </ClInclude>
@@ -437,6 +434,9 @@
     </ClInclude>
     <ClInclude Include="App\stage\BoxStaring.h">
       <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\FigurineOBJ.h">
+      <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -566,9 +566,6 @@
     <ClCompile Include="App\player\Staging.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="App\TimeAttack\TimeAttack.cpp">
-      <Filter>ソース ファイル\TimeAttack</Filter>
-    </ClCompile>
     <ClCompile Include="App\ui\UI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
@@ -619,6 +616,9 @@
     </ClCompile>
     <ClCompile Include="App\stage\BoxStaring.cpp">
       <Filter>ソース ファイル\Stage\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\FigurineOBJ.cpp">
+      <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -25,7 +25,9 @@ enum StageType
 	BOXJUMP = 13,		//ジャンプ箱
 	ICICLE = 20,		//氷柱
 	ELECTRICITY = 21,	//電気
-	FISHATTACK  = 22,	//魚アタック
+	FISHATTACK = 22,	//魚アタック
+	DEADTREE = 30,		//枯れ木
+	STLON    =31,		//岩
 };
 struct Floor
 {
