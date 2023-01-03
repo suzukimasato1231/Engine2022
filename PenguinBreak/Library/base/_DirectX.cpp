@@ -40,12 +40,12 @@ void _DirectX::Initilize()
 
 	FPS::Get()->Start();
 #ifdef _DEBUG
-	ID3D12DebugDevice* debugInterface;
+	/*ID3D12DebugDevice* debugInterface;
 	if (SUCCEEDED(dev.Get()->QueryInterface(&debugInterface)))
 	{
 		debugInterface->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
 		debugInterface->Release();
-	}
+	}*/
 #endif
 }
 

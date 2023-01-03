@@ -75,9 +75,6 @@
     <Filter Include="Library\Texture">
       <UniqueIdentifier>{09581daa-d630-45b0-a417-f4c659c3f100}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Scene">
-      <UniqueIdentifier>{6b0d6cdb-bc2b-40e4-9cc6-38c2f38e070f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\imgui">
       <UniqueIdentifier>{8a1617bf-8443-4ad3-8189-cb71b13650c6}</UniqueIdentifier>
     </Filter>
@@ -116,6 +113,9 @@
     </Filter>
     <Filter Include="ソース ファイル\Stage\FigurineOBJ">
       <UniqueIdentifier>{cbbff795-80aa-41de-a65b-c52bbad997cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{6b0d6cdb-bc2b-40e4-9cc6-38c2f38e070f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

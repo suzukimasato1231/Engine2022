@@ -34,6 +34,8 @@ public:
 
 	void ShadowDraw();
 
+	void SecondDraw();
+
 	void Reset(int stageNum);
 public:
 	bool GetChangeScene() { return changeScene; }
@@ -61,7 +63,7 @@ private://定義
 	const int goalStagingTimeMax = 200;
 
 	//カメラ角度
-	const float cameraAngle = 45.0f;
+	const float cameraAngle = 37.5f;
 	const float goalCamraAngleMax = 25.0f;
 	float goalCameraAngle = 0.0f;
 	//カメラ距離

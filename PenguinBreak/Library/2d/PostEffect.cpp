@@ -75,22 +75,21 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	);
 
 	//テクスチャバッファの生成
-	for (int i = 0; i < 2; i++)
-	{
-		result = dev->CreateCommittedResource(
-			&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
-				D3D12_MEMORY_POOL_L0),
-			D3D12_HEAP_FLAG_NONE,
-			&texresDesc,
-			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
-			IID_PPV_ARGS(&texbuff[i]));
-		assert(SUCCEEDED(result));
+
+	result = dev->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
+			D3D12_MEMORY_POOL_L0),
+		D3D12_HEAP_FLAG_NONE,
+		&texresDesc,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
+		IID_PPV_ARGS(&texbuff));
+	assert(SUCCEEDED(result));
 
 #ifdef _DEBUG
-		texbuff[i]->SetName(L"SpriteBuff");
+	texbuff->SetName(L"SpriteBuff");
 #endif
-	}
+
 	{//テクスチャを赤クリア
 		//画素数
 		const UINT pixelCount = window_width * window_height;
@@ -103,7 +102,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		for (int i = 0; unsigned(i) < pixelCount; i++) { img[i] = 0xff0000ff; }
 
 		//テクスチャバッファにデータ転送
-		result = texbuff[0]->WriteToSubresource(0, nullptr,
+		result = texbuff->WriteToSubresource(0, nullptr,
 			img, rowPitch, depthPitch);
 		assert(SUCCEEDED(result));
 		delete[] img;
@@ -121,32 +120,23 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	descHeapSRV->SetName(L"SpriteSRV");
 #endif
 
-	//SRV設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
-	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = 1;
+	////SRV設定
+	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
+	//srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	//srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	//srvDesc.Texture2D.MipLevels = 1;
 
-	dev->CreateShaderResourceView(texbuff[0].Get(),
-		&srvDesc,
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(
-			descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 0,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		));
-	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDescD{}; // 設定構造体
-	//srvDescD.Format = DXGI_FORMAT_R32_FLOAT;
-	//srvDescD.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDescD.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	//srvDescD.Texture2D.MipLevels = 1;
-	//dev->CreateShaderResourceView(texbuff[1].Get(),
-	//	&srvDescD,
+	//dev->CreateShaderResourceView(texbuff.Get(),
+	//	&srvDesc,
 	//	CD3DX12_CPU_DESCRIPTOR_HANDLE(
-	//		descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 1,
+	//		descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 0,
 	//		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 	//	));
+	Texture::Get()->LoadPostEfectTexture(texbuff.Get());
+
 #ifdef _DEBUG
-	texbuff[0]->SetName(L"SpriteBuff");
+	texbuff->SetName(L"SpriteBuff");
 #endif
 
 	//RTV用デスクリプタヒープ設定
@@ -160,7 +150,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	descHeapRTV->SetName(L"SpriteRTV");
 #endif
 	//デスクリプタヒープにRTV作成
-	dev->CreateRenderTargetView(texbuff[0].Get(),
+	dev->CreateRenderTargetView(texbuff.Get(),
 		nullptr,
 		descHeapRTV->GetCPUDescriptorHandleForHeapStart());
 
@@ -202,10 +192,6 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	dev->CreateDepthStencilView(depthBuff.Get(),
 		&dsvDesc,
 		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
-
-
-	texbuff[1] = depthBuff.Get();
-
 }
 
 void PostEffect::CreatePipeline(ID3D12Device* dev)
@@ -225,7 +211,7 @@ void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
 	//リソースバリアを変更
 	cmdList->ResourceBarrier(1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff[0].Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			D3D12_RESOURCE_STATE_RENDER_TARGET));
 
@@ -253,7 +239,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
 	//リソースバリアを変更
 	cmdList->ResourceBarrier(1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff[0].Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }
@@ -285,21 +271,16 @@ void PostEffect::DrawPost(SpriteData& sprite, Vec2 position, float width, float 
 
 
 	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap()};
 	Sprite::cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//シェーダーリソースビューをセット
-	Sprite::cmdList->SetGraphicsRootDescriptorTable(1,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			descHeapSRV->GetGPUDescriptorHandleForHeapStart(),
-			0,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	
+	Sprite::cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(Texture::Get()->GetPostEfect()));
 
-	Sprite::cmdList->SetGraphicsRootDescriptorTable(2,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			descHeapSRV->GetGPUDescriptorHandleForHeapStart(),
-			1,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+	Sprite::cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(Texture::Get()->GetCameraDepth()));
+
 
 	//ポリゴンの描画（４頂点で四角形）
 	Sprite::cmdList->DrawInstanced(4, 1, 0, 0);

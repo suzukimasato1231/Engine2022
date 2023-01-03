@@ -36,7 +36,7 @@ public:
 	void LoadShadowTexture(ID3D12Resource* texbuff);
 	//被写界深度用
 	void LoadCameraTexture(ID3D12Resource* texbuff);
-
+	//ポストエフェクト保存
 	void LoadPostEfectTexture(ID3D12Resource* texbuff);
 	//SRVを獲得
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUSRV(int i);

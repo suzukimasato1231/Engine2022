@@ -148,11 +148,6 @@ void GameSceneManager::Draw()
 	//パーティクル
 	Player::Get()->DrawParticle();
 	Stage::Get()->DrawParicle();
-	//2D
-	ui.Draw(Player::Get()->GetRemanLives(),
-		Player::Get()->GetGameoverFlag());
-
-	decLifeStaging.Draw(Player::Get()->GetGameoverFlag(), changeNum);
 }
 
 void GameSceneManager::ShadowDraw()
@@ -160,6 +155,14 @@ void GameSceneManager::ShadowDraw()
 	Stage::Get()->Draw(Player::Get()->GetPosition());
 	//プレイヤーの描画
 	Player::Get()->Draw();
+}
+
+void GameSceneManager::SecondDraw()
+{
+	ui.Draw(Player::Get()->GetRemanLives(),
+		Player::Get()->GetGameoverFlag());
+
+	decLifeStaging.Draw(Player::Get()->GetGameoverFlag(), changeNum);
 }
 
 void GameSceneManager::Reset(int stageNum)

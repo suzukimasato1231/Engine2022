@@ -51,7 +51,8 @@ void SceneManagerh::Initialize()
 	////影
 	ShadowMap::Get()->Init();
 	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
-	//Texture::Get()->LoadCameraTexture(PostEffect::Get()->GetDepth());
+
+	Texture::Get()->LoadCameraTexture(PostEffect::Get()->GetDepth());
 
 	//音作成
 	Audio::Get()->Init();
@@ -248,6 +249,7 @@ void SceneManagerh::Draw()
 	{
 		gameScene.Draw();
 		//ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
+		//DepthOfField::Get()->Draw(_DirectX::Get()->GetCmandList());
 	}
 	else if (scene == Result)
 	{
@@ -261,10 +263,13 @@ void SceneManagerh::Draw()
 	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
 
 	_DirectX::Get()->PreDraw();
-
 	////ポストエフェクトの描画
 	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList());
-
+	//UI描画
+	if (scene == GameScene)
+	{
+		gameScene.SecondDraw();
+	}
 	_DirectX::Get()->ResourceBarrier();
 }
 
