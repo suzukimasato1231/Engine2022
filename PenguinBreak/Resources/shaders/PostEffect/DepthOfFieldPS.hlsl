@@ -29,8 +29,8 @@ if (depth >= 0.998000f)
 }
 else
 {
-totalcolor += tex.Sample(smp, input.uv);
+	totalcolor += tex.Sample(smp, input.uv);
 }
-return float4(totalcolor.rgb, 1);
+	return float4(totalcolor.rgb, 1);
 }
 

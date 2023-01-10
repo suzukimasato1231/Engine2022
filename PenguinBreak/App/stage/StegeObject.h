@@ -27,7 +27,8 @@ enum StageType
 	ELECTRICITY = 21,	//電気
 	FISHATTACK = 22,	//魚アタック
 	DEADTREE = 30,		//枯れ木
-	STLON    =31,		//岩
+	STLON    = 31,		//岩
+	ICEARCH  =32,		//氷のアーチ
 };
 struct Floor
 {

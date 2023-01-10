@@ -34,7 +34,7 @@ void FigurineOBJ::Draw(StageOBJ* stageObj, const bool shadowFlag)
 			Vec3(12.0f, 12.0f, 12.0f), stageObj->angle, Vec2(), 0, shadowFlag);
 		break;
 	case STLON:
-		Object::Draw(stone, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y, stageObj->position.z),
+		Object::Draw(stone, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y - 2.0f, stageObj->position.z),
 			Vec3(12.0f, 12.0f, 12.0f) / 2, stageObj->angle, Vec2(), 0, shadowFlag);
 		break;
 	}

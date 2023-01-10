@@ -245,7 +245,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	for (int i = 0; i < floorSize; i++)
 	{
 		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 55 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			&& ((MAP_HEIGHT - 1 + Z) - 90 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			switch (floor[i]->type)
 			{
@@ -321,6 +321,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 		Vec3(550.0f, 15.0f, 5500.0f),
 		Vec3(), Vec2(), 0, shadowFlag);
 
+	
 	//” ‰ó‚µ‚½Žž‚Éo‚é‹›
 	fishBox.Draw();
 
@@ -428,6 +429,10 @@ void Stage::LoadStage(int stageNum)
 				{
 					Map[y + num_][x] = 0;
 					num_++;
+					if (y + num_ > 100)
+					{
+						break;
+					}
 				}
 				SetFloor(Vec3(map.x * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
 					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map, FloorNormal, num_ - 1);
