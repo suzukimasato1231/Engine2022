@@ -27,6 +27,8 @@ private:
 	ObjectData deadTree;
 	//Šâ
 	ObjectData stone;
+	//•X‚ÌƒA[ƒ`
+	ObjectData iceArch;
 
 };
 

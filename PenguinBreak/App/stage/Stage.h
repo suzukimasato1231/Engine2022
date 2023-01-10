@@ -47,7 +47,7 @@ private:
 
 	void SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
-	void SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type);
 
 	void SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 

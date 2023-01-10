@@ -76,13 +76,14 @@ void Stage::Update(Vec3 pPos)
 		switch (stageObj[i]->type)
 		{
 		case Wall:
+		case BarrierWall:
 		case DEADTREE:
 		case STLON:
 		case BOX:
 		case BOXJUMP:
 		case BOXHARD:
 			blockBox.PlayerHit(stageObj[i], X, Z);
-			if (stageObj[i]->type != Wall || stageObj[i]->type != DEADTREE)
+			if (stageObj[i]->type != Wall || stageObj[i]->type != DEADTREE || stageObj[i]->type != BarrierWall)
 			{
 				dropPoint.Update(PPos, stageObj[i]->position,
 					stageObj[i]->angle, stageObj[i]->scale);
@@ -288,6 +289,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			case Wall:
 			case DEADTREE:
 			case STLON:
+			case ICEARCH:
 				figurineOBJ.Draw(stageObj[i], shadowFlag);
 				break;
 			case  Goal:
@@ -321,7 +323,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 		Vec3(550.0f, 15.0f, 5500.0f),
 		Vec3(), Vec2(), 0, shadowFlag);
 
-	
+
 	//î†âÛÇµÇΩéûÇ…èoÇÈãõ
 	fishBox.Draw();
 
@@ -470,8 +472,9 @@ void Stage::LoadStage(int stageNum)
 			case NoneOBJ:
 				break;
 			case Wall:
+			case BarrierWall:
 				SetWallBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + wallScale.y / 2 - 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					wallScale, Vec3(), map);
+					wallScale, Vec3(), map, MapOBJ[y][x]);
 				break;
 			case Goal:
 				SetGoal(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20 + 5.0f, (MAP_HEIGHT - 1 - y) * mapSize),
@@ -505,6 +508,7 @@ void Stage::LoadStage(int stageNum)
 				break;
 			case DEADTREE:
 			case STLON:
+			case ICEARCH:
 				SetFigrineOBJ(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
 					wallScale, Vec3(), map, MapOBJ[y][x]);
 				break;
@@ -551,7 +555,7 @@ void Stage::SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXHARD);
 }
 
-void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
@@ -567,7 +571,7 @@ void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 		position.x - scale.x / 2,
 		position.y - scale.y / 2,
 		position.z - scale.z / 2, 1);
-	stageObj[num]->type = Wall;
+	stageObj[num]->type = type;
 }
 
 void Stage::SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)

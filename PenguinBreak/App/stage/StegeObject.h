@@ -19,6 +19,7 @@ enum StageType
 	NoneOBJ = 0,
 	Wall = 1,			//壁
 	Goal = 2,			//ゴール
+	BarrierWall = 3,	//バリアブロック
 	BOX = 10,			//壊れる箱
 	BOXDOUBLE = 11,		//壊れる箱ダブル
 	BOXHARD = 12,		//固い箱
@@ -27,8 +28,8 @@ enum StageType
 	ELECTRICITY = 21,	//電気
 	FISHATTACK = 22,	//魚アタック
 	DEADTREE = 30,		//枯れ木
-	STLON    = 31,		//岩
-	ICEARCH  =32,		//氷のアーチ
+	STLON = 31,			//岩
+	ICEARCH = 32,		//氷のアーチ
 };
 struct Floor
 {
