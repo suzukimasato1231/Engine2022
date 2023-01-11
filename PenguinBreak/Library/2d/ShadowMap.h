@@ -2,19 +2,15 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include"Vec.h"
-#include"Singleton.h"
 #include"_DirectX.h"
-extern const int window_width;
-extern const int window_height;
 /// <summary>
 /// シャドウマップ
 /// </summary>
-class ShadowMap :public Singleton<ShadowMap>
+class ShadowMap
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	friend Singleton<ShadowMap>;
 	struct VertexPosUv
 	{
 		DirectX::XMFLOAT3 pos;			//xyz座標
@@ -63,4 +59,7 @@ public:
 	ID3D12Resource* GetTexbuff() { return depthbuff.Get(); }
 private:
 	void CreateGraphicsPipelineState(ID3D12Device* dev);
+
+	int texture_width = 1800;
+	int texture_height = 1800;
 };

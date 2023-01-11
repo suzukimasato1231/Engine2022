@@ -177,5 +177,8 @@ private:
 
 	//âπÉfÅ[É^
 	int audioTime = 0;
-	SoundData walkSE;
+	SoundData walkSE={};
+	SoundData fallSE={};
+	SoundData electSE={};
+	
 };

@@ -18,7 +18,9 @@ void Player::Init()
 
 	staging.Init();
 
-	walkSE = Audio::Get()->SoundLoadWave("Resources/sound/SE/walk.wav");
+	walkSE = Audio::SoundLoadWave("Resources/sound/SE/walk.wav");
+	fallSE = Audio::SoundLoadWave("Resources/sound/SE/fall.wav");
+	electSE = Audio::SoundLoadWave("Resources/sound/SE/elect.wav");
 	pFbx.Load();
 }
 
@@ -28,6 +30,11 @@ void Player::Update()
 	{
 		oldPosition = position;
 		oldGroundFlag = groundFlag;
+		audioTime++;
+		if (audioTime >= 201)
+		{
+			audioTime = 0;
+		}
 		vec = {};
 		//移動
 		Move();
@@ -46,12 +53,6 @@ void Player::Update()
 		Fish();
 
 		RedFishDie();
-
-		audioTime++;
-		if (audioTime >= 201)
-		{
-			audioTime = 0;
-		}
 
 		pFbx.Update();
 		//開始時のアニメーション
@@ -78,7 +79,6 @@ void Player::Draw(bool shadowFlag)
 	{
 		FbxDraw(shadowFlag);
 	}
-
 }
 
 void Player::DrawParticle()
@@ -176,7 +176,7 @@ void Player::Move()
 		//コントローラー移動
 		if (Input::Get()->ConLeftInput())
 		{
-			if (groundFlag == true && audioTime % 20 == 0)
+			if (groundFlag == true && audioTime % 15 == 0)
 			{
 				Audio::Get()->SoundSEPlayWave(walkSE);
 			}
@@ -263,6 +263,7 @@ void Player::FallDie()
 		static const int dieTime = 30;	//死んだときの演出時間
 		dieNowTime = dieTime;
 		staging.CreateFallDown(position);
+		Audio::Get()->SoundSEPlayWave(fallSE);
 		dieType = DIENOW;
 	}
 	if (dieType == ELECTDIE)
@@ -271,6 +272,7 @@ void Player::FallDie()
 		dieNowTime = dieTime;
 		staging.CreateElect(position);
 		dieType = DIENOW;
+		Audio::Get()->SoundSEPlayWave(electSE);
 		pFbx.PlayFBX(FbxElectDie);
 	}
 	if (dieType == EATDIE)

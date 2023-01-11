@@ -37,23 +37,23 @@ float4 main(VSOutput input) : SV_TARGET
 		  shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor;
 	  }
   }
-   
-	////ライト視点から見た位置を求める
-	float3 posFromLightVP = input.posInLVP.xyz / input.posInLVP.w;
-	float2 shadowmap = (posFromLightVP + float2(1,-1)) * float2(0.5,-0.5);
-	//シャドウマッピングの範囲内か
-	if (shadowmap.x <= 1.0f && shadowmap.x >= 0.0f &&
-		shadowmap.y <= 1.0f && shadowmap.y >= 0.0f)
-	{
-		float shadowDepth = (shadow.Sample(smp0, shadowmap)).x;
-		//深度を比較
-		if (shadowDepth < posFromLightVP.z - 0.003f)
-		{
-			shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
-		}
-	}
-	// シェーディングによる色で描画
-	 return shadecolor * texcolor;
+
+   ////ライト視点から見た位置を求める
+   float3 posFromLightVP = input.posInLVP.xyz / input.posInLVP.w;
+   float2 shadowmap = (posFromLightVP + float2(1,-1)) * float2(0.5,-0.5);
+   //シャドウマッピングの範囲内か
+   if (shadowmap.x <= 1.0f && shadowmap.x >= 0.0f &&
+	   shadowmap.y <= 1.0f && shadowmap.y >= 0.0f)
+   {
+	   float shadowDepth = (shadow.Sample(smp0, shadowmap)).x;
+	   //深度を比較
+	   if (shadowDepth < posFromLightVP.z - 0.003f)
+	   {
+		   shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
+	   }
+   }
+   // シェーディングによる色で描画
+	return shadecolor * texcolor;
 }
 
 

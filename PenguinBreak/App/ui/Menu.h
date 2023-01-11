@@ -1,4 +1,5 @@
 #include <Sprite.h>
+#include<Audio.h>
 /// <summary>
 /// メニュークラス
 /// </summary>
@@ -39,7 +40,7 @@ private:
 	const float c_startTimeMax = 20.0f;
 	float m_startTime = 0.0f;
 
-	//音
+	//音設定
 	SpriteData menuAudioFream;
 	SpriteData menuAudioVolum;
 	SpriteData menuAudioLandmark;
@@ -49,5 +50,9 @@ private:
 	const float volumMax = 0.10f;
 	const float volumMin = 0.0f;
 	float volum = 0.02f;
+
+	//音データ
+	SoundData decisionSE={};
+	SoundData selectSE={};
 
 };

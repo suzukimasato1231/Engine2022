@@ -47,6 +47,10 @@ void Stage::Init()
 	figurineOBJ.Init();
 
 	boxStaring.Init();
+
+	boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
+	goalSE = Audio::SoundLoadWave("Resources/sound/SE/goal.wav");
+	jumpSE = Audio::SoundLoadWave("Resources/sound/SE/jump.wav");
 }
 
 void Stage::MainInit(int stageNum)
@@ -56,6 +60,7 @@ void Stage::MainInit(int stageNum)
 	//°
 	LoadStage(stageNum);
 	goalFlag = false;
+	goalSEFlag = false;
 	//‹›‚ðÁ‚·
 	fishBox.Delete();
 }
@@ -97,6 +102,11 @@ void Stage::Update(Vec3 pPos)
 				{
 					//ƒS[ƒ‹
 					goalFlag = true;
+					if (goalSEFlag == false)
+					{
+						Audio::Get()->SoundSEPlayWave(goalSE);
+					}
+					goalSEFlag = true;
 				}
 			}
 			goalFish.Update();
@@ -140,6 +150,7 @@ void Stage::Update(Vec3 pPos)
 					delete stageObj[i];
 					stageObj.erase(stageObj.begin() + i);
 					blockNum++;
+					Audio::Get()->SoundSEPlayWave(boxSE);
 					break;
 				}//ƒWƒƒƒ“ƒv‘ä
 				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
@@ -147,6 +158,7 @@ void Stage::Update(Vec3 pPos)
 				{
 					Player::Get()->GetJumpBox();
 					Player::Get()->GetBlockStepOnFlag();
+					Audio::Get()->SoundSEPlayWave(jumpSE);
 				}
 			}
 		}
@@ -167,6 +179,7 @@ void Stage::Update(Vec3 pPos)
 						delete stageObj[i];
 						stageObj.erase(stageObj.begin() + i);
 						blockNum++;
+						Audio::Get()->SoundSEPlayWave(boxSE);
 					}
 				}
 			}

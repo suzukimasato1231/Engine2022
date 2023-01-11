@@ -19,8 +19,11 @@ void Menu::Init()
 	menuFish = Sprite::Get()->SpriteCreate(L"Resources/UI/menuFish.png");
 
 	menuAudioFream = Sprite::Get()->SpriteCreate(L"Resources/UI/menuAudioFrame.png");
-	menuAudioVolum = Sprite::Get()->SpriteCreate(L"Resources/UI/menuAudioVolum.png");;
-	menuAudioLandmark = Sprite::Get()->SpriteCreate(L"Resources/UI/menuAudioLandmark.png");;
+	menuAudioVolum = Sprite::Get()->SpriteCreate(L"Resources/UI/menuAudioVolum.png");
+	menuAudioLandmark = Sprite::Get()->SpriteCreate(L"Resources/UI/menuAudioLandmark.png");
+
+	decisionSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
+	selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
 }
 
 void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
@@ -32,6 +35,7 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 		menuNum = 0;
 		m_startTime = 0.0f;
 		menuEasingFlag = true;
+		Audio::Get()->SoundSEPlayWave(decisionSE);
 	}
 
 
@@ -41,6 +45,7 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 		{
 			menuFlag = false;
 			m_startTime = 0;
+			Audio::Get()->SoundSEPlayWave(decisionSE);
 		}
 		if (Input::Get()->ControllerDown(ButtonA) == true)
 		{
@@ -61,6 +66,7 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 				assert(0);
 				break;
 			}
+			Audio::Get()->SoundSEPlayWave(decisionSE);
 		}
 		if (Input::Get()->ControllerDown(LButtonDown) == true)
 		{
@@ -69,6 +75,7 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 			{
 				menuNum = 0;
 			}
+			Audio::Get()->SoundSEPlayWave(selectSE);
 		}
 		if (Input::Get()->ControllerDown(LButtonUp) == true)
 		{
@@ -77,6 +84,7 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 			{
 				menuNum = 2;
 			}
+			Audio::Get()->SoundSEPlayWave(selectSE);
 		}
 	}
 
@@ -89,6 +97,7 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 			{
 				volum = volumMin;
 			}
+			Audio::Get()->SoundSEPlayWave(selectSE);
 		}
 		if (Input::Get()->ControllerPush(LButtonRight) == true)
 		{
@@ -97,11 +106,13 @@ void Menu::Update(bool& menuFlag, bool& changeScene, int& sceneNum)
 			{
 				volum = volumMax;
 			}
+			Audio::Get()->SoundSEPlayWave(selectSE);
 		}
 		Audio::Get()->SetVolume(volum);
 		if (Input::Get()->ControllerDown(ButtonB) == true)
 		{
 			audioFlag = false;
+			Audio::Get()->SoundSEPlayWave(decisionSE);
 		}
 	}
 

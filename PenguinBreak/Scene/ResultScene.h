@@ -1,7 +1,7 @@
 #include <Object.h>
 #include<memory>
 #include"FBXObject3d.h"
-
+#include<Audio.h>
 enum ResultNext
 {
 	ResultNextStage,
@@ -62,4 +62,8 @@ private:
 	//ボタン
 	SpriteData buttonGraph;
 	int buttonTime = 0;
+
+	//音データ
+	SoundData decisionSE = {};
+	SoundData selectSE = {};
 };

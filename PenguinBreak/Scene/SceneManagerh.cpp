@@ -12,6 +12,7 @@ SceneManagerh::~SceneManagerh()
 	Audio::Get()->xAudio2.Reset();
 	//音データ解放
 	Audio::SoundUnload(&bgm);
+	Audio::SoundUnload(&buttonSE);
 }
 void SceneManagerh::Initialize()
 {
@@ -49,9 +50,8 @@ void SceneManagerh::Initialize()
 
 	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
 	////影
-	ShadowMap::Get()->Init();
-	Texture::Get()->LoadShadowTexture(ShadowMap::Get()->GetTexbuff());
-
+	shadowMapFar.Init();
+	Texture::Get()->LoadShadowTexture(shadowMapFar.GetTexbuff());
 	Texture::Get()->LoadCameraTexture(PostEffect::Get()->GetDepth());
 
 	//音作成
@@ -69,6 +69,7 @@ void SceneManagerh::Initialize()
 
 	//BGM
 	bgm = Audio::SoundLoadWave("Resources/sound/BGM/bgm.wav");
+	buttonSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
 	Audio::Get()->SoundBGMPlayLoopWave(bgm, 0);
 	Audio::Get()->SetVolume(0.02f);
 }
@@ -84,6 +85,7 @@ void SceneManagerh::Update()
 		{
 			changeSceneFlag = ChangeFirst;
 			sceneMe = SelectScene;
+			Audio::Get()->SoundSEPlayWave(buttonSE);
 		}
 	}
 	else if (scene == SelectScene)
@@ -126,6 +128,7 @@ void SceneManagerh::Update()
 				sceneMe = SelectScene;
 			}
 			changeSceneFlag = ChangeFirst;
+			Audio::Get()->SoundSEPlayWave(buttonSE);
 		}
 	}
 	//更新
@@ -214,7 +217,7 @@ void SceneManagerh::Update()
 void SceneManagerh::Draw()
 {
 	//影深度値取得
-	ShadowMap::Get()->PreDraw(_DirectX::Get()->GetCmandList());
+	shadowMapFar.PreDraw(_DirectX::Get()->GetCmandList());
 	Object::InitDraw(), Sprite::Get()->PreDraw();
 	if (scene == Title)
 	{
@@ -232,7 +235,8 @@ void SceneManagerh::Draw()
 	{
 		resultScene.ShadowDraw();
 	}
-	ShadowMap::Get()->PostDraw(_DirectX::Get()->GetCmandList());
+	shadowMapFar.PostDraw(_DirectX::Get()->GetCmandList());
+
 
 	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
 	Object::InitDraw(), Sprite::Get()->PreDraw();
@@ -248,8 +252,7 @@ void SceneManagerh::Draw()
 	else if (scene == GameScene)
 	{
 		gameScene.Draw();
-		//ShadowMap::Get()->Draw(_DirectX::Get()->GetCmandList());
-		//DepthOfField::Get()->Draw(_DirectX::Get()->GetCmandList());
+		//shadowMapFar.Draw(_DirectX::Get()->GetCmandList());
 	}
 	else if (scene == Result)
 	{

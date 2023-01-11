@@ -49,5 +49,8 @@ private://’è‹`
 	bool Flag = false;
 
 	Audio* audio = nullptr;
-	SoundData bgm;
+	SoundData bgm={};
+	SoundData buttonSE={};
+
+	ShadowMap shadowMapFar;
 };

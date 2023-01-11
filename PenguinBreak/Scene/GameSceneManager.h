@@ -60,7 +60,7 @@ private://定義
 	//ゴール時の演出はじめ
 	bool goalStagingFlag = false;
 	int goalStagingTime = 0;
-	const int goalStagingTimeMax = 200;
+	const int goalStagingTimeMax = 260;
 
 	//カメラ角度
 	const float cameraAngle = 37.5f;
@@ -74,4 +74,8 @@ private://定義
 	UI ui;
 	//死亡時の演出クラス
 	DecLifeStaging decLifeStaging;
+
+	//音データ
+	SoundData decisionSE = {};
+	SoundData selectSE = {};
 };

@@ -15,8 +15,8 @@ void ShadowMap::Init()
 	HRESULT result;
 #ifdef _DEBUG
 	dev->SetName(L"shadow");
-#endif
 	CreateGraphicsPipelineState(dev);
+#endif
 
 	//頂点バッファ生成
 	result = dev->CreateCommittedResource(
@@ -132,8 +132,8 @@ void ShadowMap::Init()
 	CD3DX12_RESOURCE_DESC depthResDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_R32_TYPELESS,
-			window_width,
-			window_height,
+			texture_width,
+			texture_height,
 			1, 0,
 			1, 0,
 			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
@@ -180,6 +180,7 @@ void ShadowMap::Init()
 
 void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 {
+#ifdef _DEBUG
 	HRESULT result = S_OK;
 	//定数バッファにデータ転送
 	ConstantBuffer_b0 data = {};
@@ -215,6 +216,7 @@ void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 		1, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
 	//描画コマンド
 	cmdList->DrawInstanced(4, 1, 0, 0);
+#endif
 }
 
 void ShadowMap::PreDraw(ID3D12GraphicsCommandList* cmdList)
@@ -239,12 +241,12 @@ void ShadowMap::PreDraw(ID3D12GraphicsCommandList* cmdList)
 	//ビューポートの設定
 	cmdList->RSSetViewports(
 		1,
-		&CD3DX12_VIEWPORT(0.0f, 0.0f, static_cast<FLOAT>(window_width), static_cast<FLOAT>(window_height))
+		&CD3DX12_VIEWPORT(0.0f, 0.0f, static_cast<FLOAT>(texture_width), static_cast<FLOAT>(texture_height))
 	);
 	//シザリング矩形の設定
 	cmdList->RSSetScissorRects(
 		1,
-		&CD3DX12_RECT(0, 0, static_cast<LONG>(window_width), static_cast<LONG>(window_height))
+		&CD3DX12_RECT(0, 0, static_cast<LONG>(texture_width), static_cast<LONG>(texture_height))
 	);
 
 	//全画面クリア

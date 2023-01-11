@@ -25,6 +25,7 @@ void StageSelect::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, -1));
+	boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
 }
 
 void StageSelect::Init()
@@ -68,6 +69,7 @@ void StageSelect::Update()
 				productionFlag[i] = true;
 				productionTime = productionTimeMax;
 				Player::Get()->JumpPoweZero();
+				Audio::Get()->SoundSEPlayWave(boxSE);
 			}
 			else
 			{

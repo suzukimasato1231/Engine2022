@@ -12,6 +12,7 @@
 #include"GoalFish.h"
 #include"BoxStaring.h"
 #include"FigurineOBJ.h"
+#include<Audio.h>
 class Player;
 
 class Stage :public Singleton<Stage>
@@ -112,4 +113,9 @@ private:
 	DropPoint dropPoint;
 
 	BoxStaring boxStaring;
+
+	SoundData boxSE={};
+	SoundData jumpSE = {};
+	SoundData goalSE = {};
+	bool goalSEFlag = false;
 };

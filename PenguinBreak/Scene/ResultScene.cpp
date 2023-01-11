@@ -50,6 +50,9 @@ void ResultScene::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, 0));
+
+	decisionSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
+	selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
 }
 void ResultScene::Init()
 {
@@ -88,6 +91,7 @@ void ResultScene::Update()
 		{
 			nextScene = ResultNextStage;
 		}
+		Audio::Get()->SoundSEPlayWave(selectSE);
 	}
 	//‘I‘ð‚µ‚½•û‚Ì‘å‚«‚³‚ð•Ï‚¦‚é
 	if (nextScaleFlag == false)

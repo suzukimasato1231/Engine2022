@@ -51,7 +51,7 @@ private://’è‹`
 	const int productionTimeMax = 30;
 	int productionTime = 0;
 
-
+	SoundData boxSE={};
 };
 
 

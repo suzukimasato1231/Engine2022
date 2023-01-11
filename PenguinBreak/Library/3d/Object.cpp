@@ -92,7 +92,9 @@ void Object::MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, V
 	}
 	constMap->cameraPos = cameraPos;
 	constMap->uv = uv;
+
 	constMap->lightproj = lightGroup->GetLightMatProjection();
+
 	Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
 
 

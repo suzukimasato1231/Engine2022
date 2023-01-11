@@ -36,6 +36,9 @@ void GameSceneManager::Initialize()
 	ui.Init();
 
 	decLifeStaging.Init();
+
+	decisionSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
+	selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
 }
 
 void GameSceneManager::Init(int stageNum)
@@ -114,14 +117,17 @@ void GameSceneManager::Update()
 		if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft) == true)
 		{
 			changeNum++;
+			Audio::Get()->SoundSEPlayWave(selectSE);
 		}
 		if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight) == true)
 		{
 			changeNum--;
+			Audio::Get()->SoundSEPlayWave(selectSE);
 		}
 		if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA) == true)
 		{
 			changeScene = true;
+			Audio::Get()->SoundSEPlayWave(decisionSE);
 		}
 		if (changeNum > 2)
 		{
