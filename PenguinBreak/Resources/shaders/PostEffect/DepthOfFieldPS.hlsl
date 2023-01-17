@@ -15,16 +15,16 @@ float U = 1.0f / 1200.0f;
 float V = 1.0f / 720.0f;
 //‰Šú‰»
 float4 totalcolor = { 0,0,0,0 };
-if (depth >= 0.999500f)
+if (depth >= 0.998000f)
 {
-	for (float j = -2.0f; j < 2.0f; j = j + 1.0f)
+	for (float j = -1.0f; j < 2.0f; j = j + 1.0f)
 	{
-		for (float i = -2.0f; i < 2.0f; i = i + 1.0f)
+		for (float i = -1.0f; i < 2.0f; i = i + 1.0f)
 		{
 			totalcolor += tex.Sample(smp, input.uv + float2(i * U, j * V));
 		}
 	}
-	totalcolor.rgb /= 16.0;
+	totalcolor.rgb /= 9.0;
 }
 else
 {

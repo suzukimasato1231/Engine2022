@@ -32,6 +32,8 @@ public:
 	//OBJ‰æ‘œ“Ç‚İ‚İ
 	int OBJLoadTexture(const std::string& directoryPath, const std::string& filename);
 
+	int FbxLoadTexture(const DirectX::Image* img, CD3DX12_RESOURCE_DESC texresDesc);
+
 	//‰e—p‚Ì[“x’l•Û‘¶
 	void LoadShadowTexture(ID3D12Resource* texbuff);
 	//”íÊŠE[“x—p

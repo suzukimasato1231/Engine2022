@@ -55,6 +55,11 @@ void LightGroup::Initialize()
 	}
 	// 定数バッファへデータ転送
 	TransferConstBuffer();
+
+	shadowProjection = XMMatrixOrthographicOffCenterLH(
+		-50.0f, 700.0f,
+		-400.0f, 200.0f,
+		-350.0f, 350.0f);//前端　奥端
 }
 
 void LightGroup::Update()
@@ -70,12 +75,7 @@ void LightGroup::Update()
 		XMLoadFloat3(&target),
 		XMLoadFloat3(&up));
 
-	matProjection = XMMatrixOrthographicOffCenterLH(
-		-50.0f, 800.0f,
-		-500.0f, 200.0f,
-		-500.0f, 500.0f);//前端　奥端
-
-	lightMatViewProjection = matView * matProjection;
+	lightMatViewProjection = matView * shadowProjection;
 
 
 	// 値の更新があった時だけ定数バッファに転送する

@@ -25,9 +25,6 @@ void Stage::Init()
 	floorOBJ = Shape::CreateOBJ("ice", false, "OBJ/");
 	floorGraph = Texture::Get()->LoadTexture(L"Resources/floor.png");
 
-	blackGround = Shape::CreateSquare(1.0f, 0.5f, 1.0f);
-	blackGraph = Texture::Get()->LoadTexture(L"Resources/black.png");
-
 	MainInit(0);
 
 	goalFish.Init();
@@ -67,7 +64,7 @@ void Stage::MainInit(int stageNum)
 
 void Stage::Update(Vec3 pPos)
 {
-	Vec3 PPos = Player::Get()->GetPosition();
+	Vec3 PPos = pPos;
 	//判定する箇所だけ行うため
 	int Z = static_cast<int>(PPos.z / (-mapSize));
 	int X = static_cast<int>(PPos.x / mapSize);
@@ -226,8 +223,7 @@ void Stage::Update(Vec3 pPos)
 			break;
 		case FloorPitfall_A:
 		case FloorPitfall_B:
-			if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-				&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
+			if (((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
 				&& Player::Get()->GetIsFishDie() == false)
 			{
 				if (floor[i]->moveFlag == 0)
@@ -250,22 +246,20 @@ void Stage::Update(Vec3 pPos)
 
 void Stage::Draw(Vec3 pPos, bool shadowFlag)
 {
-	Vec3 PPos = Player::Get()->GetPosition();
+	Vec3 PPos = pPos;
 	//判定する箇所だけ行うため
-	int X = static_cast<int>(PPos.x / mapSize);
 	int Z = static_cast<int>(PPos.z / (-mapSize));
 	size_t floorSize = floor.size();
 	//床の描画
 	for (int i = 0; i < floorSize; i++)
 	{
-		if ((X - drawNumX <= floor[i]->map.x && floor[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - 90 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+		if (((MAP_HEIGHT - 1 + Z) - 90 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 		{
 			switch (floor[i]->type)
 			{
 			case FloorNormal:
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 15.0f, floor[i]->position.z),
-					Vec3(25.0f, 30.0f, 25.0f * (floor[i]->size + 1)),
+				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 30.0f, floor[i]->position.z),
+					Vec3(25.0f, 60.0f, 25.0f * (floor[i]->size + 1)),
 					floor[i]->angle, Vec2(), 0, shadowFlag);
 				break;
 			case Floor169:
@@ -294,8 +288,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	//オブジェクト描画
 	for (int i = 0; i < stageObj.size(); i++)
 	{
-		if ((X - drawNumX <= stageObj[i]->map.x && stageObj[i]->map.x <= X + drawNumX)
-			&& ((MAP_HEIGHT - 1 + Z) - drawNumY <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+		if ((MAP_HEIGHT - 1 + Z) - drawNumY <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
 		{
 			switch (stageObj[i]->type)
 			{
@@ -324,16 +317,13 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			}
 		}
 	}
-	//闇
-	Object::NoShadowDraw(blackGround, blackPsr[0], Vec3(pPos.x, -50.0f, pPos.z + 1000.0f),
-		Vec3(10000.0f, 1.0f, 100000.0f), Vec3(), Vec2(), blackGraph);
 
 	//左右の床の描画
-	Object::Draw(floorOBJ, blackPsr[1], Vec3(-280.0f, 5.0f, 1200.0f),
-		Vec3(550.0f, 15.0f, 5500.0f),
+	Object::Draw(floorOBJ, blackPsr[1], Vec3(-340.0f, 5.0f, pPos.z + 600.0f),
+		Vec3(650.0f, 15.0f, 1500.0f),
 		Vec3(), Vec2(), 0, shadowFlag);
-	Object::Draw(floorOBJ, blackPsr[2], Vec3(500.0f, 5.0f, 1200.0f),
-		Vec3(550.0f, 15.0f, 5500.0f),
+	Object::Draw(floorOBJ, blackPsr[2], Vec3(560.0f, 5.0f, pPos.z + 600.0f),
+		Vec3(650.0f, 15.0f, 1500.0f),
 		Vec3(), Vec2(), 0, shadowFlag);
 
 
@@ -347,7 +337,6 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 
 void Stage::DrawParicle()
 {
-
 	elect.DrawParicle();
 	//パーティクル
 	boxStaring.Draw();

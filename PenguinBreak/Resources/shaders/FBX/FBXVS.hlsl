@@ -65,5 +65,6 @@ VSOutput main(VSInput input)
 	// 入力値をそのまま次のステージに渡す
 	output.uv = input.uv;
 
+	output.posInLVP = mul(lightproj, skinned.pos);//ライトから見た行列
 	return output;
 }

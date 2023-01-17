@@ -20,9 +20,6 @@ void Sprite::StaticInit(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 	Sprite::dev = dev;
 
 	Sprite::cmdList = cmdList;
-
-
-
 }
 
 Sprite* Sprite::Create()
@@ -226,7 +223,6 @@ void Sprite::SpriteCommonBeginDraw()
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-
 	//テクスチャ用デスクリプタヒープの設定
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
@@ -305,7 +301,6 @@ void Sprite::Update(SpriteData& sprite, Vec2 position, float width, float height
 		constMap->color = color;
 		constBuffer[spriteNum]->constBuff->Unmap(0, nullptr);
 	}
-
 
 }
 
@@ -386,9 +381,6 @@ void Sprite::DebugDraw(SpriteData& sprite)
 	spriteNum++;
 }
 
-
-
-
 void Sprite::PostEffectDraw(ID3D12DescriptorHeap* descHeap, SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
 {
 	//パイプラインステートの設定
@@ -409,19 +401,12 @@ void Sprite::PostEffectDraw(ID3D12DescriptorHeap* descHeap, SpriteData& sprite, 
 		CreateConstBuffer();
 	}
 
-
 	Update(sprite, position, width, height, anchorpoint, color, isFlipX, isFlipY);
 	//頂点バッファをセット
 	cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
 	//定数バッファをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffer[spriteNum]->constBuff->GetGPUVirtualAddress());
 
-	////シェーダーリソースビューをセット
-	//cmdList->SetGraphicsRootDescriptorTable(1,
-	//	CD3DX12_GPU_DESCRIPTOR_HANDLE(
-	//		descHeap->GetGPUDescriptorHandleForHeapStart(),
-	//		sprite.texNumber,
-	//		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 	cmdList->SetGraphicsRootDescriptorTable(1, descHeap->GetGPUDescriptorHandleForHeapStart());
 	//ポリゴンの描画（４頂点で四角形）
 	cmdList->DrawInstanced(4, 1, 0, 0);

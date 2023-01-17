@@ -277,12 +277,12 @@ void ShadowMap::CreateGraphicsPipelineState(ID3D12Device* dev)
 
 	//頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ShadowMap/ShadowMapVS.hlsl",				//シェーダファイル名
+		L"Resources/Shaders/ShadowMap/ShadowMapVS.hlsl",	//シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,					//インクルード可能にする
 		"main",											//エントリーポイント名
-		"vs_5_0",											//シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	//デバッグ用設定
+		"vs_5_0",												//シェーダーモデル指定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,		//デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
 

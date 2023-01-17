@@ -25,7 +25,7 @@ struct Node
 	// グローバル変形行列
 	DirectX::XMMATRIX globalTransform;
 	// 親ノード
-	Node *parent = nullptr;
+	Node* parent = nullptr;
 };
 
 /// <summary>
@@ -54,7 +54,7 @@ public://定数
 	static const int MAX_BONE_INDICES = 4;
 
 	//FBXシーン
-	FbxScene *fbxScene = nullptr;
+	FbxScene* fbxScene = nullptr;
 public: // サブクラス
 	// 頂点データ構造体
 	struct VertexPosNormalUvSkin
@@ -73,26 +73,26 @@ public: // サブクラス
 		//初期姿勢の逆行列
 		DirectX::XMMATRIX invInitialPose;
 		//クラスター(FBX側のボーン情報)
-		FbxCluster *fbxCluster;
+		FbxCluster* fbxCluster;
 		//コンストラクタ
-		Bone(const std::string &name)
+		Bone(const std::string& name)
 		{
 			this->name = name;
 		}
 	};
 public:
 	// バッファ生成
-	void CreateBuffers(ID3D12Device *device);
+	void CreateBuffers(ID3D12Device* device);
 	// 描画
-	void Draw(ID3D12GraphicsCommandList *cmdList);
+	void Draw(ID3D12GraphicsCommandList* cmdList);
 	// モデルの変形行列取得
-	const XMMATRIX &GetModelTransform() { return meshNode->globalTransform; }
+	const XMMATRIX& GetModelTransform() { return meshNode->globalTransform; }
 
 	//getter
-	FbxScene *GetFbxScene() { return fbxScene; }
+	FbxScene* GetFbxScene() { return fbxScene; }
 
 	//getter
-	std::vector<Bone> &GetBones() { return bones; }
+	std::vector<Bone>& GetBones() { return bones; }
 	//デスクリプタ
 	~Model();
 private:
@@ -101,7 +101,7 @@ private:
 	// ノード配列
 	std::vector<Node> nodes;
 	// メッシュを持つノード
-	Node *meshNode = nullptr;
+	Node* meshNode = nullptr;
 	// 頂点データ配列
 	std::vector<VertexPosNormalUvSkin> vertices;
 	// 頂点インデックス配列
@@ -119,14 +119,16 @@ private:
 	// インデックスバッファ
 	ComPtr<ID3D12Resource> indexBuff;
 	// テクスチャバッファ
-	ComPtr<ID3D12Resource> texbuff;
+	//ComPtr<ID3D12Resource> texbuff;
 	// 頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView = {};
 	// インデックスバッファビュー
 	D3D12_INDEX_BUFFER_VIEW ibView = {};
 	// SRV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
+	//ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 	//ボーン配列
 	std::vector<Bone>bones;
+
+	int textureNum = 0;
 };
 

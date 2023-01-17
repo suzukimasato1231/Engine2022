@@ -2,7 +2,7 @@
 
 Texture2D<float4> tex : register(t0);  // 0番スロットに設定されたテクスチャ
 SamplerState smp : register(s0);      // 0番スロットに設定されたサンプラー
-
+Texture2D<float> shadow : register(t1);  // 1番スロットに設定されたテクスチャ
 struct PSOutput
 {
 	float4 target0 :SV_TARGET0;
@@ -45,6 +45,21 @@ PSOutput main(VSOutput input)
 
 			// 全て加算する
 			shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor;
+		}
+	}
+
+	////ライト視点から見た位置を求める
+	float3 posFromLightVP = input.posInLVP.xyz / input.posInLVP.w;
+	float2 shadowmap = (posFromLightVP + float2(1, -1)) * float2(0.5, -0.5);
+	//シャドウマッピングの範囲内か
+	if (shadowmap.x <= 1.0f && shadowmap.x >= 0.0f &&
+		shadowmap.y <= 1.0f && shadowmap.y >= 0.0f)
+	{
+		float shadowDepth = (shadow.Sample(smp, shadowmap)).x;
+		////深度を比較
+		if (shadowDepth < posFromLightVP.z - 0.002f)
+		{
+			shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
 		}
 	}
 

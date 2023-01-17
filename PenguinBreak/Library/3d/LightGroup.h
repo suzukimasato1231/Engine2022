@@ -240,8 +240,6 @@ public: // メンバ関数
 
 	XMMATRIX GetLightMatProjection() { return lightMatViewProjection; }
 
-	XMMATRIX GetLightMatProjectionR() { return lightMatViewProjectionNear; }
-
 private: // メンバ変数
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
@@ -269,10 +267,13 @@ private: // メンバ変数
 	//射影変換
 	XMMATRIX matProjection;
 
+	//影用行列
 	XMMATRIX lightMatViewProjection;
 
-	XMMATRIX lightMatViewProjectionNear;
+	XMMATRIX shadowProjection;
 
 	Vec3 shadowDir = { 1,1,0 };
+
+
 };
 

@@ -194,6 +194,54 @@ int Texture::OBJLoadTexture(const std::string& directoryPath, const std::string&
 	return (int)texNum - 1;
 }
 
+int Texture::FbxLoadTexture(const DirectX::Image* img, CD3DX12_RESOURCE_DESC texresDesc)
+{
+	HRESULT result = S_FALSE;
+	textureData.push_back(new Texture::TextureData);
+
+	// テクスチャ用バッファの生成
+	result = dev->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
+		D3D12_HEAP_FLAG_NONE,
+		&texresDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
+		nullptr,
+		IID_PPV_ARGS(&textureData[texNum]->texbuff));
+
+	// テクスチャバッファにデータ転送
+	result = textureData[texNum]->texbuff->WriteToSubresource(
+		0,
+		nullptr, // 全領域へコピー
+		img->pixels,    // 元データアドレス
+		(UINT)img->rowPitch,  // 1ラインサイズ
+		(UINT)img->slicePitch // 1枚サイズ
+	);
+
+	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	// シェーダリソースビュー作成
+	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	//ハンドルのアドレスを進める
+	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * descHandleIncrementSize;
+	textureData[texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
+
+	// シェーダリソースビュー(SRV)作成
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
+	D3D12_RESOURCE_DESC resDesc = textureData[texNum]->texbuff->GetDesc();
+
+	srvDesc.Format = resDesc.Format;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc.Texture2D.MipLevels = 1;
+
+	dev->CreateShaderResourceView(textureData[texNum]->texbuff.Get(), //ビューと関連付けるバッファ
+		&srvDesc, //テクスチャ設定情報
+		textureData[texNum]->cpuDescHandleSRV // ヒープの先頭アドレス
+	);
+	texNum++;
+	return texNum - 1;
+}
+
 void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 {
 	textureData.push_back(new Texture::TextureData);

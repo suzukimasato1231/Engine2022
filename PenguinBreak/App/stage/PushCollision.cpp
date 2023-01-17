@@ -115,18 +115,25 @@ int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
 	Vec3 setPosition = oldPosition;
 
 
-
-	if (Flag[0] == false)
+	if (Flag[0] == true && Flag[1] == true && Flag[2] == true && BlockBox[1].maxPosition.m128_f32[0] == 0)
 	{
 		setPosition.x += vec.x;
-	}
-	if (Flag[1] == false)
-	{
 		setPosition.y += vec.y;
 	}
-	if (Flag[2] == false)
+	else
 	{
-		setPosition.z += vec.z;
+		if (Flag[0] == false)
+		{
+			setPosition.x += vec.x;
+		}
+		if (Flag[1] == false)
+		{
+			setPosition.y += vec.y;
+		}
+		if (Flag[2] == false)
+		{
+			setPosition.z += vec.z;
+		}
 	}
 
 	Player::Get()->SetPosition(setPosition);

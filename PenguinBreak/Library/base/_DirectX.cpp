@@ -289,7 +289,7 @@ void _DirectX::PreDraw()
 
 
 #pragma region	//3.画面クリア            R     G     B      A
-	float clearColor[] = { 0.243f,0.545f,0.749f,0.0f };//青っぽい色
+	float clearColor[] = { 0.0f,0.0f,0.0f,0.0f };//青っぽい色
 
 	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -299,7 +299,7 @@ void _DirectX::PreDraw()
 	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, (FLOAT)window_width, (FLOAT)window_height));
 	//シザー短形の設定コマンド
 	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, (LONG)window_width, (LONG)window_height));
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	// imgui開始
 	//ImGui_ImplDX12_NewFrame();
 	//ImGui_ImplWin32_NewFrame();
@@ -324,7 +324,7 @@ void _DirectX::PreDraw()
 			SetWindowTextA(_Window::Get()->GetHwnd(), str);
 		}
 	}
-#endif
+//#endif
 }
 
 //リソースバリアを戻す

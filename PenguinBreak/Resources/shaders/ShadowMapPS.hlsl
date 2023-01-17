@@ -7,5 +7,5 @@ SamplerState smp1 : register(s1);
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	return float4(1,1,1, 1);
+	return float4(1,1,1,1);
 }

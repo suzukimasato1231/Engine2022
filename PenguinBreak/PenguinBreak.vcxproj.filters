@@ -21,9 +21,6 @@
     <Filter Include="HLSL\Particle">
       <UniqueIdentifier>{c8ca7c7a-debb-4d39-a0e4-28ec248f7558}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HLSL\FBX">
-      <UniqueIdentifier>{0e6adcd5-ab8c-48bc-9914-c12b5a7f2a47}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library">
       <UniqueIdentifier>{f2946dcd-1968-4d6f-bf46-9fbcea8055a2}</UniqueIdentifier>
     </Filter>
@@ -117,6 +114,9 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{6b0d6cdb-bc2b-40e4-9cc6-38c2f38e070f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL\OBJ\FBX">
+      <UniqueIdentifier>{0e6adcd5-ab8c-48bc-9914-c12b5a7f2a47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -159,10 +159,10 @@
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\FBX\FBXPS.hlsl">
-      <Filter>HLSL\FBX</Filter>
+      <Filter>HLSL\OBJ\FBX</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\FBX\FBXVS.hlsl">
-      <Filter>HLSL\FBX</Filter>
+      <Filter>HLSL\OBJ\FBX</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\Object\NormalMapPS.hlsl">
       <Filter>HLSL\OBJ\NormalMap</Filter>
@@ -215,7 +215,7 @@
       <Filter>HLSL\PostEffect</Filter>
     </None>
     <None Include="Resources\shaders\FBX\FBX.hlsli">
-      <Filter>HLSL\FBX</Filter>
+      <Filter>HLSL\OBJ\FBX</Filter>
     </None>
     <None Include="Resources\shaders\Object\NormalMap.hlsli">
       <Filter>HLSL\OBJ\NormalMap</Filter>

@@ -44,13 +44,13 @@ float4 main(VSOutput input) : SV_TARGET
    //シャドウマッピングの範囲内か
    if (shadowmap.x <= 1.0f && shadowmap.x >= 0.0f &&
 	   shadowmap.y <= 1.0f && shadowmap.y >= 0.0f)
-   {
-	   float shadowDepth = (shadow.Sample(smp0, shadowmap)).x;
-	   //深度を比較
-	   if (shadowDepth < posFromLightVP.z - 0.003f)
-	   {
-		   shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
-	   }
+   {  
+		   float shadowDepth = (shadow.Sample(smp0, shadowmap)).x;
+		   //深度を比較
+		   if (shadowDepth < posFromLightVP.z - 0.002f)
+		   {
+			   shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
+		   }
    }
    // シェーディングによる色で描画
 	return shadecolor * texcolor;

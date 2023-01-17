@@ -230,7 +230,7 @@ void Player::Move()
 void Player::Jump()
 {
 	//ƒWƒƒƒ“ƒv
-	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) && groundFlag == true && clearFlag == false) || blockStepOnFlag)
+	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) && groundFlag == true&& starStaging == false&& dieType == DIENULL && clearFlag == false) || blockStepOnFlag)
 	{
 		if (jumpBoxFlag)
 		{

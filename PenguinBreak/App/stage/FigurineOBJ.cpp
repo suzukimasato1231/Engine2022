@@ -28,7 +28,7 @@ void FigurineOBJ::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	switch (stageObj->type)
 	{
 	case Wall:
-		Object::Draw(wallOBJ, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y - 30.0f, stageObj->position.z),
+		Object::Draw(wallOBJ, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y - 23.0f, stageObj->position.z),
 			Vec3(12.0f, 12.0f, 12.0f), stageObj->angle, Vec2(), 0, shadowFlag);
 		break;
 	case DEADTREE:

@@ -122,6 +122,4 @@ protected://メンバ変数
 	bool isPlay = false;
 	//アニメーションをループさせるかどうか
 	bool isLoop = false;
-
-
 };

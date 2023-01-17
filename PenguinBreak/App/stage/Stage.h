@@ -1,5 +1,4 @@
 #pragma once
-#include"Object.h"
 #include<vector>
 #include <LoadCSV.h>
 #include"FishBox.h"
@@ -69,8 +68,7 @@ private:
 	void SetStlon(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 private:
 	const float mapSize = 25.0f;
-	const int drawNumX = 9;
-	const int drawNumY = 40;
+	const int drawNumY = 35;
 private://è∞ä÷òA
 	//ê·ÇÃè∞
 	ObjectData floorOBJ;
