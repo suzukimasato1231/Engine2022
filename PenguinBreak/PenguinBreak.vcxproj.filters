@@ -438,6 +438,9 @@
     <ClInclude Include="App\stage\FigurineOBJ.h">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
     </ClInclude>
+    <ClInclude Include="CameraControl.h">
+      <Filter>ソース ファイル\Stage\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -619,6 +622,9 @@
     </ClCompile>
     <ClCompile Include="App\stage\FigurineOBJ.cpp">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControl.cpp">
+      <Filter>ソース ファイル\Stage\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

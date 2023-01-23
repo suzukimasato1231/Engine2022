@@ -60,6 +60,6 @@ public:
 private:
 	void CreateGraphicsPipelineState(ID3D12Device* dev);
 
-	int texture_width = 2500;
-	int texture_height = 2500;
+	int texture_width = 2600;
+	int texture_height = 2600;
 };

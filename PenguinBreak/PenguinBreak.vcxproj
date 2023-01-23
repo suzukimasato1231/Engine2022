@@ -291,6 +291,7 @@
     <ClInclude Include="App\stage\StegeObject.h" />
     <ClInclude Include="App\ui\Menu.h" />
     <ClInclude Include="App\ui\UI.h" />
+    <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
     <ClInclude Include="Library\2d\PostEffect.h" />
     <ClInclude Include="Library\2d\ShadowMap.h" />
@@ -360,6 +361,7 @@
     <ClCompile Include="App\stage\Stage.cpp" />
     <ClCompile Include="App\ui\Menu.cpp" />
     <ClCompile Include="App\ui\UI.cpp" />
+    <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />
     <ClCompile Include="Library\2d\PostEffect.cpp" />
     <ClCompile Include="Library\2d\ShadowMap.cpp" />

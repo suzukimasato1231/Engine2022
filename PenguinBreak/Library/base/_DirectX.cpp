@@ -243,26 +243,6 @@ bool _DirectX::InitImgui()
 		return false;
 	}
 
-	/*if (ImGui::CreateContext() == nullptr) {
-		assert(0);
-		return false;
-	}
-	if (!ImGui_ImplWin32_Init(_Window::Instance()->GetHwnd())) {
-		assert(0);
-		return false;
-	}*/
-	/*if (!ImGui_ImplDX12_Init(
-		GetDevice(),
-		swcDesc.BufferCount,
-		swcDesc.BufferDesc.Format,
-		imguiHeap.Get(),
-		imguiHeap->GetCPUDescriptorHandleForHeapStart(),
-		imguiHeap->GetGPUDescriptorHandleForHeapStart()
-	)) {
-		assert(0);
-		return false;
-	}*/
-
 	return true;
 }
 
@@ -289,9 +269,6 @@ void _DirectX::PreDraw()
 
 
 #pragma region	//3.画面クリア            R     G     B      A
-	float clearColor[] = { 0.0f,0.0f,0.0f,0.0f };//青っぽい色
-
-	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 #pragma region 4.描画コマンドはここから
@@ -299,18 +276,12 @@ void _DirectX::PreDraw()
 	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, (FLOAT)window_width, (FLOAT)window_height));
 	//シザー短形の設定コマンド
 	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, (LONG)window_width, (LONG)window_height));
-//#ifdef _DEBUG
-	// imgui開始
-	//ImGui_ImplDX12_NewFrame();
-	//ImGui_ImplWin32_NewFrame();
-	//ImGui::NewFrame();
-
+#ifdef _DEBUG
 	// 経過時間計測
 	auto now = std::chrono::steady_clock::now();
 	deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastUpdate).count() / 1000000.0f;
 	frameRate = 1.0f / deltaTime;
 	lastUpdate = now;
-
 	// FPS,CPU使用率表示
 	{
 		static int count = 0;
@@ -324,7 +295,7 @@ void _DirectX::PreDraw()
 			SetWindowTextA(_Window::Get()->GetHwnd(), str);
 		}
 	}
-//#endif
+#endif
 }
 
 //リソースバリアを戻す

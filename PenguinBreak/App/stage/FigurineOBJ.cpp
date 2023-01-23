@@ -20,8 +20,7 @@ void FigurineOBJ::Init()
 }
 
 void FigurineOBJ::Update()
-{
-}
+{}
 
 void FigurineOBJ::Draw(StageOBJ* stageObj, const bool shadowFlag)
 {

@@ -7,7 +7,7 @@ Texture2D<float> tex2 : register(t1);//1番スロットに指定されたテクスチャ
 
 float4 main(VSOutput input) : SV_TARGET
 {
-//深度値
+	//深度値
 float depth = tex2.Sample(smp, input.uv);
 //U座標の変化量を変数に入れる
 float U = 1.0f / 1200.0f;

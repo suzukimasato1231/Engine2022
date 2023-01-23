@@ -3,7 +3,6 @@
 #include <d3dcompiler.h>
 #include <cassert>
 #include"Object.h"
-#include <Safe_delete.h>
 ID3D12Device* ShadowMap::dev = nullptr;
 ShadowMap::ShadowMap()
 {}
@@ -17,7 +16,6 @@ void ShadowMap::Init()
 	dev->SetName(L"shadow");
 	CreateGraphicsPipelineState(dev);
 #endif
-
 	//頂点バッファ生成
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
@@ -248,10 +246,6 @@ void ShadowMap::PreDraw(ID3D12GraphicsCommandList* cmdList)
 		1,
 		&CD3DX12_RECT(0, 0, static_cast<LONG>(texture_width), static_cast<LONG>(texture_height))
 	);
-
-	//全画面クリア
-	float color[] = { 1.0f,1.0f,1.0f,1.0f };
-	cmdList->ClearRenderTargetView(rtvH, color, 0, nullptr);
 
 	//深度バッファのクリア
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
