@@ -58,6 +58,7 @@ void Object::MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, V
 		//ワールド変換
 		matScale = XMMatrixScaling(scale.x, scale.y, scale.z);//大きさ
 		matTrains = XMMatrixTranslation(position.x, position.y, position.z);//平行移動行列を再計算
+
 		matRot = XMMatrixIdentity();
 		matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));//Z軸まわりに４５度回転
 		matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));//X軸まわりに４５度回転
@@ -210,7 +211,7 @@ void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3
 		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(graph));
 	}
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
-	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced((UINT)polygon.indicesNum, 1, 0, 0, 0);
 	OBJNum++;
 }
 
@@ -324,18 +325,8 @@ void Object::DrawUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 sca
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
 
-	////影を描画するか
-	//if (shadowFlag == true)
-	//{
-	//	cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
-	//}
-	//else
-	//{
-	//	//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-	//	cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(graph));
-	//}
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
-	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced((UINT)polygon.indicesNum, 1, 0, 0, 0);
 	OBJNum++;
 }
 
@@ -449,6 +440,6 @@ void Object::NoShadowDraw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 sca
 	lightGroup->Draw(cmdList, 3);
 
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
-	cmdList->DrawIndexedInstanced((UINT)polygon.indices.size(), 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced((UINT)polygon.indicesNum, 1, 0, 0, 0);
 	OBJNum++;
 }

@@ -390,11 +390,9 @@ void Sprite::PostEffectDraw(ID3D12DescriptorHeap* descHeap, SpriteData& sprite, 
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-
 	//テクスチャ用デスクリプタヒープの設定
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeap };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
 
 	if (constBuffer.size() <= spriteNum)
 	{

@@ -12,7 +12,6 @@ Player::~Player()
 void Player::Init()
 {
 	oldPosition = position;
-	pSphere.radius = 7.0f;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 
@@ -44,7 +43,6 @@ void Player::Update()
 		staging.Update();
 
 		position += vec;
-		pSphere.center = XMVectorSet(position.x, position.y, position.z, 1);
 		pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
 		pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 		//—Ž‰ºŽ€
@@ -152,7 +150,7 @@ void Player::Move()
 	{
 		if (Input::Get()->KeybordInputArrow() == true)
 		{
-			if (moveFlag == true)
+			if (moveFlag == true)//ˆÚ“®‚©‚QD‚©‚RD‚©
 			{
 				if (Input::Get()->KeybordPush(DIK_UP))
 				{
@@ -186,7 +184,7 @@ void Player::Move()
 			{
 				vec.z = speed.z * cosf(rad);
 			}
-			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));// -59.8f);
+			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
 			if (walkTime < 0)
 			{
 				staging.CreateWalk(position, vec);
@@ -204,7 +202,7 @@ void Player::Move()
 				Audio::Get()->SoundSEPlayWave(walkSE);
 			}
 			float rad = Input::Get()->GetLeftAngle();
-			Vec3 speeds = { 1.0f,1.0f,1.0f };
+			const Vec3 speeds = { 1.0f,1.0f,1.0f };
 			vec.x = speeds.x * sinf(-rad);
 			if (moveFlag == true)
 			{
@@ -230,7 +228,8 @@ void Player::Move()
 void Player::Jump()
 {
 	//ƒWƒƒƒ“ƒv
-	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) && groundFlag == true&& starStaging == false&& dieType == DIENULL && clearFlag == false) || blockStepOnFlag)
+	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) 
+		&& groundFlag == true&& starStaging == false&& dieType == DIENULL && clearFlag == false) || blockStepOnFlag)
 	{
 		if (jumpBoxFlag)
 		{

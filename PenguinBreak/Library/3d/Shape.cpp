@@ -45,7 +45,7 @@ ObjectData Shape::CreateTriangularPyramid(const float width, const float height)
 	polygon.indices.push_back(new unsigned short(2)), polygon.indices.push_back(new unsigned short(0)), polygon.indices.push_back(new unsigned short(4));
 
 	CreateModel(polygon);
-
+	polygon.indicesNum = (UINT)polygon.indices.size();
 	return polygon;
 }
 
@@ -79,7 +79,7 @@ ObjectData Shape::CreateRect(const float width, const float height)
 	polygon.indices.push_back(new unsigned short(2)), polygon.indices.push_back(new unsigned short(1)), polygon.indices.push_back(new unsigned short(3));
 
 	CreateModel(polygon);
-
+	polygon.indicesNum = (UINT)polygon.indices.size();
 	return polygon;
 }
 
@@ -107,7 +107,7 @@ ObjectData Shape::CreateCircle(const float r, const int num)
 	*polygon.indices[polygon.indices.size() - 2] = 0;
 
 	CreateModel(polygon);
-
+	polygon.indicesNum = (UINT)polygon.indices.size();
 	return polygon;
 }
 
@@ -236,7 +236,7 @@ ObjectData Shape::CreateSquare(const float width, const float height, const floa
 	polygon.indices.push_back(new unsigned short(21)), polygon.indices.push_back(new unsigned short(20)), polygon.indices.push_back(new unsigned short(22));
 	polygon.indices.push_back(new unsigned short(21)), polygon.indices.push_back(new unsigned short(22)), polygon.indices.push_back(new unsigned short(23));
 	CreateModel(polygon);
-
+	polygon.indicesNum = (UINT)polygon.indices.size();
 	return polygon;
 }
 
@@ -353,6 +353,8 @@ ObjectData Shape::CreateCylinder(int division, int prizmHeight, int radius)
 		}
 	}
 	CreateModel(polygon);
+
+	polygon.indicesNum = (UINT)polygon.indices.size();
 	return polygon;
 }
 
@@ -489,6 +491,8 @@ ObjectData Shape::CreateOBJ(const std::string filename, bool smoothing, const st
 		CalculateSmoothedVertexNormals(polygon);
 	}
 	OBJCreateModel(polygon);
+
+	polygon.indicesNum = (UINT)polygon.indices.size();
 
 	return polygon;
 }

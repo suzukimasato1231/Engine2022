@@ -61,7 +61,7 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 	}
 
 	//ゲームオーバー時の演出の処理
-	if (gameoverStartFlag)
+	if (gameoverStartFlag==true)
 	{
 		gameoverTime++;
 		for (size_t i = 0; i < 7; i++)

@@ -251,38 +251,51 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	int Z = static_cast<int>(PPos.z / (-mapSize));
 	size_t floorSize = floor.size();
 	//床の描画
-	for (int i = 0; i < floorSize; i++)
+	for (size_t i = 0; i < floorSize; i++)
 	{
-		if (((MAP_HEIGHT - 1 + Z) - 90 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+		switch (floor[i]->type)
 		{
-			switch (floor[i]->type)
+		case FloorNormal:
+			if (((MAP_HEIGHT - 1 + Z) - 100 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
 			{
-			case FloorNormal:
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 30.0f, floor[i]->position.z),
-					Vec3(25.0f, 60.0f, 25.0f * (floor[i]->size + 1)),
+				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 45.0f, floor[i]->position.z),
+					Vec3(25.0f, 90.0f, 25.0f * (floor[i]->size + 1)),
 					floor[i]->angle, Vec2(), 0, shadowFlag);
-				break;
-			case Floor169:
+			}
+			break;
+		case Floor169:
+			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			{
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z + 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f * 2),
 					floor[i]->angle, Vec2(), floorGraph, shadowFlag);
-				break;
-			case Floor11:
+			}
+			break;
+		case Floor11:
+			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			{
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z - 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f),
 					floor[i]->angle, Vec2(), floorGraph, shadowFlag);
-				break;
-			case FloorMove:
-				moveFloor.Draw(floor[i], shadowFlag);
-				break;
-			case FloorPitfall_A:
-			case FloorPitfall_B:
-				floorPitfall.Draw(floor[i], shadowFlag);
-				break;
-			default:
-				break;
 			}
+			break;
+		case FloorMove:
+			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			{
+				moveFloor.Draw(floor[i], shadowFlag);
+			}
+			break;
+		case FloorPitfall_A:
+		case FloorPitfall_B:
+			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			{
+				floorPitfall.Draw(floor[i], shadowFlag);
+			}
+			break;
+		default:
+			break;
 		}
+
 	}
 
 	//オブジェクト描画

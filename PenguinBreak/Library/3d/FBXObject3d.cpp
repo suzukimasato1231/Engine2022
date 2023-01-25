@@ -1,6 +1,7 @@
 #include<FBXObject3d.h>
 #include"Camera.h"
 #include<Pipeline.h>
+#include<Texture.h>
 ///<summary>
 ///静的メンバ変数の実体
 ///</summary>
@@ -184,12 +185,12 @@ void FBXObject3d::CreateGraphicsPipeline()
 	// デスクリプタレンジ
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
-	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV2;
-	descRangeSRV2.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
+	//// デスクリプタレンジ
+	//CD3DX12_DESCRIPTOR_RANGE descRangeSRV2;
+	//descRangeSRV2.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[5]={};
+	CD3DX12_ROOT_PARAMETER rootparams[4]={};
 	// CBV（座標変換行列用）
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// SRV（テクスチャ）
@@ -198,7 +199,7 @@ void FBXObject3d::CreateGraphicsPipeline()
 	rootparams[2].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// SRV（テクスチャ）
-	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV2, D3D12_SHADER_VISIBILITY_ALL);
+	//rootparams[4].InitAsDescriptorTable(1, &descRangeSRV2, D3D12_SHADER_VISIBILITY_ALL);
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
@@ -242,7 +243,6 @@ void FBXObject3d::Update(bool shadowFlag)
 	}
 
 	XMMATRIX matScale, matRot, matTrans;
-
 	// スケール、回転、平行移動行列の計算
 	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
 	matRot = XMMatrixIdentity();
@@ -327,10 +327,9 @@ void FBXObject3d::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(2, constBufferSkin->GetGPUVirtualAddress());
 	////ライトの描画
 	lightGroup->Draw(cmdList, 3);
-
+	//cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
 	//モデル描画
 	model->Draw(cmdList);
-
 }
 
 void FBXObject3d::PlayAnimation(bool Loop)

@@ -72,6 +72,8 @@ struct ObjectData
 	std::unordered_map<unsigned short, std::vector<unsigned short>>smoothData;
 	//マテリアル
 	Material material;
+
+	int indicesNum = 0;
 };
 /// <summary>
 /// 3Dオブジェクトクラス
@@ -186,7 +188,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static void NoShadowMatWorld(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv={});
+	static void NoShadowMatWorld(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv = {});
 
 	/// <summary>
 	/// 影無しOBJ描画

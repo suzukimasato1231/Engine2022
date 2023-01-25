@@ -47,7 +47,7 @@ float4 main(VSOutput input) : SV_TARGET
    {  
 		   float shadowDepth = (shadow.Sample(smp0, shadowmap)).x;
 		   //深度を比較
-		   if (shadowDepth < posFromLightVP.z - 0.002f)
+		   if (shadowDepth < posFromLightVP.z - 0.0025f)
 		   {
 			   shadecolor.rgb = shadecolor.rgb * 0.6f;//暗くする
 		   }

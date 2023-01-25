@@ -64,7 +64,5 @@ VSOutput main(VSInput input)
 	output.normal = wnormal.xyz;
 	// 入力値をそのまま次のステージに渡す
 	output.uv = input.uv;
-
-	output.posInLVP = mul(lightproj, skinned.pos);//ライトから見た行列
 	return output;
 }

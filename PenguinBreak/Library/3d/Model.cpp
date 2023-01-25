@@ -84,8 +84,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList)
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(textureNum));
-
-	cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
+	
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }

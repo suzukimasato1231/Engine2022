@@ -169,7 +169,7 @@ void Menu::Draw(const bool gameoverFlag)
 
 		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x + 26.5f, 300.5), 459.0, 547.0f, Vec2(0.5f, 0.5f));
 		Sprite::Get()->Draw(menuFreamFish, Vec2(menuPos.x , 300.5), 512.0f, 549.0f, Vec2(0.5f, 0.5f));
-		float UIPosX = 50.0f + menuPos.x;
+		float UIPosX = 30.0f + menuPos.x;
 		if (menuNum == 0)
 		{
 			Sprite::Get()->Draw(menuRetry, Vec2(UIPosX, 150.5f), 359.0f * menuScale, 71.0f * menuScale, Vec2(0.5f, 0.5f));
@@ -194,13 +194,13 @@ void Menu::Draw(const bool gameoverFlag)
 		{
 			Sprite::Get()->Draw(menuStageSelect, Vec2(UIPosX, 400.5f), 359.0f, 71.0f, Vec2(0.5f, 0.5f));
 		}
-		Sprite::Get()->Draw(menuFish, Vec2(-180 + menuPos.x, 140.5f + 130.0f * static_cast<float>(menuNum)), 63.0f, 54.0f, Vec2(0.5f, 0.5f));
+		//Sprite::Get()->Draw(menuFish, Vec2(-180 + menuPos.x, 140.5f + 130.0f * static_cast<float>(menuNum)), 63.0f, 54.0f, Vec2(0.5f, 0.5f));
 	}
 	if (audioFlag == true)
 	{
-		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x + 26.5f, 300.5), 459.0f, 549.0f, Vec2(0.5f, 0.5f));
-		Sprite::Get()->Draw(menuFreamFish, Vec2(menuPos.x, 300.5), 512.0f, 549.0f, Vec2(0.5f, 0.5f));
-		Sprite::Get()->Draw(menuAudioFream, Vec2(menuPos.x, 300.5), 512.0, 547.0f, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x + 26.5f, 300.5f), 459.0f, 549.0f, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(menuFreamFish, Vec2(menuPos.x, 300.5f), 512.0f, 549.0f, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(menuAudioFream, Vec2(menuPos.x, 300.5f), 512.0, 547.0f, Vec2(0.5f, 0.5f));
 		Sprite::Get()->Draw(menuAudioVolum, Vec2(menuPos.x - 133.0f, 285.0f), 372.0f * volum * 10, 28.0f, Vec2(0.0f, 0.0f));
 		Sprite::Get()->Draw(menuAudioLandmark, Vec2(menuPos.x - 133.0f + 372.0f * volum * 10, 295.0f), 12.0f, 68.0f, Vec2(0.5f, 0.5f));
 	}
