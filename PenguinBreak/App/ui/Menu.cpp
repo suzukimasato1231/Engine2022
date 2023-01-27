@@ -163,10 +163,9 @@ void Menu::Draw(const bool gameoverFlag)
 {
 	//ƒƒjƒ…[
 	Sprite::Get()->Draw(menuButton, Vec2(1230.5f, 110.0f), 96.0f, 32.0f, Vec2(0.5f, 0.5f));
-
+	
 	if (menuEasingFlag == true && gameoverFlag == false && audioFlag == false)
 	{
-
 		Sprite::Get()->Draw(menuFream, Vec2(menuPos.x + 26.5f, 300.5), 459.0, 547.0f, Vec2(0.5f, 0.5f));
 		Sprite::Get()->Draw(menuFreamFish, Vec2(menuPos.x , 300.5), 512.0f, 549.0f, Vec2(0.5f, 0.5f));
 		float UIPosX = 30.0f + menuPos.x;
@@ -194,7 +193,6 @@ void Menu::Draw(const bool gameoverFlag)
 		{
 			Sprite::Get()->Draw(menuStageSelect, Vec2(UIPosX, 400.5f), 359.0f, 71.0f, Vec2(0.5f, 0.5f));
 		}
-		//Sprite::Get()->Draw(menuFish, Vec2(-180 + menuPos.x, 140.5f + 130.0f * static_cast<float>(menuNum)), 63.0f, 54.0f, Vec2(0.5f, 0.5f));
 	}
 	if (audioFlag == true)
 	{

@@ -41,6 +41,9 @@ public://マップ
 	int GetBlockNum() { return blockNum; }
 	int GetBlockMax() { return blockMax; }
 private:
+	//川の描画
+	void DrawWater();
+
 	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type, int size = 0);
 
 	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
@@ -64,8 +67,6 @@ private:
 	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 
 	void SetFigrineOBJ(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int type);
-
-	void SetStlon(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumY = 35;
@@ -83,11 +84,9 @@ private://罠ブロック
 	//壁OBJ
 	int wallGraph = 0;
 	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
-	
 	//ゴール
 	GoalFish goalFish;
 	bool goalFlag = false;
-
 	//箱
 	BlockBox blockBox;
 	//電撃の罠
@@ -104,14 +103,17 @@ private:
 	int blockNum = 0;	//壊したブロック
 
 
-	ObjectData blackGround = {};
-	int blackGraph = 0;
+	ObjectData water = {};
+	int waterGraph = 0;
+	Vec2 waterUV = {};
+
 	PSR blackPsr[3] = {};
 	//落下地点表示クラス
 	DropPoint dropPoint;
 
 	BoxStaring boxStaring;
 
+	//サウンド
 	SoundData boxSE={};
 	SoundData jumpSE = {};
 	SoundData goalSE = {};

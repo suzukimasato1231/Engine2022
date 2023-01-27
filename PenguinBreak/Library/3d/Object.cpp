@@ -1,8 +1,4 @@
 #include "Object.h"
-#include <DirectXTex.h>
-#include<string>
-#include"ShadowMap.h"
-#include <Safe_delete.h>
 using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;
@@ -46,7 +42,7 @@ void Object::Delete()
 	}
 }
 
-void Object::MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv)
+void Object::MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, bool shadowFlag)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -74,36 +70,38 @@ void Object::MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, V
 		psr.rotation = rotation;
 	}
 
-
-	const XMMATRIX& matViewProjection = Camera::Get()->GetMatViewProjection();
-	const Vec3& cameraPos = Camera::Get()->GetEye();
-	//GPU上のバッファに対応した仮想メモリを取得
-	ConstBufferDataB0* constMap = nullptr;
-	result = Object::OBJbuffer[OBJNum]->constBuffB0->Map(0, nullptr, (void**)&constMap);
-	//行列の合成   ワールド変換行列 ＊ ビュー変換行列 ＊ 射影変換行列
-	constMap->viewproj = matViewProjection;
-	if (psr.parent == nullptr)
+	if (shadowFlag == false)
 	{
-		constMap->world = psr.matWorld;
-	}
-	else
-	{
-		constMap->world = psr.matWorld * psr.parent->matWorld;
-	}
-	constMap->cameraPos = cameraPos;
-	constMap->uv = uv;
-	constMap->lightproj = lightGroup->GetLightMatProjection();
-	Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
+		const XMMATRIX& matViewProjection = Camera::Get()->GetMatViewProjection();
+		const Vec3& cameraPos = Camera::Get()->GetEye();
+		//GPU上のバッファに対応した仮想メモリを取得
+		ConstBufferDataB0* constMap = nullptr;
+		result = Object::OBJbuffer[OBJNum]->constBuffB0->Map(0, nullptr, (void**)&constMap);
+		//行列の合成   ワールド変換行列 ＊ ビュー変換行列 ＊ 射影変換行列
+		constMap->viewproj = matViewProjection;
+		if (psr.parent == nullptr)
+		{
+			constMap->world = psr.matWorld;
+		}
+		else
+		{
+			constMap->world = psr.matWorld * psr.parent->matWorld;
+		}
+		constMap->cameraPos = cameraPos;
+		constMap->uv = uv;
+		constMap->lightproj = lightGroup->GetLightMatProjection();
+		Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
 
 
-	//定数バッファへデータ転送
-	ConstBufferDataB1* constMap1 = nullptr;
-	result = Object::OBJbuffer[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
-	constMap1->ambient = polygon.material.ambient;
-	constMap1->diffuse = polygon.material.diffuse;
-	constMap1->specular = polygon.material.specular;
-	constMap1->alpha = polygon.material.alpha;
-	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
+		//定数バッファへデータ転送
+		ConstBufferDataB1* constMap1 = nullptr;
+		result = Object::OBJbuffer[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
+		constMap1->ambient = polygon.material.ambient;
+		constMap1->diffuse = polygon.material.diffuse;
+		constMap1->specular = polygon.material.specular;
+		constMap1->alpha = polygon.material.alpha;
+		Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
+	}
 }
 
 void Object::InitDraw()
@@ -133,7 +131,14 @@ void Object::OBJConstantBuffer()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB1));
-
+	//定数バッファへデータ転送
+	ConstBufferDataB1* constMap1 = nullptr;
+	result = Object::OBJbuffer[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
+	constMap1->ambient = Vec3(1.0f, 1.0f, 1.0f);
+	constMap1->diffuse = Vec3();
+	constMap1->specular = Vec3();
+	constMap1->alpha = 1.0f;
+	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 #ifdef _DEBUG
 	Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB0->SetName(L"ObjectB0");
 	Object::OBJbuffer[Object::OBJbuffer.size() - 1]->constBuffB1->SetName(L"ObjectB1");
@@ -264,14 +269,14 @@ void Object::MatWordUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 
 	Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
 
 
-	//定数バッファへデータ転送
-	ConstBufferDataB1* constMap1 = nullptr;
-	result = Object::OBJbuffer[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
-	constMap1->ambient = polygon.material.ambient;
-	constMap1->diffuse = polygon.material.diffuse;
-	constMap1->specular = polygon.material.specular;
-	constMap1->alpha = polygon.material.alpha;
-	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
+	////定数バッファへデータ転送
+	//ConstBufferDataB1* constMap1 = nullptr;
+	//result = Object::OBJbuffer[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
+	//constMap1->ambient = polygon.material.ambient;
+	//constMap1->diffuse = polygon.material.diffuse;
+	//constMap1->specular = polygon.material.specular;
+	//constMap1->alpha = polygon.material.alpha;
+	//Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
 void Object::DrawUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph, bool shadowFlag)

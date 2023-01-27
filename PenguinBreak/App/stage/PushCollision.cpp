@@ -14,8 +14,7 @@ int PushCollision::Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale, int moveFlag)
 		{
 			//ƒvƒŒƒCƒ„[OBB
 			Vec3 set = {};
-			OBB eOBB;
-			eOBB.Initilize(Vec3(Player::Get()->GetPosition().x, Player::Get()->GetPosition().y, Player::Get()->GetPosition().z), Vec3{}, Player::Get()->GetPSize());
+			eOBB.SetPos(Player::Get()->GetPosition());
 			if (OBBCollision::ColOBBs(eOBB, diagonal))
 			{
 				diagonal.GetDirect(0);

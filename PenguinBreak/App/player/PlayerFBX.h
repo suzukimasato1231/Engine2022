@@ -49,31 +49,29 @@ public:
 	//アニメーションスタート
 	void StartAnimation();
 private:
-	const int fbxNum = 2;
-
 	int fbxType = NULL;
 	int fbxFlag = 1;
 	//歩きFBX
 	Model* model1 = nullptr;
-	std::unique_ptr<FBXObject3d> fbxObject1[2];
+	std::unique_ptr<FBXObject3d> fbxObject1;
 	//歩きFBX
 	Model* walkModel = nullptr;
-	std::unique_ptr<FBXObject3d> walkFbx[2];
+	std::unique_ptr<FBXObject3d> walkFbx;
 	//停止FBX
 	Model* stopModel = nullptr;
-	std::unique_ptr<FBXObject3d> stopFbx[2];
+	std::unique_ptr<FBXObject3d> stopFbx;
 	//感電
 	Model* electModel = nullptr;
-	std::unique_ptr<FBXObject3d> electFbx[2];
+	std::unique_ptr<FBXObject3d> electFbx;
 	//ゴール時の演出バク天
 	Model* goalJumpModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalJumpFbx[2];
+	std::unique_ptr<FBXObject3d> goalJumpFbx;
 	//ゴール時の演出ハンドサイン
 	Model* goalHandModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalHandFbx[2];
+	std::unique_ptr<FBXObject3d> goalHandFbx;
 	//ジャンプ時の演出ハンドサイン
 	Model* jumpModel = nullptr;
-	std::unique_ptr<FBXObject3d> jumpFbx[2];
+	std::unique_ptr<FBXObject3d> jumpFbx;
 	const int jumpTimeMax = 30;
 	int jumpTime = 0;
 

@@ -41,6 +41,7 @@ void SceneManagerh::Initialize()
 	FBXObject3d::SetDevice(_DirectX::Get()->GetDevice());
 	FBXObject3d::SetCmdList(_DirectX::Get()->GetCmandList());
 	FBXObject3d::CreateGraphicsPipeline();
+	FBXObject3d::CreateShadowPipeline();
 	//図形モデル初期化
 	Shape::Init(_DirectX::Get()->GetDevice());
 	//パーティクル初期化

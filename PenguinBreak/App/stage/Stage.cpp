@@ -48,6 +48,9 @@ void Stage::Init()
 	boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
 	goalSE = Audio::SoundLoadWave("Resources/sound/SE/goal.wav");
 	jumpSE = Audio::SoundLoadWave("Resources/sound/SE/jump.wav");
+
+	water = Shape::CreateRect(500.0f, 500.0f);
+	waterGraph = Texture::Get()->LoadTexture(L"Resources/cube/WaterTexture.jpg");
 }
 
 void Stage::MainInit(int stageNum)
@@ -250,16 +253,18 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	//判定する箇所だけ行うため
 	int Z = static_cast<int>(PPos.z / (-mapSize));
 	size_t floorSize = floor.size();
+	static const int floorNormalMax = (MAP_HEIGHT - 1 + Z) - 100;
+	static const int stageMin = (MAP_HEIGHT - 1 + Z) + 4;
 	//床の描画
 	for (size_t i = 0; i < floorSize; i++)
 	{
 		switch (floor[i]->type)
 		{
 		case FloorNormal:
-			if (((MAP_HEIGHT - 1 + Z) - 100 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			if ((floorNormalMax <= floor[i]->map.y && floor[i]->map.y <= stageMin))
 			{
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 45.0f, floor[i]->position.z),
-					Vec3(25.0f, 90.0f, 25.0f * (floor[i]->size + 1)),
+				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 20.0f, floor[i]->position.z),
+					Vec3(25.0f, 40.0f, 25.0f * (floor[i]->size + 1)),
 					floor[i]->angle, Vec2(), 0, shadowFlag);
 			}
 			break;
@@ -297,9 +302,9 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 		}
 
 	}
-
+	size_t stageObjSize = stageObj.size();
 	//オブジェクト描画
-	for (int i = 0; i < stageObj.size(); i++)
+	for (int i = 0; i < stageObjSize; i++)
 	{
 		if ((MAP_HEIGHT - 1 + Z) - drawNumY <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
 		{
@@ -339,6 +344,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 		Vec3(650.0f, 15.0f, 1500.0f),
 		Vec3(), Vec2(), 0, shadowFlag);
 
+	DrawWater();
 
 	//箱壊した時に出る魚
 	fishBox.Draw();
@@ -441,7 +447,6 @@ void Stage::LoadStage(int stageNum)
 			case FloorNormal:
 			{
 				int num_ = 1;
-
 				while (Map[y + num_][x] == FloorNormal)
 				{
 					Map[y + num_][x] = 0;
@@ -531,6 +536,21 @@ void Stage::LoadStage(int stageNum)
 				break;
 			}
 		}
+	}
+}
+
+void Stage::DrawWater()
+{
+	waterUV.y += 0.001f;
+	if (waterUV.y >= 1.0f)
+	{
+		waterUV.y = 0.0f;
+	}
+	for (size_t i = 0; i < 6; i++)
+	{
+		Object::NoShadowDraw(water, PSR(),
+			Vec3(50.0f, -70.0f, 500.0f * i), Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(90.0f, 0.0f, 0.0f), waterUV, waterGraph);
 	}
 }
 
@@ -676,21 +696,3 @@ void Stage::SetFigrineOBJ(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int t
 	stageObj[num]->type = type;
 }
 
-void Stage::SetStlon(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
-{
-	stageObj.push_back(new StageOBJ);
-	size_t num = stageObj.size() - 1;
-	stageObj[num]->map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	stageObj[num]->position = position;
-	stageObj[num]->scale = scale;
-	stageObj[num]->angle = angle;
-	stageObj[num]->box.maxPosition = XMVectorSet(
-		position.x + scale.x / 2,
-		position.y + scale.y / 2,
-		position.z + scale.z / 2, 1);
-	stageObj[num]->box.minPosition = XMVectorSet(
-		position.x - scale.x / 2,
-		position.y - scale.y / 2,
-		position.z - scale.z / 2, 1);
-	stageObj[num]->type = STLON;
-}

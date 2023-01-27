@@ -15,7 +15,7 @@ float U = 1.0f / 1200.0f;
 float V = 1.0f / 720.0f;
 //‰Šú‰»
 float4 totalcolor = { 0,0,0,0 };
-if (depth >= 0.998800f && depth <= 0.9999)
+if (depth >= 0.999800f)
 {
 	for (float j = -1.0f; j < 2.0f; j = j + 1.0f)
 	{

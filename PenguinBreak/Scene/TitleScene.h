@@ -35,7 +35,7 @@ private://定義
 
 	//ゴール時の演出ハンドサイン
 	Model* penginModel = nullptr;
-	std::unique_ptr<FBXObject3d> penginHandFbx[2];
+	std::unique_ptr<FBXObject3d> penginHandFbx;
 
 	ObjectData wallObj;
 	PSR wallPsr;

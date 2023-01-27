@@ -153,7 +153,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static void MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv = {});
+	static void MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv = {}, bool shadowFlag=false);
 	/// <summary>
 	/// OBJ描画
 	/// </summary>

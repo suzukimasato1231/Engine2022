@@ -40,6 +40,7 @@ public://サブクラス
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
 		Vec3 cameraPos;	//カメラ座標(ワールド座標)
+		XMMATRIX lightproj;
 	};
 
 
@@ -59,15 +60,16 @@ public://メンバ関数
 	/// グラフィックスパイプラインの生成
 	/// </summary>
 	static void CreateGraphicsPipeline();
+	static void CreateShadowPipeline();
 
 	/// <summary>
 	/// 毎フレーム更新
 	/// </summary>
-	void Update(bool shadowFlag);
+	void Update();
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(bool shadowFlag=false);
 
 	/// <summary>
 	/// モデルのセット
@@ -98,6 +100,10 @@ protected://メンバ変数
 	static ComPtr<ID3D12RootSignature>rootsignature;
 	//パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState>pipelinestate;
+
+	static ComPtr<ID3D12RootSignature>rootsignatureShadow;
+	//パイプラインステートオブジェクト
+	static ComPtr<ID3D12PipelineState>pipelinestateShadow;
 
 	//ローカルスケール
 	Vec3 scale = { 0.025f,0.025f,0.025f };//ペンギン

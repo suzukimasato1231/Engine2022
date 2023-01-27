@@ -20,15 +20,14 @@ void TitleScene::Initialize()
 
 	wallObj = Shape::CreateOBJ("iceWall", false, "OBJ/");
 	floorObj = Shape::CreateOBJ("ice", false, "OBJ/");
-	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin","FBX/");
-	for (int i = 0; i < 2; i++)
-	{
-		//3Dオブジェクトの生成とモデルのセット
-		penginHandFbx[i] = std::make_unique<FBXObject3d>();
-		penginHandFbx[i]->Initialize();
-		penginHandFbx[i]->SetModel(penginModel);
-		penginHandFbx[i]->SetScale(Vec3(0.015f, 0.015f, 0.015f));
-	}
+	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
+
+	//3Dオブジェクトの生成とモデルのセット
+	penginHandFbx = std::make_unique<FBXObject3d>();
+	penginHandFbx->Initialize();
+	penginHandFbx->SetModel(penginModel);
+	penginHandFbx->SetScale(Vec3(0.015f, 0.015f, 0.015f));
+
 	// ライトグループクラス作成
 	lightGroup = std::make_unique<LightGroup>();
 	lightGroup->Initialize();
@@ -45,10 +44,9 @@ void TitleScene::Init()
 
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
-	for (int i = 0; i < 2; i++)
-	{
-		penginHandFbx[i]->PlayAnimation(true);
-	}
+
+	penginHandFbx->PlayAnimation(true);
+
 }
 
 void TitleScene::Update()
@@ -64,10 +62,7 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	//3D
-	penginHandFbx[1]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
-	penginHandFbx[1]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
-	penginHandFbx[1]->Update(false);
-	penginHandFbx[1]->Draw();
+	penginHandFbx->Draw(true);
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
 		Vec3(0.0f, 10.0f, 0.0f), Vec2(), boxGraph, true);
 
@@ -88,10 +83,10 @@ void TitleScene::Draw()
 void TitleScene::ShadowDraw()
 {
 	//3D
-	penginHandFbx[0]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
-	penginHandFbx[0]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
-	penginHandFbx[0]->Update(true);
-	penginHandFbx[0]->Draw();
+	penginHandFbx->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
+	penginHandFbx->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
+	penginHandFbx->Update();
+	penginHandFbx->Draw();
 	Object::Draw(box, boxPsr, Vec3(10.0f, 5.0f, 0.0f), Vec3(2, 2, 2),
 		Vec3(0.0f, 10.0f, 0.0f), Vec2(), boxGraph);
 	Object::Draw(floorObj, wallPsr, Vec3(0.0f, -5.0f, 0.0f), Vec3(1000.0f, 1.0f, 1000.0f),

@@ -33,14 +33,13 @@ void ResultScene::Initialize()
 
 
 	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
-	for (int i = 0; i < 2; i++)
-	{
-		//3Dオブジェクトの生成とモデルのセット
-		penginHandFbx[i] = std::make_unique<FBXObject3d>();
-		penginHandFbx[i]->Initialize();
-		penginHandFbx[i]->SetModel(penginModel);
-		penginHandFbx[i]->SetScale(Vec3(0.015f, 0.015f, 0.015f));
-	}
+
+	//3Dオブジェクトの生成とモデルのセット
+	penginHandFbx = std::make_unique<FBXObject3d>();
+	penginHandFbx->Initialize();
+	penginHandFbx->SetModel(penginModel);
+	penginHandFbx->SetScale(Vec3(0.015f, 0.015f, 0.015f));
+
 	fishObj = Shape::CreateOBJ("fish", false, "OBJ/");
 	floorObj = Shape::CreateOBJ("ice", false, "OBJ/");
 	// ライトグループクラス作成
@@ -60,10 +59,8 @@ void ResultScene::Init()
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
-	for (int i = 0; i < 2; i++)
-	{
-		penginHandFbx[i]->PlayAnimation(true);
-	}
+	penginHandFbx->PlayAnimation(true);
+
 }
 
 void ResultScene::Update()
@@ -116,10 +113,8 @@ void ResultScene::Update()
 
 void ResultScene::Draw(const int stageNum)
 {
-	penginHandFbx[1]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
-	penginHandFbx[1]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
-	penginHandFbx[1]->Update(false);
-	penginHandFbx[1]->Draw();
+
+	penginHandFbx->Draw(true);
 
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3(), Vec2(), floorObj.OBJTexture, true);
@@ -184,13 +179,13 @@ void ResultScene::Delete()
 
 void ResultScene::ShadowDraw()
 {
-	penginHandFbx[0]->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
-	penginHandFbx[0]->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
-	penginHandFbx[0]->Update(true);
-	penginHandFbx[0]->Draw();
+	penginHandFbx->SetPosition(Vec3(8.0f, -4.5f, 0.0f));
+	penginHandFbx->SetRotation(Vec3(-30.0f, 180.0f, 0.0f));
+	penginHandFbx->Update();
+	penginHandFbx->Draw();
 
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, -5.0f, 0.0f),
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3());
 	Object::Draw(floorObj, objectPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),
-		Vec3(), Vec2(), floorObj.OBJTexture, true);
+		Vec3(), Vec2(), floorObj.OBJTexture);
 }

@@ -14,7 +14,7 @@ public:
 	/// <param name="point">点</param>
 	/// <param name="triangle">三角形</param>
 	/// <param name="closest">最近接点（出力用）</param>
-	static void ClosestPtPoint2Triangle(const DirectX::XMVECTOR &point, const Triangle &triangle, DirectX::XMVECTOR *closest);
+	static void ClosestPtPoint2Triangle(const DirectX::XMVECTOR& point, const Triangle& triangle, DirectX::XMVECTOR* closest);
 
 	/// <summary>
 	/// 球と球の当たり判定
@@ -23,7 +23,7 @@ public:
 	/// <param name="sphereB">球B</param>
 	/// <param name="inter">交点（出力用）</param>
 	/// <returns></returns>
-	static bool CheckSphere2Sphere(const Sphere &sphereA, const Sphere &sphereB, DirectX::XMVECTOR *inter = nullptr);
+	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, DirectX::XMVECTOR* inter = nullptr);
 
 	/// <summary>
 	/// 球と平面の当たり判定
@@ -32,7 +32,7 @@ public:
 	/// <param name="plane">平面</param>
 	/// <param name="inter">交点（平面上の最近接点）</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckSphere2Plane(const Sphere &sphere, const Plane &plane, DirectX::XMVECTOR *inter = nullptr);
+	static bool CheckSphere2Plane(const Sphere& sphere, const Plane& plane, DirectX::XMVECTOR* inter = nullptr);
 
 	/// <summary>
 	/// 球と法線付き三角形の当たり判定
@@ -41,7 +41,7 @@ public:
 	/// <param name="triangle">三角形</param>
 	/// <param name="inter">交点（三角形上の最近接点）</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckSphere2Triangle(const Sphere &sphere, const Triangle &triangle, DirectX::XMVECTOR *inter = nullptr, DirectX::XMVECTOR* reject = nullptr);
+	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, DirectX::XMVECTOR* inter = nullptr, DirectX::XMVECTOR* reject = nullptr);
 
 	/// <summary>
 	/// レイと平面の当たり判定
@@ -51,7 +51,7 @@ public:
 	/// <param name="inter">距離（出力用）</param>
 	/// <param name="inter">交点（出力用）</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckRay2Plane(const Ray &lay, const Plane &plane, float *distance = nullptr, DirectX::XMVECTOR *inter = nullptr);
+	static bool CheckRay2Plane(const Ray& lay, const Plane& plane, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
 
 	/// <summary>
 	/// レイと法線付き三角形の当たり判定
@@ -61,7 +61,7 @@ public:
 	/// <param name="inter">距離（出力用）</param>
 	/// <param name="inter">交点（出力用）</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckRay2Triangle(const Ray &lay, const Triangle &triangle, float *distance = nullptr, DirectX::XMVECTOR *inter = nullptr);
+	static bool CheckRay2Triangle(const Ray& lay, const Triangle& triangle, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
 
 	/// <summary>
 	/// レイと球の当たり判定
@@ -71,7 +71,7 @@ public:
 	/// <param name="sphere">距離（出力用）</param>
 	/// <param name="inter">交点（出力用）</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckRay2Sphere(const Ray &lay, const Sphere &sphere, float *distance = nullptr, DirectX::XMVECTOR *inter = nullptr);
+	static bool CheckRay2Sphere(const Ray& lay, const Sphere& sphere, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
 
 	/// <summary>
 	/// 球と球
@@ -79,7 +79,7 @@ public:
 	/// <param name="sphere1">球</param>
 	/// <param name="sphere2">球</param>
 	/// <returns></returns>
-	static bool CheckSphere2Sphere(const Sphere &sphere1, const Sphere &sphere2);
+	static bool CheckSphere2Sphere(const Sphere& sphere1, const Sphere& sphere2);
 
 	/// <summary>
 	/// 直方体と直方体
@@ -87,7 +87,7 @@ public:
 	/// <param name="box1"></param>
 	/// <param name="box"></param>
 	/// <returns></returns>
-	static bool CheckBox2Box(const Box &box1, const Box &box);
+	static bool CheckBox2Box(const Box& box1, const Box& box);
 
 	/// <summary>
 	/// 球と直方体(AABB制限付き)
@@ -95,7 +95,7 @@ public:
 	/// <param name="sphere"></param>
 	/// <param name="box"></param>
 	/// <returns></returns>
-	static bool CheckSphere2Box(const Sphere &sphere, const Box &box);
+	static bool CheckSphere2Box(const Sphere& sphere, const Box& box);
 
 	/// <summary>
 	/// 球とカプセル
@@ -103,7 +103,7 @@ public:
 	/// <param name="sphere">球</param>
 	/// <param name="capsule">カプセル</param>
 	/// <returns></returns>
-	static bool CheckSphere2Capsule(const Sphere &sphere, const Capsule &capsule);
+	static bool CheckSphere2Capsule(const Sphere& sphere, const Capsule& capsule);
 
 	/// <summary>
 	/// カプセルとカプセル
@@ -111,10 +111,10 @@ public:
 	/// <param name="capsule1">カプセル</param>
 	/// <param name="capsule2">カプセル</param>
 	/// <returns></returns>
-	static bool CheckCapsule2Capsule(const Capsule capsule1, const Capsule &capsule2);
+	static bool CheckCapsule2Capsule(const Capsule capsule1, const Capsule& capsule2);
 
 	//線分と線分の距離の２乗を求める
-	static float sqDistanceSegmentSegment(const DirectX::XMVECTOR &p1, const DirectX::XMVECTOR &q1, const DirectX::XMVECTOR &p2, const DirectX::XMVECTOR &q2);
+	static float sqDistanceSegmentSegment(const DirectX::XMVECTOR& p1, const DirectX::XMVECTOR& q1, const DirectX::XMVECTOR& p2, const DirectX::XMVECTOR& q2);
 
 	//値を範囲内に収める[low,high]
 	static float clamp(float x, float low, float high)
@@ -149,8 +149,9 @@ protected:
 	float m_fLength[3];         // 各軸方向の長さ
 public:
 	//XMfloat3 Pos 位置, XMMATRIX rotM 回転行列、float xの半分の長さ、 float yの半分の長さ、 float zの半分の長さ、
-	void Initilize(Vec3 pos, Vec3 rotM,Vec3 scale);
+	void Initilize(Vec3 pos, Vec3 rotM, Vec3 scale);
 
+	void SetPos(Vec3 pos) { m_Pos = pos; }
 	Vec3 GetDirect(int elem);   // 指定軸番号の方向ベクトルを取得
 	float GetLen_W(int elem);   // 指定軸方向の長さを取得
 	Vec3 GetPos_W();            // 位置を取得
@@ -159,8 +160,8 @@ public:
 class OBBCollision :OBB
 {
 public:
-	static bool ColOBBs(OBB &obb1, OBB &obb2);
+	static bool ColOBBs(OBB& obb1, OBB& obb2);
 
-	static float LenSegOnSeparateAxis(Vec3 &Sep, Vec3 &e1, Vec3 &e2, Vec3 e3 = { 0,0,0 });
+	static float LenSegOnSeparateAxis(Vec3& Sep, Vec3& e1, Vec3& e2, Vec3 e3 = { 0,0,0 });
 };
 

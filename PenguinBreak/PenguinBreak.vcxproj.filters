@@ -194,6 +194,12 @@
     <FxCompile Include="Resources\shaders\Object\NoShadowOBJVS.hlsl">
       <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\FBX\FBXShadowPS.hlsl">
+      <Filter>HLSL\OBJ\FBX</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBX\FBXShadowVS.hlsl">
+      <Filter>HLSL\OBJ\FBX</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Sprite.hlsli">
@@ -231,6 +237,9 @@
     </None>
     <None Include="Resources\shaders\Object\NoShadowOBJ.hlsli">
       <Filter>HLSL\OBJ\NoShadowOBJ</Filter>
+    </None>
+    <None Include="Resources\shaders\FBX\FBXShadow.hlsli">
+      <Filter>HLSL\OBJ\FBX</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

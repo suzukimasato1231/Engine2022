@@ -304,8 +304,8 @@ void _DirectX::ResourceBarrier()
 #ifdef _DEBUG
 	// imgui•`‰æ
 	//ImGui::Render();
-	ID3D12DescriptorHeap* ppHeaps[] = { imguiHeap.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	//ID3D12DescriptorHeap* ppHeaps[] = { imguiHeap.Get() };
+	//cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList.Get());
 #endif
 	//•`‰æó‘Ô‚©‚ç•\¦ó‘Ô‚É•ÏX
