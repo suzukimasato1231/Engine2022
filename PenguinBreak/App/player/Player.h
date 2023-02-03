@@ -91,29 +91,29 @@ private:
 
 public://取得系
 	//座標
-	Vec3 GetPosition() { return position; }
+	inline Vec3 GetPosition() { return position; }
 
-	Vec3 GetOldPosition() { return oldPosition; }
+	inline Vec3 GetOldPosition() { return oldPosition; }
 
-	Vec3 GetPSize() { return pScale; }
+	inline Vec3 GetPSize() { return pScale; }
 
-	Box GetBox() { return pBox; }
+	inline Box GetBox() { return pBox; }
 
-	Vec3 GetVec() { return vec; }
+	inline Vec3 GetVec() { return vec; }
 
-	float GetJumpPower() { return jumpPower; }
+	inline float GetJumpPower() { return jumpPower; }
 
-	bool GetGroundFlag() { return groundFlag; }
+	inline bool GetGroundFlag() { return groundFlag; }
 
-	bool GetOldGroundFlag() { return oldGroundFlag; }
+	inline bool GetOldGroundFlag() { return oldGroundFlag; }
 	//残機数獲得
-	int GetRemanLives() { return remainLives; }
+	inline int GetRemanLives() { return remainLives; }
 
-	int GetFishNum() { return fishNum; }
+	inline int GetFishNum() { return fishNum; }
 
-	bool GetGameoverFlag() { return gameoverFlag; }
+	inline bool GetGameoverFlag() { return gameoverFlag; }
 
-	bool GetIsFishDie() { return isFishDie; }
+	inline bool GetIsFishDie() { return isFishDie; }
 private:
 	//2D false 3D true
 	bool moveFlag = false;
@@ -152,7 +152,6 @@ private:
 	bool fishFlag = false;
 	int fishNum = 0;
 
-
 	//プレイヤー演出
 	Staging staging;
 	int dieNowTime = 0;
@@ -176,8 +175,8 @@ private:
 
 	//音データ
 	int audioTime = 0;
-	SoundData walkSE={};
-	SoundData fallSE={};
-	SoundData electSE={};
-	
+	SoundData walkSE = {};
+	SoundData fallSE = {};
+	SoundData electSE = {};
+
 };

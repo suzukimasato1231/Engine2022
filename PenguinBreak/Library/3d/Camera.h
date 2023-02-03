@@ -21,6 +21,13 @@ private:
 	XMMATRIX matViewProjection;
 
 	Vec3 eye = {}, target = {}, up = {};
+
+	//ÉJÉÅÉâí«è]
+	bool followDirty = false;
+	float followX = 0.0f;
+	float followY = 0.0f;
+	Vec3 followD = {};
+	Vec3 followF3 = {};
 public:
 	Camera();
 

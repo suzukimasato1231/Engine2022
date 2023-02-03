@@ -42,7 +42,7 @@ void Object::Delete()
 	}
 }
 
-void Object::MatWord(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, bool shadowFlag)
+void Object::MatWord(const ObjectData &polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, bool shadowFlag)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -146,7 +146,7 @@ void Object::OBJConstantBuffer()
 
 }
 
-void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph, bool shadowFlag)
+void Object::Draw(const ObjectData &polygon, PSR& psr, const Vec3& position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph, bool shadowFlag)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -157,7 +157,7 @@ void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3
 	{
 		//プリミティブ形状の設定コマンド（三角形リスト）
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		//デスクリプタヒープをセット
+		////デスクリプタヒープをセット
 		ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		if (Pipeline::OBJPipeline.pipelinestate == nullptr || Pipeline::OBJPipeline.rootsignature == nullptr)
@@ -176,6 +176,7 @@ void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3
 		}
 	}
 	//更新
+
 	MatWord(polygon, psr, position, scale, rotation, uv);
 
 	//頂点バッファの設定コマンド
@@ -220,7 +221,7 @@ void Object::Draw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3
 	OBJNum++;
 }
 
-void Object::MatWordUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv)
+void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -279,7 +280,7 @@ void Object::MatWordUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 
 	//Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::DrawUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph, bool shadowFlag)
+void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph, bool shadowFlag)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -335,7 +336,7 @@ void Object::DrawUVScroll(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 sca
 	OBJNum++;
 }
 
-void Object::NoShadowMatWorld(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv)
+void Object::NoShadowMatWorld(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -393,7 +394,7 @@ void Object::NoShadowMatWorld(ObjectData& polygon, PSR& psr, Vec3 position, Vec3
 	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::NoShadowDraw(ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph)
+void Object::NoShadowDraw(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{

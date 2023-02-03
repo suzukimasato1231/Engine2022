@@ -182,7 +182,7 @@ void Player::Move()
 			vec.x = speed.x * sinf(-rad);
 			if (moveFlag == true)
 			{
-				vec.z = speed.z * cosf(rad);
+				vec.z = speed.z * cosf(rad);;
 			}
 			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
 			if (walkTime < 0)
@@ -193,7 +193,6 @@ void Player::Move()
 			walkTime--;
 
 			pFbx.PlayFBX(FbxWalk);
-
 		}
 		else if (Input::Get()->ConLeftInputS())
 		{
@@ -204,6 +203,7 @@ void Player::Move()
 			float rad = Input::Get()->GetLeftAngle();
 			const Vec3 speeds = { 1.0f,1.0f,1.0f };
 			vec.x = speeds.x * sinf(-rad);
+
 			if (moveFlag == true)
 			{
 				vec.z = speeds.z * cosf(rad);
@@ -222,14 +222,15 @@ void Player::Move()
 		{
 			pFbx.PlayFBX(FbxNone);
 		}
+
 	}
 }
 
 void Player::Jump()
 {
 	//ƒWƒƒƒ“ƒv
-	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)) 
-		&& groundFlag == true&& starStaging == false&& dieType == DIENULL && clearFlag == false) || blockStepOnFlag)
+	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
+		&& groundFlag == true && starStaging == false && dieType == DIENULL && clearFlag == false) || blockStepOnFlag)
 	{
 		if (jumpBoxFlag)
 		{

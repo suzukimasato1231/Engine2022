@@ -32,7 +32,7 @@ public:
 	/// <param name="size">サイズ</param>
 	/// <param name="text">表示する文字</param>
 	/// <param name=""></param>
-	void Print(const float x, const float y, const float size, std::string text, ...);
+	void Print(const float x, const float y, const float size,std::string text, ...);
 
 	void DrawAll();
 

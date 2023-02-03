@@ -443,6 +443,7 @@ void FBXObject3d::Update()
 	std::vector<Model::Bone>& bones = model->GetBones();
 
 	//定数バッファへデータ転送
+
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	result = constBufferSkin->Map(0, nullptr, (void**)&constMapSkin);
 	for (int i = 0; i < bones.size(); i++)
@@ -461,6 +462,7 @@ void FBXObject3d::Update()
 		constMapSkin->bones[i] = trans * bones[i].invInitialPose * matCurrentPose * inverse;
 	}
 	constBufferSkin->Unmap(0, nullptr);
+
 
 }
 

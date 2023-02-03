@@ -120,19 +120,6 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	descHeapSRV->SetName(L"SpriteSRV");
 #endif
 
-	////SRV設定
-	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
-	//srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	//srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	//srvDesc.Texture2D.MipLevels = 1;
-
-	//dev->CreateShaderResourceView(texbuff.Get(),
-	//	&srvDesc,
-	//	CD3DX12_CPU_DESCRIPTOR_HANDLE(
-	//		descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 0,
-	//		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-	//	));
 	Texture::Get()->LoadPostEfectTexture(texbuff.Get());
 
 #ifdef _DEBUG
@@ -200,7 +187,7 @@ void PostEffect::CreatePipeline(ID3D12Device* dev)
 	//SetPipeline(2);
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, Vec4 color)
+void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList,const Vec4 &color)
 {
 
 	DrawPost(sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false);

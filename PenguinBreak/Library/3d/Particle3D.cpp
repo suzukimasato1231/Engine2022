@@ -34,7 +34,7 @@ void Particle3D::Update()
 	}
 }
 
-void Particle3D::Draw(ObjectData objectData, int graph)
+void Particle3D::Draw(const ObjectData &objectData, int graph)
 {
 	for (size_t i = 0; i < particle.size(); i++)
 	{
@@ -51,7 +51,7 @@ void Particle3D::Draw(ObjectData objectData, int graph)
 	}
 }
 
-void Particle3D::Create(Vec3 pos, Vec3 velocity, Vec3 accel, int time, int graph)
+void Particle3D::Create(const Vec3 &pos,const Vec3 &velocity,const Vec3 &accel,const int &time,const int &graph)
 {
 	particle.push_back(new ParticleData);
 	size_t num = particle.size() - 1;

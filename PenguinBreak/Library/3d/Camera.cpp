@@ -53,20 +53,26 @@ void Camera::SetCamera(Vec3 eye, Vec3 target, Vec3 up)
 void Camera::FollowCamera(Vec3 position, Vec3 d, float angleX, float angleY)
 {
 	target = position;//注視点座標
-   //カメラ追従
-   //1
-	Vec3 V0 = d;
-	//2
-	XMMATRIX  rotM = XMMatrixIdentity();
-	rotM *= XMMatrixRotationY(XMConvertToRadians(angleX));//Y軸
-	rotM *= XMMatrixRotationX(XMConvertToRadians(angleY));//X軸
-	//3
-	XMVECTOR v3 = { V0.x,V0.y,V0.z };
-	XMVECTOR v = XMVector3TransformNormal(v3, rotM);
 
-	//4
-	Vec3 f3 = { v.m128_f32[0],v.m128_f32[1],v.m128_f32[2] };
-	eye.x = target.x + f3.x, eye.y = target.y + f3.y, eye.z = target.z + f3.z;
+   //カメラ追従
+	if (angleX != followX || angleY != followY || !(d == followD))
+	{
+		followX = angleX, followY = angleY, followD = d;
+		//1
+		Vec3 V0 = d;
+		//2
+		XMMATRIX followRotM = XMMatrixIdentity();
+		followRotM *= XMMatrixRotationY(XMConvertToRadians(angleX));//Y軸
+		followRotM *= XMMatrixRotationX(XMConvertToRadians(angleY));//X軸
+
+		//3
+		XMVECTOR v3 = { V0.x,V0.y,V0.z };
+		XMVECTOR v = XMVector3TransformNormal(v3, followRotM);
+
+		//4
+		followF3 = { v.m128_f32[0],v.m128_f32[1],v.m128_f32[2] };
+	}
+	eye.x = target.x + followF3.x, eye.y = target.y + followF3.y, eye.z = target.z + followF3.z;
 
 	//5
 	//ビュー変換行列
