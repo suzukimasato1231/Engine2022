@@ -71,7 +71,7 @@ ParticleManager* ParticleManager::Create()
 }
 
 
-void ParticleManager::Add(int life, Vec3 position, Vec3 velocity, Vec3 accel, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color)
+void ParticleManager::Add(int life,const Vec3 &position,const Vec3 &velocity,const Vec3 &accel, float start_scale, float end_scale,const Vec4 &start_color,const Vec4 &end_color)
 {
 	//リストに要素を追加
 	particles.emplace_front();
@@ -88,7 +88,7 @@ void ParticleManager::Add(int life, Vec3 position, Vec3 velocity, Vec3 accel, fl
 	p.e_color = end_color;
 }
 
-void ParticleManager::BreakBoxAdd(Vec3 Pos, float Vel, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color)
+void ParticleManager::BreakBoxAdd(const Vec3 &Pos, float Vel, float start_scale, float end_scale,const Vec4 &start_color,const Vec4 &end_color)
 {
 	for (int i = 0; i < 20; i++)
 	{
@@ -113,7 +113,7 @@ void ParticleManager::BreakBoxAdd(Vec3 Pos, float Vel, float start_scale, float 
 	}
 }
 
-void ParticleManager::ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color)
+void ParticleManager::ParticleAdd2(const Vec3 &Pos, const Vec4 &start_color,const Vec4 &end_color)
 {
 	for (int i = 0; i < 1; i++)
 	{

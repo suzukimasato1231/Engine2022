@@ -18,7 +18,7 @@ public:
 
 	void DrawParicle();
 
-	static StageOBJ SetElect(const Vec3 position, const Vec3 scale, const Vec3 angle, const Vec2 map, const int type);
+	static StageOBJ SetElect(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, const int type);
 private:
 	//電気パーティクル
 	void AddElect(Vec3 pos);

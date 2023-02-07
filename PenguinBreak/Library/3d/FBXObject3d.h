@@ -87,9 +87,9 @@ public://メンバ関数
 	/// </summary>
 	void StopAnimation();
 
-	void SetPosition(Vec3 pos) { FBXObject3d::position = pos; }
-	void SetScale(Vec3 scale) { FBXObject3d::scale = scale; }
-	void SetRotation(Vec3 rotation) { FBXObject3d::rotation = rotation; }
+	void SetPosition(const Vec3 &pos) { FBXObject3d::position = pos; }
+	void SetScale(const Vec3 &scale) { FBXObject3d::scale = scale; }
+	void SetRotation(const Vec3 &rotation) { FBXObject3d::rotation = rotation; }
 protected://メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource>constBuffTransform;

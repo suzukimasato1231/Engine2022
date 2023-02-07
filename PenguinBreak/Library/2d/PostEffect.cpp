@@ -231,7 +231,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }
 
-void PostEffect::UpdatePost(SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
+void PostEffect::UpdatePost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
 {
 	//定数バッファの転送
 	Sprite::ConstBufferData* constMap = nullptr;
@@ -241,7 +241,7 @@ void PostEffect::UpdatePost(SpriteData& sprite, Vec2 position, float width, floa
 	constBuff->Unmap(0, nullptr);
 }
 
-void PostEffect::DrawPost(SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
+void PostEffect::DrawPost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
 {
 	//パイプラインステートの設定
 	Sprite::cmdList->SetPipelineState(pipelineSet.pipelinestate.Get());

@@ -19,7 +19,7 @@ void DropPoint::Init()
 	dropPointGraph = Texture::Get()->LoadTexture(L"Resources/UI/dropPoint.png");
 }
 
-void DropPoint::Update(Vec3 pPos, Vec3 pos, Vec3 angle, Vec3 scale)
+void DropPoint::Update(const Vec3 &pPos, const Vec3 &pos, const Vec3 &angle, const Vec3 &scale)
 {
 	//°OBB‚Ì“–‚½‚è”»’è‰Ÿ‚µ–ß‚µˆ—
 	OBB diagonal;
@@ -36,7 +36,7 @@ void DropPoint::Update(Vec3 pPos, Vec3 pos, Vec3 angle, Vec3 scale)
 }
 
 
-void DropPoint::Draw(Vec3 pPos)
+void DropPoint::Draw(const Vec3 &pPos)
 {
 	if (Player::Get()->GetGroundFlag() == false && isPointFlag == true)
 	{

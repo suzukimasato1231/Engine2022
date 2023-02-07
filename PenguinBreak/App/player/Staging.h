@@ -36,12 +36,12 @@ public://メンバ関数
 	//3D描画
 	void Draw3D();
 	//感電死の生成処理
-	void CreateElect(Vec3 pPos);
+	void CreateElect(const Vec3 &pPos);
 	//歩くの生成処理
-	void CreateWalk(Vec3 pPos, Vec3 vec);
+	void CreateWalk(const Vec3 &pPos, const Vec3 &vec);
 	//落下死
-	void CreateFallDown(Vec3 pPos);
+	void CreateFallDown(const Vec3 &pPos);
 	//登場時の3Dパーティクル
-	void CreateStart(Vec3 pPos);
+	void CreateStart(const Vec3 &pPos);
 };
 

@@ -57,7 +57,7 @@ public://OBJ関連
 	/// <param name="filename">filename</param>
 	/// <param name="smoothing"></param>
 	/// <returns></returns>
-	static ObjectData CreateOBJ(const std::string filename, bool smoothing = false, const std::string filePath = "");
+	static ObjectData CreateOBJ(const std::string filename, bool smoothing = false, const std::string &filePath = "");
 	//マテリアル読み込み
 	static int LoadMaterial(const std::string& directoryPath, const std::string& filename, ObjectData& polygon);
 private:

@@ -37,7 +37,7 @@ public:
 
 	void Update();
 	//•`‰æ
-	void Draw(Vec3 fbxPos, Vec3 angle, bool shadowFlag);
+	void Draw(const Vec3 &fbxPos, const Vec3 &angle, bool shadowFlag);
 	//ƒŠƒZƒbƒg
 	void Reset();
 	//ƒƒ‚ƒŠíœ

@@ -95,12 +95,12 @@ public: // 静的メンバ関数
 	/// <param name = "position">初期座標</param>
 	/// <param name = "velocity">速度</param>
 	/// <param name = "accel">加速度</param>
-	void Add(int life, Vec3 position, Vec3 velocity, Vec3 accel,
-		float start_scale, float end_scale, Vec4 start_color, Vec4 end_color);
+	void Add(int life, const Vec3 &position, const Vec3 &velocity, const Vec3 &accel,
+		float start_scale, float end_scale, const Vec4 &start_color, const Vec4 &end_color);
 
-	void BreakBoxAdd(Vec3 Pos, float Vel, float start_scale, float end_scale, Vec4 start_color, Vec4 end_color);
+	void BreakBoxAdd(const Vec3 &Pos, float Vel, float start_scale, float end_scale, const Vec4 &start_color, const Vec4 &end_color);
 
-	void ParticleAdd2(Vec3 Pos, Vec4 start_color, Vec4 end_color);
+	void ParticleAdd2(const Vec3 &Pos, const Vec4 &start_color, const Vec4 & end_color);
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device *device;

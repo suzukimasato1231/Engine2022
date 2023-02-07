@@ -378,7 +378,7 @@ bool Collision::CheckSphere2Capsule(const Sphere& sphere, const Capsule& capsule
 	return distance < sphere.radius;
 }
 
-bool Collision::CheckCapsule2Capsule(const Capsule capsule1, const Capsule& capsule2)
+bool Collision::CheckCapsule2Capsule(const Capsule &capsule1, const Capsule& capsule2)
 {
 	//線分と線分の距離を調べる　結果は距離の２乗の値である
 	float sqDistance = sqDistanceSegmentSegment(capsule1.startPosition, capsule1.endPosition, capsule2.startPosition, capsule2.endPosition);
@@ -449,7 +449,7 @@ float Collision::sqDistanceSegmentSegment(const XMVECTOR& p1, const XMVECTOR& q1
 	return (c1 - c2).dot(c1 - c2);
 }
 
-bool Collision::CircleCollision(Vec2 circle1, Vec2 circle2, float radius1, float radius2)
+bool Collision::CircleCollision(const Vec2& circle1, Vec2& circle2, float radius1, float radius2)
 {
 	double disX = circle1.x - circle2.x;
 	double disY = circle1.y - circle2.y;
@@ -458,7 +458,7 @@ bool Collision::CircleCollision(Vec2 circle1, Vec2 circle2, float radius1, float
 	return d < r;
 }
 
-bool Collision::BoxCollision(Vec2 box1, Vec2 box2, Vec2 size1, Vec2 size2)
+bool Collision::BoxCollision(const Vec2 &box1, const Vec2 &box2, const Vec2 &size1, const Vec2 &size2)
 {
 	//x軸の判定
 	if (box2.x - size2.x <= box1.x + size1.x && box1.x - size1.x <= box2.x + size2.x)
@@ -473,7 +473,7 @@ bool Collision::BoxCollision(Vec2 box1, Vec2 box2, Vec2 size1, Vec2 size2)
 
 
 
-void OBB::Initilize(Vec3 pos, Vec3 rotation, Vec3 scale)
+void OBB::Initilize(const Vec3 &pos, const Vec3 &rotation, const Vec3 &scale)
 {
 	//判定するOBBの情報をコピー
 	m_Pos.x = pos.x;

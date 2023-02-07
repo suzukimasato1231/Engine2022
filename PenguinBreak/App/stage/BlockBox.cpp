@@ -54,7 +54,7 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	}
 }
 
-StageOBJ BlockBox::SetBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int type)
+StageOBJ BlockBox::SetBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map,int type)
 {
 	StageOBJ stageObj = {};
 	stageObj.map = { static_cast<float>(map.x),static_cast<float>(map.y) };

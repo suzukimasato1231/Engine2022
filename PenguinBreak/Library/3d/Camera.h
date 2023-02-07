@@ -40,9 +40,9 @@ public:
 	static Camera *Create();
 
 	//カメラ初期化/カメラ位置eye/カメラターゲットtarget /カメラの向きup
-	void Initilize(Vec3 eye, Vec3 target, Vec3 up);
+	void Initilize(const Vec3 &eye, const Vec3 &target, const Vec3 &up);
 	//カメラ位置セット/カメラ位置eye/カメラターゲットtarget /カメラの向きup
-	void SetCamera(Vec3 eye, Vec3 target, Vec3 up);
+	void SetCamera(const Vec3 &eye, const Vec3 &target, const Vec3 &up);
 
 	/// <summary>
 	/// カメラが追従する
@@ -52,7 +52,7 @@ public:
 	/// <param name="angleX">カメラの向きX</param>
 	/// <param name="angleY">カメラの向きY</param>
 	/// <returns></returns>
-	void FollowCamera(Vec3 position, Vec3 d, float angleX = 0, float angleY = 0);
+	void FollowCamera(const Vec3 &position, const Vec3 &d, float angleX = 0, float angleY = 0);
 
 	//matViewを獲得
 	XMMATRIX GetMatView();

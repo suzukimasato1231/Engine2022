@@ -358,7 +358,7 @@ ObjectData Shape::CreateCylinder(int division, int prizmHeight, int radius)
 	return polygon;
 }
 
-ObjectData Shape::CreateOBJ(const std::string filename, bool smoothing, const std::string filePath)
+ObjectData Shape::CreateOBJ(const std::string filename, bool smoothing, const std::string &filePath)
 {
 	ObjectData polygon;
 

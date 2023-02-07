@@ -32,19 +32,19 @@ public:
 		ComPtr <ID3D12RootSignature>rootsignature;
 	};
 	//スプライト
-	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//OBJ読み込み
-	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//影無しOBJ
-	static PipelineSet  NoShadowOBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+	static PipelineSet  NoShadowOBJCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//ノーマルマップ
-	static PipelineSet NormalMapCreatePipeline(ID3D12Device* dev, Shader shader);
+	static PipelineSet NormalMapCreatePipeline(ID3D12Device* dev, const Shader &shader);
 	//パーティクル
-	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//ポストエフェクト(通常)
-	static PipelineSet PostNormalCreateGraphicsPipeline(ID3D12Device* dev, Shader shader);
+	static PipelineSet PostNormalCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//被写界深度
-	static PipelineSet DepthOfFieldPipelineCreateGraphicesPipeline(ID3D12Device* dev, Shader shader);
+	static PipelineSet DepthOfFieldPipelineCreateGraphicesPipeline(ID3D12Device* dev, const Shader &shader);
 public:
 	//オブジェクト描画
 	static PipelineSet OBJPipeline;

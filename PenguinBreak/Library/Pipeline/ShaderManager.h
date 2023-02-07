@@ -14,7 +14,7 @@ public:
 	ComPtr<ID3DBlob> psBlob = nullptr; //ピクセルシェーダオブジェクト
 };
 
-ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName = L"", LPCSTR Vtarget = "", LPCSTR entryPoint = "main");
+ComPtr<ID3DBlob> LoadShader(const LPCWSTR &VshaderName = L"", const LPCSTR &Vtarget = "", const LPCSTR &entryPoint = "main");
 
 class ShaderManager
 {

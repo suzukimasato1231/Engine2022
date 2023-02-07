@@ -65,7 +65,7 @@ void Stage::MainInit(int stageNum)
 	fishBox.Delete();
 }
 
-void Stage::Update(Vec3 pPos)
+void Stage::Update(const Vec3& pPos)
 {
 	Vec3 PPos = pPos;
 	//判定する箇所だけ行うため
@@ -247,7 +247,7 @@ void Stage::Update(Vec3 pPos)
 	fishBox.Update(pPos);
 }
 
-void Stage::Draw(Vec3 pPos, bool shadowFlag)
+void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 {
 	Vec3 PPos = pPos;
 	//判定する箇所だけ行うため
@@ -261,7 +261,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 		switch (floor[i]->type)
 		{
 		case FloorNormal:
-			if ((floorNormalMax <= floor[i]->map.y && floor[i]->map.y <= stageMin))
+			if (floorNormalMax <= floor[i]->map.y && floor[i]->map.y <= stageMin)
 			{
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 20.0f, floor[i]->position.z),
 					Vec3(25.0f, 40.0f, 25.0f * (floor[i]->size + 1)),
@@ -269,7 +269,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			}
 			break;
 		case Floor169:
-			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
 			{
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z + 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f * 2),
@@ -277,7 +277,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			}
 			break;
 		case Floor11:
-			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
 			{
 				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z - 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f),
@@ -285,14 +285,14 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 			}
 			break;
 		case FloorMove:
-			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
 			{
 				moveFloor.Draw(floor[i], shadowFlag);
 			}
 			break;
 		case FloorPitfall_A:
 		case FloorPitfall_B:
-			if (((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4))
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
 			{
 				floorPitfall.Draw(floor[i], shadowFlag);
 			}
@@ -306,7 +306,7 @@ void Stage::Draw(Vec3 pPos, bool shadowFlag)
 	//オブジェクト描画
 	for (int i = 0; i < stageObjSize; i++)
 	{
-		if ((MAP_HEIGHT - 1 + Z) - drawNumY <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
+		if ((MAP_HEIGHT - 1 + Z) - drawNumY <= stageObj[i]->map.y && stageObj[i]->map.y <= stageMin)
 		{
 			switch (stageObj[i]->type)
 			{
@@ -554,7 +554,7 @@ void Stage::DrawWater()
 	}
 }
 
-void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type, int size)
+void Stage::SetFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type, int size)
 {
 	floor.push_back(new Floor);
 	size_t Num = floor.size() - 1;
@@ -568,7 +568,7 @@ void Stage::SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type, 
 	floor[Num]->size = size;
 }
 
-void Stage::SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetBreakBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
@@ -576,21 +576,21 @@ void Stage::SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	blockMax++;
 }
 
-void Stage::SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetJumpBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXJUMP);
 }
 
-void Stage::SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetBreakHard(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXHARD);
 }
 
-void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type)
+void Stage::SetWallBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
@@ -609,7 +609,7 @@ void Stage::SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type
 	stageObj[num]->type = type;
 }
 
-void Stage::SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetGoal(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
@@ -628,7 +628,7 @@ void Stage::SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	stageObj[num]->type = Goal;
 }
 
-void Stage::SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetMoveFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
 {
 	floor.push_back(new Floor);
 	size_t NUM = floor.size() - 1;
@@ -639,7 +639,7 @@ void Stage::SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	floor[NUM]->type = FloorMove;
 }
 
-void Stage::SetMoveFloor2(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetMoveFloor2(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
 {
 	floor.push_back(new Floor);
 	size_t NUM = floor.size() - 1;
@@ -651,7 +651,7 @@ void Stage::SetMoveFloor2(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
 	floor[NUM]->moveFlag = 1;
 }
 
-void Stage::SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time)
+void Stage::SetPitfallFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int time)
 {
 	floor.push_back(new Floor);
 	size_t NUM = floor.size() - 1;
@@ -663,21 +663,21 @@ void Stage::SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int
 	floor[NUM]->type = FloorPitfall_A;
 }
 
-void Stage::SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetElectricity(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = Electricity::SetElect(position, scale, angle, map, ELECTRICITY);
 }
 
-void Stage::SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map)
+void Stage::SetFishAttack(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = DangerFish::SetDangerFish(position, scale, angle, map, FISHATTACK);
 }
 
-void Stage::SetFigrineOBJ(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type)
+void Stage::SetFigrineOBJ(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;

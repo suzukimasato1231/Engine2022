@@ -35,7 +35,7 @@ public:
 
 	void DrawParticle();//プレイヤーが死んだときのパーティクル
 
-	void SetPosition(Vec3 position);
+	void SetPosition(const Vec3 &position);
 
 	/// <summary>
 	/// trueにする
@@ -59,7 +59,7 @@ public:
 
 	void Delete();
 
-	void FishDie(Vec3 pos, Vec3 angle) { fishDiePos = pos, this->fishDieAngle, angle; }
+	void FishDie(const Vec3 &pos, const Vec3 &angle) { fishDiePos = pos, this->fishDieAngle, angle; }
 	//ゴール時の演出
 	void GoalStaging(int fbxType);
 

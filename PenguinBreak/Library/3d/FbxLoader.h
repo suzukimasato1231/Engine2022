@@ -46,7 +46,7 @@ public:
 	/// ファイルからFBXモデル読込
 	/// </summary>
 	/// <param name="modelName">モデル名</param>
-	Model* LoadModelFromFile(const string& modelName, string file = "");
+	Model* LoadModelFromFile(const string& modelName, const string &file = "");
 
 private:
 	// D3D12デバイス
@@ -74,7 +74,7 @@ private:
 	/// <param name="model">読み込み先モデルオブジェクト</param>
 	/// <param name="fbxNode">解析対象のノード</param>
 	/// <param name="parent">親ノード</param>
-	void ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent = nullptr,  string file = "");
+	void ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent = nullptr,const  string &file = "");
 
 	/// <summary>
 	/// メッシュ読み取り

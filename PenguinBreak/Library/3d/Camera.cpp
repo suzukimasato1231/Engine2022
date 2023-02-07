@@ -24,7 +24,7 @@ Camera* Camera::Create()
 	return view;
 }
 
-void Camera::Initilize(Vec3 eye, Vec3 target, Vec3 up)
+void Camera::Initilize(const Vec3 &eye, const Vec3 &target, const Vec3 &up)
 {
 	//éÀâeïœä∑óp
 	matProjection = XMMatrixPerspectiveFovLH(
@@ -36,7 +36,7 @@ void Camera::Initilize(Vec3 eye, Vec3 target, Vec3 up)
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 }
 
-void Camera::SetCamera(Vec3 eye, Vec3 target, Vec3 up)
+void Camera::SetCamera(const Vec3 &eye, const Vec3 &target, const Vec3 &up)
 {
 	this->eye = eye, this->target = target, this->up = up;
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -50,7 +50,7 @@ void Camera::SetCamera(Vec3 eye, Vec3 target, Vec3 up)
 	matViewProjection = matView * matProjection;
 }
 
-void Camera::FollowCamera(Vec3 position, Vec3 d, float angleX, float angleY)
+void Camera::FollowCamera(const Vec3 &position, const Vec3 &d, float angleX, float angleY)
 {
 	target = position;//íçéãì_ç¿ïW
 

@@ -20,11 +20,11 @@ public:
 	//‰Šú‰»ˆ—
 	void Init();
 	//XVˆ—
-	void Update(Vec3 pPos);
+	void Update(const Vec3 &pPos);
 	//•`‰æˆ—
 	void Draw();
 	//ì¬ˆ—
-	void Create(Vec3 pos);
+	void Create(const Vec3 &pos);
 
 	void Delete();
 private:

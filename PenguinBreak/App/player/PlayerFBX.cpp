@@ -59,7 +59,7 @@ void PlayerFBX::Update()
 	jumpTime--;
 }
 
-void PlayerFBX::Draw(Vec3 fbxPos, Vec3 angle, bool shadowFlag)
+void PlayerFBX::Draw(const Vec3 &fbxPos, const Vec3 &angle, bool shadowFlag)
 {
 	//FBXŽŽ‚µ
 	if (shadowFlag == false)

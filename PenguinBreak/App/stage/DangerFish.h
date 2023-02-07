@@ -16,7 +16,7 @@ public:
 	//ï`âÊèàóù
 	void Draw(StageOBJ* stageObj, const bool shadowFlag);
 
-	static StageOBJ SetDangerFish(const Vec3 position, const Vec3 scale, const Vec3 angle, const Vec2 map, const int type);
+	static StageOBJ SetDangerFish(const Vec3 &position, const Vec3& scale, const Vec3 &angle, const Vec2 &map, const int type);
 public:
 	Vec3 GetFishAngle() { return m_rotation; }
 

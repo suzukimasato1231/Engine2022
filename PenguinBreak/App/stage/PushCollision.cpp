@@ -1,6 +1,6 @@
 #include"PushCollision.h"
 #include<DirectXMath.h>
-int PushCollision::Player2Floor(Vec3 pos, Vec3 angle, Vec3 scale, int moveFlag)
+int PushCollision::Player2Floor(const Vec3 &pos, const Vec3 &angle, const Vec3 &scale, int moveFlag)
 {
 	//°OBB‚Ì“–‚½‚è”»’è‰Ÿ‚µ–ß‚µˆ—
 	OBB diagonal;

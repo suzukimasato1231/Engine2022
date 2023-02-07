@@ -32,7 +32,7 @@ bool Pipeline::SetPipeline(int type)
 	return false;
 }
 
-Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
+Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader)
 {
 	HRESULT result;
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
@@ -164,7 +164,7 @@ Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev,
 	return pipelineSet;
 }
 
-Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
+Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader)
 {
 
 	HRESULT result = S_FALSE;
@@ -287,7 +287,7 @@ Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, Sh
 	return pipelineSet;
 }
 
-Pipeline::PipelineSet Pipeline::NoShadowOBJCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
+Pipeline::PipelineSet Pipeline::NoShadowOBJCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
@@ -405,7 +405,7 @@ Pipeline::PipelineSet Pipeline::NoShadowOBJCreateGraphicsPipeline(ID3D12Device* 
 	return pipelineSet;
 }
 
-Pipeline::PipelineSet Pipeline::NormalMapCreatePipeline(ID3D12Device* dev, Shader shader)
+Pipeline::PipelineSet Pipeline::NormalMapCreatePipeline(ID3D12Device* dev, const Shader &shader)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
@@ -542,7 +542,7 @@ Pipeline::PipelineSet Pipeline::NormalMapCreatePipeline(ID3D12Device* dev, Shade
 	return pipelineSet;
 }
 
-Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
+Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader)
 {
 	HRESULT result = S_FALSE;
 
@@ -668,7 +668,7 @@ Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device* dev
 	return pipelineSet;
 }
 
-Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* dev, Shader shader)
+Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader)
 {
 	HRESULT result;
 #pragma region//頂点シェーダーの読み込みとコンパイル
@@ -804,7 +804,7 @@ Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* d
 	return pipelineSet;
 }
 
-Pipeline::PipelineSet Pipeline::DepthOfFieldPipelineCreateGraphicesPipeline(ID3D12Device* dev, Shader shader)
+Pipeline::PipelineSet Pipeline::DepthOfFieldPipelineCreateGraphicesPipeline(ID3D12Device* dev, const Shader &shader)
 {
 	HRESULT result;
 #pragma region//頂点シェーダーの読み込みとコンパイル

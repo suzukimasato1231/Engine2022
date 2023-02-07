@@ -228,7 +228,7 @@ void Sprite::SpriteCommonBeginDraw()
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 //スプライト単体更新
-void Sprite::Update(SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
+void Sprite::Update(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
 {
 
 	if (sprite.size.x != width || sprite.size.y != height ||
@@ -305,7 +305,7 @@ void Sprite::Update(SpriteData& sprite, Vec2 position, float width, float height
 }
 
 //スプライト単体描画
-void Sprite::Draw(SpriteData& sprite, const Vec2 position, const float width, const float height, const Vec2 anchorpoint, const Vec4 color, const bool isFlipX, const bool isFlipY)
+void Sprite::Draw(SpriteData& sprite, const Vec2 &position, const float width, const float height, const Vec2 &anchorpoint, const Vec4 &color, const bool isFlipX, const bool isFlipY)
 {
 	SpriteCommonBeginDraw();
 
@@ -381,7 +381,7 @@ void Sprite::DebugDraw(SpriteData& sprite)
 	spriteNum++;
 }
 
-void Sprite::PostEffectDraw(ID3D12DescriptorHeap* descHeap, SpriteData& sprite, Vec2 position, float width, float height, Vec2 anchorpoint, Vec4 color, bool isFlipX, bool isFlipY)
+void Sprite::PostEffectDraw(ID3D12DescriptorHeap* descHeap, SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
 {
 	//パイプラインステートの設定
 	cmdList->SetPipelineState(spriteCommon.pipelineSet.pipelinestate.Get());

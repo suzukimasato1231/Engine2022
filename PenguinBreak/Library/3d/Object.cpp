@@ -221,7 +221,7 @@ void Object::Draw(const ObjectData &polygon, PSR& psr, const Vec3& position, con
 	OBJNum++;
 }
 
-void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv)
+void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -280,7 +280,7 @@ void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, Vec3 position,
 	//Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph, bool shadowFlag)
+void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph, bool shadowFlag)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -336,7 +336,7 @@ void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, Vec3 position, Ve
 	OBJNum++;
 }
 
-void Object::NoShadowMatWorld(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv)
+void Object::NoShadowMatWorld(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -394,7 +394,7 @@ void Object::NoShadowMatWorld(const ObjectData& polygon, PSR& psr, Vec3 position
 	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::NoShadowDraw(const ObjectData& polygon, PSR& psr, Vec3 position, Vec3 scale, Vec3 rotation, Vec2 uv, int graph)
+void Object::NoShadowDraw(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{

@@ -25,49 +25,48 @@ void Player::Init()
 
 void Player::Update()
 {
-	if (gameoverFlag == false)
+	if (gameoverFlag == true) { return; }
+	oldPosition = position;
+	oldGroundFlag = groundFlag;
+	audioTime++;
+	if (audioTime >= 201)
 	{
-		oldPosition = position;
-		oldGroundFlag = groundFlag;
-		audioTime++;
-		if (audioTime >= 201)
+		audioTime = 0;
+	}
+	vec = {};
+	//移動
+	Move();
+	//ジャンプ
+	Jump();
+
+	staging.Update();
+
+	position += vec;
+	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
+	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+	//落下死
+	FallDie();
+	//魚関連
+	Fish();
+
+	RedFishDie();
+
+	pFbx.Update();
+	//開始時のアニメーション
+	if (starStaging == true && moveFlag == true)
+	{
+		if (startTime >= startTimeMax - 40)
 		{
-			audioTime = 0;
+			staging.CreateStart(position);
 		}
-		vec = {};
-		//移動
-		Move();
-		//ジャンプ
-		Jump();
-
-		staging.Update();
-
-		position += vec;
-		pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
-		pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
-		//落下死
-		FallDie();
-		//魚関連
-		Fish();
-
-		RedFishDie();
-
-		pFbx.Update();
-		//開始時のアニメーション
-		if (starStaging == true && moveFlag == true)
+		startTime++;
+		if (startTime >= startTimeMax)
 		{
-			if (startTime >= startTimeMax - 40)
-			{
-				staging.CreateStart(position);
-			}
-			startTime++;
-			if (startTime >= startTimeMax)
-			{
-				starStaging = false;
-				startTime = 0;
-			}
+			starStaging = false;
+			startTime = 0;
 		}
 	}
+
 }
 
 void Player::Draw(bool shadowFlag)
@@ -84,7 +83,7 @@ void Player::DrawParticle()
 	staging.Draw();
 }
 
-void Player::SetPosition(Vec3 position)
+void Player::SetPosition(const Vec3& position)
 {
 	this->position = position;
 	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);

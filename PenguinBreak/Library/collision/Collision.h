@@ -111,7 +111,7 @@ public:
 	/// <param name="capsule1">カプセル</param>
 	/// <param name="capsule2">カプセル</param>
 	/// <returns></returns>
-	static bool CheckCapsule2Capsule(const Capsule capsule1, const Capsule& capsule2);
+	static bool CheckCapsule2Capsule(const Capsule &capsule1, const Capsule& capsule2);
 
 	//線分と線分の距離の２乗を求める
 	static float sqDistanceSegmentSegment(const DirectX::XMVECTOR& p1, const DirectX::XMVECTOR& q1, const DirectX::XMVECTOR& p2, const DirectX::XMVECTOR& q2);
@@ -134,9 +134,16 @@ public:
 	/// <param name="radius1">１つ目の円の大きさ</param>
 	/// <param name="radius2">２つ目の円の大きさ</param>
 	/// <returns></returns>
-	static bool CircleCollision(Vec2 circle1, Vec2 circle2, float radius1, float radius2);
-
-	static bool BoxCollision(Vec2 box1, Vec2 box2, Vec2 size1, Vec2 size2);
+	static bool CircleCollision(const Vec2 &circle1, Vec2 &circle2, float radius1, float radius2);
+	/// <summary>
+	/// 矩形の当たり判定
+	/// </summary>
+	/// <param name="box1">１つめの矩形の位置</param>
+	/// <param name="box2">２つ目の矩形の位置</param>
+	/// <param name="size1">１つ目の矩形の大きさ</param>
+	/// <param name="size2">２つ目の矩形の大きさ</param>
+	/// <returns></returns>
+	static bool BoxCollision(const Vec2 &box1, const Vec2 &box2, const Vec2 &size1, const Vec2 &size2);
 
 };
 
@@ -149,9 +156,9 @@ protected:
 	float m_fLength[3];         // 各軸方向の長さ
 public:
 	//XMfloat3 Pos 位置, XMMATRIX rotM 回転行列、float xの半分の長さ、 float yの半分の長さ、 float zの半分の長さ、
-	void Initilize(Vec3 pos, Vec3 rotM, Vec3 scale);
+	void Initilize(const Vec3 &pos, const Vec3 &rotM, const Vec3 &scale);
 
-	void SetPos(Vec3 pos) { m_Pos = pos; }
+	void SetPos(const Vec3 &pos) { m_Pos = pos; }
 	Vec3 GetDirect(int elem);   // 指定軸番号の方向ベクトルを取得
 	float GetLen_W(int elem);   // 指定軸方向の長さを取得
 	Vec3 GetPos_W();            // 位置を取得

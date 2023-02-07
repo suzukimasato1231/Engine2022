@@ -16,7 +16,7 @@ public:
 
 	void Draw3D();
 
-	void BreakBoxFlag(Vec3 breakPos) { breakBoxFlag = true; this->breakPos = breakPos; }
+	void BreakBoxFlag(const Vec3 &breakPos) { breakBoxFlag = true; this->breakPos = breakPos; }
 private:
 	//箱が壊れるパーティクル
 	std::unique_ptr<ParticleManager>breakBoxParticle;

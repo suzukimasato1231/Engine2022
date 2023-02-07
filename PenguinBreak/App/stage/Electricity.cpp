@@ -93,7 +93,7 @@ void Electricity::DrawParicle()
 	m_electParicle->Draw(m_electParicleGraph);
 }
 
-StageOBJ Electricity::SetElect(const Vec3 position, const Vec3 scale, const Vec3 angle, const Vec2 map, const int type)
+StageOBJ Electricity::SetElect(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, const int type)
 {
 	const Vec3 boxScale = { 220.0f,40.0f,0.0f };
 	StageOBJ stageObj = {};

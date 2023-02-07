@@ -40,7 +40,7 @@ float4 main(VSOutput input) : SV_TARGET
 
    ////ライト視点から見た位置を求める
    float3 posFromLightVP = input.posInLVP.xyz / input.posInLVP.w;
-   float2 shadowmap = (posFromLightVP + float2(1,-1)) * float2(0.5,-0.5);
+   float2 shadowmap = (posFromLightVP.xy + float2(1,-1)) * float2(0.5,-0.5);
    //シャドウマッピングの範囲内か
    if (shadowmap.x <= 1.0f && shadowmap.x >= 0.0f &&
 	   shadowmap.y <= 1.0f && shadowmap.y >= 0.0f)

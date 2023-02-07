@@ -54,7 +54,7 @@ void FbxLoader::Finalize()
 	fbxManager->Destroy();
 }
 
-Model* FbxLoader::LoadModelFromFile(const string& modelName, string file)
+Model* FbxLoader::LoadModelFromFile(const string& modelName, const string &file)
 {
 	// モデルと同じ名前のフォルダから読み込む
 	const string directoryPath = baseDirectory + file + modelName + "/";
@@ -91,7 +91,7 @@ Model* FbxLoader::LoadModelFromFile(const string& modelName, string file)
 	return model;
 }
 
-void FbxLoader::ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent, string file)
+void FbxLoader::ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent, const string &file)
 {
 	//// ノード名を取得
 	//string name = fbxNode->GetName();

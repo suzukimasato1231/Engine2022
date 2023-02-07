@@ -19,7 +19,7 @@ void FishBox::Init()
 	fishOBJ = Shape::CreateOBJ("fish", true,"OBJ/");
 }
 
-void FishBox::Update(Vec3 pPos)
+void FishBox::Update(const Vec3 &pPos)
 {
 	for (int i = 0; i < fishData.size(); i++)
 	{
@@ -46,7 +46,7 @@ void FishBox::Draw()
 	}
 }
 
-void FishBox::Create(Vec3 pos)
+void FishBox::Create(const Vec3 &pos)
 {
 	fishData.push_back(new FishData);
 	size_t num = fishData.size() - 1;

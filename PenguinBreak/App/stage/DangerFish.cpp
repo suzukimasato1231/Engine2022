@@ -95,7 +95,7 @@ void DangerFish::Draw(StageOBJ* stageObj, const bool shadowFlag)
 		m_rotation, Vec2(), 0, shadowFlag);
 }
 
-StageOBJ DangerFish::SetDangerFish(const Vec3 position, const Vec3 scale, const Vec3 angle, const Vec2 map, const int type)
+StageOBJ DangerFish::SetDangerFish(const Vec3& position, const Vec3& scale, const Vec3 &angle, const Vec2 &map, const int type)
 {
 	Vec3 scaleFish = { 25.0f,25.0f,25.0f };
 	StageOBJ stageObj = {};

@@ -28,9 +28,9 @@ public:
 	//ステージ選択
 	void MainInit(int stageNum);
 	//更新
-	void Update(Vec3 pPos);
+	void Update(const Vec3 &pPos);
 	//描画
-	void Draw(Vec3 pPos, bool shadowFlag = false);
+	void Draw(const Vec3 &pPos, bool shadowFlag = false);
 
 	void DrawParicle();
 	//ステージ作成
@@ -44,29 +44,29 @@ private:
 	//川の描画
 	void DrawWater();
 
-	void SetFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type, int size = 0);
+	void SetFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type, int size = 0);
 
-	void SetBreakBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetBreakBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
-	void SetJumpBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetJumpBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
-	void SetWallBox(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int type);
+	void SetWallBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type);
 
-	void SetBreakHard(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetBreakHard(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2& map);
 
-	void SetGoal(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetGoal(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
-	void SetMoveFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetMoveFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
-	void SetMoveFloor2(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetMoveFloor2(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
-	void SetPitfallFloor(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map, int time);
+	void SetPitfallFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int time);
 
-	void SetElectricity(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetElectricity(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
-	void SetFishAttack(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map);
+	void SetFishAttack(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
-	void SetFigrineOBJ(Vec3 position, Vec3 scale, Vec3 angle, Vec2 map,int type);
+	void SetFigrineOBJ(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map,int type);
 private:
 	const float mapSize = 25.0f;
 	const int drawNumY = 35;

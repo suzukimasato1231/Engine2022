@@ -45,7 +45,7 @@ void Staging::Draw3D()
 	startParicle->Draw(startObject);
 }
 
-void Staging::CreateElect(Vec3 pPos)
+void Staging::CreateElect(const Vec3 &pPos)
 {
 	static const int particleTime = 15;
 	static const Vec3 velocity = { 0.0f,0.0f,0.0f };
@@ -66,7 +66,7 @@ void Staging::CreateElect(Vec3 pPos)
 	}
 }
 
-void Staging::CreateWalk(Vec3 pPos, Vec3 vec)
+void Staging::CreateWalk(const Vec3 &pPos, const Vec3 &vec)
 {
 	static const int particleTime = 15;
 	static const Vec3 accel = { 0.0f,0.0f,0.0f };
@@ -86,21 +86,22 @@ void Staging::CreateWalk(Vec3 pPos, Vec3 vec)
 	}
 }
 
-void Staging::CreateFallDown(Vec3 pPos)
+void Staging::CreateFallDown(const Vec3 &pPos)
 {
 	static const int particleTime = 35;
 	static const Vec3 Velocity = { 0.0f,5.0f,0.0f };
 	static const Vec3 accel = { 0.0f,-0.2f,0.0f };
+
+	const float md_pos = 1.0f;
+	Vec3 pos = pPos;
+	const float md_vec = 3.0f;
+	Vec3 velocity = Velocity;
 	for (int i = 0; i < 5; i++)
 	{
 		//X,Y,Z‘S‚Ä{-5.0f,+5.0f}‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
-		const float md_pos = 1.0f;
-		Vec3 pos = pPos;
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += 0.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		const float md_vec = 3.0f;
-		Vec3 velocity = Velocity;
 		velocity.x += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.y += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.z += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
@@ -108,7 +109,7 @@ void Staging::CreateFallDown(Vec3 pPos)
 	}
 }
 
-void Staging::CreateStart(Vec3 pPos)
+void Staging::CreateStart(const Vec3 &pPos)
 {
 	static const int particleTime = 30;
 	static const Vec3 accel = { 0.0f,0.0f,0.0f };

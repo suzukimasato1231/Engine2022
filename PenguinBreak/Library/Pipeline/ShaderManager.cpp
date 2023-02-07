@@ -1,6 +1,6 @@
 #include "ShaderManager.h"
 
-ComPtr<ID3DBlob> LoadShader(LPCWSTR VshaderName, LPCSTR Vtarget, LPCSTR entryPoint)
+ComPtr<ID3DBlob> LoadShader(const LPCWSTR &VshaderName, const LPCSTR &Vtarget, const LPCSTR &entryPoint)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> Blob;

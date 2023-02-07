@@ -26,7 +26,7 @@ public:
 	//ï`âÊ
 	void Draw(const ObjectData &objectData, int graph = 0);
 	//çÏê¨
-	void Create(const Vec3 &pos,const  Vec3 &velocity,const  Vec3 &accel,const  int &time,const int &graph = 0);
+	void Create(const Vec3 &pos,const  Vec3 &velocity,const  Vec3 &accel,const  int time,const int graph = 0);
 
 	static Particle3D* Create();
 private:
