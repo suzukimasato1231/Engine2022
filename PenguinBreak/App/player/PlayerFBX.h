@@ -13,6 +13,7 @@ enum PlayerFBXType
 	FbxGoalHand,
 	FbxJump,
 	FbxWalking,
+	FbxSpin,
 };
 /// <summary>
 /// プレイヤーのFBXクラス
@@ -37,7 +38,7 @@ public:
 
 	void Update();
 	//描画
-	void Draw(const Vec3 &fbxPos, const Vec3 &angle, bool shadowFlag);
+	void Draw(const Vec3& fbxPos, const Vec3& angle, bool shadowFlag);
 	//リセット
 	void Reset();
 	//メモリ削除
@@ -60,6 +61,11 @@ private:
 	//停止FBX
 	Model* stopModel = nullptr;
 	std::unique_ptr<FBXObject3d> stopFbx;
+	//スピンFBX
+	Model* spinModel = nullptr;
+	std::unique_ptr<FBXObject3d> spinFbx;
+	const int spinTimeMax = 30;
+	int spinTime = 0;
 	//感電
 	Model* electModel = nullptr;
 	std::unique_ptr<FBXObject3d> electFbx;

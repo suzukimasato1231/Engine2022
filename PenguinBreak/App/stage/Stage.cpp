@@ -88,6 +88,7 @@ void Stage::Update(const Vec3& pPos)
 		case BOXJUMP:
 		case BOXHARD:
 			blockBox.PlayerHit(stageObj[i], X, Z);
+			blockBox.PlayerSpinHit(stageObj[i], X, Z);
 			if (stageObj[i]->type != Wall || stageObj[i]->type != DEADTREE || stageObj[i]->type != BarrierWall)
 			{
 				dropPoint.Update(PPos, stageObj[i]->position,
@@ -185,6 +186,27 @@ void Stage::Update(const Vec3& pPos)
 			}
 		}
 	}
+
+	if (blockBox.GetIs_Spin() == true)
+	{
+		for (int i = 0; i < stageObj.size(); i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				if (blockBox.GetObj_Data(j).position == stageObj[i]->position &&
+					BOX == stageObj[i]->type)
+				{
+					boxStaring.BreakBoxFlag(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
+					blockNum++;
+					Audio::Get()->SoundSEPlayWave(boxSE);
+				}
+			}
+		}
+
+	}
+
 	//” ‚ÌXV
 	blockBox.Update();
 
@@ -583,14 +605,14 @@ void Stage::SetJumpBox(const Vec3& position, const Vec3& scale, const Vec3& angl
 	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXJUMP);
 }
 
-void Stage::SetBreakHard(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
+void Stage::SetBreakHard(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXHARD);
 }
 
-void Stage::SetWallBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type)
+void Stage::SetWallBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
@@ -609,7 +631,7 @@ void Stage::SetWallBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angl
 	stageObj[num]->type = type;
 }
 
-void Stage::SetGoal(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
+void Stage::SetGoal(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
@@ -628,7 +650,7 @@ void Stage::SetGoal(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, 
 	stageObj[num]->type = Goal;
 }
 
-void Stage::SetMoveFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
+void Stage::SetMoveFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	floor.push_back(new Floor);
 	size_t NUM = floor.size() - 1;
@@ -639,7 +661,7 @@ void Stage::SetMoveFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &an
 	floor[NUM]->type = FloorMove;
 }
 
-void Stage::SetMoveFloor2(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
+void Stage::SetMoveFloor2(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	floor.push_back(new Floor);
 	size_t NUM = floor.size() - 1;
@@ -651,7 +673,7 @@ void Stage::SetMoveFloor2(const Vec3 &position, const Vec3 &scale, const Vec3 &a
 	floor[NUM]->moveFlag = 1;
 }
 
-void Stage::SetPitfallFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int time)
+void Stage::SetPitfallFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int time)
 {
 	floor.push_back(new Floor);
 	size_t NUM = floor.size() - 1;
@@ -663,21 +685,21 @@ void Stage::SetPitfallFloor(const Vec3 &position, const Vec3 &scale, const Vec3 
 	floor[NUM]->type = FloorPitfall_A;
 }
 
-void Stage::SetElectricity(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
+void Stage::SetElectricity(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = Electricity::SetElect(position, scale, angle, map, ELECTRICITY);
 }
 
-void Stage::SetFishAttack(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map)
+void Stage::SetFishAttack(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = DangerFish::SetDangerFish(position, scale, angle, map, FISHATTACK);
 }
 
-void Stage::SetFigrineOBJ(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type)
+void Stage::SetFigrineOBJ(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;

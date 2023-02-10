@@ -19,18 +19,17 @@ void PlayerFBX::Load()
 	goalHandModel = FbxLoader::GetInstance()->LoadModelFromFile("goalHand", "FBX/");
 	jumpModel = FbxLoader::GetInstance()->LoadModelFromFile("jumpFbx", "FBX/");
 	walkModel = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "FBX/");
+	spinModel = FbxLoader::GetInstance()->LoadModelFromFile("spinFbx", "FBX/");
 
 	//3Dオブジェクトの生成とモデルのセット
 	fbxObject1 = std::make_unique<FBXObject3d>();
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(model1);
 
-	//3Dオブジェクトの生成とモデルのセット
 	stopFbx = std::make_unique<FBXObject3d>();
 	stopFbx->Initialize();
 	stopFbx->SetModel(stopModel);
 
-	//3Dオブジェクトの生成とモデルのセット
 	electFbx = std::make_unique<FBXObject3d>();
 	electFbx->Initialize();
 	electFbx->SetModel(electModel);
@@ -51,15 +50,18 @@ void PlayerFBX::Load()
 	walkFbx->Initialize();
 	walkFbx->SetModel(walkModel);
 
-
+	spinFbx = std::make_unique<FBXObject3d>();
+	spinFbx->Initialize();
+	spinFbx->SetModel(spinModel);
 }
 
 void PlayerFBX::Update()
 {
 	jumpTime--;
+	spinTime--;
 }
 
-void PlayerFBX::Draw(const Vec3 &fbxPos, const Vec3 &angle, bool shadowFlag)
+void PlayerFBX::Draw(const Vec3& fbxPos, const Vec3& angle, bool shadowFlag)
 {
 	//FBX試し
 	if (shadowFlag == false)
@@ -101,6 +103,11 @@ void PlayerFBX::Draw(const Vec3 &fbxPos, const Vec3 &angle, bool shadowFlag)
 			walkFbx->SetRotation(angle);
 			walkFbx->Update();
 			break;
+		case FbxSpin:
+			spinFbx->SetPosition(fbxPos);
+			spinFbx->SetRotation(Vec3(angle.x + 30.0f, angle.y, angle.z));
+			spinFbx->Update();
+			break;
 		default:
 			break;
 		}
@@ -128,6 +135,9 @@ void PlayerFBX::Draw(const Vec3 &fbxPos, const Vec3 &angle, bool shadowFlag)
 	case FbxWalking:
 		walkFbx->Draw(shadowFlag);
 		break;
+	case FbxSpin:
+		spinFbx->Draw(shadowFlag);
+		break;
 	default:
 		break;
 	}
@@ -147,6 +157,7 @@ void PlayerFBX::Delete()
 	safe_delete(goalHandModel);
 	safe_delete(jumpModel);
 	safe_delete(walkModel);
+	safe_delete(spinModel);
 }
 
 void PlayerFBX::PlayFBX(int fbxType)
@@ -154,7 +165,7 @@ void PlayerFBX::PlayFBX(int fbxType)
 	switch (fbxType)
 	{
 	case FbxNone:
-		if (jumpTime <= 0)
+		if (jumpTime <= 0 && spinTime <= 0)
 		{
 			if (fbxFlag != FbxLoopStop)
 			{
@@ -165,7 +176,7 @@ void PlayerFBX::PlayFBX(int fbxType)
 		}
 		break;
 	case FbxWalk:
-		if (jumpTime <= 0)
+		if (jumpTime <= 0 && spinTime <= 0)
 		{
 			if (fbxFlag != FbxLoopRun)
 			{//アニメーション開始
@@ -193,7 +204,7 @@ void PlayerFBX::PlayFBX(int fbxType)
 		this->fbxType = fbxType;
 		break;
 	case FbxWalking:
-		if (jumpTime <= 0)
+		if (jumpTime <= 0 && spinTime <= 0)
 		{
 			if (fbxFlag != FbxLoopWalk)
 			{
@@ -202,6 +213,11 @@ void PlayerFBX::PlayFBX(int fbxType)
 			}
 			this->fbxType = fbxType;
 		}
+		break;
+	case FbxSpin:
+		spinTime = spinTimeMax;
+		spinFbx->PlayAnimation(false);
+		this->fbxType = fbxType;
 		break;
 	default:
 		break;
@@ -219,7 +235,7 @@ void PlayerFBX::StopAnimation()
 	goalHandFbx->StopAnimation();
 	jumpFbx->StopAnimation();
 	walkFbx->StopAnimation();
-
+	spinFbx->StopAnimation();
 }
 
 void PlayerFBX::StartAnimation()
@@ -233,5 +249,6 @@ void PlayerFBX::StartAnimation()
 		goalHandFbx->PlayAnimation(false);
 		jumpFbx->PlayAnimation(false);
 		walkFbx->PlayAnimation(true);
+		spinFbx->PlayAnimation(false);
 	}
 }

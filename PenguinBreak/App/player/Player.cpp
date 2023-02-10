@@ -38,6 +38,8 @@ void Player::Update()
 	Move();
 	//ジャンプ
 	Jump();
+	//スピン攻撃
+	SpinAttack();
 
 	staging.Update();
 
@@ -135,6 +137,26 @@ void Player::StopAnimation()
 	pFbx.StopAnimation();
 }
 
+void Player::SpinAttack()
+{
+	spinFlag = false;
+	/*if (((Input::Get()->KeybordPush(DIK_F) || Input::Get()->ControllerDown(ButtonX))
+		&& starStaging == false && dieType == DIENULL && clearFlag == false && spinCoolTime <= 0))
+	{
+		pFbx.PlayFBX(FbxSpin);
+		spinCoolTime = spinCoolTimeMax;
+		spinAttack.maxPosition = XMVectorSet(position.x + spinScale, position.y + 1.0f, position.z + spinScale, 1);
+		spinAttack.minPosition = XMVectorSet(position.x - spinScale, position.y - 1.0f, position.z - spinScale, 1);
+		spinFlag = true;
+	}
+
+	if (spinCoolTime >= 0)
+	{
+		spinCoolTime--;
+	}*/
+
+}
+
 void Player::FbxDraw(bool shadowFlag)
 {
 	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };
@@ -145,84 +167,84 @@ void Player::FbxDraw(bool shadowFlag)
 //移動
 void Player::Move()
 {
-	if (dieType == DIENULL && clearFlag == false && gameoverFlag == false && starStaging == false)
+	if (dieType != DIENULL && clearFlag == true && gameoverFlag == true && starStaging == true) { return; }
+	//キーボード移動
+	if (Input::Get()->KeybordInputArrow() == true)
 	{
-		if (Input::Get()->KeybordInputArrow() == true)
+		if (moveFlag == true)//移動か２Dか３Dか
 		{
-			if (moveFlag == true)//移動か２Dか３Dか
+			if (Input::Get()->KeybordPush(DIK_UP))
 			{
-				if (Input::Get()->KeybordPush(DIK_UP))
-				{
-					vec.z += speed.z;
-				}
-				if (Input::Get()->KeybordPush(DIK_DOWN))
-				{
-					vec.z -= speed.z;
-				}
+				vec.z += speed.z;
 			}
-			//移動
-			if (Input::Get()->KeybordPush(DIK_RIGHT))
+			if (Input::Get()->KeybordPush(DIK_DOWN))
 			{
-				vec.x += speed.x;
-			}
-			if (Input::Get()->KeybordPush(DIK_LEFT))
-			{
-				vec.x -= speed.x;
+				vec.z -= speed.z;
 			}
 		}
-		//コントローラー移動
-		if (Input::Get()->ConLeftInput())
+		//移動
+		if (Input::Get()->KeybordPush(DIK_RIGHT))
 		{
-			if (groundFlag == true && audioTime % 15 == 0)
-			{
-				Audio::Get()->SoundSEPlayWave(walkSE);
-			}
-			float rad = Input::Get()->GetLeftAngle();
-			vec.x = speed.x * sinf(-rad);
-			if (moveFlag == true)
-			{
-				vec.z = speed.z * cosf(rad);;
-			}
-			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
-			if (walkTime < 0)
-			{
-				staging.CreateWalk(position, vec);
-				walkTime = walkTimeMax;
-			}
-			walkTime--;
-
-			pFbx.PlayFBX(FbxWalk);
+			vec.x += speed.x;
 		}
-		else if (Input::Get()->ConLeftInputS())
+		if (Input::Get()->KeybordPush(DIK_LEFT))
 		{
-			if (groundFlag == true && audioTime % 20 == 0)
-			{
-				Audio::Get()->SoundSEPlayWave(walkSE);
-			}
-			float rad = Input::Get()->GetLeftAngle();
-			const Vec3 speeds = { 1.0f,1.0f,1.0f };
-			vec.x = speeds.x * sinf(-rad);
-
-			if (moveFlag == true)
-			{
-				vec.z = speeds.z * cosf(rad);
-			}
-			angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));// -59.8f);
-			if (walkTime < 0)
-			{
-				staging.CreateWalk(position, vec);
-				walkTime = walkTimeMax;
-			}
-			walkTime--;
-
-			pFbx.PlayFBX(FbxWalking);
+			vec.x -= speed.x;
 		}
-		else
-		{
-			pFbx.PlayFBX(FbxNone);
-		}
-
 	}
+	//コントローラー移動
+	if (Input::Get()->ConLeftInput())
+	{
+		if (groundFlag == true && audioTime % 15 == 0)
+		{
+			Audio::Get()->SoundSEPlayWave(walkSE);
+		}
+		float rad = Input::Get()->GetLeftAngle();
+		vec.x = speed.x * sinf(-rad);
+		if (moveFlag == true)
+		{
+			vec.z = speed.z * cosf(rad);;
+		}
+		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
+		if (walkTime < 0)
+		{
+			staging.CreateWalk(position, vec);
+			walkTime = walkTimeMax;
+		}
+		walkTime--;
+
+		pFbx.PlayFBX(FbxWalk);
+	}
+	else if (Input::Get()->ConLeftInputS())
+	{
+		if (groundFlag == true && audioTime % 20 == 0)
+		{
+			Audio::Get()->SoundSEPlayWave(walkSE);
+		}
+		float rad = Input::Get()->GetLeftAngle();
+		const Vec3 speeds = { 1.0f,1.0f,1.0f };
+		vec.x = speeds.x * sinf(-rad);
+
+		if (moveFlag == true)
+		{
+			vec.z = speeds.z * cosf(rad);
+		}
+		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));// -59.8f);
+		if (walkTime < 0)
+		{
+			staging.CreateWalk(position, vec);
+			walkTime = walkTimeMax;
+		}
+		walkTime--;
+
+		pFbx.PlayFBX(FbxWalking);
+	}
+	else
+	{
+		pFbx.PlayFBX(FbxNone);
+	}
+
+
 }
 
 void Player::Jump()
@@ -265,7 +287,7 @@ void Player::FallDie()
 		Audio::Get()->SoundSEPlayWave(fallSE);
 		dieType = DIENOW;
 	}
-	if (dieType == ELECTDIE)
+	else if (dieType == ELECTDIE)
 	{
 		static const int dieTime = 200;	//死んだときの演出時間
 		dieNowTime = dieTime;
@@ -274,7 +296,7 @@ void Player::FallDie()
 		Audio::Get()->SoundSEPlayWave(electSE);
 		pFbx.PlayFBX(FbxElectDie);
 	}
-	if (dieType == EATDIE)
+	else if (dieType == EATDIE)
 	{
 		static const int dieTime = 100;	//死んだときの演出時間
 		dieNowTime = dieTime;
@@ -343,15 +365,15 @@ void Player::Fish()
 
 void Player::RedFishDie()
 {
-	if (isFishDie == true && dieType == DIENOW)
-	{
-		position = fishDiePos;
-		oldPosition = position;
+	if (isFishDie == false && dieType != DIENOW) { return; }
 
-		angle.x = fishDieAngle.x;
-		if (position.y < -30.0f && dieType == DIENOW)
-		{
-			isFishDie = false;
-		}
+	position = fishDiePos;
+	oldPosition = position;
+
+	angle.x = fishDieAngle.x;
+	if (position.y < -30.0f && dieType == DIENOW)
+	{
+		isFishDie = false;
 	}
+
 }

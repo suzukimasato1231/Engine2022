@@ -23,11 +23,17 @@ class Player :public Singleton<Player>
 public:
 	friend Singleton<Player>;
 public:
-	Player();		//コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Player();
 
-	~Player();		//デスコンストラクタ
-
-	void Init();	//初期化
+	//デスコンストラクタ
+	~Player();
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Init();
 
 	void Update();						//更新
 
@@ -35,7 +41,7 @@ public:
 
 	void DrawParticle();//プレイヤーが死んだときのパーティクル
 
-	void SetPosition(const Vec3 &position);
+	void SetPosition(const Vec3& position);
 
 	/// <summary>
 	/// trueにする
@@ -59,7 +65,7 @@ public:
 
 	void Delete();
 
-	void FishDie(const Vec3 &pos, const Vec3 &angle) { fishDiePos = pos, this->fishDieAngle, angle; }
+	void FishDie(const Vec3& pos, const Vec3& angle) { fishDiePos = pos, this->fishDieAngle, angle; }
 	//ゴール時の演出
 	void GoalStaging(int fbxType);
 
@@ -89,6 +95,11 @@ private:
 
 	void RedFishDie();
 
+	/// <summary>
+	/// スピン攻撃
+	/// </summary>
+	void SpinAttack();
+
 public://取得系
 	//座標
 	inline Vec3 GetPosition() { return position; }
@@ -114,6 +125,10 @@ public://取得系
 	inline bool GetGameoverFlag() { return gameoverFlag; }
 
 	inline bool GetIsFishDie() { return isFishDie; }
+
+	inline Box GetSpinBox() { return spinAttack; }
+
+	inline bool GetSpinFlag() { return spinFlag; }
 private:
 	//2D false 3D true
 	bool moveFlag = false;
@@ -147,6 +162,13 @@ private:
 	bool groundFlag = false;			//地面に接しているかどうか
 	bool oldGroundFlag = false;			//地面に接していたかどうか
 	bool blockStepOnFlag = false;		//ブロックを踏んで壊したかどうか
+
+	//スピン
+	Box spinAttack = {};
+	const float spinScale = 12.0f;
+	const int spinCoolTimeMax = 100;
+	int spinCoolTime = 0;
+	bool spinFlag = false;
 
 	//魚
 	bool fishFlag = false;

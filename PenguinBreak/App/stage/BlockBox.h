@@ -13,11 +13,13 @@ public:
 
 	void PlayerHit(StageOBJ* stageObj, const int X, const int Z);
 
+	void PlayerSpinHit(StageOBJ* stageObj, const int X, const int Z);
+
 	void Update();
 
 	void Draw(StageOBJ* stageObj, bool shadowFlag);
 
-	static StageOBJ SetBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type);
+	static StageOBJ SetBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type);
 public:
 	StageOBJ* GetObj_Data() { return obj_data; }
 
@@ -26,6 +28,12 @@ public:
 	int GetBox_Count() { return box_count; }
 
 	bool GetIs_Hit() { return is_hit; }
+
+	StageOBJ GetObj_Spin(int i) { return obj_spin[i]; }
+
+	int GetSpin_Count() { return spin_count; }
+
+	bool GetIs_Spin() { return is_spin; }
 
 	Vec3 GetBoxScale() { return breakBoxScale; }
 private:
@@ -41,6 +49,10 @@ private:
 
 	bool is_hit = false;
 	int box_count = 0;
-	StageOBJ obj_data[4] = {};
+	StageOBJ obj_data[5] = {};
+
+	bool is_spin = false;
+	int spin_count = 0;
+	StageOBJ obj_spin[5] = {};
 };
 

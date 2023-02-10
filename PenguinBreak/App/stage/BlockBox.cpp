@@ -18,13 +18,26 @@ void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
-			if (box_count >= 4)
-			{
-				assert(0);
-			}
+			if (box_count >= 4) { assert(0); }
 			obj_data[box_count] = *stageObj;
 			box_count++;
 			is_hit = true;
+		}
+	}
+}
+
+void BlockBox::PlayerSpinHit(StageOBJ* stageObj, const int X, const int Z)
+{
+	if (Player::Get()->GetSpinFlag() == false) { return; }
+	if ((X - 3 <= stageObj->map.x && stageObj->map.x <= X + 3)
+		&& ((MAP_HEIGHT - 1 + Z) - 3 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 3))
+	{
+		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
+		{
+			if (spin_count >= 4) { assert(0); }
+			obj_spin[spin_count] = *stageObj;
+			spin_count++;
+			is_spin = true;
 		}
 	}
 }
@@ -54,7 +67,7 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	}
 }
 
-StageOBJ BlockBox::SetBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map,int type)
+StageOBJ BlockBox::SetBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type)
 {
 	StageOBJ stageObj = {};
 	stageObj.map = { static_cast<float>(map.x),static_cast<float>(map.y) };
@@ -78,8 +91,11 @@ void BlockBox::Update()
 {
 	is_hit = false;
 	box_count = 0;
+	is_spin = false;
+	spin_count = 0;
 	for (int i = 0; i < 4; i++)
 	{
 		obj_data[i] = {};
+		obj_spin[i] = {};
 	}
 }
