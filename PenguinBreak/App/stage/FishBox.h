@@ -1,6 +1,9 @@
 #pragma once
 #include"Object.h"
 #include<vector>
+/// <summary>
+/// ‹›ƒNƒ‰ƒX
+/// </summary>
 class FishBox
 {
 private:

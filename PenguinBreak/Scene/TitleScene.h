@@ -9,7 +9,10 @@
 #include<memory>
 extern const int window_width;
 extern const int window_height;
-class TitleScene 
+/// <summary>
+/// タイトルシーン
+/// </summary>
+class TitleScene
 {
 public:
 	TitleScene();
@@ -34,7 +37,7 @@ private://定義
 	int boxGraph;
 
 	//ゴール時の演出ハンドサイン
-	Model* penginModel = nullptr;
+	Model* penginModel;
 	std::unique_ptr<FBXObject3d> penginHandFbx;
 
 	ObjectData wallObj;

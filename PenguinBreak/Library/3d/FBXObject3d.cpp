@@ -350,18 +350,14 @@ void FBXObject3d::CreateShadowPipeline()
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
-	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[4] = {};
+	CD3DX12_ROOT_PARAMETER rootparams[2] = {};
 	// CBV（座標変換行列用）
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-	// SRV（テクスチャ）
-	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 	//CBV(スキニング)
-	rootparams[2].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[1].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
@@ -474,13 +470,15 @@ void FBXObject3d::Draw(bool shadowFlag)
 		return;
 	}
 	Pipeline::SetPipeline(PipelineFBX);
-	if (shadowFlag) {
+	if (shadowFlag)
+	{
 		//パイプライトステートの設定
 		cmdList->SetPipelineState(pipelinestate.Get());
 		//ルートシグネチャの設定
 		cmdList->SetGraphicsRootSignature(rootsignature.Get());
 	}
-	else {
+	else
+	{
 		//パイプライトステートの設定
 		cmdList->SetPipelineState(pipelinestateShadow.Get());
 		//ルートシグネチャの設定
@@ -489,14 +487,23 @@ void FBXObject3d::Draw(bool shadowFlag)
 
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
-	//定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(2, constBufferSkin->GetGPUVirtualAddress());
-	////ライトの描画
-	lightGroup->Draw(cmdList, 3);
+	if (shadowFlag) {
+		//定数バッファビューをセット
+		cmdList->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+		//定数バッファビューをセット
+		cmdList->SetGraphicsRootConstantBufferView(2, constBufferSkin->GetGPUVirtualAddress());
+		////ライトの描画
+		lightGroup->Draw(cmdList, 3);
+	}
+	else
+	{
+		//定数バッファビューをセット
+		cmdList->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+		//定数バッファビューをセット
+		cmdList->SetGraphicsRootConstantBufferView(1, constBufferSkin->GetGPUVirtualAddress());
+	}
 	//モデル描画
-	model->Draw(cmdList);
+	model->Draw(cmdList, shadowFlag);
 }
 
 void FBXObject3d::PlayAnimation(bool Loop)

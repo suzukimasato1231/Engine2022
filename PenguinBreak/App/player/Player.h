@@ -6,6 +6,9 @@
 #include<memory>
 #include <Audio.h>
 #include"PlayerFBX.h"
+/// <summary>
+/// 死亡タイプ
+/// </summary>
 enum DieType
 {
 	DIENULL,
@@ -34,32 +37,54 @@ public:
 	/// 初期化
 	/// </summary>
 	void Init();
-
-	void Update();						//更新
-
-	void Draw(bool shadowFlag = false);//描画
-
-	void DrawParticle();//プレイヤーが死んだときのパーティクル
-
-	void SetPosition(const Vec3& position);
-
 	/// <summary>
-	/// trueにする
+	/// 更新
 	/// </summary>
-	void GroundFlag();
-
+	void Update();
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="shadowFlag">影フラグ</param>
+	void Draw(bool shadowFlag = false);
+	/// <summary>
+	/// プレイヤーから出るパーティクル描画
+	/// </summary>
+	void DrawParticle();
+	/// <summary>
+	/// 座標設定
+	/// </summary>
+	/// <param name="position">設定する座標</param>
+	void SetPosition(const Vec3& position);
+	/// <summary>
+	/// 地面接地trueにする
+	/// </summary>
+	void ActivateGround() { groundFlag = true; }
+	/// <summary>
+	/// 値リセット
+	/// </summary>
 	void Reset();
-
-	void GetBlockStepOnFlag() { blockStepOnFlag = true; }
-
+	/// <summary>
+	///　箱をジャンプで壊したか
+	/// </summary>
+	void ActivateBlockStepOn() { blockStepOnFlag = true; }
+	/// <summary>
+	/// ジャンプ力をゼロにする
+	/// </summary>
 	void JumpPoweZero() { jumpPower = 0; }
 
-	//2D false 3D true
+	/// <summary>
+	/// 2D false 3D true　
+	/// </summary>
+	/// <param name="moveFlag">2Dか3Dのフラグ</param>
 	void ChangeMoveFlag(bool moveFlag) { Player::moveFlag = moveFlag; }
-
-	void GetJumpBox() { jumpBoxFlag = true; }
-	//箱を壊したか
-	void ChangeBreakFlag() { changeBreakFlag = true; }
+	/// <summary>
+	/// ジャンプ箱を踏んだか
+	/// </summary>
+	void ActivateJumpBox() { jumpBoxFlag = true; }
+	/// <summary>
+	/// 箱を壊したか
+	/// </summary>
+	void ActivateChangeBreak() { changeBreakFlag = true; }
 
 	void DieType(int type) { if (dieType != DIENOW) { Player::dieType = type; } }
 

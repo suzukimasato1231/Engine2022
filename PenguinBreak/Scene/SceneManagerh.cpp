@@ -79,59 +79,9 @@ void SceneManagerh::Update()
 {
 	Input::Get()->Update();
 
-	//シーン切り替え
-	if (scene == Title)
-	{
-		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
-		{
-			changeSceneFlag = ChangeFirst;
-			sceneMe = SelectScene;
-			Audio::Get()->SoundSEPlayWave(buttonSE);
-		}
-	}
-	else if (scene == SelectScene)
-	{
-		if (changeSceneFlag == ChangeStand && stageScene.GetSelectFlag() == true)
-		{
-			sceneMe = GameScene;
-			changeSceneFlag = ChangeFirst;
-		}
-	}
-	else if (scene == GameScene)
-	{
-		if (changeSceneFlag == ChangeStand && gameScene.GetChangeScene())
-		{
-			if (gameScene.GetChangeNum() == 0)
-			{
-				sceneMe = Result;
-			}
-			else if (gameScene.GetChangeNum() == 1)
-			{
-				sceneMe = GameScene;
-			}
-			else if (gameScene.GetChangeNum() == 2)
-			{
-				sceneMe = SelectScene;
-			}
-			changeSceneFlag = ChangeFirst;
-		}
-	}
-	else if (scene == Result)
-	{
-		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
-		{
-			if (resultScene.GetScene() == ResultNextStage && stageScene.GetStageNum() != 3)
-			{
-				sceneMe = GameScene;
-			}
-			if (resultScene.GetScene() == ResultSelect || stageScene.GetStageNum() == 3)
-			{
-				sceneMe = SelectScene;
-			}
-			changeSceneFlag = ChangeFirst;
-			Audio::Get()->SoundSEPlayWave(buttonSE);
-		}
-	}
+	//シーンチェンジ
+	SceneChange();
+
 	//更新
 	if (scene == Title)
 	{
@@ -148,63 +98,6 @@ void SceneManagerh::Update()
 	else if (scene == Result)
 	{
 		resultScene.Update();
-	}
-
-
-	//シーンチェンジ
-	if (changeSceneFlag == ChangeFirst)
-	{
-		changeSceneColor += Vec4(0.0f, 0.0f, 0.0f, 0.1f);
-		if (changeSceneColor.w >= 1.0f)
-		{
-			changeSceneFlag = ChangeEnd;
-			switch (scene)
-			{
-			case Title:
-				stageScene.Init();
-				break;
-			case SelectScene:
-				gameScene.Init(stageScene.GetStageNum());
-				break;
-			case GameScene:
-				if (sceneMe == Result)
-				{
-					resultScene.Init();
-				}
-				else if (sceneMe == GameScene)
-				{
-					gameScene.Init(stageScene.GetStageNum());
-				}
-				else if (sceneMe == SelectScene)
-				{
-					stageScene.Init();
-				}
-				break;
-			case Result:
-				if (sceneMe == GameScene)
-				{
-					stageScene.StagePlas();
-					gameScene.Init(stageScene.GetStageNum());
-
-				}
-				else if (sceneMe == SelectScene)
-				{
-					stageScene.Init();
-				}
-				break;
-			default:
-				break;
-			}
-			scene = sceneMe;
-		}
-	}
-	else if (changeSceneFlag == ChangeEnd)
-	{
-		changeSceneColor -= Vec4(0.0f, 0.0f, 0.0f, 0.1f);
-		if (changeSceneColor.w <= 0.0f)
-		{
-			changeSceneFlag = ChangeStand;
-		}
 	}
 
 
@@ -281,4 +174,118 @@ void SceneManagerh::Delete()
 	titleScene.Delete();
 	resultScene.Delete();
 	Object::Delete();
+}
+
+void SceneManagerh::SceneChange()
+{
+	//シーン切り替え
+	if (scene == Title)
+	{
+		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
+		{
+			changeSceneFlag = ChangeFirst;
+			sceneMe = SelectScene;
+			Audio::Get()->SoundSEPlayWave(buttonSE);
+		}
+	}
+	else if (scene == SelectScene)
+	{
+		if (changeSceneFlag == ChangeStand && stageScene.GetSelectFlag() == true)
+		{
+			sceneMe = GameScene;
+			changeSceneFlag = ChangeFirst;
+		}
+	}
+	else if (scene == GameScene)
+	{
+		if (changeSceneFlag == ChangeStand && gameScene.GetChangeScene())
+		{
+			if (gameScene.GetChangeNum() == 0)
+			{
+				sceneMe = Result;
+			}
+			else if (gameScene.GetChangeNum() == 1)
+			{
+				sceneMe = GameScene;
+			}
+			else if (gameScene.GetChangeNum() == 2)
+			{
+				sceneMe = SelectScene;
+			}
+			changeSceneFlag = ChangeFirst;
+		}
+	}
+	else if (scene == Result)
+	{
+		if (changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
+		{
+			if (resultScene.GetScene() == ResultNextStage && stageScene.GetStageNum() != 3)
+			{
+				sceneMe = GameScene;
+			}
+			if (resultScene.GetScene() == ResultSelect || stageScene.GetStageNum() == 3)
+			{
+				sceneMe = SelectScene;
+			}
+			changeSceneFlag = ChangeFirst;
+			Audio::Get()->SoundSEPlayWave(buttonSE);
+		}
+	}
+
+
+	//シーンチェンジの色
+	if (changeSceneFlag == ChangeFirst)
+	{
+		changeSceneColor += Vec4(0.0f, 0.0f, 0.0f, 0.1f);
+		if (changeSceneColor.w >= 1.0f)
+		{
+			changeSceneFlag = ChangeEnd;
+			switch (scene)
+			{
+			case Title:
+				stageScene.Init();
+				break;
+			case SelectScene:
+				gameScene.Init(stageScene.GetStageNum());
+				break;
+			case GameScene:
+				if (sceneMe == Result)
+				{
+					resultScene.Init();
+				}
+				else if (sceneMe == GameScene)
+				{
+					gameScene.Init(stageScene.GetStageNum());
+				}
+				else if (sceneMe == SelectScene)
+				{
+					stageScene.Init();
+				}
+				break;
+			case Result:
+				if (sceneMe == GameScene)
+				{
+					stageScene.StagePlas();
+					gameScene.Init(stageScene.GetStageNum());
+
+				}
+				else if (sceneMe == SelectScene)
+				{
+					stageScene.Init();
+				}
+				break;
+			default:
+				break;
+			}
+			scene = sceneMe;
+		}
+	}
+	else if (changeSceneFlag == ChangeEnd)
+	{
+		changeSceneColor -= Vec4(0.0f, 0.0f, 0.0f, 0.1f);
+		if (changeSceneColor.w <= 0.0f)
+		{
+			changeSceneFlag = ChangeStand;
+		}
+	}
 }

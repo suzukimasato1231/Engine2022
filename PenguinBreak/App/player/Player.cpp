@@ -92,10 +92,6 @@ void Player::SetPosition(const Vec3& position)
 	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
 }
 
-void Player::GroundFlag()
-{
-	groundFlag = true;
-}
 
 void Player::Reset()
 {

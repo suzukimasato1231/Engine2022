@@ -18,10 +18,17 @@ public:
 	static const int fontWidth = 9;			// フォント画像内1文字分の横幅
 	static const int fontHeight = 18;		// フォント画像内1文字分の縦幅
 	static const int fontLineCount = 14;	// フォント画像内1行分の文字数
-
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	DebugText();
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~DebugText();
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 
 	/// <summary>
@@ -33,7 +40,9 @@ public:
 	/// <param name="text">表示する文字</param>
 	/// <param name=""></param>
 	void Print(const float x, const float y, const float size,std::string text, ...);
-
+	/// <summary>
+	/// デバックテキスト全描画
+	/// </summary>
 	void DrawAll();
 
 private:

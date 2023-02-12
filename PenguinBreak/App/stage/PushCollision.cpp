@@ -20,7 +20,7 @@ int PushCollision::Player2Floor(const Vec3 &pos, const Vec3 &angle, const Vec3 &
 				diagonal.GetDirect(0);
 				set = { Player::Get()->GetPosition().x,Player::Get()->GetPosition().y + 0.5f, Player::Get()->GetPosition().z };
 				Player::Get()->SetPosition(set);
-				Player::Get()->GroundFlag();
+				Player::Get()->ActivateGround();
 			}
 			else
 			{
@@ -60,9 +60,9 @@ int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
 			data1[i].position.z - data1[i].scale.z / 2, 1);
 	}
 
-	Vec3 oldPosition = Player::Get()->GetOldPosition();
-	Vec3 pSize = Player::Get()->GetPSize();
-	Vec3 vec = Player::Get()->GetVec();
+	const Vec3 oldPosition = Player::Get()->GetOldPosition();
+	const Vec3 pSize = Player::Get()->GetPSize();
+	const Vec3 vec = Player::Get()->GetVec();
 	bool Flag[3] = {};
 
 
@@ -85,7 +85,7 @@ int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
 		if (Collision::CheckBox2Box(pBox, BlockBox[i]))
 		{
 			Flag[1] = true;
-			Player::Get()->GroundFlag();
+			Player::Get()->ActivateGround();
 			if (vec.y < 0)
 			{
 				breakFlag = 1;

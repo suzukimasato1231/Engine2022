@@ -2,16 +2,31 @@
 #include"ParticleManager.h"
 #include"Particle3D.h"
 #include<memory>
+/// <summary>
+/// 箱演出
+/// </summary>
 class BoxStaring
 {
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	BoxStaring();
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~BoxStaring();
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
-
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
-
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
 	void Draw3D();

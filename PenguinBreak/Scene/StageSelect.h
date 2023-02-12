@@ -8,15 +8,22 @@
 #include<memory>
 extern const int window_width;
 extern const int window_height;
+/// <summary>
+/// ステージセレクト
+/// </summary>
 class StageSelect
 {
-
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	StageSelect();
 	~StageSelect();
 	//初期化
 	void Initialize();
-
+	/// <summary>
+	/// 初期化ループ
+	/// </summary>
 	void Init();
 	//更新
 	void Update();
@@ -39,7 +46,7 @@ private://定義
 
 	ObjectData selectOBJ;				//セレクト数字のOBJ
 	int selectGraph[stageNumMax];		//セレクトOBJの画像
-	const float selectScale = 10.0f;			//セレクトOBJの大きさ
+	const float selectScale = 10.0f;	//セレクトOBJの大きさ
 	Vec3 selectPos[stageNumMax];		//セレクトOBJの座標
 	Box selectBox[stageNumMax];			//セレクトOBJのBOX
 	PSR selectPsr[stageNumMax];			//セレクトOBJのPSR

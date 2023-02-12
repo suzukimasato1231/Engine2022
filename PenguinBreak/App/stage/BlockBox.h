@@ -2,6 +2,9 @@
 #include"StegeObject.h"
 #include"Object.h"
 #include"LoadCSV.h"
+/// <summary>
+/// ” ƒNƒ‰ƒX
+/// </summary>
 class BlockBox
 {
 public:

@@ -75,10 +75,7 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 			{
 				//F‚ğ™X‚Éo‚·
 				charColor[i] += 0.01f;
-				if (charColor[i] >= 1.0f)
-				{
-					charColor[i] = 1.0f;
-				}
+				if (charColor[i] >= 1.0f){charColor[i] = 1.0f;}
 				//•¶š‚ğã‰º‚É—h‚ç‚·
 				if (charPosFlag[i] == true) { charPos[i] -= charPosSpeed; }
 				else { charPos[i] += charPosSpeed; }

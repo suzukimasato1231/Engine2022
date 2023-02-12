@@ -35,6 +35,8 @@ public:
 	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//OBJ読み込み
 	static PipelineSet  OBJCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
+
+	static PipelineSet  ShadowCreateGraphicsPipeline(ID3D12Device* dev, const Shader& shader);
 	//影無しOBJ
 	static PipelineSet  NoShadowOBJCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//ノーマルマップ

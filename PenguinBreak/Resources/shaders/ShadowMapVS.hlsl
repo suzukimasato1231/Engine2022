@@ -10,7 +10,5 @@ VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOOR
 	output.svpos = mul(lightproj, wpos);//ÉâÉCÉgÇ©ÇÁå©ÇΩçsóÒ
 	output.worldpos = wpos;
 	output.normal = wnormal.xyz;
-	output.uv = uv;
-	output.posInLVP = mul(lightproj, wpos);
 	return output;
 }

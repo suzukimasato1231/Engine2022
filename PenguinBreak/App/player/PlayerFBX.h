@@ -30,12 +30,17 @@ private:
 	};
 
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	PlayerFBX();
-
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~PlayerFBX();
 	//FBX読み取り
 	void Load();
-
+	//更新
 	void Update();
 	//描画
 	void Draw(const Vec3& fbxPos, const Vec3& angle, bool shadowFlag);

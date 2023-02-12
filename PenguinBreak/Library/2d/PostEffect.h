@@ -46,7 +46,17 @@ public:
 	void PostDrawScene(ID3D12GraphicsCommandList* cmdList);
 
 	void UpdatePost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY);
-
+	/// <summary>
+	/// ポストエフェクト描画
+	/// </summary>
+	/// <param name="sprite">スプライトデータ</param>
+	/// <param name="position">座標</param>
+	/// <param name="width">横幅</param>
+	/// <param name="height">縦幅</param>
+	/// <param name="anchorpoint">アンカーポイント</param>
+	/// <param name="color">色</param>
+	/// <param name="isFlipX">横反転</param>
+	/// <param name="isFlipY">縦反転</param>
 	void DrawPost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY);
 	//パイプライン切り替え
 	void SetPipeline(int num);

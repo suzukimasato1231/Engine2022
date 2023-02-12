@@ -1,5 +1,8 @@
 #pragma once
 #include"./StegeObject.h"
+/// <summary>
+/// ‰ñ“]°
+/// </summary>
 class FloorPitfall
 {
 public:

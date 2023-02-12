@@ -13,7 +13,9 @@
 #include"FigurineOBJ.h"
 #include<Audio.h>
 class Player;
-
+/// <summary>
+/// ステージクラス
+/// </summary>
 class Stage :public Singleton<Stage>
 {
 private:
@@ -31,15 +33,15 @@ public:
 	void Update(const Vec3 &pPos);
 	//描画
 	void Draw(const Vec3 &pPos, bool shadowFlag = false);
-
+	//パーティクル描画
 	void DrawParicle();
 	//ステージ作成
 	void LoadStage(int stageNum);
 public://マップ
-	bool GetClearFlag() { return goalFlag; }
+	inline bool GetClearFlag() { return goalFlag; }
 
-	int GetBlockNum() { return blockNum; }
-	int GetBlockMax() { return blockMax; }
+	inline int GetBlockNum() { return blockNum; }
+	inline int GetBlockMax() { return blockMax; }
 private:
 	//川の描画
 	void DrawWater();

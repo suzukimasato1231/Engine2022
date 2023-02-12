@@ -1,6 +1,8 @@
 #pragma once
 #include"Menu.h"
-//UIクラス
+/// <summary>
+/// UIクラス
+/// </summary>
 class UI
 {
 

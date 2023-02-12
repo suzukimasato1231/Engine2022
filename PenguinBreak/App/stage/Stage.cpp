@@ -144,8 +144,8 @@ void Stage::Update(const Vec3& pPos)
 				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
 					BOX == stageObj[i]->type)
 				{
-					Player::Get()->GetBlockStepOnFlag();
-					Player::Get()->ChangeBreakFlag();
+					Player::Get()->ActivateBlockStepOn();
+					Player::Get()->ActivateChangeBreak();
 					boxStaring.BreakBoxFlag(stageObj[i]->position);
 					fishBox.Create(stageObj[i]->position);
 					delete stageObj[i];
@@ -157,8 +157,8 @@ void Stage::Update(const Vec3& pPos)
 				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
 					BOXJUMP == stageObj[i]->type)
 				{
-					Player::Get()->GetJumpBox();
-					Player::Get()->GetBlockStepOnFlag();
+					Player::Get()->ActivateJumpBox();
+					Player::Get()->ActivateBlockStepOn();
 					Audio::Get()->SoundSEPlayWave(jumpSE);
 				}
 			}
@@ -168,7 +168,7 @@ void Stage::Update(const Vec3& pPos)
 			if (stageObj[breakNum]->type == BOX)
 			{
 				Player::Get()->JumpPoweZero();
-				Player::Get()->ChangeBreakFlag();
+				Player::Get()->ActivateChangeBreak();
 				for (int i = 0; i < stageObj.size(); i++)
 				{
 					if (breakNum == -1) { break; }
@@ -390,6 +390,8 @@ void Stage::LoadStage(int stageNum)
 		delete floor[i];
 		floor.erase(floor.begin() + i);
 	}
+
+	
 	for (int i = (int)stageObj.size() - 1; i >= 0; i--)
 	{
 		delete stageObj[i];

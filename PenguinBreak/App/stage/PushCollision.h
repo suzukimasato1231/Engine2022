@@ -2,6 +2,7 @@
 #include"../PenguinBreak/App/player/Player.h"
 #include"Collision.h"
 #include"Stage.h"
+//‰Ÿ‚µ–ß‚µƒtƒ‰ƒO
 class PushCollision
 {
 public:

@@ -180,7 +180,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static	void DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv = { 0.0f,0.0f }, int graph = 0, bool shadowFlag = false);
+	static	void DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv = { 0.0f,0.0f }, int graph = 0);
 	/// <summary>
 	/// 影無しオブジェクトのデータ更新
 	/// </summary>

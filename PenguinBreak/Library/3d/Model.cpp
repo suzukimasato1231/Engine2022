@@ -72,19 +72,20 @@ void Model::CreateBuffers(ID3D12Device* device)
 	textureNum = Texture::Get()->FbxLoadTexture(img, texresDesc);
 }
 
-void Model::Draw(ID3D12GraphicsCommandList* cmdList)
+void Model::Draw(ID3D12GraphicsCommandList* cmdList,bool shadowFlag)
 {
 	// 頂点バッファをセット(VBV)
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファをセット(IBV)
 	cmdList->IASetIndexBuffer(&ibView);
-
-	// デスクリプタヒープのセット
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(textureNum));
-	
+	if (shadowFlag)
+	{
+		// デスクリプタヒープのセット
+		ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
+		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+		// シェーダリソースビューをセット
+		cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(textureNum));
+	}
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }

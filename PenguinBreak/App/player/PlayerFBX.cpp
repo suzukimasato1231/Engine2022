@@ -240,15 +240,15 @@ void PlayerFBX::StopAnimation()
 
 void PlayerFBX::StartAnimation()
 {
-	if (menuStopFlag == true)
-	{
-		stopFbx->PlayAnimation(true);
-		fbxObject1->PlayAnimation(true);
-		electFbx->PlayAnimation(false);
-		goalJumpFbx->PlayAnimation(false);
-		goalHandFbx->PlayAnimation(false);
-		jumpFbx->PlayAnimation(false);
-		walkFbx->PlayAnimation(true);
-		spinFbx->PlayAnimation(false);
-	}
+	if (menuStopFlag == false) { return; }
+
+	stopFbx->PlayAnimation(true);
+	fbxObject1->PlayAnimation(true);
+	electFbx->PlayAnimation(false);
+	goalJumpFbx->PlayAnimation(false);
+	goalHandFbx->PlayAnimation(false);
+	jumpFbx->PlayAnimation(false);
+	walkFbx->PlayAnimation(true);
+	spinFbx->PlayAnimation(false);
+
 }

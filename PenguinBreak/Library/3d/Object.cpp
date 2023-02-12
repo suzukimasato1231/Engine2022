@@ -45,6 +45,7 @@ void Object::Delete()
 void Object::MatWord(const ObjectData &polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, bool shadowFlag)
 {
 	HRESULT result;
+
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
 		|| psr.scale.x != scale.x || psr.scale.y != scale.y || psr.scale.z != scale.z
 		|| psr.rotation.x != rotation.x || psr.rotation.y != rotation.y || psr.rotation.z != rotation.z)
@@ -188,34 +189,29 @@ void Object::Draw(const ObjectData &polygon, PSR& psr, const Vec3& position, con
 	//ヒープの先頭にあるCBVをルートパラメータ０番に設定
 	cmdList->SetGraphicsRootConstantBufferView(0, Object::OBJbuffer[OBJNum]->constBuffB0->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(1, Object::OBJbuffer[OBJNum]->constBuffB1->GetGPUVirtualAddress());
-	if (graph > 0)
-	{
-		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
-	}
-	else if (polygon.OBJTexture == 0)
-	{
-		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
-	}
-	else
-	{
-		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(polygon.OBJTexture));
-	}
-	//ライトの描画
-	lightGroup->Draw(cmdList, 3);
-
-	//影を描画するか
 	if (shadowFlag == true)
 	{
+		if (graph > 0)
+		{
+			//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+			cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+		}
+		else if (polygon.OBJTexture == 0)
+		{
+			//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+			cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+		}
+		else
+		{
+			//ヒープの２番目にあるSRVをルートパラメータ１番に設定
+			cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(polygon.OBJTexture));
+		}
+		//ライトの描画
+		lightGroup->Draw(cmdList, 3);
+		//影画像
 		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
 	}
-	else
-	{
-		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(graph));
-	}
+	
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
 	cmdList->DrawIndexedInstanced((UINT)polygon.indicesNum, 1, 0, 0, 0);
 	OBJNum++;
@@ -280,7 +276,7 @@ void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &po
 	//Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph, bool shadowFlag)
+void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{

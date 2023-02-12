@@ -2,35 +2,49 @@
 #include<memory>
 #include"FBXObject3d.h"
 #include<Audio.h>
+/// <summary>
+/// シーン移動
+/// </summary>
 enum ResultNext
 {
 	ResultNextStage,
 	ResultSelect,
 };
 
-
+/// <summary>
+/// リザルトシーン
+/// </summary>
 class ResultScene
 {
 private:
 
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	ResultScene();
 
 	~ResultScene();
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
-	//初期化
+	//ループ初期化
 	void Init();
 	//更新
 	void Update();
 	//描画
 	void Draw(const int stageNum);
-
+	/// <summary>
+	/// 削除
+	/// </summary>
 	void Delete();
-
+	/// <summary>
+	/// 影描画
+	/// </summary>
 	void ShadowDraw();
 
-	bool GetScene() { return nextScene; }
+	inline bool GetScene() { return nextScene; }
 private:
 	std::unique_ptr<LightGroup> lightGroup;
 private:
