@@ -190,7 +190,7 @@ private:
 
 	//ƒXƒsƒ“
 	Box spinAttack = {};
-	const float spinScale = 12.0f;
+	const float spinScale = 10.0f;
 	const int spinCoolTimeMax = 100;
 	int spinCoolTime = 0;
 	bool spinFlag = false;

@@ -35,13 +35,12 @@ bool Input::KeybordTrigger(BYTE keyNumber)
 
 bool Input::KeybordInputArrow()
 {
-	bool Flag = false;
 	if (KeybordPush(DIK_UP) || KeybordPush(DIK_DOWN)
 		|| KeybordPush(DIK_LEFT) || KeybordPush(DIK_RIGHT))
 	{
-		Flag = true;
+		return true;
 	}
-	return Flag;
+	return false;
 }
 
 bool Input::ControllerPush(ButtonKind button)
@@ -71,41 +70,38 @@ float Input::GetRightAngle()
 
 bool Input::ConRightInput()
 {
-	bool isHit = false;
 	if (ControllerPush(RButtonUp) == false &&
 		ControllerPush(RButtonDown) == false &&
 		ControllerPush(RButtonLeft) == false &&
 		ControllerPush(RButtonRight) == false)
 	{
-		isHit = true;
+		return true;
 	}
-	return isHit;
+	return false;
 }
 
 bool Input::ConLeftInputS()
 {
-	bool isHit = false;
 	if (ControllerPush(LButtonUpS) == true ||
 		ControllerPush(LButtonDownS) == true ||
 		ControllerPush(LButtonLeftS) == true ||
 		ControllerPush(LButtonRightS) == true)
 	{
-		isHit = true;
+		return true;
 	}
-	return isHit;
+	return false;
 }
 
 bool Input::ConLeftInput()
 {
-	bool isHit = false;
 	if (ControllerPush(LButtonUp) == true ||
 		ControllerPush(LButtonDown) == true ||
 		ControllerPush(LButtonLeft) == true ||
 		ControllerPush(LButtonRight) == true)
 	{
-		isHit = true;
+		return true;
 	}
-	return isHit;
+	return false;
 }
 
 bool Input::MousePushLeft()

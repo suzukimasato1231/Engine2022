@@ -32,9 +32,9 @@ void BlockBox::PlayerSpinHit(StageOBJ* stageObj, const int X, const int Z)
 	if ((X - 3 <= stageObj->map.x && stageObj->map.x <= X + 3)
 		&& ((MAP_HEIGHT - 1 + Z) - 3 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 3))
 	{
-		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
+		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetSpinBox()))
 		{
-			if (spin_count >= 4) { assert(0); }
+			if (spin_count >= 4) { return; }
 			obj_spin[spin_count] = *stageObj;
 			spin_count++;
 			is_spin = true;

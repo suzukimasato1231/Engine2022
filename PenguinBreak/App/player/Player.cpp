@@ -136,20 +136,20 @@ void Player::StopAnimation()
 void Player::SpinAttack()
 {
 	spinFlag = false;
-	/*if (((Input::Get()->KeybordPush(DIK_F) || Input::Get()->ControllerDown(ButtonX))
+	if (((Input::Get()->KeybordPush(DIK_F) || Input::Get()->ControllerDown(ButtonX))
 		&& starStaging == false && dieType == DIENULL && clearFlag == false && spinCoolTime <= 0))
 	{
 		pFbx.PlayFBX(FbxSpin);
 		spinCoolTime = spinCoolTimeMax;
-		spinAttack.maxPosition = XMVectorSet(position.x + spinScale, position.y + 1.0f, position.z + spinScale, 1);
-		spinAttack.minPosition = XMVectorSet(position.x - spinScale, position.y - 1.0f, position.z - spinScale, 1);
+		spinAttack.maxPosition = XMVectorSet(oldPosition.x + spinScale, oldPosition.y + 1, oldPosition.z + spinScale, 1);
+		spinAttack.minPosition = XMVectorSet(oldPosition.x - spinScale, oldPosition.y - 0, oldPosition.z - spinScale, 1);
 		spinFlag = true;
 	}
 
 	if (spinCoolTime >= 0)
 	{
 		spinCoolTime--;
-	}*/
+	}
 
 }
 
@@ -349,13 +349,13 @@ void Player::Fish()
 	{
 		fishNum += 5;
 		fishFlag = false;
-	}
 
-	//100個集まったら残機１つ増える
-	if (fishNum >= 100)
-	{
-		fishNum -= 100;
-		remainLives++;
+		//100個集まったら残機１つ増える
+		if (fishNum >= 100)
+		{
+			fishNum -= 100;
+			remainLives++;
+		}
 	}
 }
 
