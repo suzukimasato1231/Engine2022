@@ -222,10 +222,12 @@ void SceneManagerh::SceneChange()
 			if (resultScene.GetScene() == ResultNextStage && stageScene.GetStageNum() != 3)
 			{
 				sceneMe = GameScene;
+				stageScene.SetBreakBoxNum(Stage::Get()->GetBlockNum());
 			}
 			if (resultScene.GetScene() == ResultSelect || stageScene.GetStageNum() == 3)
 			{
 				sceneMe = SelectScene;
+				stageScene.SetBreakBoxNum(Stage::Get()->GetBlockNum());
 			}
 			changeSceneFlag = ChangeFirst;
 			Audio::Get()->SoundSEPlayWave(buttonSE);

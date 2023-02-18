@@ -36,7 +36,7 @@ public://ƒƒ“ƒoŠÖ”
 	//3D•`‰æ
 	void Draw3D();
 	//Š´“d€‚Ì¶¬ˆ—
-	void CreateElect(const Vec3 &pPos);
+	void CreateElect(const Vec3 pPos);
 	//•à‚­‚Ì¶¬ˆ—
 	void CreateWalk(const Vec3 &pPos, const Vec3 &vec);
 	//—‰º€

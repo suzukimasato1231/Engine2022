@@ -30,7 +30,7 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 	{
 		isStart = true;
 		gameoverStartFlag = false;
-		for (size_t i = 0; i < 7; i++)
+		for (size_t i = 0; i < charNum; i++)
 		{
 			charFlag[i] = false;
 			charColor[i] = 0.0f;
@@ -61,10 +61,10 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 	}
 
 	//ゲームオーバー時の演出の処理
-	if (gameoverStartFlag==true)
+	if (gameoverStartFlag == true)
 	{
 		gameoverTime++;
-		for (size_t i = 0; i < 7; i++)
+		for (size_t i = 0; i < charNum; i++)
 		{
 			//時間になった文字から透明度を無くす
 			if (gameoverTime >= i * 10)
@@ -75,7 +75,7 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 			{
 				//色を徐々に出す
 				charColor[i] += 0.01f;
-				if (charColor[i] >= 1.0f){charColor[i] = 1.0f;}
+				if (charColor[i] >= 1.0f) { charColor[i] = 1.0f; }
 				//文字を上下に揺らす
 				if (charPosFlag[i] == true) { charPos[i] -= charPosSpeed; }
 				else { charPos[i] += charPosSpeed; }
@@ -116,7 +116,7 @@ void DecLifeStaging::Draw(bool gameoverFlag, int gameoverNum)
 	//ゲームオーバー時の描画
 	if (gameoverFlag == true)
 	{
-		for (size_t i = 0; i < 7; i++)
+		for (size_t i = 0; i < charNum; i++)
 		{
 			Sprite::Get()->Draw(gameoverGraph[i], Vec2(210.0f + 140.0f * i, 84.0f + charPos[i]), 167.0f, 219.0f, Vec2(), Vec4(1.0f, 1.0f, 1.0f, 1.0f) * charColor[i]);
 		}

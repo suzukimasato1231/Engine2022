@@ -71,8 +71,7 @@ void Object::MatWord(const ObjectData &polygon, PSR& psr, const Vec3 &position, 
 		psr.rotation = rotation;
 	}
 
-	if (shadowFlag == false)
-	{
+	
 		const XMMATRIX& matViewProjection = Camera::Get()->GetMatViewProjection();
 		const Vec3& cameraPos = Camera::Get()->GetEye();
 		//GPU上のバッファに対応した仮想メモリを取得
@@ -102,7 +101,7 @@ void Object::MatWord(const ObjectData &polygon, PSR& psr, const Vec3 &position, 
 		constMap1->specular = polygon.material.specular;
 		constMap1->alpha = polygon.material.alpha;
 		Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
-	}
+	
 }
 
 void Object::InitDraw()

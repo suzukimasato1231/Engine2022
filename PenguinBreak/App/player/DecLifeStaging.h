@@ -30,7 +30,8 @@ private:
 
 
 	//ゲームオーバー時の
-	SpriteData gameoverGraph[7];
+	static	const int charNum = 7;
+	SpriteData gameoverGraph[charNum];
 	SpriteData selectGraph;
 
 	SpriteData gameoverSelect[2];
@@ -43,10 +44,10 @@ private:
 	float selectScale = 1.0f;
 
 	//ゲームオーバーの文字の変化
-	float charColor[7] = {};
-	bool charFlag[7] = {};
-	float charPos[7] = {};
-	bool charPosFlag[7] = {};
+	float charColor[charNum] = {};
+	bool charFlag[charNum] = {};
+	float charPos[charNum] = {};
+	bool charPosFlag[charNum] = {};
 	const float charPosSpeed = 0.45f;
 };
 

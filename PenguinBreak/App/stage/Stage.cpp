@@ -468,11 +468,12 @@ void Stage::LoadStage(int stageNum)
 			case FloorNormal:
 			{
 				int num_ = 1;
+
 				while (Map[y + num_][x] == FloorNormal)
 				{
 					Map[y + num_][x] = 0;
 					num_++;
-					if (y + num_ > 100)
+					if (y + num_ >= MAP_HEIGHT)
 					{
 						break;
 					}

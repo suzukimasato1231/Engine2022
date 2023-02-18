@@ -163,7 +163,7 @@ void Player::FbxDraw(bool shadowFlag)
 //移動
 void Player::Move()
 {
-	if (dieType != DIENULL && clearFlag == true && gameoverFlag == true && starStaging == true) { return; }
+	if (dieType != DIENULL || clearFlag == true || gameoverFlag == true || starStaging == true) { return; }
 	//キーボード移動
 	if (Input::Get()->KeybordInputArrow() == true)
 	{
@@ -361,7 +361,7 @@ void Player::Fish()
 
 void Player::RedFishDie()
 {
-	if (isFishDie == false && dieType != DIENOW) { return; }
+	if (isFishDie == false) { return; }
 
 	position = fishDiePos;
 	oldPosition = position;

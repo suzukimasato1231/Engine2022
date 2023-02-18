@@ -45,7 +45,7 @@ void Staging::Draw3D()
 	startParicle->Draw(startObject);
 }
 
-void Staging::CreateElect(const Vec3 &pPos)
+void Staging::CreateElect(const Vec3 pPos)
 {
 	static const int particleTime = 15;
 	static const Vec3 velocity = { 0.0f,0.0f,0.0f };

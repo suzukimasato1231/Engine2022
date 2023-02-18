@@ -18,7 +18,7 @@ void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
-			if (box_count >= 4) { assert(0); }
+			if (box_count >= 4) { return; }
 			obj_data[box_count] = *stageObj;
 			box_count++;
 			is_hit = true;
