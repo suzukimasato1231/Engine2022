@@ -14,6 +14,9 @@ void BoxStaring::Init()
 	breakBoxParticle = std::make_unique<ParticleManager > ();
 	breakBoxParticle->Initialize();
 
+	bombParticle = std::make_unique<ParticleManager >();
+	bombParticle->Initialize();
+
 	break3DParticle = std::make_unique<Particle3D>();
 	boxData = Shape::CreateSquare(2.0f, 2.0f, 1.0f);
 	boxGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/boxParticle.png");
@@ -21,10 +24,48 @@ void BoxStaring::Init()
 
 void BoxStaring::Update()
 {
+	
+	CreateBreakBox();
+
+	CreateBomb();
+
+	//パーティクル更新
+	breakBoxParticle->Update();
+
+	bombParticle->Update();
+
+	break3DParticle->Update();
+}
+
+void BoxStaring::Draw()
+{
+	breakBoxParticle->Draw(graph);
+	bombParticle->Draw(graph);
+}
+
+void BoxStaring::Draw3D()
+{
+	break3DParticle->Draw(boxData,boxGraph);
+}
+
+void BoxStaring::BreakBoxFlag(const Vec3& breakPos)
+{
+	breakBoxFlag = true; 
+	this->breakPos = breakPos;
+}
+
+void BoxStaring::BombBoxFlag(const Vec3& bombPos)
+{
+	bombFlag = true;
+	this->bombPos = bombPos;
+}
+
+void BoxStaring::CreateBreakBox()
+{
 	//箱が壊れるパーティクル
 	if (breakBoxFlag == true)
 	{
-		breakBoxParticle->BreakBoxAdd(breakPos,0.5f, 5.0f, 5.0f,
+		breakBoxParticle->BreakBoxAdd(breakPos, 0.5f, 5.0f, 5.0f,
 			Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		breakBoxFlag = false;
 
@@ -47,20 +88,22 @@ void BoxStaring::Update()
 			break3DParticle->Create(pos, velocity, accel, particleTime);
 		}
 	}
-
-	//パーティクル更新
-	breakBoxParticle->Update();
-
-	break3DParticle->Update();
 }
 
-void BoxStaring::Draw()
+void BoxStaring::CreateBomb()
 {
-	breakBoxParticle->Draw(graph);
-}
+	//箱が壊れるパーティクル
+	if (bombFlag == true)
+	{
+		bombTime++;
 
-void BoxStaring::Draw3D()
-{
-	break3DParticle->Draw(boxData,boxGraph);
+		bombParticle->BombAdd(bombPos, 1.8f, 5.0f, 3.0f,
+			Vec4(1.0f, 1.0f, 0.3f, 1.0f), Vec4(0.5f, 0.0f, 0.0f, 1.0f));
+		if (bombTime <= bombTimeMax)
+		{
+			bombFlag = false;
+			bombTime = 0;
+		}
+	}
 }
 

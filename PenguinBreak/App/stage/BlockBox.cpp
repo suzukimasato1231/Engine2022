@@ -9,6 +9,8 @@ void BlockBox::Init()
 	normalBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
 	hardBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Hard.png");
 	jumpBoxgraph = Texture::Get()->LoadTexture(L"Resources/cube/jumpBox.png");
+	bombBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/bomb.png");
+
 }
 
 void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
@@ -63,6 +65,10 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	case BOXHARD:
 		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
 			stageObj->angle, Vec2(), hardBoxGraph, shadowFlag);
+		break;
+	case BOXBOMB:
+		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
+			stageObj->angle, Vec2(),bombBoxGraph, shadowFlag);
 		break;
 	}
 }

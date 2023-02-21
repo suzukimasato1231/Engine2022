@@ -219,6 +219,9 @@ void PlayerFBX::PlayFBX(int fbxType)
 		spinFbx->PlayAnimation(false);
 		this->fbxType = fbxType;
 		break;
+	case FBXMAX:
+		this->fbxType = fbxType;
+		break;
 	default:
 		break;
 	}

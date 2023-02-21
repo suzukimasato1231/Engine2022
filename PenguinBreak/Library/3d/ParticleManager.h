@@ -100,6 +100,17 @@ public: // 静的メンバ関数
 
 	void BreakBoxAdd(const Vec3 &Pos, float Vel, float start_scale, float end_scale, const Vec4 &start_color, const Vec4 &end_color);
 
+	/// <summary>
+	/// 爆発パーティクル
+	/// </summary>
+	/// <param name="Pos">座標</param>
+	/// <param name="Vel">方向</param>
+	/// <param name="start_scale">最初のサイズ</param>
+	/// <param name="end_scale">最後のサイズ</param>
+	/// <param name="start_color">最初の色</param>
+	/// <param name="end_color">最後の色</param>
+	void BombAdd(const Vec3& Pos, float Vel, float start_scale, float end_scale, const Vec4& start_color, const Vec4& end_color);
+
 	void ParticleAdd2(const Vec3 &Pos, const Vec4 &start_color, const Vec4 & end_color);
 private: // 静的メンバ変数
 	// デバイス

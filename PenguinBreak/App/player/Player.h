@@ -15,6 +15,7 @@ enum DieType
 	FALLDOWN,
 	ELECTDIE,
 	EATDIE,
+	BOMBDIE,
 	DIENOW,
 };
 
@@ -112,19 +113,24 @@ private:
 	/// プレイヤージャンプ
 	/// </summary>
 	void Jump();
-
 	//落ちて死亡したとき
 	void FallDie();
-
+	/// <summary>
+	/// 魚の加算
+	/// </summary>
 	void Fish();
-
+	/// <summary>
+	/// 赤い魚に捕まったときの処理
+	/// </summary>
 	void RedFishDie();
-
 	/// <summary>
 	/// スピン攻撃
 	/// </summary>
 	void SpinAttack();
-
+	/// <summary>
+	/// アニメーションの更新
+	/// </summary>
+	void AnimationUpdate();
 public://取得系
 	//座標
 	inline Vec3 GetPosition() { return position; }

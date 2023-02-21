@@ -24,6 +24,7 @@ enum StageType
 	BOXDOUBLE = 11,		//壊れる箱ダブル
 	BOXHARD = 12,		//固い箱
 	BOXJUMP = 13,		//ジャンプ箱
+	BOXBOMB = 14,		//爆弾箱
 	ICICLE = 20,		//氷柱
 	ELECTRICITY = 21,	//電気
 	FISHATTACK = 22,	//魚アタック

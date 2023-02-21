@@ -25,19 +25,40 @@ public:
 	/// </summary>
 	void Update();
 	/// <summary>
-	/// 描画
+	/// ２D描画
 	/// </summary>
 	void Draw();
-
+	/// <summary>
+	/// ３D描画
+	/// </summary>
 	void Draw3D();
 
-	void BreakBoxFlag(const Vec3 &breakPos) { breakBoxFlag = true; this->breakPos = breakPos; }
+	void BreakBoxFlag(const Vec3& breakPos);
+
+	void BombBoxFlag(const Vec3& bombPos);
 private:
+	/// <summary>
+	/// 壊れた箱のパーティクル作成
+	/// </summary>
+	void CreateBreakBox();
+	/// <summary>
+	/// 爆弾箱のパーティクル作成
+	/// </summary>
+	void CreateBomb();
+private:
+	//2D
 	//箱が壊れるパーティクル
 	std::unique_ptr<ParticleManager>breakBoxParticle;
 	Vec3 breakPos = {};
 	int graph = 0;
 	bool breakBoxFlag = false;
+	//爆弾箱は壊れるパーティクル
+	std::unique_ptr<ParticleManager>bombParticle;
+	Vec3 bombPos = {};
+	bool bombFlag = false;
+	const int bombTimeMax = 10;
+	int bombTime = 0;
+	//3D
 	//壊れた箱が飛び散る
 	std::unique_ptr<Particle3D>break3DParticle;
 	ObjectData boxData;

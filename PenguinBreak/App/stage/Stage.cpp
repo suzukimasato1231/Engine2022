@@ -48,6 +48,7 @@ void Stage::Init()
 	boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
 	goalSE = Audio::SoundLoadWave("Resources/sound/SE/goal.wav");
 	jumpSE = Audio::SoundLoadWave("Resources/sound/SE/jump.wav");
+	bombSE = Audio::SoundLoadWave("Resources/sound/SE/bomb.wav");
 
 	water = Shape::CreateRect(500.0f, 500.0f);
 	waterGraph = Texture::Get()->LoadTexture(L"Resources/cube/WaterTexture.jpg");
@@ -87,6 +88,7 @@ void Stage::Update(const Vec3& pPos)
 		case BOX:
 		case BOXJUMP:
 		case BOXHARD:
+		case BOXBOMB:
 			blockBox.PlayerHit(stageObj[i], X, Z);
 			blockBox.PlayerSpinHit(stageObj[i], X, Z);
 			if (stageObj[i]->type != Wall || stageObj[i]->type != DEADTREE || stageObj[i]->type != BarrierWall)
@@ -130,79 +132,8 @@ void Stage::Update(const Vec3& pPos)
 			break;
 		}
 	}
-
-	if (blockBox.GetIs_Hit() == true && Player::Get()->GetIsFishDie() == false)
-	{
-		int breakNum = -1;
-		int breakFlag = PushCollision::PlayerBreakBox(blockBox.GetObj_Data(), breakNum);
-		//ブロックが壊れる
-		if (breakFlag == 1 && Player::Get()->GetOldGroundFlag() == false)
-		{
-			for (int i = 0; i < stageObj.size(); i++)
-			{
-				if (breakNum == -1) { break; }
-				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOX == stageObj[i]->type)
-				{
-					Player::Get()->ActivateBlockStepOn();
-					Player::Get()->ActivateChangeBreak();
-					boxStaring.BreakBoxFlag(stageObj[i]->position);
-					fishBox.Create(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
-					blockNum++;
-					Audio::Get()->SoundSEPlayWave(boxSE);
-					break;
-				}//ジャンプ台
-				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOXJUMP == stageObj[i]->type)
-				{
-					Player::Get()->ActivateJumpBox();
-					Player::Get()->ActivateBlockStepOn();
-					Audio::Get()->SoundSEPlayWave(jumpSE);
-				}
-			}
-		}
-		else if (breakFlag == 2)
-		{
-			for (int i = 0; i < stageObj.size(); i++)
-			{
-				if (breakNum == -1) { break; }
-				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOX == stageObj[i]->type)
-				{
-					Player::Get()->JumpPoweZero();
-					Player::Get()->ActivateChangeBreak();
-					boxStaring.BreakBoxFlag(stageObj[i]->position);
-					fishBox.Create(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
-					blockNum++;
-					Audio::Get()->SoundSEPlayWave(boxSE);
-				}
-			}
-		}
-	}
-
-	if (blockBox.GetIs_Spin() == true)
-	{
-		for (int i = 0; i < stageObj.size(); i++)
-		{
-			for (int j = 0; j < 5; j++)
-			{
-				if (blockBox.GetObj_Spin(j).position == stageObj[i]->position &&
-					BOX == stageObj[i]->type)
-				{
-					boxStaring.BreakBoxFlag(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
-					blockNum++;
-					Audio::Get()->SoundSEPlayWave(boxSE);
-				}
-			}
-		}
-
-	}
+	//壊れる箱の処理
+	BreakBoxs();
 
 	//箱の更新
 	blockBox.Update();
@@ -273,7 +204,7 @@ void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 	int Z = static_cast<int>(PPos.z / (-mapSize));
 	size_t floorSize = floor.size();
 	static const int floorNormalMax = (MAP_HEIGHT - 1 + Z) - 100;
-	static const int stageMin = (MAP_HEIGHT - 1 + Z) + 4;
+	static const int stageMin = (MAP_HEIGHT - 1 + Z) + 6;
 	//床の描画
 	for (size_t i = 0; i < floorSize; i++)
 	{
@@ -341,6 +272,7 @@ void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 			case BOX:
 			case BOXJUMP:
 			case BOXHARD:
+			case BOXBOMB:
 				blockBox.Draw(stageObj[i], shadowFlag);
 				break;
 			case ELECTRICITY:
@@ -523,22 +455,26 @@ void Stage::LoadStage(int stageNum)
 					goalFish.GetGoalScale(), Vec3(), map);
 				break;
 			case BOX:
-				SetBreakBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					blockBox.GetBoxScale(), Vec3(), map);
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOX);
 				break;
 			case BOXDOUBLE:
-				SetBreakBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					blockBox.GetBoxScale(), Vec3(), map);
-				SetBreakBox(Vec3(static_cast<float>(x) * mapSize, (static_cast<float>(MapOBJPos[y][x]) + 1.0f) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					blockBox.GetBoxScale(), Vec3(), map);
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOX);
+				SetBox(Vec3(static_cast<float>(x) * mapSize, (static_cast<float>(MapOBJPos[y][x]) + 1.0f) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOX);
 				break;
 			case BOXJUMP:
-				SetJumpBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					blockBox.GetBoxScale(), Vec3(), map);
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOXJUMP);
 				break;
 			case BOXHARD:
-				SetBreakHard(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
-					blockBox.GetBoxScale(), Vec3(), map);
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOXHARD);
+				break;
+			case BOXBOMB:
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOXBOMB);
 				break;
 			case ELECTRICITY:
 				SetElectricity(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
@@ -576,6 +512,110 @@ void Stage::DrawWater()
 	}
 }
 
+void Stage::BreakBoxs()
+{
+	//踏むか叩いて壊れる箱の処理
+	if (blockBox.GetIs_Hit() == true && Player::Get()->GetIsFishDie() == false)
+	{
+		int breakNum = -1;
+		int breakFlag = PushCollision::PlayerBreakBox(blockBox.GetObj_Data(), breakNum);
+		if (breakFlag == 1 && Player::Get()->GetOldGroundFlag() == false)
+		{
+			for (int i = 0; i < stageObj.size(); i++)
+			{
+				if (breakNum == -1) { break; }
+				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
+					BOX == stageObj[i]->type)
+				{
+					Player::Get()->ActivateBlockStepOn();
+					Player::Get()->ActivateChangeBreak();
+					boxStaring.BreakBoxFlag(stageObj[i]->position);
+					fishBox.Create(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
+					blockNum++;
+					Audio::Get()->SoundSEPlayWave(boxSE);
+					break;
+				}//ジャンプ台
+				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
+					BOXJUMP == stageObj[i]->type)
+				{
+					Player::Get()->ActivateJumpBox();
+					Player::Get()->ActivateBlockStepOn();
+					Audio::Get()->SoundSEPlayWave(jumpSE);
+				}//爆発箱
+				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
+					BOXBOMB == stageObj[i]->type)
+				{					
+					Player::Get()->DieType(BOMBDIE);
+					boxStaring.BombBoxFlag(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
+					Audio::Get()->SoundSEPlayWave(bombSE);
+				}
+			}
+		}
+		else if (breakFlag == 2)
+		{
+			for (int i = 0; i < stageObj.size(); i++)
+			{
+				if (breakNum == -1) { break; }
+				if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
+					BOX == stageObj[i]->type)
+				{
+					Player::Get()->JumpPoweZero();
+					Player::Get()->ActivateChangeBreak();
+					boxStaring.BreakBoxFlag(stageObj[i]->position);
+					fishBox.Create(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
+					blockNum++;
+					Audio::Get()->SoundSEPlayWave(boxSE);
+				}
+				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
+					BOXBOMB == stageObj[i]->type)
+				{
+					Player::Get()->DieType(BOMBDIE);
+					boxStaring.BombBoxFlag(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
+					Audio::Get()->SoundSEPlayWave(bombSE);
+				}
+			}
+		}
+	}
+	//スピンで壊れる箱の処理
+	if (blockBox.GetIs_Spin() == true)
+	{
+		for (int i = 0; i < stageObj.size(); i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				if (blockBox.GetObj_Spin(j).position == stageObj[i]->position &&
+					BOX == stageObj[i]->type)
+				{
+					boxStaring.BreakBoxFlag(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
+					blockNum++;
+					Audio::Get()->SoundSEPlayWave(boxSE);
+				}
+				else if (blockBox.GetObj_Spin(j).position == stageObj[i]->position &&
+					BOXBOMB == stageObj[i]->type)
+				{
+					//爆発オン
+					Player::Get()->DieType(BOMBDIE);
+					//爆発演出
+					boxStaring.BombBoxFlag(stageObj[i]->position);
+					delete stageObj[i];
+					stageObj.erase(stageObj.begin() + i);
+					Audio::Get()->SoundSEPlayWave(bombSE);
+				}
+			}
+		}
+	}
+}
+
 void Stage::SetFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type, int size)
 {
 	floor.push_back(new Floor);
@@ -590,26 +630,12 @@ void Stage::SetFloor(const Vec3& position, const Vec3& scale, const Vec3& angle,
 	floor[Num]->size = size;
 }
 
-void Stage::SetBreakBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
+void Stage::SetBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type)
 {
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
-	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOX);
-	blockMax++;
-}
-
-void Stage::SetJumpBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
-{
-	stageObj.push_back(new StageOBJ);
-	size_t num = stageObj.size() - 1;
-	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXJUMP);
-}
-
-void Stage::SetBreakHard(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map)
-{
-	stageObj.push_back(new StageOBJ);
-	size_t num = stageObj.size() - 1;
-	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, BOXHARD);
+	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, type);
+	if (type == BOX || type == BOXBOMB) { blockMax++; }
 }
 
 void Stage::SetWallBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type)
@@ -717,4 +743,3 @@ void Stage::SetFigrineOBJ(const Vec3& position, const Vec3& scale, const Vec3& a
 		position.z - scale.z / 2, 1);
 	stageObj[num]->type = type;
 }
-

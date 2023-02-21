@@ -43,7 +43,6 @@ public:
 	void Initilize(const Vec3 &eye, const Vec3 &target, const Vec3 &up);
 	//カメラ位置セット/カメラ位置eye/カメラターゲットtarget /カメラの向きup
 	void SetCamera(const Vec3 &eye, const Vec3 &target, const Vec3 &up);
-
 	/// <summary>
 	/// カメラが追従する
 	/// </summary>
@@ -55,15 +54,15 @@ public:
 	void FollowCamera(const Vec3 &position, const Vec3 &d, float angleX = 0, float angleY = 0);
 
 	//matViewを獲得
-	XMMATRIX GetMatView();
+	 XMMATRIX GetMatView();
 	//projectionを獲得
-	XMMATRIX GetProjection();
+	 XMMATRIX GetProjection();
 
-	XMMATRIX GetMatViewProjection();
+	 XMMATRIX GetMatViewProjection();
 
-	Vec3 GetEye();
+	 Vec3 GetEye();
 
-	Vec3 GetTarget();
+	 Vec3 GetTarget();
 
-	Vec3 GetUp();
+	 Vec3 GetUp();
 };

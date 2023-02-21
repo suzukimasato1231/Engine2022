@@ -41,7 +41,7 @@ public:
 	//ポストエフェクト保存
 	void LoadPostEfectTexture(ID3D12Resource* texbuff);
 	//SRVを獲得
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUSRV(int i);
+	const D3D12_GPU_DESCRIPTOR_HANDLE &GetGPUSRV(int i);
 
 	ID3D12Resource* GetTexbuff(int i);
 	//desc獲得

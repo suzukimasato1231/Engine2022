@@ -47,6 +47,8 @@ private:
 	int hardBoxGraph = 0;
 	//ƒWƒƒƒ“ƒv‚Ì” ‚Ì‰æ‘œ
 	int jumpBoxgraph = 0;
+	//”š’e‚Ì” ‚Ì‰æ‘œ
+	int bombBoxGraph = 0;
 	//” ‚Ì‘å‚«‚³
 	const Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
 

@@ -54,20 +54,8 @@ void Player::Update()
 	RedFishDie();
 
 	pFbx.Update();
-	//開始時のアニメーション
-	if (starStaging == true && moveFlag == true)
-	{
-		if (startTime >= startTimeMax - 40)
-		{
-			staging.CreateStart(position);
-		}
-		startTime++;
-		if (startTime >= startTimeMax)
-		{
-			starStaging = false;
-			startTime = 0;
-		}
-	}
+
+	AnimationUpdate();
 
 }
 
@@ -153,6 +141,24 @@ void Player::SpinAttack()
 
 }
 
+void Player::AnimationUpdate()
+{
+	//開始時のアニメーション
+	if (starStaging == true && moveFlag == true)
+	{
+		if (startTime >= startTimeMax - 40)
+		{
+			staging.CreateStart(position);
+		}
+		startTime++;
+		if (startTime >= startTimeMax)
+		{
+			starStaging = false;
+			startTime = 0;
+		}
+	}
+}
+
 void Player::FbxDraw(bool shadowFlag)
 {
 	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };
@@ -220,7 +226,6 @@ void Player::Move()
 		float rad = Input::Get()->GetLeftAngle();
 		const Vec3 speeds = { 1.0f,1.0f,1.0f };
 		vec.x = speeds.x * sinf(-rad);
-
 		if (moveFlag == true)
 		{
 			vec.z = speeds.z * cosf(rad);
@@ -239,8 +244,6 @@ void Player::Move()
 	{
 		pFbx.PlayFBX(FbxNone);
 	}
-
-
 }
 
 void Player::Jump()
@@ -285,7 +288,7 @@ void Player::FallDie()
 	}
 	else if (dieType == ELECTDIE)
 	{
-		static const int dieTime = 200;	//死んだときの演出時間
+		int dieTime = 200;	//死んだときの演出時間
 		dieNowTime = dieTime;
 		staging.CreateElect(position);
 		dieType = DIENOW;
@@ -294,10 +297,17 @@ void Player::FallDie()
 	}
 	else if (dieType == EATDIE)
 	{
-		static const int dieTime = 100;	//死んだときの演出時間
+		const int dieTime = 100;	//死んだときの演出時間
 		dieNowTime = dieTime;
 		dieType = DIENOW;
 		isFishDie = true;
+	}
+	else if (dieType == BOMBDIE)
+	{
+		const int dieTime = 50;	//死んだときの演出時間
+		dieNowTime = dieTime;
+		dieType = DIENOW;
+		pFbx.PlayFBX(FBXMAX);
 	}
 
 

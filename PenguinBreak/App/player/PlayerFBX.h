@@ -14,6 +14,7 @@ enum PlayerFBXType
 	FbxJump,
 	FbxWalking,
 	FbxSpin,
+	FBXMAX,
 };
 /// <summary>
 /// プレイヤーのFBXクラス

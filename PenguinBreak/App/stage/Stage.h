@@ -45,16 +45,14 @@ public://É}ÉbÉv
 private:
 	//êÏÇÃï`âÊ
 	void DrawWater();
+	//âÛÇÍÇÈî†ÇÃèàóù
+	void BreakBoxs();
 
 	void SetFloor(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type, int size = 0);
 
-	void SetBreakBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
-
-	void SetJumpBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
+	void SetBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map,int type);
 
 	void SetWallBox(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, int type);
-
-	void SetBreakHard(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2& map);
 
 	void SetGoal(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map);
 
@@ -119,5 +117,6 @@ private:
 	SoundData boxSE={};
 	SoundData jumpSE = {};
 	SoundData goalSE = {};
+	SoundData bombSE = {};
 	bool goalSEFlag = false;
 };

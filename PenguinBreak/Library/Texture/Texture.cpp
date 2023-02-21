@@ -320,7 +320,7 @@ void Texture::LoadPostEfectTexture(ID3D12Resource* texbuff)
 }
 
 
-D3D12_GPU_DESCRIPTOR_HANDLE Texture::GetGPUSRV(int i)
+const D3D12_GPU_DESCRIPTOR_HANDLE &Texture::GetGPUSRV(int i)
 {
 	return 	textureData[i]->gpuDescHandleSRV;
 }
