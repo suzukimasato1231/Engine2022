@@ -134,6 +134,13 @@ void Player::SpinAttack()
 		spinFlag = true;
 	}
 
+	if (spinCoolTime >= spinCoolTimeMax - 10)
+	{
+		spinAttack.maxPosition = XMVectorSet(oldPosition.x + spinScale, oldPosition.y + 1, oldPosition.z + spinScale, 1);
+		spinAttack.minPosition = XMVectorSet(oldPosition.x - spinScale, oldPosition.y - 0, oldPosition.z - spinScale, 1);
+		spinFlag = true;
+	}
+
 	if (spinCoolTime >= 0)
 	{
 		spinCoolTime--;

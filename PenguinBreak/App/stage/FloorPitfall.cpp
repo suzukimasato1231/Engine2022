@@ -20,7 +20,7 @@ void FloorPitfall::Update(Floor* floorData)
 	{
 		if (floorData->time <= 0)
 		{
-			floorData->time = 50;
+			floorData->time = pitfallTime;
 			floorData->moveFlag = 1;
 		}
 		if (floorData->time <= 5)
@@ -32,7 +32,7 @@ void FloorPitfall::Update(Floor* floorData)
 	{
 		if (floorData->time <= 0)
 		{
-			floorData->time = 50;
+			floorData->time = pitfallTime;
 			floorData->moveFlag = 0;
 		}
 		if (floorData->time <= 5)

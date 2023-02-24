@@ -428,11 +428,11 @@ void Stage::LoadStage(int stageNum)
 				break;
 			case FloorPitfall_A:
 				SetPitfallFloor(Vec3(map.x * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map, 50);
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map, 70);
 				break;
 			case FloorPitfall_B:
 				SetPitfallFloor(Vec3(map.x * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map, 100);
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map, 140);
 				break;
 			case FloorMove2:
 				SetMoveFloor2(Vec3(map.x * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
@@ -475,6 +475,18 @@ void Stage::LoadStage(int stageNum)
 			case BOXBOMB:
 				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
 					blockBox.GetBoxScale(), Vec3(), map, BOXBOMB);
+				break;
+			case BOX_BOMB:
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOX);
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x] + 1.0f) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOXBOMB);
+				break;
+			case BOMB_BOX:
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOXBOMB);
+				SetBox(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x] + 1.0f) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
+					blockBox.GetBoxScale(), Vec3(), map, BOX);
 				break;
 			case ELECTRICITY:
 				SetElectricity(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
@@ -546,7 +558,7 @@ void Stage::BreakBoxs()
 				}//”š”­” 
 				else if (blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
 					BOXBOMB == stageObj[i]->type)
-				{					
+				{
 					Player::Get()->DieType(BOMBDIE);
 					boxStaring.BombBoxFlag(stageObj[i]->position);
 					delete stageObj[i];
@@ -595,6 +607,7 @@ void Stage::BreakBoxs()
 					BOX == stageObj[i]->type)
 				{
 					boxStaring.BreakBoxFlag(stageObj[i]->position);
+					fishBox.Create(stageObj[i]->position);
 					delete stageObj[i];
 					stageObj.erase(stageObj.begin() + i);
 					blockNum++;
@@ -635,7 +648,7 @@ void Stage::SetBox(const Vec3& position, const Vec3& scale, const Vec3& angle, c
 	stageObj.push_back(new StageOBJ);
 	size_t num = stageObj.size() - 1;
 	*stageObj[num] = BlockBox::SetBox(position, scale, angle, map, type);
-	if (type == BOX || type == BOXBOMB) { blockMax++; }
+	if (type == BOX) { blockMax++; }
 }
 
 void Stage::SetWallBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type)

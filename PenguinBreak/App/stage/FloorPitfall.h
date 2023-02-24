@@ -18,5 +18,6 @@ public:
 private:
 	ObjectData pitfallOBJ;
 	int pitfallGraph = 0;
+	const int pitfallTime = 70;
 };
 

@@ -72,14 +72,13 @@ private://定義
 	int numberGraph[11] = {};			//数字の画像
 
 	//壊した箱を保存する用
-	const int breakBoxMax[3] = { 10,10,10 };
-	int breakNumMax[3] = { 0,0,0 };
-	int breakNumTenMax[3] = { 0,0,0 };
+	const int breakBoxMax[stageNumMax] = { 9,11,10 };
+	int breakNumMax[stageNumMax] = { 0,0,0 };
+	int breakNumTenMax[stageNumMax] = { 0,0,0 };
 
-	int breakBox[3] = { 0,0,0 };
-	int breakNum[3] = { 0,0,0 };
-	int breakNumTen[3] = { 0,0,0 };
-
+	int breakBox[stageNumMax] = { 0,0,0 };
+	int breakNum[stageNumMax] = { 0,0,0 };
+	int breakNumTen[stageNumMax] = { 0,0,0 };
 
 	int stageNum = 0;					//現在のステージ
 
