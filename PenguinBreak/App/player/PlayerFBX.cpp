@@ -2,12 +2,10 @@
 #include <Safe_delete.h>
 
 PlayerFBX::PlayerFBX()
-{
-}
+{}
 
 PlayerFBX::~PlayerFBX()
-{
-}
+{}
 
 void PlayerFBX::Load()
 {
@@ -244,7 +242,6 @@ void PlayerFBX::StopAnimation()
 void PlayerFBX::StartAnimation()
 {
 	if (menuStopFlag == false) { return; }
-
 	stopFbx->PlayAnimation(true);
 	fbxObject1->PlayAnimation(true);
 	electFbx->PlayAnimation(false);
@@ -253,5 +250,4 @@ void PlayerFBX::StartAnimation()
 	jumpFbx->PlayAnimation(false);
 	walkFbx->PlayAnimation(true);
 	spinFbx->PlayAnimation(false);
-
 }

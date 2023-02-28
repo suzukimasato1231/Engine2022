@@ -29,7 +29,6 @@ private:
 		FbxLoopRun,
 		FbxLoopMax,
 	};
-
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -39,21 +38,41 @@ public:
 	/// デスコンストラクタ
 	/// </summary>
 	~PlayerFBX();
-	//FBX読み取り
+	/// <summary>
+	/// 読み取り
+	/// </summary>
 	void Load();
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="fbxPos">座標</param>
+	/// <param name="angle">角度</param>
+	/// <param name="shadowFlag">シャドウフラグ</param>
 	void Draw(const Vec3& fbxPos, const Vec3& angle, bool shadowFlag);
-	//リセット
+	/// <summary>
+	/// リセット
+	/// </summary>
 	void Reset();
-	//メモリ削除
+	/// <summary>
+	/// メモリ削除
+	/// </summary>
 	void Delete();
-	//FBXを動かす
+	/// <summary>
+	/// FBXを動かす
+	/// </summary>
+	/// <param name="fbxType">fbxタイプ</param>
 	void PlayFBX(int fbxType);
-	//アニメーションを止める
+	/// <summary>
+	/// アニメーションを止める
+	/// </summary>
 	void StopAnimation();
-	//アニメーションスタート
+	/// <summary>
+	/// アニメーション
+	/// </summary>
 	void StartAnimation();
 private:
 	int fbxType = NULL;

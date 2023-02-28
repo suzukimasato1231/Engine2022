@@ -1,6 +1,7 @@
 #pragma once
 #include"StegeObject.h"
 #include"ParticleManager.h"
+#include<memory>
 class Electricity
 {
 public:
@@ -18,7 +19,7 @@ public:
 
 	void DrawParicle();
 
-	static StageOBJ SetElect(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, const int type);
+	static StageOBJ SetElect(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, const int type);
 private:
 	//電気パーティクル
 	void AddElect(Vec3 pos);
@@ -35,7 +36,7 @@ private:
 	//切り替えまでの時間
 	int m_electTime = 0;
 	//電気びりびり
-	ParticleManager* m_electParicle = nullptr;
+	std::unique_ptr<ParticleManager>m_electParicle = nullptr;
 	int m_electParicleGraph = 0;
 
 	Vec2 uvScroll = { 0.0f ,0.0f };

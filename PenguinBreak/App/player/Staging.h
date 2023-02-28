@@ -3,6 +3,7 @@
 #include"ParticleManager.h"
 #include<vector>
 #include"Particle3D.h"
+#include<memory>
 /// <summary>
 /// プレイヤー演出クラス
 /// </summary>
@@ -11,14 +12,14 @@ class Staging
 private://メンバ変数
 	//落下死
 	ObjectData fallDown;
-	Particle3D* fallParicle;
+	std::unique_ptr<Particle3D> fallParicle = nullptr;
 	//電気死亡
-	ParticleManager* electDie = nullptr;
+	std::unique_ptr<ParticleManager>electDie = nullptr;
 	//歩き
-	ParticleManager* walk = nullptr;
+	std::unique_ptr<ParticleManager> walk = nullptr;
 	//プレイヤー登場時の演出
 	ObjectData startObject;
-	Particle3D* startParicle;
+	std::unique_ptr<Particle3D> startParicle;
 	int start_color[3];
 
 	int graph = 0;
@@ -38,10 +39,10 @@ public://メンバ関数
 	//感電死の生成処理
 	void CreateElect(const Vec3 pPos);
 	//歩くの生成処理
-	void CreateWalk(const Vec3 &pPos, const Vec3 &vec);
+	void CreateWalk(const Vec3& pPos, const Vec3& vec);
 	//落下死
-	void CreateFallDown(const Vec3 &pPos);
+	void CreateFallDown(const Vec3& pPos);
 	//登場時の3Dパーティクル
-	void CreateStart(const Vec3 &pPos);
+	void CreateStart(const Vec3& pPos);
 };
 

@@ -1,25 +1,23 @@
 #include "Staging.h"
-#include"Safe_delete.h"
 #include"Texture.h"
 #include"Shape.h"
 Staging::Staging()
 {}
 Staging::~Staging()
-{
-	safe_delete(electDie);
-	safe_delete(walk);
-	safe_delete(fallParicle);
-}
+{}
 
 void Staging::Init()
 {
-	electDie = ParticleManager::Create();
-	walk = ParticleManager::Create();
-	fallParicle = Particle3D::Create();
-	fallDown = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
+	electDie = std::make_unique<ParticleManager>();
+	electDie->Initialize();
+	walk = std::make_unique<ParticleManager>();
+	walk->Initialize();
+	fallParicle = std::make_unique <Particle3D>();
+	startParicle = std::make_unique <Particle3D>();
 
+	fallDown = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 	startObject = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
-	startParicle = Particle3D::Create();
+
 	start_color[0] = Texture::Get()->LoadTexture(L"Resources/Paricle/startWhite.png");
 	start_color[1] = Texture::Get()->LoadTexture(L"Resources/Paricle/starBlack.png");
 	start_color[2] = Texture::Get()->LoadTexture(L"Resources/Paricle/startYellow.png");
@@ -66,7 +64,7 @@ void Staging::CreateElect(const Vec3 pPos)
 	}
 }
 
-void Staging::CreateWalk(const Vec3 &pPos, const Vec3 &vec)
+void Staging::CreateWalk(const Vec3& pPos, const Vec3& vec)
 {
 	static const int particleTime = 15;
 	static const Vec3 accel = { 0.0f,0.0f,0.0f };
@@ -86,7 +84,7 @@ void Staging::CreateWalk(const Vec3 &pPos, const Vec3 &vec)
 	}
 }
 
-void Staging::CreateFallDown(const Vec3 &pPos)
+void Staging::CreateFallDown(const Vec3& pPos)
 {
 	static const int particleTime = 35;
 	static const Vec3 Velocity = { 0.0f,5.0f,0.0f };
@@ -109,10 +107,10 @@ void Staging::CreateFallDown(const Vec3 &pPos)
 	}
 }
 
-void Staging::CreateStart(const Vec3 &pPos)
+void Staging::CreateStart(const Vec3& pPos)
 {
 	static const int particleTime = 30;
-	static const Vec3 accel = { 0.0f,0.0f,0.0f };
+	static const Vec3 accel = {};
 	Vec3 m_pos = pPos + Vec3(0.0f, 3.0f, 0.0f);
 	for (int i = 0; i < 30; i++)
 	{

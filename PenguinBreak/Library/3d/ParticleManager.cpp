@@ -28,8 +28,6 @@ bool ParticleManager::StaticInitialize(ID3D12Device* device, ID3D12GraphicsComma
 
 	// パイプライン初期化
 	PartclePipelineSet = Pipeline::ParticleCreateGraphicsPipeline(device, ShaderManager::particleShader);
-	//PartclePipelineSet = Pipeline::ParticleCubeGraphicsPipeline(device);
-
 	return true;
 }
 
@@ -48,28 +46,6 @@ void ParticleManager::PostDraw()
 	// コマンドリストを解除
 	ParticleManager::cmdList = nullptr;
 }
-
-ParticleManager* ParticleManager::Create()
-{
-	// 3Dオブジェクトのインスタンスを生成
-	ParticleManager* particle = new ParticleManager();
-
-	particle->CreateModel();
-
-	if (particle == nullptr) {
-		return nullptr;
-	}
-
-	// 初期化
-	if (!particle->Initialize()) {
-		delete particle;
-		assert(0);
-		return nullptr;
-	}
-
-	return particle;
-}
-
 
 void ParticleManager::Add(int life,const Vec3 &position,const Vec3 &velocity,const Vec3 &accel, float start_scale, float end_scale,const Vec4 &start_color,const Vec4 &end_color)
 {

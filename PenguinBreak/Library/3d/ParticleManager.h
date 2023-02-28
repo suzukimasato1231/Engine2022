@@ -82,11 +82,7 @@ public: // 静的メンバ関数
 	/// </summary>
 	static void PostDraw();
 
-	/// <summary>
-	/// 3Dオブジェクト生成
-	/// </summary>
-	/// <returns></returns>
-	static ParticleManager *Create();
+
 
 	/// <summary>
 	/// パーティクルの追加

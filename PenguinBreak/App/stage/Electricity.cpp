@@ -1,6 +1,5 @@
 #include "Electricity.h"
 #include<Shape.h>
-#include"safe_delete.h"
 #include"../player/Player.h"
 #include"Collision.h"
 #include <LoadCSV.h>
@@ -10,14 +9,15 @@ Electricity::Electricity()
 
 Electricity::~Electricity()
 {
-	safe_delete(m_electParicle);
 }
 
 void Electricity::Init()
 {
 	m_electOBJ = Shape::CreateOBJ("elect", false, "OBJ/");
 	m_electShockOBJ = Shape::CreateOBJ("electShock", false, "OBJ/");
-	m_electParicle = ParticleManager::Create();
+
+	m_electParicle = std::make_unique<ParticleManager>(); 
+	m_electParicle->Initialize();
 	m_electParicleGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/elect.png");
 }
 

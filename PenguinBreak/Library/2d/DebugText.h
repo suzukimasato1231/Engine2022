@@ -44,7 +44,6 @@ public:
 	/// デバックテキスト全描画
 	/// </summary>
 	void DrawAll();
-
 private:
 	Sprite* sprite = nullptr;
 

@@ -26,13 +26,10 @@ void Player::Init()
 void Player::Update()
 {
 	if (gameoverFlag == true) { return; }
+
 	oldPosition = position;
 	oldGroundFlag = groundFlag;
-	audioTime++;
-	if (audioTime >= 201)
-	{
-		audioTime = 0;
-	}
+	AudioUpdate();
 	vec = {};
 	//移動
 	Move();
@@ -56,7 +53,6 @@ void Player::Update()
 	pFbx.Update();
 
 	AnimationUpdate();
-
 }
 
 void Player::Draw(bool shadowFlag)
@@ -83,21 +79,21 @@ void Player::SetPosition(const Vec3& position)
 
 void Player::Reset()
 {
-	position = { 90.0f,25.0f,80.0f };	//座標
+	position = firstPosition;	//座標
 	oldPosition = position;
 	remainLives = remainLivesMax;
-	fishNum = 0;
+	fishNum = {};
 	gameoverFlag = false;
 	dieType = DIENULL;
 	clearFlag = false;
-	angle = { -30.0f,180.0f,0.0f };	//角度
-	decLifeTime = 0;
+	angle = firstAngle;	//角度
+	decLifeTime = {};
 	isFishDie = false;
 	pFbx.Reset();
 	if (moveFlag == true)
 	{
 		starStaging = true;
-		startTime = 0;
+		startTime = {};
 	}
 	else
 	{
@@ -151,18 +147,26 @@ void Player::SpinAttack()
 void Player::AnimationUpdate()
 {
 	//開始時のアニメーション
-	if (starStaging == true && moveFlag == true)
+	if (starStaging == false || moveFlag == false) { return; }
+	if (startTime >= startTimeMax - 40)
 	{
-		if (startTime >= startTimeMax - 40)
-		{
-			staging.CreateStart(position);
-		}
-		startTime++;
-		if (startTime >= startTimeMax)
-		{
-			starStaging = false;
-			startTime = 0;
-		}
+		staging.CreateStart(position);
+	}
+	startTime++;
+	if (startTime >= startTimeMax)
+	{
+		starStaging = false;
+		startTime = 0;
+	}
+}
+
+void Player::AudioUpdate()
+{
+	audioTime++;
+	const int audioTimeMax = 201;//時間をリセットする最大値
+	if (audioTime >= audioTimeMax)
+	{
+		audioTime = 0;
 	}
 }
 
@@ -204,7 +208,8 @@ void Player::Move()
 	//コントローラー移動
 	if (Input::Get()->ConLeftInput())
 	{
-		if (groundFlag == true && audioTime % 15 == 0)
+		const int audioCoolTime = 15;//音を鳴らすまでの時間
+		if (groundFlag == true && audioTime % audioCoolTime == 0)
 		{
 			Audio::Get()->SoundSEPlayWave(walkSE);
 		}
@@ -226,18 +231,18 @@ void Player::Move()
 	}
 	else if (Input::Get()->ConLeftInputS())
 	{
-		if (groundFlag == true && audioTime % 20 == 0)
+		const int audioCoolTime = 15;//音を鳴らすまでの時間
+		if (groundFlag == true && audioTime % audioCoolTime == 0)
 		{
 			Audio::Get()->SoundSEPlayWave(walkSE);
 		}
 		float rad = Input::Get()->GetLeftAngle();
-		const Vec3 speeds = { 1.0f,1.0f,1.0f };
-		vec.x = speeds.x * sinf(-rad);
+		vec.x = walkSpeed.x * sinf(-rad);
 		if (moveFlag == true)
 		{
-			vec.z = speeds.z * cosf(rad);
+			vec.z = walkSpeed.z * cosf(rad);
 		}
-		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));// -59.8f);
+		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
 		if (walkTime < 0)
 		{
 			staging.CreateWalk(position, vec);
@@ -285,7 +290,7 @@ void Player::Jump()
 
 void Player::FallDie()
 {
-	if (position.y < -30.0f && dieType == DIENULL)
+	if (position.y < fallPos && dieType == DIENULL)
 	{
 		static const int dieTime = 30;	//死んだときの演出時間
 		dieNowTime = dieTime;
@@ -295,7 +300,7 @@ void Player::FallDie()
 	}
 	else if (dieType == ELECTDIE)
 	{
-		int dieTime = 200;	//死んだときの演出時間
+		int dieTime = 200;				//死んだときの演出時間
 		dieNowTime = dieTime;
 		staging.CreateElect(position);
 		dieType = DIENOW;
@@ -311,7 +316,7 @@ void Player::FallDie()
 	}
 	else if (dieType == BOMBDIE)
 	{
-		const int dieTime = 50;	//死んだときの演出時間
+		const int dieTime = 50;		//死んだときの演出時間
 		dieNowTime = dieTime;
 		dieType = DIENOW;
 		pFbx.PlayFBX(FBXMAX);
@@ -336,8 +341,8 @@ void Player::FallDie()
 				decLifeTime--;
 				if (decLifeTime <= 0)
 				{
-					position = { 90.0f,30.0f,80.0f };	//座標
-					angle = { -30.0f,180.0f,0.0f };	//角度
+					position = firstPosition;	//座標
+					angle = firstAngle;	//角度
 					oldPosition = position;
 					remainLives--;
 					isFishDie = false;
@@ -366,7 +371,6 @@ void Player::Fish()
 	{
 		fishNum += 5;
 		fishFlag = false;
-
 		//100個集まったら残機１つ増える
 		if (fishNum >= 100)
 		{
@@ -379,14 +383,11 @@ void Player::Fish()
 void Player::RedFishDie()
 {
 	if (isFishDie == false) { return; }
-
 	position = fishDiePos;
 	oldPosition = position;
-
 	angle.x = fishDieAngle.x;
-	if (position.y < -30.0f && dieType == DIENOW)
+	if (position.y < fallPos && dieType == DIENOW)
 	{
 		isFishDie = false;
 	}
-
 }

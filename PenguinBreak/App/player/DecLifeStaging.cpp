@@ -1,12 +1,10 @@
 #include "DecLifeStaging.h"
 
 DecLifeStaging::DecLifeStaging()
-{
-}
+{}
 
 DecLifeStaging::~DecLifeStaging()
-{
-}
+{}
 
 void DecLifeStaging::Init()
 {
@@ -23,7 +21,52 @@ void DecLifeStaging::Init()
 	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/select.png");
 }
 
-void DecLifeStaging::Update(int decTime, bool gameoverFlag)
+void DecLifeStaging::Update(const int decTime,const bool gameoverFlag)
+{
+	//暗転処理
+	Blackout(decTime,gameoverFlag);
+	//文字の更新
+	LetterMove();
+}
+
+void DecLifeStaging::Draw(bool gameoverFlag, int gameoverNum)
+{
+	Sprite::Get()->Draw(decGraph, Vec2(),
+		static_cast<float>(window_width), static_cast<float>(window_height),
+		Vec2(), color);
+	//ゲームオーバー時の描画
+	if (gameoverFlag == false) { return; }
+
+	for (size_t i = 0; i < charNum; i++)
+	{
+		Sprite::Get()->Draw(gameoverGraph[i], Vec2(210.0f + 140.0f * i, 84.0f + charPos[i]),
+			167.0f, 219.0f, Vec2(), Vec4(1.0f, 1.0f, 1.0f, 1.0f) * charColor[i]);
+	}
+	if (gameoverNum == RETRY)
+	{
+		Sprite::Get()->Draw(selectGraph, Vec2(220.0f, 400.0f), framSize.x, framSize.y);
+		Sprite::Get()->Draw(gameoverSelect[0], Vec2(387.0f, 474.0f),
+			selectSize.x * selectScale, selectSize.y * selectScale, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(gameoverSelect[1], Vec2(917.0f, 474.0f),
+			selectSize.x, selectSize.y, Vec2(0.5f, 0.5f));
+	}
+	else if (gameoverNum == SELECT)
+	{
+		Sprite::Get()->Draw(selectGraph, Vec2(744.0f, 400.0f), framSize.x, framSize.y);
+		Sprite::Get()->Draw(gameoverSelect[0], Vec2(387.0f, 474.0f),
+			selectSize.x, selectSize.y, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(gameoverSelect[1], Vec2(917.0f, 474.0f),
+			selectSize.x * selectScale, selectSize.y * selectScale, Vec2(0.5f, 0.5f));
+	}
+}
+
+void DecLifeStaging::Reset()
+{
+	isStart = false;
+	color = {};
+}
+
+void DecLifeStaging::Blackout(const int decTime,const bool gameoverFlag)
 {
 	//暗転開始
 	if (decTime > 0 && isStart == false)
@@ -33,21 +76,21 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 		for (size_t i = 0; i < charNum; i++)
 		{
 			charFlag[i] = false;
-			charColor[i] = 0.0f;
+			charColor[i] = {};
 		}
 	}
 	//暗転中
 	if (isStart == true)
 	{
-		color.w += speed;
+		color.w += blackSpeed;
 		//ゲームオーバー中は完全に真っ暗にしない
-		if (gameoverFlag == true && color.w >= gameoverColor)
+		if (gameoverFlag == true && color.w >= blackColorMax)
 		{
-			color.w = gameoverColor;
+			color.w = blackColorMax;
 			gameoverStartFlag = true;
 		}
 		//真っ暗になったら暗転終了
-		if (color.w >= 1.0f)
+		if (color.w >= colorMax)
 		{
 			isStart = false;
 		}
@@ -56,10 +99,13 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 	{
 		if (color.w > 0.0f)
 		{
-			color.w -= speed;
+			color.w -= blackSpeed;
 		}
 	}
+}
 
+void DecLifeStaging::LetterMove()
+{
 	//ゲームオーバー時の演出の処理
 	if (gameoverStartFlag == true)
 	{
@@ -74,70 +120,35 @@ void DecLifeStaging::Update(int decTime, bool gameoverFlag)
 			if (charFlag[i] == true)
 			{
 				//色を徐々に出す
-				charColor[i] += 0.01f;
-				if (charColor[i] >= 1.0f) { charColor[i] = 1.0f; }
+				charColor[i] += charColorSpeed;
+				if (charColor[i] >= colorMax) { charColor[i] = colorMax; }
 				//文字を上下に揺らす
 				if (charPosFlag[i] == true) { charPos[i] -= charPosSpeed; }
 				else { charPos[i] += charPosSpeed; }
 
-				if (charPos[i] >= 10.0f) { charPosFlag[i] = true; }
-				else if (charPos[i] <= -10.0f) { charPosFlag[i] = false; }
+				if (charPos[i] >= charPosMax) { charPosFlag[i] = true; }
+				else if (charPos[i] <= -charPosMax) { charPosFlag[i] = false; }
 			}
 		}
 	}
 	//セレクト時の強調
 	if (selectScaleFlag == true)
 	{
-		selectScale += speed;
+		selectScale += scaleSpeed;
 
-		if (selectScale >= 1.3f)
+		if (selectScale >= scaleMax)
 		{
-			selectScale = 1.3f;
+			selectScale = scaleMax;
 			selectScaleFlag = false;
 		}
 	}
 	else
 	{
-		selectScale -= speed;
-		if (selectScale <= 1.0f)
+		selectScale -= scaleSpeed;
+		if (selectScale <= scaleMin)
 		{
-			selectScale = 1.0f;
+			selectScale = scaleMin;
 			selectScaleFlag = true;
 		}
 	}
-
-}
-
-void DecLifeStaging::Draw(bool gameoverFlag, int gameoverNum)
-{
-
-	Sprite::Get()->Draw(decGraph, Vec2(), static_cast<float>(window_width), static_cast<float>(window_height), Vec2(), color);
-
-	//ゲームオーバー時の描画
-	if (gameoverFlag == true)
-	{
-		for (size_t i = 0; i < charNum; i++)
-		{
-			Sprite::Get()->Draw(gameoverGraph[i], Vec2(210.0f + 140.0f * i, 84.0f + charPos[i]), 167.0f, 219.0f, Vec2(), Vec4(1.0f, 1.0f, 1.0f, 1.0f) * charColor[i]);
-		}
-		if (gameoverNum == 2)
-		{
-			Sprite::Get()->Draw(selectGraph, Vec2(220.0f, 400.0f), 349.0f, 143.0f);
-			Sprite::Get()->Draw(gameoverSelect[0], Vec2(387.0f, 474.0f), 334.0f * selectScale, 128.0f * selectScale, Vec2(0.5f, 0.5f));
-			Sprite::Get()->Draw(gameoverSelect[1], Vec2(917.0f, 474.0f), 334.0f, 128.0f, Vec2(0.5f, 0.5f));
-		}
-		else if (gameoverNum == 1)
-		{
-			Sprite::Get()->Draw(selectGraph, Vec2(744.0f, 400.0f), 349.0f, 143.0f);
-			Sprite::Get()->Draw(gameoverSelect[0], Vec2(387.0f, 474.0f), 334.0f, 128.0f, Vec2(0.5f, 0.5f));
-			Sprite::Get()->Draw(gameoverSelect[1], Vec2(917.0f, 474.0f), 334.0f * selectScale, 128.0f * selectScale, Vec2(0.5f, 0.5f));
-		}
-
-	}
-}
-
-void DecLifeStaging::Reset()
-{
-	isStart = false;
-	color = { 0.0f,0.0f,0.0f,0.0f };
 }
