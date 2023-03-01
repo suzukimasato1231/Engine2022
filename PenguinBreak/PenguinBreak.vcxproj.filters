@@ -243,15 +243,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scene\GameSceneManager.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneManagerh.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\TitleScene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Library\Pipeline\Pipeline.h">
       <Filter>Library\Pipeline</Filter>
     </ClInclude>
@@ -378,12 +369,6 @@
     <ClInclude Include="Library\2d\Sprite.h">
       <Filter>Library\2d</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\StageSelect.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\ResultScene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="App\player\Player.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
@@ -447,19 +432,25 @@
     <ClInclude Include="App\stage\FigurineOBJ.h">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
     </ClInclude>
+    <ClInclude Include="App\scene\GameSceneManager.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="App\scene\ResultScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="App\scene\SceneManager.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="App\scene\StageSelect.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="App\scene\TitleScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\GameSceneManager.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneManagerh.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\TitleScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Library\Pipeline\Pipeline.cpp">
       <Filter>Library\Pipeline</Filter>
@@ -563,12 +554,6 @@
     <ClCompile Include="Library\2d\Sprite.cpp">
       <Filter>Library\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\StageSelect.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\ResultScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="App\player\Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
@@ -628,6 +613,21 @@
     </ClCompile>
     <ClCompile Include="App\stage\FigurineOBJ.cpp">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\GameSceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\ResultScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\SceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\StageSelect.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\TitleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

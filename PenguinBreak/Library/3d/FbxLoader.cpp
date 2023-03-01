@@ -1,6 +1,7 @@
 ﻿#include "FbxLoader.h"
-
 #include <cassert>
+
+
 
 using namespace DirectX;
 
@@ -90,6 +91,8 @@ Model *FbxLoader::LoadModelFromFile(const string& modelName, const string &file)
 
 	return model;
 }
+
+
 
 void FbxLoader::ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent, const string &file)
 {

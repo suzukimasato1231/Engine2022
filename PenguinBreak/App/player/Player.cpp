@@ -29,8 +29,9 @@ void Player::Update()
 
 	oldPosition = position;
 	oldGroundFlag = groundFlag;
-	AudioUpdate();
 	vec = {};
+	//音の間隔の更新
+	AudioUpdate();
 	//移動
 	Move();
 	//ジャンプ
@@ -61,7 +62,7 @@ void Player::Draw(bool shadowFlag)
 	staging.Draw3D();
 	if (starStaging == false || moveFlag == false)
 	{
-		FbxDraw(shadowFlag);
+		pFbx.Draw(shadowFlag);
 	}
 }
 
@@ -113,10 +114,6 @@ void Player::StopAnimation()
 	pFbx.StopAnimation();
 }
 
-void Player::Delete()
-{
-	pFbx.Delete();
-}
 
 void Player::SpinAttack()
 {
@@ -171,10 +168,6 @@ void Player::AudioUpdate()
 	}
 }
 
-void Player::FbxDraw(bool shadowFlag)
-{
-	pFbx.Draw(shadowFlag);
-}
 
 //移動
 void Player::Move()
@@ -308,14 +301,14 @@ void Player::FallDie()
 	}
 	else if (dieType == EATDIE)
 	{
-		const int dieTime = 100;	//死んだときの演出時間
+		const int dieTime = 100;		//死んだときの演出時間
 		dieNowTime = dieTime;
 		dieType = DIENOW;
 		isFishDie = true;
 	}
 	else if (dieType == BOMBDIE)
 	{
-		const int dieTime = 50;		//死んだときの演出時間
+		const int dieTime = 50;			//死んだときの演出時間
 		dieNowTime = dieTime;
 		dieType = DIENOW;
 		pFbx.PlayFBX(FBXMAX);

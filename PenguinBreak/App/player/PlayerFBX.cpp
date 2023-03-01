@@ -10,47 +10,71 @@ PlayerFBX::~PlayerFBX()
 void PlayerFBX::Load()
 {
 	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2", "FBX/");
-	stopModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
-	electModel = FbxLoader::GetInstance()->LoadModelFromFile("penginElect", "FBX/");
-	goalJumpModel = FbxLoader::GetInstance()->LoadModelFromFile("goalJump", "FBX/");
-	goalHandModel = FbxLoader::GetInstance()->LoadModelFromFile("goalHand", "FBX/");
-	jumpModel = FbxLoader::GetInstance()->LoadModelFromFile("jumpFbx", "FBX/");
-	walkModel = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "FBX/");
-	spinModel = FbxLoader::GetInstance()->LoadModelFromFile("spinFbx", "FBX/");
+	Model* model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2", "FBX/");
+	fbxModel = std::make_unique<Model>();
+	fbxModel = std::unique_ptr<Model>(model1);
+
+	Model* model2 = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
+	stopModel = std::make_unique<Model>();
+	stopModel = std::unique_ptr<Model>(model2);
+
+	Model* model3 = FbxLoader::GetInstance()->LoadModelFromFile("penginElect", "FBX/");
+	electModel = std::make_unique<Model>();
+	electModel = std::unique_ptr<Model>(model3);
+
+	Model* model4 = FbxLoader::GetInstance()->LoadModelFromFile("goalJump", "FBX/");
+	goalJumpModel = std::make_unique<Model>();
+	goalJumpModel = std::unique_ptr<Model>(model4);
+
+	Model* model5 = FbxLoader::GetInstance()->LoadModelFromFile("goalHand", "FBX/");
+	goalHandModel = std::make_unique<Model>();
+	goalHandModel = std::unique_ptr<Model>(model5);
+
+	Model* model6 = FbxLoader::GetInstance()->LoadModelFromFile("jumpFbx", "FBX/");
+	jumpModel = std::make_unique<Model>();
+	jumpModel = std::unique_ptr<Model>(model6);
+ 
+	Model* model7 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "FBX/");
+	walkModel = std::make_unique<Model>();
+	walkModel = std::unique_ptr<Model>(model7);
+
+	Model* model8 = FbxLoader::GetInstance()->LoadModelFromFile("spinFbx", "FBX/");
+	spinModel = std::make_unique<Model>();
+	spinModel = std::unique_ptr<Model>(model8);
+  
 
 	//3Dオブジェクトの生成とモデルのセット
 	fbxObject1 = std::make_unique<FBXObject3d>();
 	fbxObject1->Initialize();
-	fbxObject1->SetModel(model1);
+	fbxObject1->SetModel(fbxModel.get());
 
 	stopFbx = std::make_unique<FBXObject3d>();
 	stopFbx->Initialize();
-	stopFbx->SetModel(stopModel);
+	stopFbx->SetModel(stopModel.get());
 
 	electFbx = std::make_unique<FBXObject3d>();
 	electFbx->Initialize();
-	electFbx->SetModel(electModel);
+	electFbx->SetModel(electModel.get());
 
 	goalJumpFbx = std::make_unique<FBXObject3d>();
 	goalJumpFbx->Initialize();
-	goalJumpFbx->SetModel(goalJumpModel);
+	goalJumpFbx->SetModel(goalJumpModel.get());
 
 	goalHandFbx = std::make_unique<FBXObject3d>();
 	goalHandFbx->Initialize();
-	goalHandFbx->SetModel(goalHandModel);
+	goalHandFbx->SetModel(goalHandModel.get());
 
 	jumpFbx = std::make_unique<FBXObject3d>();
 	jumpFbx->Initialize();
-	jumpFbx->SetModel(jumpModel);
+	jumpFbx->SetModel(jumpModel.get());
 
 	walkFbx = std::make_unique<FBXObject3d>();
 	walkFbx->Initialize();
-	walkFbx->SetModel(walkModel);
+	walkFbx->SetModel(walkModel.get());
 
 	spinFbx = std::make_unique<FBXObject3d>();
 	spinFbx->Initialize();
-	spinFbx->SetModel(spinModel);
+	spinFbx->SetModel(spinModel.get());
 }
 
 void PlayerFBX::Update(const Vec3& fbxPos, const Vec3& angle)
@@ -227,16 +251,4 @@ void PlayerFBX::StartAnimation()
 	jumpFbx->PlayAnimation(false);
 	walkFbx->PlayAnimation(true);
 	spinFbx->PlayAnimation(false);
-}
-
-void PlayerFBX::Delete()
-{
-	safe_delete(model1);
-	safe_delete(stopModel);
-	safe_delete(electModel);
-	safe_delete(goalJumpModel);
-	safe_delete(goalHandModel);
-	safe_delete(jumpModel);
-	safe_delete(walkModel);
-	safe_delete(spinModel);
 }

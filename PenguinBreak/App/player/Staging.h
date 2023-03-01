@@ -24,25 +24,45 @@ private://メンバ変数
 
 	int graph = 0;
 public://メンバ関数
-	//コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Staging();
-	//デスコンストラクタ
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~Staging();
-	//初期化処理
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
-	//更新処理
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
-	//描画処理
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
-	//3D描画
+	/// <summary>
+	/// 3D描画
+	/// </summary>
 	void Draw3D();
-	//感電死の生成処理
+	/// <summary>
+	/// 感電死の生成処理
+	/// </summary>
 	void CreateElect(const Vec3 pPos);
-	//歩くの生成処理
+	/// <summary>
+	/// 歩くパーティクルの生成処理
+	/// </summary>
 	void CreateWalk(const Vec3& pPos, const Vec3& vec);
-	//落下死
+	/// <summary>
+	/// 落下死のパーティクル生成処理
+	/// </summary>
 	void CreateFallDown(const Vec3& pPos);
-	//登場時の3Dパーティクル
+	/// <summary>
+	/// 登場時のパーティクル生成処理
+	/// </summary>
 	void CreateStart(const Vec3& pPos);
 };
 

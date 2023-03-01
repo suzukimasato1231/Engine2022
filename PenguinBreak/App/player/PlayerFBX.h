@@ -58,10 +58,6 @@ public:
 	/// </summary>
 	void Reset();
 	/// <summary>
-	/// メモリ削除
-	/// </summary>
-	void Delete();
-	/// <summary>
 	/// FBXを動かす
 	/// </summary>
 	/// <param name="fbxType">fbxタイプ</param>
@@ -78,30 +74,30 @@ private:
 	int fbxType = NULL;
 	int fbxFlag = 1;
 	//歩きFBX
-	Model* model1 = nullptr;
+	std::unique_ptr<Model> fbxModel = nullptr;
 	std::unique_ptr<FBXObject3d> fbxObject1;
 	//歩きFBX
-	Model* walkModel = nullptr;
+	std::unique_ptr<Model> walkModel = nullptr;
 	std::unique_ptr<FBXObject3d> walkFbx;
 	//停止FBX
-	Model* stopModel = nullptr;
+	std::unique_ptr<Model> stopModel = nullptr;
 	std::unique_ptr<FBXObject3d> stopFbx;
 	//スピンFBX
-	Model* spinModel = nullptr;
+	std::unique_ptr<Model> spinModel = nullptr;
 	std::unique_ptr<FBXObject3d> spinFbx;
 	const int spinTimeMax = 30;
 	int spinTime = 0;
 	//感電
-	Model* electModel = nullptr;
+	std::unique_ptr<Model> electModel = nullptr;
 	std::unique_ptr<FBXObject3d> electFbx;
 	//ゴール時の演出バク天
-	Model* goalJumpModel = nullptr;
+	std::unique_ptr<Model> goalJumpModel = nullptr;
 	std::unique_ptr<FBXObject3d> goalJumpFbx;
 	//ゴール時の演出ハンドサイン
-	Model* goalHandModel = nullptr;
+	std::unique_ptr<Model> goalHandModel = nullptr;
 	std::unique_ptr<FBXObject3d> goalHandFbx;
 	//ジャンプ時の演出ハンドサイン
-	Model* jumpModel = nullptr;
+	std::unique_ptr<Model> jumpModel = nullptr;
 	std::unique_ptr<FBXObject3d> jumpFbx;
 	const int jumpTimeMax = 30;
 	int jumpTime = 0;

@@ -2,8 +2,7 @@
 #include<Texture.h>
 Model::~Model()
 {
-	//fbxƒV[ƒ“‚Ì‰ð•ú
-	fbxScene->Destroy();
+
 }
 
 

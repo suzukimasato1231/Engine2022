@@ -97,13 +97,7 @@ public:
 	int GetDecLifeFlag() { return decLifeTime; }
 
 	void StopAnimation();
-
-	void Delete();
 private:
-	/// <summary>
-	/// FBXの描画
-	/// </summary>
-	void FbxDraw(bool shadowFlag);
 	/// <summary>
 	/// プレイヤー移動
 	/// </summary>
@@ -220,7 +214,7 @@ private:
 	int startTime = 0;
 
 	//死亡時の情報
-	const float fallPos = -30.0f;					//落下死の座標
+	const float fallPos = -30.0f;						//落下死の座標
 	//魚死亡時
 	Vec3 fishDiePos = {};
 	Vec3 fishDieAngle = {};

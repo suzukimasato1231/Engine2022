@@ -1,4 +1,4 @@
-#include "SceneManagerh.h"
+#include "SceneManager.h"
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
@@ -171,8 +171,6 @@ void SceneManagerh::Draw()
 
 void SceneManagerh::Delete()
 {
-	titleScene.Delete();
-	resultScene.Delete();
 	Object::Delete();
 }
 

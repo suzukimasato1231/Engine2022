@@ -12,6 +12,7 @@ std::vector<Object::OBJBuffer*> Object::OBJbuffer;
 
 Object::~Object()
 {
+	
 }
 
 void  Object::Init(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)

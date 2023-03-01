@@ -9,23 +9,25 @@
 TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
-{
-}
+{}
 void TitleScene::Initialize()
 {
-	box = Shape::CreateOBJ("cube");
+	//画像をロード
 	boxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
 	titleButtonGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/titleButton.png");
 	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title.png");
-
+	//オブジェクト読みこみ
 	wallObj = Shape::CreateOBJ("iceWall", false, "OBJ/");
 	floorObj = Shape::CreateOBJ("ice", false, "OBJ/");
-	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
+	box = Shape::CreateOBJ("cube");
+	Model* model1 = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
+	penginModel = std::make_unique<Model>();
+	penginModel = std::unique_ptr<Model>(model1);
 
 	//3Dオブジェクトの生成とモデルのセット
 	penginHandFbx = std::make_unique<FBXObject3d>();
 	penginHandFbx->Initialize();
-	penginHandFbx->SetModel(penginModel);
+	penginHandFbx->SetModel(penginModel.get());
 	penginHandFbx->SetScale(Vec3(0.015f, 0.015f, 0.015f));
 
 	// ライトグループクラス作成
@@ -41,12 +43,10 @@ void TitleScene::Initialize()
 void TitleScene::Init()
 {
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
-
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 
 	penginHandFbx->PlayAnimation(true);
-
 }
 
 void TitleScene::Update()
@@ -91,9 +91,4 @@ void TitleScene::ShadowDraw()
 		Vec3(0.0f, 10.0f, 0.0f), Vec2(), boxGraph);
 	Object::Draw(floorObj, wallPsr, Vec3(0.0f, -5.0f, 0.0f), Vec3(1000.0f, 1.0f, 1000.0f),
 		Vec3(), Vec2());
-}
-
-void TitleScene::Delete()
-{
-	safe_delete(penginModel);
 }

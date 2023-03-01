@@ -21,21 +21,40 @@ enum ChangeStatus
 class GameSceneManager
 {
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	GameSceneManager();
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~GameSceneManager();
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 
 	void Init(int stageNum);
-
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
-
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
-
+	/// <summary>
+	/// 影描画
+	/// </summary>
 	void ShadowDraw();
-
+	/// <summary>
+	/// 
+	/// </summary>
 	void SecondDraw();
-
+	/// <summary>
+	/// リセット
+	/// </summary>
+	/// <param name="stageNum">ステージ</param>
 	void Reset(int stageNum);
 public:
 	bool GetChangeScene() { return changeScene; }

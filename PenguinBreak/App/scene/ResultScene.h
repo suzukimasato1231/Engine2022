@@ -23,22 +23,27 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	ResultScene();
-
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~ResultScene();
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize();
-	//ループ初期化
-	void Init();
-	//更新
-	void Update();
-	//描画
-	void Draw(const int stageNum);
 	/// <summary>
-	/// 削除
+	/// ループ初期化
 	/// </summary>
-	void Delete();
+	void Init();
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="stageNum">ステージ</param>
+	void Draw(const int stageNum);
 	/// <summary>
 	/// 影描画
 	/// </summary>
@@ -52,7 +57,7 @@ private:
 	int resultTime = 0;
 
 	//ゴール時の演出ハンドサイン
-	Model* penginModel = nullptr;
+	std::unique_ptr<Model> penginModel;
 	std::unique_ptr<FBXObject3d> penginHandFbx;
 
 	PSR objectPsr = {};

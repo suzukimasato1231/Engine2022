@@ -32,12 +32,13 @@ void ResultScene::Initialize()
 	buttonGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/titleButton.png");
 
 
-	penginModel = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
-
+	Model* model1 = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
+	penginModel = std::make_unique<Model>();
+	penginModel = std::unique_ptr<Model>(model1);
 	//3Dオブジェクトの生成とモデルのセット
 	penginHandFbx = std::make_unique<FBXObject3d>();
 	penginHandFbx->Initialize();
-	penginHandFbx->SetModel(penginModel);
+	penginHandFbx->SetModel(penginModel.get());
 	penginHandFbx->SetScale(Vec3(0.015f, 0.015f, 0.015f));
 
 	fishObj = Shape::CreateOBJ("fish", false, "OBJ/");
@@ -170,11 +171,6 @@ void ResultScene::Draw(const int stageNum)
 	{
 		Sprite::Get()->Draw(buttonGraph, Vec2(420.0f, 632.0f), 512.0f, 64.0f);
 	}
-}
-
-void ResultScene::Delete()
-{
-	safe_delete(penginModel);
 }
 
 void ResultScene::ShadowDraw()

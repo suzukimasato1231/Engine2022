@@ -35,15 +35,15 @@ public:
 
 	void ChangeFlag() { isPointFlag = false; }
 private:
-	ObjectData dropPointOBJ = {};
+	ObjectData dropPointOBJ = {};					//‘«Œ³OBJ
 
-	int dropPointGraph = 0;
+	int dropPointGraph = 0;							//‘«Œ³‰æ‘œ
 
 	PSR dropPointPSR = {};
 
-	Vec3 position = {};
+	Vec3 position = {};								//À•W
 
-	bool isPointFlag = false;
+	bool isPointFlag = false;						
 
 	float groundDistance = 0.0f;
 };

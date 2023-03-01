@@ -47,7 +47,6 @@ public:
 	/// </summary>
 	/// <param name="modelName">モデル名</param>
 	Model *LoadModelFromFile(const string& modelName, const string &file = "");
-
 private:
 	// D3D12デバイス
 	ID3D12Device* device = nullptr;
@@ -59,13 +58,13 @@ private:
 	std::vector<std::vector<int>> controlPointsData_;
 
 private:
-	// privateなコンストラクタ（シングルトンパターン）
+	// privateなコンストラクタ
 	FbxLoader() = default;
-	// privateなデストラクタ（シングルトンパターン）
+	// privateなデストラクタ
 	~FbxLoader() = default;
-	// コピーコンストラクタを禁止（シングルトンパターン）
+	// コピーコンストラクタを禁止
 	FbxLoader(const FbxLoader& obj) = delete;
-	// コピー代入演算子を禁止（シングルトンパターン）
+	// コピー代入演算子を禁止
 	void operator=(const FbxLoader& obj) = delete;
 
 	/// <summary>

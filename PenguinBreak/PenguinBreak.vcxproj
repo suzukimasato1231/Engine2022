@@ -289,6 +289,11 @@
     <ClInclude Include="App\player\Player.h" />
     <ClInclude Include="App\player\PlayerFBX.h" />
     <ClInclude Include="App\player\Staging.h" />
+    <ClInclude Include="App\scene\GameSceneManager.h" />
+    <ClInclude Include="App\scene\ResultScene.h" />
+    <ClInclude Include="App\scene\SceneManager.h" />
+    <ClInclude Include="App\scene\StageSelect.h" />
+    <ClInclude Include="App\scene\TitleScene.h" />
     <ClInclude Include="App\stage\BlockBox.h" />
     <ClInclude Include="App\stage\DangerFish.h" />
     <ClInclude Include="App\stage\DropPoint.h" />
@@ -348,17 +353,17 @@
     <ClInclude Include="Library\Pipeline\Pipeline.h" />
     <ClInclude Include="Library\Pipeline\ShaderManager.h" />
     <ClInclude Include="Library\Texture\Texture.h" />
-    <ClInclude Include="Scene\GameSceneManager.h" />
-    <ClInclude Include="Scene\ResultScene.h" />
-    <ClInclude Include="Scene\SceneManagerh.h" />
-    <ClInclude Include="Scene\StageSelect.h" />
-    <ClInclude Include="Scene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\player\DecLifeStaging.cpp" />
     <ClCompile Include="App\player\Player.cpp" />
     <ClCompile Include="App\player\PlayerFBX.cpp" />
     <ClCompile Include="App\player\Staging.cpp" />
+    <ClCompile Include="App\scene\GameSceneManager.cpp" />
+    <ClCompile Include="App\scene\ResultScene.cpp" />
+    <ClCompile Include="App\scene\SceneManager.cpp" />
+    <ClCompile Include="App\scene\StageSelect.cpp" />
+    <ClCompile Include="App\scene\TitleScene.cpp" />
     <ClCompile Include="App\stage\BlockBox.cpp" />
     <ClCompile Include="App\stage\DangerFish.cpp" />
     <ClCompile Include="App\stage\DropPoint.cpp" />
@@ -410,11 +415,6 @@
     <ClCompile Include="Library\Pipeline\ShaderManager.cpp" />
     <ClCompile Include="Library\Texture\Texture.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Scene\GameSceneManager.cpp" />
-    <ClCompile Include="Scene\ResultScene.cpp" />
-    <ClCompile Include="Scene\SceneManagerh.cpp" />
-    <ClCompile Include="Scene\StageSelect.cpp" />
-    <ClCompile Include="Scene\TitleScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
