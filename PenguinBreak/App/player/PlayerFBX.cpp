@@ -53,63 +53,56 @@ void PlayerFBX::Load()
 	spinFbx->SetModel(spinModel);
 }
 
-void PlayerFBX::Update()
+void PlayerFBX::Update(const Vec3& fbxPos, const Vec3& angle)
 {
 	jumpTime--;
 	spinTime--;
+
+	//FBX試し
+	FBXObject3d* updateFbx = nullptr;
+	Vec3 updatePos = fbxPos;
+	Vec3 updateAngle = angle;
+	switch (fbxType)
+	{
+	case FbxNone:
+		updateFbx = stopFbx.get();
+		break;
+	case FbxWalk:
+		updateFbx = fbxObject1.get();
+		break;
+	case FbxElectDie:
+		updateFbx = electFbx.get();
+		break;
+	case FbxGoalJump:
+		updateFbx = goalJumpFbx.get();
+		break;
+	case FbxGoalHand:
+		updateFbx = goalHandFbx.get();
+		break;
+	case FbxJump:
+		updateFbx = jumpFbx.get();
+		break;
+	case FbxWalking:
+		updateFbx = walkFbx.get();
+		break;
+	case FbxSpin:
+		updateFbx = spinFbx.get();
+		updateAngle = Vec3(angle.x + 30.0f, angle.y, angle.z);
+		break;
+	default:
+		break;
+	}
+	if (updateFbx != nullptr)
+	{
+		updateFbx->SetPosition(updatePos);
+		updateFbx->SetRotation(updateAngle);
+		updateFbx->Update();
+	}
+
 }
 
-void PlayerFBX::Draw(const Vec3& fbxPos, const Vec3& angle, bool shadowFlag)
+void PlayerFBX::Draw(bool shadowFlag)
 {
-	//FBX試し
-	if (shadowFlag == false)
-	{
-		switch (fbxType)
-		{
-		case FbxNone:
-			stopFbx->SetPosition(fbxPos);
-			stopFbx->SetRotation(angle);
-			stopFbx->Update();
-			break;
-		case FbxWalk:
-			fbxObject1->SetPosition(fbxPos);
-			fbxObject1->SetRotation(angle);
-			fbxObject1->Update();
-			break;
-		case FbxElectDie:
-			electFbx->SetPosition(fbxPos);
-			electFbx->SetRotation(angle);
-			electFbx->Update();
-			break;
-		case FbxGoalJump:
-			goalJumpFbx->SetPosition(fbxPos);
-			goalJumpFbx->SetRotation(angle);
-			goalJumpFbx->Update();
-			break;
-		case FbxGoalHand:
-			goalHandFbx->SetPosition(fbxPos);
-			goalHandFbx->SetRotation(angle);
-			goalHandFbx->Update();
-			break;
-		case FbxJump:
-			jumpFbx->SetPosition(fbxPos);
-			jumpFbx->SetRotation(angle);
-			jumpFbx->Update();
-			break;
-		case FbxWalking:
-			walkFbx->SetPosition(fbxPos);
-			walkFbx->SetRotation(angle);
-			walkFbx->Update();
-			break;
-		case FbxSpin:
-			spinFbx->SetPosition(fbxPos);
-			spinFbx->SetRotation(Vec3(angle.x + 30.0f, angle.y, angle.z));
-			spinFbx->Update();
-			break;
-		default:
-			break;
-		}
-	}
 	switch (fbxType)
 	{
 	case FbxNone:
@@ -146,43 +139,29 @@ void PlayerFBX::Reset()
 	fbxType = FbxNone;
 }
 
-void PlayerFBX::Delete()
-{
-	safe_delete(model1);
-	safe_delete(stopModel);
-	safe_delete(electModel);
-	safe_delete(goalJumpModel);
-	safe_delete(goalHandModel);
-	safe_delete(jumpModel);
-	safe_delete(walkModel);
-	safe_delete(spinModel);
-}
+
 
 void PlayerFBX::PlayFBX(int fbxType)
 {
 	switch (fbxType)
 	{
 	case FbxNone:
-		if (jumpTime <= 0 && spinTime <= 0)
+		if (jumpTime > 0 || spinTime > 0) { break; }
+		if (fbxFlag != FbxLoopStop)
 		{
-			if (fbxFlag != FbxLoopStop)
-			{
-				fbxFlag = FbxLoopStop;
-				stopFbx->PlayAnimation(true);
-			}
-			this->fbxType = fbxType;
+			fbxFlag = FbxLoopStop;
+			stopFbx->PlayAnimation(true);
 		}
+		this->fbxType = fbxType;
 		break;
 	case FbxWalk:
-		if (jumpTime <= 0 && spinTime <= 0)
-		{
-			if (fbxFlag != FbxLoopRun)
-			{//アニメーション開始
-				fbxObject1->PlayAnimation(true);
-				fbxFlag = FbxLoopRun;
-			}
-			this->fbxType = fbxType;
+		if (jumpTime > 0 || spinTime > 0) { break; }
+		if (fbxFlag != FbxLoopRun)
+		{//アニメーション開始
+			fbxObject1->PlayAnimation(true);
+			fbxFlag = FbxLoopRun;
 		}
+		this->fbxType = fbxType;
 		break;
 	case FbxElectDie:
 		electFbx->PlayAnimation(false);
@@ -202,15 +181,13 @@ void PlayerFBX::PlayFBX(int fbxType)
 		this->fbxType = fbxType;
 		break;
 	case FbxWalking:
-		if (jumpTime <= 0 && spinTime <= 0)
+		if (jumpTime > 0 || spinTime > 0) { break; }
+		if (fbxFlag != FbxLoopWalk)
 		{
-			if (fbxFlag != FbxLoopWalk)
-			{
-				walkFbx->PlayAnimation(true);
-				fbxFlag = FbxLoopWalk;
-			}
-			this->fbxType = fbxType;
+			walkFbx->PlayAnimation(true);
+			fbxFlag = FbxLoopWalk;
 		}
+		this->fbxType = fbxType;
 		break;
 	case FbxSpin:
 		spinTime = spinTimeMax;
@@ -250,4 +227,16 @@ void PlayerFBX::StartAnimation()
 	jumpFbx->PlayAnimation(false);
 	walkFbx->PlayAnimation(true);
 	spinFbx->PlayAnimation(false);
+}
+
+void PlayerFBX::Delete()
+{
+	safe_delete(model1);
+	safe_delete(stopModel);
+	safe_delete(electModel);
+	safe_delete(goalJumpModel);
+	safe_delete(goalHandModel);
+	safe_delete(jumpModel);
+	safe_delete(walkModel);
+	safe_delete(spinModel);
 }

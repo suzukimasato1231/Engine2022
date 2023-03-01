@@ -45,14 +45,14 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(const Vec3& fbxPos, const Vec3& angle);
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="fbxPos">座標</param>
 	/// <param name="angle">角度</param>
 	/// <param name="shadowFlag">シャドウフラグ</param>
-	void Draw(const Vec3& fbxPos, const Vec3& angle, bool shadowFlag);
+	void Draw(bool shadowFlag);
 	/// <summary>
 	/// リセット
 	/// </summary>

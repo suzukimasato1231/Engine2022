@@ -95,6 +95,7 @@ public:
 	std::vector<Bone>& GetBones() { return bones; }
 	//デスクリプタ
 	~Model();
+
 private:
 	// モデル名
 	std::string name;

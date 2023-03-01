@@ -73,26 +73,6 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	}
 }
 
-StageOBJ BlockBox::SetBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type)
-{
-	StageOBJ stageObj = {};
-	stageObj.map = { static_cast<float>(map.x),static_cast<float>(map.y) };
-	stageObj.position = position;
-	stageObj.scale = scale;
-	stageObj.angle = angle;
-	stageObj.box.maxPosition = XMVectorSet(
-		position.x + scale.x / 2,
-		position.y + scale.y / 2,
-		position.z + scale.z / 2, 1);
-	stageObj.box.minPosition = XMVectorSet(
-		position.x - scale.x / 2,
-		position.y - scale.y / 2,
-		position.z - scale.z / 2, 1);
-	stageObj.type = type;
-	return stageObj;
-}
-
-
 void BlockBox::Update()
 {
 	is_hit = false;

@@ -21,8 +21,6 @@ public:
 	void Update();
 
 	void Draw(StageOBJ* stageObj, bool shadowFlag);
-
-	static StageOBJ SetBox(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type);
 public:
 	StageOBJ* GetObj_Data() { return obj_data; }
 

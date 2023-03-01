@@ -88,8 +88,6 @@ public:
 
 	void DieType(int type) { if (dieType != DIENOW) { Player::dieType = type; } }
 
-	void Delete();
-
 	void FishDie(const Vec3& pos, const Vec3& angle) { fishDiePos = pos, this->fishDieAngle, angle; }
 	//ƒS[ƒ‹‚Ì‰‰o
 	void GoalStaging(int fbxType);
@@ -99,6 +97,8 @@ public:
 	int GetDecLifeFlag() { return decLifeTime; }
 
 	void StopAnimation();
+
+	void Delete();
 private:
 	/// <summary>
 	/// FBX‚Ì•`‰æ

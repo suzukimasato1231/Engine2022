@@ -6,6 +6,7 @@ Model::~Model()
 	fbxScene->Destroy();
 }
 
+
 void Model::CreateBuffers(ID3D12Device* device)
 {
 	HRESULT result;
@@ -72,7 +73,7 @@ void Model::CreateBuffers(ID3D12Device* device)
 	textureNum = Texture::Get()->FbxLoadTexture(img, texresDesc);
 }
 
-void Model::Draw(ID3D12GraphicsCommandList* cmdList,bool shadowFlag)
+void Model::Draw(ID3D12GraphicsCommandList* cmdList, bool shadowFlag)
 {
 	// 頂点バッファをセット(VBV)
 	cmdList->IASetVertexBuffers(0, 1, &vbView);

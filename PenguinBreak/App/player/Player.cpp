@@ -50,7 +50,8 @@ void Player::Update()
 
 	RedFishDie();
 
-	pFbx.Update();
+	Vec3 fbxPos = { oldPosition.x, oldPosition.y - 2.0f, oldPosition.z };
+	pFbx.Update(fbxPos,angle);
 
 	AnimationUpdate();
 }
@@ -101,11 +102,6 @@ void Player::Reset()
 	}
 }
 
-void Player::Delete()
-{
-	pFbx.Delete();
-}
-
 void Player::GoalStaging(int fbxType)
 {
 	angle.y = 180.0f;
@@ -115,6 +111,11 @@ void Player::GoalStaging(int fbxType)
 void Player::StopAnimation()
 {
 	pFbx.StopAnimation();
+}
+
+void Player::Delete()
+{
+	pFbx.Delete();
 }
 
 void Player::SpinAttack()
@@ -172,9 +173,7 @@ void Player::AudioUpdate()
 
 void Player::FbxDraw(bool shadowFlag)
 {
-	Vec3 fbxPos = { position.x, position.y - 2.0f, position.z };
-
-	pFbx.Draw(fbxPos, angle, shadowFlag);
+	pFbx.Draw(shadowFlag);
 }
 
 //ˆÚ“®
