@@ -33,6 +33,8 @@ enum StageType
 	DEADTREE = 30,		//ŒÍ‚ê–Ø
 	STLON = 31,			//Šâ
 	ICEARCH = 32,		//•X‚ÌƒA[ƒ`
+	SIGNBOARD1 = 40,		//ŠÅ”Â
+	SIGNBOARD2 = 41,		//ŠÅ”Â
 };
 struct Floor
 {

@@ -29,6 +29,10 @@ private:
 	ObjectData stone;
 	//氷のアーチ
 	ObjectData iceArch;
+	//看板
+	ObjectData signboard;
+	int tutorialGraph[2] = {};
+	int tutorialNum = 40;		//チュートリアルの基本値
 
 };
 

@@ -94,7 +94,7 @@ void Stage::Update(const Vec3& pPos)
 		case BOXBOMB:
 			blockBox.PlayerHit(s, X, Z);
 			blockBox.PlayerSpinHit(s, X, Z);
-			if (s->type != Wall || s->type != DEADTREE || s->type != BarrierWall)
+			if (!(s->type == Wall || s->type == DEADTREE || s->type == BarrierWall))
 			{
 				dropPoint.Update(PPos, s->position,
 					s->angle, s->scale);
@@ -265,6 +265,8 @@ void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 			case DEADTREE:
 			case STLON:
 			case ICEARCH:
+			case SIGNBOARD1:
+			case SIGNBOARD2:
 				figurineOBJ.Draw(s, shadowFlag);
 				break;
 			case  Goal:
@@ -363,14 +365,6 @@ void Stage::LoadStage(int stageNum)
 		//OBJ
 		FilepathOBJ = "OBJTitle3.csv";
 		FilepathOBJPos = "Obj_TitlePos3.csv";
-		break;
-	case 4:
-		//Floor
-		FilepathFloor = "Floor_Title4.csv";
-		FilepathFloorPos = "Floor_TitlePos4.csv";
-		//OBJ
-		FilepathOBJ = "OBJTitle4.csv";
-		FilepathOBJPos = "Obj_TitlePos4.csv";
 		break;
 	default:
 		break;
@@ -499,6 +493,8 @@ void Stage::LoadStage(int stageNum)
 			case DEADTREE:
 			case STLON:
 			case ICEARCH:
+			case SIGNBOARD1:
+			case SIGNBOARD2:
 				SetObject(Vec3(map.x * mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * mapSize),
 					wallScale, Vec3(), map, MapOBJ[y][x]);
 				break;
