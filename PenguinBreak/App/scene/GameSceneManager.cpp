@@ -129,13 +129,13 @@ void GameSceneManager::Update()
 			changeScene = true;
 			Audio::Get()->SoundSEPlayWave(decisionSE);
 		}
-		if (changeNum > 2)
+		if (changeNum > GameOverSelect)
 		{
-			changeNum = 1;
+			changeNum = GameOverRetry;
 		}
-		else if (changeNum < 1)
+		else if (changeNum < GameOverRetry)
 		{
-			changeNum = 2;
+			changeNum = GameOverSelect;
 		}
 	}
 	ui.Update(Player::Get()->GetFishNum(), Stage::Get()->GetClearFlag(), changeScene, changeNum);

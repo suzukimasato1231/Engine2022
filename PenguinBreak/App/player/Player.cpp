@@ -361,12 +361,12 @@ void Player::Fish()
 	}
 	if (fishFlag == true)
 	{
-		fishNum += 5;
+		fishNum += fishPlas;
 		fishFlag = false;
 		//100ŒÂW‚Ü‚Á‚½‚çŽc‹@‚P‚Â‘‚¦‚é
-		if (fishNum >= 100)
+		if (fishNum >= fishMax)
 		{
-			fishNum -= 100;
+			fishNum -= fishMax;
 			remainLives++;
 		}
 	}

@@ -10,7 +10,6 @@ void BlockBox::Init()
 	hardBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Hard.png");
 	jumpBoxgraph = Texture::Get()->LoadTexture(L"Resources/cube/jumpBox.png");
 	bombBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/bomb.png");
-
 }
 
 void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
@@ -67,9 +66,43 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 			stageObj->angle, Vec2(), hardBoxGraph, shadowFlag);
 		break;
 	case BOXBOMB:
-		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec2(),bombBoxGraph, shadowFlag);
+		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position + bombPlas, stageObj->scale,
+			bombBoxAngle, Vec2(), bombBoxGraph, shadowFlag);
 		break;
+	}
+}
+
+void BlockBox::BombUpdate()
+{
+	//爆弾箱の演出
+	bombTime++;
+	if (bombBoxFlag == true)
+	{
+		bombBoxAngle += bombSpeedAngle;
+		//爆弾が跳ねる処理
+		if (bombTime >= bombTimeMax / 2)
+		{
+			bombPlas -= bombPlasSpeed;
+		}
+		else
+		{
+			bombPlas += bombPlasSpeed;
+		}
+		//演出終わり
+		if (bombTime >= bombTimeMax)
+		{
+			bombBoxFlag = false;
+			bombTime = {};
+		}
+	}
+	else
+	{	//演出はじめ
+		if (bombTime >= bombTimeMax)
+		{
+			bombBoxFlag = true;
+			bombTime = {};
+			bombPlas = {};
+		}
 	}
 }
 
@@ -84,4 +117,7 @@ void BlockBox::Update()
 		obj_data[i] = {};
 		obj_spin[i] = {};
 	}
+	//爆弾処理の更新
+	BombUpdate();
 }
+

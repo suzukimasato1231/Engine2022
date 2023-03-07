@@ -20,6 +20,13 @@ enum ChangeStatus
 /// </summary>
 class GameSceneManager
 {
+private:
+	//ゲームオーバーセレクト
+	enum GameOverSelect
+	{
+		GameOverSelect = 1,
+		GameOverRetry,
+	};
 public:
 	/// <summary>
 	/// コンストラクタ

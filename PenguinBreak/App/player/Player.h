@@ -200,6 +200,8 @@ private:
 	//魚
 	bool fishFlag = false;								//魚を獲得したか								
 	int fishNum = 0;									//魚獲得数
+	const int fishMax = 100;							//最大獲得数
+	const int fishPlas = 5;								//一回の獲得数
 
 	//プレイヤー演出
 	Staging staging;									//演出クラス
