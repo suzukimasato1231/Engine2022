@@ -2,6 +2,9 @@
 #include"Shape.h"
 #include <LoadCSV.h>
 #include"PushCollision.h"
+#include<string>
+
+using namespace std;
 Stage::Stage()
 {}
 
@@ -77,9 +80,9 @@ void Stage::Update(const Vec3& pPos)
 
 	boxStaring.Update();
 
-	for (int i = 0; i < stageObj.size(); i++)
+	for (auto& s : stageObj)
 	{
-		switch (stageObj[i]->type)
+		switch (s->type)
 		{
 		case Wall:
 		case BarrierWall:
@@ -89,19 +92,19 @@ void Stage::Update(const Vec3& pPos)
 		case BOXJUMP:
 		case BOXHARD:
 		case BOXBOMB:
-			blockBox.PlayerHit(stageObj[i], X, Z);
-			blockBox.PlayerSpinHit(stageObj[i], X, Z);
-			if (stageObj[i]->type != Wall || stageObj[i]->type != DEADTREE || stageObj[i]->type != BarrierWall)
+			blockBox.PlayerHit(s, X, Z);
+			blockBox.PlayerSpinHit(s, X, Z);
+			if (s->type != Wall || s->type != DEADTREE || s->type != BarrierWall)
 			{
-				dropPoint.Update(PPos, stageObj[i]->position,
-					stageObj[i]->angle, stageObj[i]->scale);
+				dropPoint.Update(PPos, s->position,
+					s->angle, s->scale);
 			}
 			break;
 		case Goal:
-			if ((X - 1 <= stageObj[i]->map.x && stageObj[i]->map.x <= X + 1)
-				&& ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
+			if ((X - 1 <= s->map.x && s->map.x <= X + 1)
+				&& ((MAP_HEIGHT - 1 + Z) - 1 <= s->map.y && s->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
 			{
-				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
+				if (Collision::CheckBox2Box(s->box, Player::Get()->GetBox()))
 				{
 					//ゴール
 					goalFlag = true;
@@ -115,18 +118,18 @@ void Stage::Update(const Vec3& pPos)
 			goalFish.Update();
 			break;
 		case ELECTRICITY:
-			elect.Update(stageObj[i], Z);
+			elect.Update(s, Z);
 			break;
 		case FISHATTACK:
-			if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj[i]->map.y && stageObj[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 1)
+			if ((MAP_HEIGHT - 1 + Z) - 1 <= s->map.y && s->map.y <= (MAP_HEIGHT - 1 + Z) + 1)
 			{
-				if (Collision::CheckBox2Box(stageObj[i]->box, Player::Get()->GetBox()))
+				if (Collision::CheckBox2Box(s->box, Player::Get()->GetBox()))
 				{
 					Player::Get()->DieType(EATDIE);
-					Player::Get()->FishDie(stageObj[i]->actionPos, dangerFish.GetFishAngle());
+					Player::Get()->FishDie(s->actionPos, dangerFish.GetFishAngle());
 				}
 			}
-			dangerFish.Update(stageObj[i]);
+			dangerFish.Update(s);
 			break;
 		default:
 			break;
@@ -142,52 +145,52 @@ void Stage::Update(const Vec3& pPos)
 
 	dangerFish.AllUpdate();
 	//床
-	for (int i = 0; i < floor.size(); i++)
+	for (auto f : floor)
 	{
-		switch (floor[i]->type)
+		switch (f->type)
 		{
 		case FloorNormal:
-			dropPoint.Update(PPos, floor[i]->position,
-				floor[i]->angle, floor[i]->scale);
+			dropPoint.Update(PPos, f->position,
+				f->angle, f->scale);
 		case Floor11:
 		case Floor169:
-			if ((X - 1 <= floor[i]->map.x && floor[i]->map.x <= X + 1)
-				&& ((MAP_HEIGHT - 1 + Z) - 100 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 100)
+			if ((X - 1 <= f->map.x && f->map.x <= X + 1)
+				&& ((MAP_HEIGHT - 1 + Z) - 100 <= f->map.y && f->map.y <= (MAP_HEIGHT - 1 + Z) + 100)
 				&& Player::Get()->GetIsFishDie() == false)
 			{
 				//プレイヤー
-				PushCollision::Player2Floor(floor[i]->position,
-					floor[i]->angle, floor[i]->scale);
+				PushCollision::Player2Floor(f->position,
+					f->angle, f->scale);
 			}
 			break;
 		case FloorMove:
-			if ((X - 3 <= floor[i]->map.x && floor[i]->map.x <= X + 3)
-				&& ((MAP_HEIGHT - 1 + Z) - 4 <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
+			if ((X - 3 <= f->map.x && f->map.x <= X + 3)
+				&& ((MAP_HEIGHT - 1 + Z) - 4 <= f->map.y && f->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
 				&& Player::Get()->GetIsFishDie() == false)
 			{
 				//プレイヤー
-				PushCollision::Player2Floor(floor[i]->position,
-					floor[i]->angle, floor[i]->scale, floor[i]->moveFlag);
-				dropPoint.Update(PPos, floor[i]->position,
-					floor[i]->angle, floor[i]->scale);
+				PushCollision::Player2Floor(f->position,
+					f->angle, f->scale, f->moveFlag);
+				dropPoint.Update(PPos, f->position,
+					f->angle, f->scale);
 
 			}
-			moveFloor.Update(floor[i]);
+			moveFloor.Update(f);
 			break;
 		case FloorPitfall_A:
 		case FloorPitfall_B:
-			if (((MAP_HEIGHT - 1 + Z) - drawNumY <= floor[i]->map.y && floor[i]->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
+			if (((MAP_HEIGHT - 1 + Z) - drawNumY <= f->map.y && f->map.y <= (MAP_HEIGHT - 1 + Z) + 4)
 				&& Player::Get()->GetIsFishDie() == false)
 			{
-				if (floor[i]->moveFlag == 0)
+				if (f->moveFlag == 0)
 				{
-					PushCollision::Player2Floor(floor[i]->position,
-						floor[i]->angle, floor[i]->scale);
-					dropPoint.Update(PPos, floor[i]->position,
-						floor[i]->angle, floor[i]->scale);
+					PushCollision::Player2Floor(f->position,
+						f->angle, f->scale);
+					dropPoint.Update(PPos, f->position,
+						f->angle, f->scale);
 				}
 			}
-			floorPitfall.Update(floor[i]);
+			floorPitfall.Update(f);
 			break;
 		default:
 			break;
@@ -202,49 +205,48 @@ void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 	Vec3 PPos = pPos;
 	//判定する箇所だけ行うため
 	int Z = static_cast<int>(PPos.z / (-mapSize));
-	size_t floorSize = floor.size();
 	static const int floorNormalMax = (MAP_HEIGHT - 1 + Z) - 100;
 	static const int stageMin = (MAP_HEIGHT - 1 + Z) + 6;
 	//床の描画
-	for (size_t i = 0; i < floorSize; i++)
+	for (auto f : floor)
 	{
-		switch (floor[i]->type)
+		switch (f->type)
 		{
 		case FloorNormal:
-			if (floorNormalMax <= floor[i]->map.y && floor[i]->map.y <= stageMin)
+			if (floorNormalMax <= f->map.y && f->map.y <= stageMin)
 			{
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 20.0f, floor[i]->position.z),
-					Vec3(25.0f, 40.0f, 25.0f * (floor[i]->size + 1)),
-					floor[i]->angle, Vec2(), 0, shadowFlag);
+				Object::Draw(floorOBJ, f->psr, Vec3(f->position.x, f->position.y - 20.0f, f->position.z),
+					Vec3(25.0f, 40.0f, 25.0f * (f->size + 1)),
+					f->angle, Vec2(), 0, shadowFlag);
 			}
 			break;
 		case Floor169:
-			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= f->map.y && f->map.y <= stageMin)
 			{
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z + 9.5f),
+				Object::Draw(floorOBJ, f->psr, Vec3(f->position.x, f->position.y - 12.0f, f->position.z + 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f * 2),
-					floor[i]->angle, Vec2(), floorGraph, shadowFlag);
+					f->angle, Vec2(), floorGraph, shadowFlag);
 			}
 			break;
 		case Floor11:
-			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= f->map.y && f->map.y <= stageMin)
 			{
-				Object::Draw(floorOBJ, floor[i]->psr, Vec3(floor[i]->position.x, floor[i]->position.y - 12.0f, floor[i]->position.z - 9.5f),
+				Object::Draw(floorOBJ, f->psr, Vec3(f->position.x, f->position.y - 12.0f, f->position.z - 9.5f),
 					Vec3(25.0f, 30.0f, 32.1f),
-					floor[i]->angle, Vec2(), floorGraph, shadowFlag);
+					f->angle, Vec2(), floorGraph, shadowFlag);
 			}
 			break;
 		case FloorMove:
-			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= f->map.y && f->map.y <= stageMin)
 			{
-				moveFloor.Draw(floor[i], shadowFlag);
+				moveFloor.Draw(f, shadowFlag);
 			}
 			break;
 		case FloorPitfall_A:
 		case FloorPitfall_B:
-			if ((MAP_HEIGHT - 1 + Z) - 50 <= floor[i]->map.y && floor[i]->map.y <= stageMin)
+			if ((MAP_HEIGHT - 1 + Z) - 50 <= f->map.y && f->map.y <= stageMin)
 			{
-				floorPitfall.Draw(floor[i], shadowFlag);
+				floorPitfall.Draw(f, shadowFlag);
 			}
 			break;
 		default:
@@ -252,34 +254,33 @@ void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 		}
 
 	}
-	size_t stageObjSize = stageObj.size();
 	//オブジェクト描画
-	for (int i = 0; i < stageObjSize; i++)
+	for (auto s : stageObj)
 	{
-		if ((MAP_HEIGHT - 1 + Z) - drawNumY <= stageObj[i]->map.y && stageObj[i]->map.y <= stageMin)
+		if ((MAP_HEIGHT - 1 + Z) - drawNumY <= s->map.y && s->map.y <= stageMin)
 		{
-			switch (stageObj[i]->type)
+			switch (s->type)
 			{
 			case Wall:
 			case DEADTREE:
 			case STLON:
 			case ICEARCH:
-				figurineOBJ.Draw(stageObj[i], shadowFlag);
+				figurineOBJ.Draw(s, shadowFlag);
 				break;
 			case  Goal:
-				goalFish.Draw(stageObj[i], shadowFlag);
+				goalFish.Draw(s, shadowFlag);
 				break;
 			case BOX:
 			case BOXJUMP:
 			case BOXHARD:
 			case BOXBOMB:
-				blockBox.Draw(stageObj[i], shadowFlag);
+				blockBox.Draw(s, shadowFlag);
 				break;
 			case ELECTRICITY:
-				elect.Draw(stageObj[i], shadowFlag);
+				elect.Draw(s, shadowFlag);
 				break;
 			case FISHATTACK:
-				dangerFish.Draw(stageObj[i], shadowFlag);
+				dangerFish.Draw(s, shadowFlag);
 				break;
 			default:
 				break;
@@ -324,66 +325,68 @@ void Stage::LoadStage(int stageNum)
 		delete stageObj[i];
 		stageObj.erase(stageObj.begin() + i);
 	}
-	char* FilepathFloor = "";
-	char* FilepathFloorPos = "";
-	char* FilepathOBJ = "";
-	char* FilepathOBJPos = "";
+	const string basePath = "Resources/map/";
+	string FilepathFloor = "";
+	string FilepathFloorPos = "";
+	string FilepathOBJ = "";
+	string FilepathOBJPos = "";
 	switch (stageNum)
 	{
 	case 0:
 		//Floor
-		FilepathFloor = (char*)"Resources/map/selectFloor.csv";
-		FilepathFloorPos = (char*)"Resources/map/selectTitlePos.csv";
+		FilepathFloor = "selectFloor.csv";
+		FilepathFloorPos = "Resources/map/selectTitlePos.csv";
 		//OBJ
-		FilepathOBJ = (char*)"Resources/map/selectObj.csv";
-		FilepathOBJPos = (char*)"Resources/map/selectObjPos.csv";
+		FilepathOBJ = "selectObj.csv";
+		FilepathOBJPos = "selectObjPos.csv";
 		break;
 	case 1:
 		//Floor
-		FilepathFloor = (char*)"Resources/map/Floor_Title1.csv";
-		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos1.csv";
+		FilepathFloor = "Floor_Title1.csv";
+		FilepathFloorPos = "Floor_TitlePos1.csv";
 		//OBJ
-		FilepathOBJ = (char*)"Resources/map/OBJTitle1.csv";
-		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos1.csv";
+		FilepathOBJ = "OBJTitle1.csv";
+		FilepathOBJPos = "Obj_TitlePos1.csv";
 		break;
 	case 2:
 		//Floor
-		FilepathFloor = (char*)"Resources/map/Floor_Title2.csv";
-		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos2.csv";
+		FilepathFloor = "Floor_Title2.csv";
+		FilepathFloorPos = "Floor_TitlePos2.csv";
 		//OBJ
-		FilepathOBJ = (char*)"Resources/map/OBJTitle2.csv";
-		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos2.csv";
+		FilepathOBJ = "OBJTitle2.csv";
+		FilepathOBJPos = "Obj_TitlePos2.csv";
 		break;
 	case 3:
 		//Floor
-		FilepathFloor = (char*)"Resources/map/Floor_Title3.csv";
-		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos3.csv";
+		FilepathFloor = "Floor_Title3.csv";
+		FilepathFloorPos = "Floor_TitlePos3.csv";
 		//OBJ
-		FilepathOBJ = (char*)"Resources/map/OBJTitle3.csv";
-		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos3.csv";
+		FilepathOBJ = "OBJTitle3.csv";
+		FilepathOBJPos = "Obj_TitlePos3.csv";
 		break;
 	case 4:
 		//Floor
-		FilepathFloor = (char*)"Resources/map/Floor_Title4.csv";
-		FilepathFloorPos = (char*)"Resources/map/Floor_TitlePos4.csv";
+		FilepathFloor = "Floor_Title4.csv";
+		FilepathFloorPos = "Floor_TitlePos4.csv";
 		//OBJ
-		FilepathOBJ = (char*)"Resources/map/OBJTitle4.csv";
-		FilepathOBJPos = (char*)"Resources/map/Obj_TitlePos4.csv";
+		FilepathOBJ = "OBJTitle4.csv";
+		FilepathOBJPos = "Obj_TitlePos4.csv";
 		break;
 	default:
 		break;
 	}
+
 	////ブロック
 	int	Map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
 	int MapPos[MAP_HEIGHT][MAP_WIDTH] = {};
 
 	int MapOBJ[MAP_HEIGHT][MAP_WIDTH] = {};		//壁などのOBJ
 	int MapOBJPos[MAP_HEIGHT][MAP_WIDTH] = {};	//壁などのOBJの座標
-	LoadCSV(Map, FilepathFloor);
-	LoadCSV(MapPos, FilepathFloorPos);
+	LoadCSV(Map, basePath + FilepathFloor);
+	LoadCSV(MapPos, basePath + FilepathFloorPos);
 
-	LoadCSV(MapOBJ, FilepathOBJ);
-	LoadCSV(MapOBJPos, FilepathOBJPos);
+	LoadCSV(MapOBJ, basePath + FilepathOBJ);
+	LoadCSV(MapOBJPos, basePath + FilepathOBJPos);
 
 	for (size_t y = 0; y < MAP_HEIGHT; y++)
 	{
@@ -421,7 +424,7 @@ void Stage::LoadStage(int stageNum)
 				break;
 			case FloorMove:
 				SetMoveFloor(Vec3(map.x * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map,FloorMove);
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map, FloorMove);
 				break;
 			case FloorPitfall_A:
 				SetPitfallFloor(Vec3(map.x * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
@@ -433,7 +436,7 @@ void Stage::LoadStage(int stageNum)
 				break;
 			case FloorMove2:
 				SetMoveFloor(Vec3(map.x * mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map,FloorMove2);
+					Vec3(25.0f, 1.0f, 25.0f), Vec3(), map, FloorMove2);
 				break;
 			default:
 				break;

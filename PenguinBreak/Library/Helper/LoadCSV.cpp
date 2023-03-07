@@ -1,7 +1,7 @@
 #include "LoadCSV.h"
 #include <stdio.h>
 
-int LoadCSV(int map[MAP_HEIGHT][MAP_WIDTH], const char *FilePath, int LoadStopNumber)
+int LoadCSV(int map[MAP_HEIGHT][MAP_WIDTH], const std::string &FilePath, int LoadStopNumber)
 {
 	if (map == nullptr)
 	{//‚È‚©‚Á‚½‚ç–ß‚·
@@ -21,7 +21,7 @@ int LoadCSV(int map[MAP_HEIGHT][MAP_WIDTH], const char *FilePath, int LoadStopNu
 	errno_t err;
 	char string[256] = { 0 };
 
-	err = fopen_s(&fileHandle, FilePath, "r");
+	err = fopen_s(&fileHandle, FilePath.c_str(), "r");
 	if (err != 0)
 	{
 		return err;
@@ -88,7 +88,7 @@ int LoadCSV(int map[MAP_HEIGHT][MAP_WIDTH], const char *FilePath, int LoadStopNu
 	return 0;
 }
 
-int LoadCSV1D(int *mapArray, const size_t &mapSize, const char *FilePath, int LoadStopNumber)
+int LoadCSV1D(int *mapArray, const size_t &mapSize, const std::string& FilePath, int LoadStopNumber)
 {
 	for (size_t i = 0; i < mapSize; i++)
 	{
@@ -100,7 +100,7 @@ int LoadCSV1D(int *mapArray, const size_t &mapSize, const char *FilePath, int Lo
 	char string[256] = { 0 };
 	int index = 0;
 
-	err = fopen_s(&fileHandle, FilePath, "r");
+	err = fopen_s(&fileHandle, FilePath.c_str(), "r");
 	if (err != 0)
 	{
 		return err;
