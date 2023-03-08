@@ -289,7 +289,7 @@
     <ClInclude Include="App\player\Player.h" />
     <ClInclude Include="App\player\PlayerFBX.h" />
     <ClInclude Include="App\player\Staging.h" />
-    <ClInclude Include="App\scene\GameSceneManager.h" />
+    <ClInclude Include="App\scene\GameScene.h" />
     <ClInclude Include="App\scene\ResultScene.h" />
     <ClInclude Include="App\scene\SceneManager.h" />
     <ClInclude Include="App\scene\StageSelect.h" />
@@ -359,7 +359,7 @@
     <ClCompile Include="App\player\Player.cpp" />
     <ClCompile Include="App\player\PlayerFBX.cpp" />
     <ClCompile Include="App\player\Staging.cpp" />
-    <ClCompile Include="App\scene\GameSceneManager.cpp" />
+    <ClCompile Include="App\scene\GameScene.cpp" />
     <ClCompile Include="App\scene\ResultScene.cpp" />
     <ClCompile Include="App\scene\SceneManager.cpp" />
     <ClCompile Include="App\scene\StageSelect.cpp" />

@@ -33,18 +33,18 @@ public:
 	/// <param name="pPos">À•W</param>
 	void Draw(const Vec3 &pPos);
 
-	void ChangeFlag() { isPointFlag = false; }
+	void ChangeFlag() { m_isPointFlag = false; }
 private:
-	ObjectData dropPointOBJ = {};					//‘«Œ³OBJ
+	ObjectData  m_dropPointOBJ = {};					//‘«Œ³OBJ
 
-	int dropPointGraph = 0;							//‘«Œ³‰æ‘œ
+	int  m_dropPointGraph = 0;							//‘«Œ³‰æ‘œ
 
-	PSR dropPointPSR = {};
+	PSR  m_dropPointPSR = {};
 
-	Vec3 position = {};								//À•W
+	Vec3  m_position = {};								//À•W
 
-	bool isPointFlag = false;						
+	bool  m_isPointFlag = false;
 
-	float groundDistance = 0.0f;
+	float  m_groundDistance = 0.0f;
 };
 

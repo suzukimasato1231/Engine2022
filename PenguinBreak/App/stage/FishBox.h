@@ -16,9 +16,13 @@ private:
 		PSR psr = {};
 	};
 public:
-
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	FishBox();
-
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~FishBox();
 	//初期化処理
 	void Init();

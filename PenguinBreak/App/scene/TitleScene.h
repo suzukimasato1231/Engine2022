@@ -44,23 +44,23 @@ public:
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 private://定義
-	ObjectData box;								//箱OBJ
-	PSR boxPsr = {};							//箱PSR保存
-	int boxGraph;								//箱画像
+	ObjectData  m_box;								//箱OBJ
+	PSR  m_boxPsr = {};							//箱PSR保存
+	int  m_boxGraph;								//箱画像
 
 	//ゴール時の演出ハンドサイン
-	std::unique_ptr<Model>penginModel;			//ペンギンモデル
-	std::unique_ptr<FBXObject3d> penginHandFbx;	//ペンギンFBX
+	std::unique_ptr<Model> m_penginModel;			//ペンギンモデル
+	std::unique_ptr<FBXObject3d>  m_penginHandFbx;	//ペンギンFBX
 
-	ObjectData wallObj;							//壁OBJ
-	PSR wallPsr;								//影PSR保存
+	ObjectData  m_wallObj;							//壁OBJ
+	PSR  m_wallPsr;								//影PSR保存
 		
-	ObjectData floorObj;						//床OBJ
+	ObjectData  m_floorObj;						//床OBJ
 
 	//UI
-	SpriteData titleGraph;						//タイトル画像
-	SpriteData titleButtonGraph;				//ボタン画像
-	int buttonTime = 0;							//ボタン点滅
+	SpriteData  m_titleGraph;						//タイトル画像
+	SpriteData  m_titleButtonGraph;				//ボタン画像
+	int  m_buttonTime = 0;							//ボタン点滅
 };
 
 

@@ -20,7 +20,7 @@ enum PipelineType
 /// <summary>
 /// パイプラインクラス
 /// </summary>
-class Pipeline :public ShaderManager
+class Pipeline
 {
 public:
 	//構造体

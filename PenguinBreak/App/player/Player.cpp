@@ -11,25 +11,25 @@ Player::~Player()
 
 void Player::Init()
 {
-	oldPosition = position;
-	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
-	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+	m_oldPosition = m_position;
+	m_pBox.maxPosition = XMVectorSet(m_position.x + m_pScale.x / 2, m_position.y + m_pScale.y / 2, m_position.z + m_pScale.z / 2, 1);
+	m_pBox.minPosition = XMVectorSet(m_position.x - m_pScale.x / 2, m_position.y - m_pScale.y / 2, m_position.z - m_pScale.z / 2, 1);
 
-	staging.Init();
+	m_staging.Init();
 
-	walkSE = Audio::SoundLoadWave("Resources/sound/SE/walk.wav");
-	fallSE = Audio::SoundLoadWave("Resources/sound/SE/fall.wav");
-	electSE = Audio::SoundLoadWave("Resources/sound/SE/elect.wav");
-	pFbx.Load();
+	m_walkSE = Audio::SoundLoadWave("Resources/sound/SE/walk.wav");
+	m_fallSE = Audio::SoundLoadWave("Resources/sound/SE/fall.wav");
+	m_electSE = Audio::SoundLoadWave("Resources/sound/SE/elect.wav");
+	m_pFbx.Load();
 }
 
 void Player::Update()
 {
-	if (gameoverFlag == true) { return; }
+	if (m_gameoverFlag == true) { return; }
 
-	oldPosition = position;
-	oldGroundFlag = groundFlag;
-	vec = {};
+	m_oldPosition = m_position;
+	m_oldGroundFlag = m_groundFlag;
+	m_vec = {};
 	//音の間隔の更新
 	AudioUpdate();
 	//移動
@@ -39,11 +39,11 @@ void Player::Update()
 	//スピン攻撃
 	SpinAttack();
 
-	staging.Update();
+	m_staging.Update();
 
-	position += vec;
-	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
-	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+	m_position += m_vec;
+	m_pBox.maxPosition = XMVectorSet(m_position.x + m_pScale.x / 2, m_position.y + m_pScale.y / 2, m_position.z + m_pScale.z / 2, 1);
+	m_pBox.minPosition = XMVectorSet(m_position.x - m_pScale.x / 2, m_position.y - m_pScale.y / 2, m_position.z - m_pScale.z / 2, 1);
 	//落下死
 	FallDie();
 	//魚関連
@@ -51,93 +51,93 @@ void Player::Update()
 
 	RedFishDie();
 
-	Vec3 fbxPos = { oldPosition.x, oldPosition.y - 2.0f, oldPosition.z };
-	pFbx.Update(fbxPos,angle);
+	Vec3 fbxPos = { m_oldPosition.x, m_oldPosition.y - 2.0f, m_oldPosition.z };
+	m_pFbx.Update(fbxPos, m_angle);
 
 	AnimationUpdate();
 }
 
 void Player::Draw(bool shadowFlag)
 {
-	staging.Draw3D();
-	if (starStaging == false || moveFlag == false)
+	m_staging.Draw3D();
+	if (m_starStaging == false || m_moveFlag == false)
 	{
-		pFbx.Draw(shadowFlag);
+		m_pFbx.Draw(shadowFlag);
 	}
 }
 
 void Player::DrawParticle()
 {
-	staging.Draw();
+	m_staging.Draw();
 }
 
 void Player::SetPosition(const Vec3& position)
 {
-	this->position = position;
-	pBox.maxPosition = XMVectorSet(position.x + pScale.x / 2, position.y + pScale.y / 2, position.z + pScale.z / 2, 1);
-	pBox.minPosition = XMVectorSet(position.x - pScale.x / 2, position.y - pScale.y / 2, position.z - pScale.z / 2, 1);
+	m_position = position;
+	m_pBox.maxPosition = XMVectorSet(position.x + m_pScale.x / 2, position.y + m_pScale.y / 2, position.z + m_pScale.z / 2, 1);
+	m_pBox.minPosition = XMVectorSet(position.x - m_pScale.x / 2, position.y - m_pScale.y / 2, position.z - m_pScale.z / 2, 1);
 }
 
 
 void Player::Reset()
 {
-	position = firstPosition;	//座標
-	oldPosition = position;
-	remainLives = remainLivesMax;
-	fishNum = {};
-	gameoverFlag = false;
-	dieType = DIENULL;
-	clearFlag = false;
-	angle = firstAngle;	//角度
-	decLifeTime = {};
-	isFishDie = false;
-	pFbx.Reset();
-	if (moveFlag == true)
+	m_position = c_firstPosition;	//座標
+	m_oldPosition = m_position;
+	m_remainLives = c_remainLivesMax;
+	m_fishNum = {};
+	m_gameoverFlag = false;
+	m_dieType = DIENULL;
+	m_clearFlag = false;
+	m_angle = c_firstAngle;	//角度
+	m_decLifeTime = {};
+	m_isFishDie = false;
+	m_pFbx.Reset();
+	if (m_moveFlag == true)
 	{
-		starStaging = true;
-		startTime = {};
+		m_starStaging = true;
+		m_startTime = {};
 	}
 	else
 	{
-		starStaging = false;
+		m_starStaging = false;
 	}
 }
 
 void Player::GoalStaging(int fbxType)
 {
-	angle.y = 180.0f;
-	pFbx.PlayFBX(fbxType);
+	m_angle.y = 180.0f;
+	m_pFbx.PlayFBX(fbxType);
 }
 
 void Player::StopAnimation()
 {
-	pFbx.StopAnimation();
+	m_pFbx.StopAnimation();
 }
 
 
 void Player::SpinAttack()
 {
-	spinFlag = false;
+	m_spinFlag = false;
 	if (((Input::Get()->KeybordPush(DIK_F) || Input::Get()->ControllerDown(ButtonX))
-		&& starStaging == false && dieType == DIENULL && clearFlag == false && spinCoolTime <= 0))
+		&& m_starStaging == false && m_dieType == DIENULL && m_clearFlag == false && m_spinCoolTime <= 0))
 	{
-		pFbx.PlayFBX(FbxSpin);
-		spinCoolTime = spinCoolTimeMax;
-		spinAttack.maxPosition = XMVectorSet(oldPosition.x + spinScale, oldPosition.y + 1, oldPosition.z + spinScale, 1);
-		spinAttack.minPosition = XMVectorSet(oldPosition.x - spinScale, oldPosition.y - 0, oldPosition.z - spinScale, 1);
-		spinFlag = true;
+		m_pFbx.PlayFBX(FbxSpin);
+		m_spinCoolTime = c_spinCoolTimeMax;
+		m_spinAttack.maxPosition = XMVectorSet(m_oldPosition.x + c_spinScale, m_oldPosition.y + 1, m_oldPosition.z + c_spinScale, 1);
+		m_spinAttack.minPosition = XMVectorSet(m_oldPosition.x - c_spinScale, m_oldPosition.y - 0, m_oldPosition.z - c_spinScale, 1);
+		m_spinFlag = true;
 	}
 
-	if (spinCoolTime >= spinCoolTimeMax - 10)
+	if (m_spinCoolTime >= c_spinCoolTimeMax - 10)
 	{
-		spinAttack.maxPosition = XMVectorSet(oldPosition.x + spinScale, oldPosition.y + 1, oldPosition.z + spinScale, 1);
-		spinAttack.minPosition = XMVectorSet(oldPosition.x - spinScale, oldPosition.y - 0, oldPosition.z - spinScale, 1);
-		spinFlag = true;
+		m_spinAttack.maxPosition = XMVectorSet(m_oldPosition.x + c_spinScale, m_oldPosition.y + 1, m_oldPosition.z + c_spinScale, 1);
+		m_spinAttack.minPosition = XMVectorSet(m_oldPosition.x - c_spinScale, m_oldPosition.y - 0, m_oldPosition.z - c_spinScale, 1);
+		m_spinFlag = true;
 	}
 
-	if (spinCoolTime >= 0)
+	if (m_spinCoolTime >= 0)
 	{
-		spinCoolTime--;
+		m_spinCoolTime--;
 	}
 
 }
@@ -145,26 +145,26 @@ void Player::SpinAttack()
 void Player::AnimationUpdate()
 {
 	//開始時のアニメーション
-	if (starStaging == false || moveFlag == false) { return; }
-	if (startTime >= startTimeMax - 40)
+	if (m_starStaging == false || m_moveFlag == false) { return; }
+	if (m_startTime >= c_startTimeMax - 40)
 	{
-		staging.CreateStart(position);
+		m_staging.CreateStart(m_position);
 	}
-	startTime++;
-	if (startTime >= startTimeMax)
+	m_startTime++;
+	if (m_startTime >= c_startTimeMax)
 	{
-		starStaging = false;
-		startTime = 0;
+		m_starStaging = false;
+		m_startTime = 0;
 	}
 }
 
 void Player::AudioUpdate()
 {
-	audioTime++;
+	m_audioTime++;
 	const int audioTimeMax = 201;//時間をリセットする最大値
-	if (audioTime >= audioTimeMax)
+	if (m_audioTime >= audioTimeMax)
 	{
-		audioTime = 0;
+		m_audioTime = 0;
 	}
 }
 
@@ -172,81 +172,81 @@ void Player::AudioUpdate()
 //移動
 void Player::Move()
 {
-	if (dieType != DIENULL || clearFlag == true || gameoverFlag == true || starStaging == true) { return; }
+	if (m_dieType != DIENULL || m_clearFlag == true || m_gameoverFlag == true || m_starStaging == true) { return; }
 	//キーボード移動
 	if (Input::Get()->KeybordInputArrow() == true)
 	{
-		if (moveFlag == true)//移動か２Dか３Dか
+		if (m_moveFlag == true)//移動か２Dか３Dか
 		{
 			if (Input::Get()->KeybordPush(DIK_UP))
 			{
-				vec.z += speed.z;
+				m_vec.z += c_speed.z;
 			}
 			if (Input::Get()->KeybordPush(DIK_DOWN))
 			{
-				vec.z -= speed.z;
+				m_vec.z -= c_speed.z;
 			}
 		}
 		//移動
 		if (Input::Get()->KeybordPush(DIK_RIGHT))
 		{
-			vec.x += speed.x;
+			m_vec.x += c_speed.x;
 		}
 		if (Input::Get()->KeybordPush(DIK_LEFT))
 		{
-			vec.x -= speed.x;
+			m_vec.x -= c_speed.x;
 		}
 	}
 	//コントローラー移動
 	if (Input::Get()->ConLeftInput())
 	{
 		const int audioCoolTime = 15;//音を鳴らすまでの時間
-		if (groundFlag == true && audioTime % audioCoolTime == 0)
+		if (m_groundFlag == true && m_audioTime % audioCoolTime == 0)
 		{
-			Audio::Get()->SoundSEPlayWave(walkSE);
+			Audio::Get()->SoundSEPlayWave(m_walkSE);
 		}
 		float rad = Input::Get()->GetLeftAngle();
-		vec.x = speed.x * sinf(-rad);
-		if (moveFlag == true)
+		m_vec.x = c_speed.x * sinf(-rad);
+		if (m_moveFlag == true)
 		{
-			vec.z = speed.z * cosf(rad);;
+			m_vec.z = c_speed.z * cosf(rad);;
 		}
-		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
-		if (walkTime < 0)
+		m_angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
+		if (m_walkTime < 0)
 		{
-			staging.CreateWalk(position, vec);
-			walkTime = walkTimeMax;
+			m_staging.CreateWalk(m_position, m_vec);
+			m_walkTime = c_walkTimeMax;
 		}
-		walkTime--;
+		m_walkTime--;
 
-		pFbx.PlayFBX(FbxWalk);
+		m_pFbx.PlayFBX(FbxWalk);
 	}
 	else if (Input::Get()->ConLeftInputS())
 	{
 		const int audioCoolTime = 15;//音を鳴らすまでの時間
-		if (groundFlag == true && audioTime % audioCoolTime == 0)
+		if (m_groundFlag == true && m_audioTime % audioCoolTime == 0)
 		{
-			Audio::Get()->SoundSEPlayWave(walkSE);
+			Audio::Get()->SoundSEPlayWave(m_walkSE);
 		}
 		float rad = Input::Get()->GetLeftAngle();
-		vec.x = walkSpeed.x * sinf(-rad);
-		if (moveFlag == true)
+		m_vec.x = c_walkSpeed.x * sinf(-rad);
+		if (m_moveFlag == true)
 		{
-			vec.z = walkSpeed.z * cosf(rad);
+			m_vec.z = c_walkSpeed.z * cosf(rad);
 		}
-		angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
-		if (walkTime < 0)
+		m_angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
+		if (m_walkTime < 0)
 		{
-			staging.CreateWalk(position, vec);
-			walkTime = walkTimeMax;
+			m_staging.CreateWalk(m_position, m_vec);
+			m_walkTime = c_walkTimeMax;
 		}
-		walkTime--;
+		m_walkTime--;
 
-		pFbx.PlayFBX(FbxWalking);
+		m_pFbx.PlayFBX(FbxWalking);
 	}
 	else
 	{
-		pFbx.PlayFBX(FbxNone);
+		m_pFbx.PlayFBX(FbxNone);
 	}
 }
 
@@ -254,98 +254,98 @@ void Player::Jump()
 {
 	//ジャンプ
 	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
-		&& groundFlag == true && starStaging == false && dieType == DIENULL && clearFlag == false) || blockStepOnFlag)
+		&& m_groundFlag == true && m_starStaging == false && m_dieType == DIENULL && m_clearFlag == false) || m_blockStepOnFlag)
 	{
-		if (jumpBoxFlag)
+		if (m_jumpBoxFlag)
 		{
-			jumpPower = jumpBoxPowerMax;
-			jumpBoxFlag = false;
+			m_jumpPower = c_jumpBoxPowerMax;
+			m_jumpBoxFlag = false;
 		}
 		else
 		{
-			jumpPower = jumpPowerMax;
+			m_jumpPower = c_jumpPowerMax;
 		}
-		blockStepOnFlag = false;
+		m_blockStepOnFlag = false;
 
-		pFbx.PlayFBX(FbxJump);
+		m_pFbx.PlayFBX(FbxJump);
 	}
 
 	//重力加算
-	vec.y -= gravity;
-	if (jumpPower > 0)
+	m_vec.y -= m_gravity;
+	if (m_jumpPower > 0)
 	{
-		vec.y += jumpPower;
-		jumpPower -= jumpPowerDelay;
+		m_vec.y += m_jumpPower;
+		m_jumpPower -= m_jumpPowerDelay;
 	}
-	groundFlag = false;
+	m_groundFlag = false;
 }
 
 void Player::FallDie()
 {
-	if (position.y < fallPos && dieType == DIENULL)
+	if (m_position.y < c_fallPos && m_dieType == DIENULL)
 	{
 		static const int dieTime = 30;	//死んだときの演出時間
-		dieNowTime = dieTime;
-		staging.CreateFallDown(position);
-		Audio::Get()->SoundSEPlayWave(fallSE);
-		dieType = DIENOW;
+		m_dieNowTime = dieTime;
+		m_staging.CreateFallDown(m_position);
+		Audio::Get()->SoundSEPlayWave(m_fallSE);
+		m_dieType = DIENOW;
 	}
-	else if (dieType == ELECTDIE)
+	else if (m_dieType == ELECTDIE)
 	{
 		int dieTime = 200;				//死んだときの演出時間
-		dieNowTime = dieTime;
-		staging.CreateElect(position);
-		dieType = DIENOW;
-		Audio::Get()->SoundSEPlayWave(electSE);
-		pFbx.PlayFBX(FbxElectDie);
+		m_dieNowTime = dieTime;
+		m_staging.CreateElect(m_position);
+		m_dieType = DIENOW;
+		Audio::Get()->SoundSEPlayWave(m_electSE);
+		m_pFbx.PlayFBX(FbxElectDie);
 	}
-	else if (dieType == EATDIE)
+	else if (m_dieType == EATDIE)
 	{
 		const int dieTime = 100;		//死んだときの演出時間
-		dieNowTime = dieTime;
-		dieType = DIENOW;
-		isFishDie = true;
+		m_dieNowTime = dieTime;
+		m_dieType = DIENOW;
+		m_isFishDie = true;
 	}
-	else if (dieType == BOMBDIE)
+	else if (m_dieType == BOMBDIE)
 	{
 		const int dieTime = 50;			//死んだときの演出時間
-		dieNowTime = dieTime;
-		dieType = DIENOW;
-		pFbx.PlayFBX(FBXMAX);
+		m_dieNowTime = dieTime;
+		m_dieType = DIENOW;
+		m_pFbx.PlayFBX(FBXMAX);
 	}
 
 
-	if (dieType == DIENOW)
+	if (m_dieType == DIENOW)
 	{
-		if (dieNowTime > 0)
+		if (m_dieNowTime > 0)
 		{
-			dieNowTime--;
+			m_dieNowTime--;
 			//暗転開始
-			if (dieNowTime == 1)
+			if (m_dieNowTime == 1)
 			{
-				decLifeTime = 50;
+				m_decLifeTime = 50;
 			}
 		}
 		else
 		{
-			if (remainLives > 0)
+			if (m_remainLives > 0)
 			{
-				decLifeTime--;
-				if (decLifeTime <= 0)
+				m_decLifeTime--;
+				if (m_decLifeTime <= 0)
 				{
-					position = firstPosition;	//座標
-					angle = firstAngle;	//角度
-					oldPosition = position;
-					remainLives--;
-					isFishDie = false;
-					dieType = DIENULL;
-					starStaging = true;
+					m_position = c_firstPosition;	//座標
+					m_angle = c_firstAngle;	//角度
+					m_oldPosition = m_position;
+					m_remainLives--;
+					m_isFishDie = false;
+					m_dieType = DIENULL;
+					m_starStaging = true;
 				}
 			}
-			else if (remainLives == 0)
+			else if (m_remainLives == 0)
 			{
-				gameoverFlag = true;
-				dieType = DIENULL;
+				m_gameoverFlag = true;
+				m_dieType = DIENULL;
 			}
 		}
 	}
@@ -354,32 +354,32 @@ void Player::FallDie()
 
 void Player::Fish()
 {
-	if (changeBreakFlag == true)
+	if (m_changeBreakFlag == true)
 	{
-		fishFlag = true;
-		changeBreakFlag = false;
+		m_fishFlag = true;
+		m_changeBreakFlag = false;
 	}
-	if (fishFlag == true)
+	if (m_fishFlag == true)
 	{
-		fishNum += fishPlas;
-		fishFlag = false;
+		m_fishNum += c_fishPlas;
+		m_fishFlag = false;
 		//100個集まったら残機１つ増える
-		if (fishNum >= fishMax)
+		if (m_fishNum >= c_fishMax)
 		{
-			fishNum -= fishMax;
-			remainLives++;
+			m_fishNum -= c_fishMax;
+			m_remainLives++;
 		}
 	}
 }
 
 void Player::RedFishDie()
 {
-	if (isFishDie == false) { return; }
-	position = fishDiePos;
-	oldPosition = position;
-	angle.x = fishDieAngle.x;
-	if (position.y < fallPos && dieType == DIENOW)
+	if (m_isFishDie == false) { return; }
+	m_position = m_fishDiePos;
+	m_oldPosition = m_position;
+	m_angle.x = m_fishDieAngle.x;
+	if (m_position.y < c_fallPos && m_dieType == DIENOW)
 	{
-		isFishDie = false;
+		m_isFishDie = false;
 	}
 }

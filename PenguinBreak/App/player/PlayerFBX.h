@@ -71,37 +71,37 @@ public:
 	/// </summary>
 	void StartAnimation();
 private:
-	int fbxType = NULL;
-	int fbxFlag = 1;
+	int m_fbxType = NULL;
+	int  m_fbxFlag = 1;
 	//歩きFBX
-	std::unique_ptr<Model> fbxModel = nullptr;
-	std::unique_ptr<FBXObject3d> fbxObject1;
+	std::unique_ptr<Model>  m_fbxModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_fbxObject1;
 	//歩きFBX
-	std::unique_ptr<Model> walkModel = nullptr;
-	std::unique_ptr<FBXObject3d> walkFbx;
+	std::unique_ptr<Model>  m_walkModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_walkFbx;
 	//停止FBX
-	std::unique_ptr<Model> stopModel = nullptr;
-	std::unique_ptr<FBXObject3d> stopFbx;
+	std::unique_ptr<Model> m_stopModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_stopFbx;
 	//スピンFBX
-	std::unique_ptr<Model> spinModel = nullptr;
-	std::unique_ptr<FBXObject3d> spinFbx;
-	const int spinTimeMax = 30;
-	int spinTime = 0;
+	std::unique_ptr<Model>  m_spinModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_spinFbx;
+	const int c_spinTimeMax = 30;
+	int  m_spinTime = 0;
 	//感電
-	std::unique_ptr<Model> electModel = nullptr;
-	std::unique_ptr<FBXObject3d> electFbx;
+	std::unique_ptr<Model>  m_electModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_electFbx;
 	//ゴール時の演出バク天
-	std::unique_ptr<Model> goalJumpModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalJumpFbx;
+	std::unique_ptr<Model>  m_goalJumpModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_goalJumpFbx;
 	//ゴール時の演出ハンドサイン
-	std::unique_ptr<Model> goalHandModel = nullptr;
-	std::unique_ptr<FBXObject3d> goalHandFbx;
+	std::unique_ptr<Model>  m_goalHandModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_goalHandFbx;
 	//ジャンプ時の演出ハンドサイン
-	std::unique_ptr<Model> jumpModel = nullptr;
-	std::unique_ptr<FBXObject3d> jumpFbx;
-	const int jumpTimeMax = 30;
-	int jumpTime = 0;
+	std::unique_ptr<Model>  m_jumpModel = nullptr;
+	std::unique_ptr<FBXObject3d>  m_jumpFbx;
+	const int  m_jumpTimeMax = 30;
+	int  m_jumpTime = 0;
 
-	bool menuStopFlag = false;
+	bool  m_menuStopFlag = false;
 };
 

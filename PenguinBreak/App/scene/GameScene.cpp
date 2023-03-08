@@ -1,4 +1,4 @@
-#include "GameSceneManager.h"
+#include "GameScene.h"
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
@@ -27,18 +27,18 @@ void GameSceneManager::Initialize()
 	//カメラ位置をセット
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
-	BGGraph.texNumber = Texture::Get()->GetShadowTexture();
+	m_BGGraph.texNumber = Texture::Get()->GetShadowTexture();
 	//3Dオブジェクト画像読み込み
 	//プレイヤーの初期化
 	Player::Get()->Init();
 	//ステージ
 	Stage::Get()->Init();
-	ui.Init();
+	m_ui.Init();
 
-	decLifeStaging.Init();
+	m_decLifeStaging.Init();
 
-	decisionSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
-	selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
+	m_decisionSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
+	m_selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
 }
 
 void GameSceneManager::Init(int stageNum)
@@ -47,10 +47,10 @@ void GameSceneManager::Init(int stageNum)
 	Object::SetLight(lightGroup.get());
 	Player::Get()->ChangeMoveFlag(true);
 	Reset(stageNum);
-	this->stageNum = stageNum;
-	decLifeStaging.Reset();
-	changeScene = false;
-	ui.Reset();
+	m_stageNum = stageNum;
+	m_decLifeStaging.Reset();
+	m_changeScene = false;
+	m_ui.Reset();
 }
 
 void GameSceneManager::Update()
@@ -58,9 +58,9 @@ void GameSceneManager::Update()
 	//プレイヤーの更新
 	if (Input::Get()->KeybordTrigger(DIK_R))
 	{
-		Reset(stageNum);
+		Reset(m_stageNum);
 	}
-	if (ui.GetMenuFlag() == false)
+	if (m_ui.GetMenuFlag() == false)
 	{
 		Player::Get()->Update();
 
@@ -69,38 +69,38 @@ void GameSceneManager::Update()
 		//残機が０にならない限り追跡
 		if (Player::Get()->GetGameoverFlag() == false && Player::Get()->GetPosition().y > 0 && Stage::Get()->GetClearFlag() == false)
 		{
-			Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistanceMax }, 0.0f, cameraAngle);
+			Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-c_goalDistanceMax }, 0.0f, c_cameraAngle);
 		}
 
 		//クリアしたらシーンチェンジ
 		if (Stage::Get()->GetClearFlag() == true)
 		{
 			//プレイヤーゴールFbx始め
-			if (goalStagingTime <= 0 && changeScene == false)
+			if (m_goalStagingTime <= 0 && m_changeScene == false)
 			{
-				goalStagingTime = goalStagingTimeMax;
+				m_goalStagingTime = c_goalStagingTimeMax;
 				Player::Get()->GoalStaging(FbxGoalJump);
 				Player::Get()->GetClearFlag(true);
-				goalCameraAngle = cameraAngle;
-				goalDistance = goalDistanceMax;
+				m_goalCameraAngle = c_cameraAngle;
+				m_goalDistance = c_goalDistanceMax;
 			}
-			goalStagingTime--;
-			if (goalCameraAngle >= goalCamraAngleMax)
+			m_goalStagingTime--;
+			if (m_goalCameraAngle >= c_goalCamraAngleMax)
 			{
-				goalCameraAngle -= 1.0f;
+				m_goalCameraAngle -= 1.0f;
 			}
-			if (goalDistance >= goalDistanceMin)
+			if (m_goalDistance >= c_goalDistanceMin)
 			{
-				goalDistance -= 1.0f;
+				m_goalDistance -= 1.0f;
 			}
 
 			//カメラ移動始め
-			Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-goalDistance }, 0.0f, goalCameraAngle);
+			Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-m_goalDistance }, 0.0f, m_goalCameraAngle);
 
-			if (goalStagingTime == 0)
+			if (m_goalStagingTime == 0)
 			{
-				changeScene = true;
-				changeNum = ChangeClear;
+				m_changeScene = true;
+				m_changeNum = ChangeClear;
 			}
 		}
 		//ライト更新
@@ -116,31 +116,31 @@ void GameSceneManager::Update()
 	{
 		if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft) == true)
 		{
-			changeNum++;
-			Audio::Get()->SoundSEPlayWave(selectSE);
+			m_changeNum++;
+			Audio::Get()->SoundSEPlayWave(m_selectSE);
 		}
 		if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight) == true)
 		{
-			changeNum--;
-			Audio::Get()->SoundSEPlayWave(selectSE);
+			m_changeNum--;
+			Audio::Get()->SoundSEPlayWave(m_selectSE);
 		}
 		if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA) == true)
 		{
-			changeScene = true;
-			Audio::Get()->SoundSEPlayWave(decisionSE);
+			m_changeScene = true;
+			Audio::Get()->SoundSEPlayWave(m_decisionSE);
 		}
-		if (changeNum > GameOverSelect)
+		if (m_changeNum > GameOverSelect)
 		{
-			changeNum = GameOverRetry;
+			m_changeNum = GameOverRetry;
 		}
-		else if (changeNum < GameOverRetry)
+		else if (m_changeNum < GameOverRetry)
 		{
-			changeNum = GameOverSelect;
+			m_changeNum = GameOverSelect;
 		}
 	}
-	ui.Update(Player::Get()->GetFishNum(), Stage::Get()->GetClearFlag(), changeScene, changeNum);
+	m_ui.Update(Player::Get()->GetFishNum(), Stage::Get()->GetClearFlag(), m_changeScene, m_changeNum);
 
-	decLifeStaging.Update(Player::Get()->GetDecLifeFlag(), Player::Get()->GetGameoverFlag());
+	m_decLifeStaging.Update(Player::Get()->GetDecLifeFlag(), Player::Get()->GetGameoverFlag());
 }
 
 void GameSceneManager::Draw()
@@ -165,10 +165,10 @@ void GameSceneManager::ShadowDraw()
 
 void GameSceneManager::SecondDraw()
 {
-	ui.Draw(Player::Get()->GetRemanLives(),
+	m_ui.Draw(Player::Get()->GetRemanLives(),
 		Player::Get()->GetGameoverFlag());
 
-	decLifeStaging.Draw(Player::Get()->GetGameoverFlag(), changeNum);
+	m_decLifeStaging.Draw(Player::Get()->GetGameoverFlag(), m_changeNum);
 }
 
 void GameSceneManager::Reset(int stageNum)

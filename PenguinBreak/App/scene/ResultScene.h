@@ -49,40 +49,40 @@ public:
 	/// </summary>
 	void ShadowDraw();
 
-	inline bool GetScene() { return nextScene; }
+	inline bool GetScene() { return  m_nextScene; }
 private:
 	std::unique_ptr<LightGroup> lightGroup;
 private:
-	ObjectData resultOBJ;
-	int resultTime = 0;
+	ObjectData  m_resultOBJ;
+	int  m_resultTime = 0;
 
 	//ゴール時の演出ハンドサイン
-	std::unique_ptr<Model> penginModel;
-	std::unique_ptr<FBXObject3d> penginHandFbx;
+	std::unique_ptr<Model>  m_penginModel;
+	std::unique_ptr<FBXObject3d>  m_penginHandFbx;
 
-	PSR objectPsr = {};
-	ObjectData fishObj;
-	ObjectData floorObj;
+	PSR  m_objectPsr = {};
+	ObjectData  m_fishObj;
+	ObjectData  m_floorObj;
 
 	//壊れた箱リザルト
-	SpriteData uiNumber[10];
-	SpriteData uiSlash;
-	SpriteData boxGraph;
+	SpriteData  m_uiNumber[10];
+	SpriteData  m_uiSlash;
+	SpriteData  m_boxGraph;
 
-	SpriteData clearGraph;
-	SpriteData selectGraph;
-	SpriteData nextGraph;
-	int nextScene = 0;
-	const float nextScaleMax = 1.2f;
-	const float nextScaleMin = 0.8f;
-	bool nextScaleFlag = false;
-	float nextScale = 1.0f;
+	SpriteData  m_clearGraph;
+	SpriteData  m_selectGraph;
+	SpriteData  m_nextGraph;
+	int  m_nextScene = 0;
+	const float c_nextScaleMax = 1.2f;
+	const float c_nextScaleMin = 0.8f;
+	bool  m_nextScaleFlag = false;
+	float  m_nextScale = 1.0f;
 
 	//ボタン
-	SpriteData buttonGraph;
-	int buttonTime = 0;
+	SpriteData  m_buttonGraph;
+	int  m_buttonTime = 0;
 
 	//音データ
-	SoundData decisionSE = {};
-	SoundData selectSE = {};
+	SoundData  m_decisionSE = {};
+	SoundData  m_selectSE = {};
 };

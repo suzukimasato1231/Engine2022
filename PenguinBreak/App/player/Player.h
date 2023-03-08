@@ -59,7 +59,7 @@ public:
 	/// <summary>
 	/// 地面接地trueにする
 	/// </summary>
-	void ActivateGround() { groundFlag = true; }
+	void ActivateGround() { m_groundFlag = true; }
 	/// <summary>
 	/// 値リセット
 	/// </summary>
@@ -67,34 +67,34 @@ public:
 	/// <summary>
 	///　箱をジャンプで壊したか
 	/// </summary>
-	void ActivateBlockStepOn() { blockStepOnFlag = true; }
+	void ActivateBlockStepOn() { m_blockStepOnFlag = true; }
 	/// <summary>
 	/// ジャンプ力をゼロにする
 	/// </summary>
-	void JumpPoweZero() { jumpPower = 0; }
+	void JumpPoweZero() { m_jumpPower = 0; }
 	/// <summary>
 	/// 2D false 3D true　
 	/// </summary>
 	/// <param name="moveFlag">2Dか3Dのフラグ</param>
-	void ChangeMoveFlag(bool moveFlag) { Player::moveFlag = moveFlag; }
+	void ChangeMoveFlag(bool moveFlag) { m_moveFlag = moveFlag; }
 	/// <summary>
 	/// ジャンプ箱を踏んだか
 	/// </summary>
-	void ActivateJumpBox() { jumpBoxFlag = true; }
+	void ActivateJumpBox() { m_jumpBoxFlag = true; }
 	/// <summary>
 	/// 箱を壊したか
 	/// </summary>
-	void ActivateChangeBreak() { changeBreakFlag = true; }
+	void ActivateChangeBreak() { m_changeBreakFlag = true; }
 
-	void DieType(int type) { if (dieType != DIENOW) { Player::dieType = type; } }
+	void DieType(int type) { if (m_dieType != DIENOW) { m_dieType = type; } }
 
-	void FishDie(const Vec3& pos, const Vec3& angle) { fishDiePos = pos, this->fishDieAngle, angle; }
+	void FishDie(const Vec3& pos, const Vec3& angle) { m_fishDiePos = pos, m_fishDieAngle, angle; }
 	//ゴール時の演出
 	void GoalStaging(int fbxType);
 
-	void GetClearFlag(bool clearFlag) { this->clearFlag = clearFlag; }
+	void GetClearFlag(bool clearFlag) { m_clearFlag = clearFlag; }
 
-	int GetDecLifeFlag() { return decLifeTime; }
+	int GetDecLifeFlag() { return m_decLifeTime; }
 
 	void StopAnimation();
 private:
@@ -129,105 +129,105 @@ private:
 	/// </summary>
 	void AudioUpdate();
 public://取得系
-	inline Vec3 GetPosition() { return position; }
+	inline Vec3 GetPosition() { return m_position; }
 
-	inline Vec3 GetOldPosition() { return oldPosition; }
+	inline Vec3 GetOldPosition() { return m_oldPosition; }
 
-	inline Vec3 GetPSize() { return pScale; }
+	inline Vec3 GetPSize() { return m_pScale; }
 
-	inline Box GetBox() { return pBox; }
+	inline Box GetBox() { return m_pBox; }
 
-	inline Vec3 GetVec() { return vec; }
+	inline Vec3 GetVec() { return m_vec; }
 
-	inline float GetJumpPower() { return jumpPower; }
+	inline float GetJumpPower() { return m_jumpPower; }
 
-	inline bool GetGroundFlag() { return groundFlag; }
+	inline bool GetGroundFlag() { return m_groundFlag; }
 
-	inline bool GetOldGroundFlag() { return oldGroundFlag; }
+	inline bool GetOldGroundFlag() { return m_oldGroundFlag; }
 	
-	inline int GetRemanLives() { return remainLives; }
+	inline int GetRemanLives() { return m_remainLives; }
 
-	inline int GetFishNum() { return fishNum; }
+	inline int GetFishNum() { return m_fishNum; }
 
-	inline bool GetGameoverFlag() { return gameoverFlag; }
+	inline bool GetGameoverFlag() { return m_gameoverFlag; }
 
-	inline bool GetIsFishDie() { return isFishDie; }
+	inline bool GetIsFishDie() { return m_isFishDie; }
 
-	inline Box GetSpinBox() { return spinAttack; }
+	inline Box GetSpinBox() { return m_spinAttack; }
 
-	inline bool GetSpinFlag() { return spinFlag; }
+	inline bool GetSpinFlag() { return m_spinFlag; }
 private:
 	//ゲームフラグ
-	bool moveFlag = false;								//2D false 3D true
-	bool gameoverFlag = false;							//ゲームオーバーかどうか
-	bool clearFlag = false;								//クリアしたかどうか
+	bool m_moveFlag = false;								//2D false 3D true
+	bool m_gameoverFlag = false;							//ゲームオーバーかどうか
+	bool m_clearFlag = false;								//クリアしたかどうか
 	//プレイヤーステータス
-	ObjectData playerObject;							//プレイヤーオブジェクト
-	PSR psr = {};										//プレイヤーの位置座標大きさ保存用
-	Vec3 position = { 94.0f,14.0f,80.0f };				//座標
-	const Vec3 firstPosition = { 90.0f,25.0f,80.0f };	//初期位置
-	Vec3 oldPosition = {};								//1つ前の座標
-	const Vec3 speed = { 2.0f,2.0f,2.0f };				//走るスピード
-	const Vec3 walkSpeed = { 1.0f,1.0f,1.0f };			//歩くスピード
-	Vec3 angle = { -30.0f,180.0f,0.0f };				//角度
-	const Vec3 firstAngle = { -30.0f,180.0f,0.0f };		//最初の角度
-	Vec3 pScale = { 12.0f,5.0f,12.0f };					//プレイヤーの大きさ
-	Box pBox;											//プレイヤーBOX
-	Vec3 vec = {};
-	bool changeBreakFlag = false;
+	ObjectData m_playerObject;							//プレイヤーオブジェクト
+	PSR m_psr = {};										//プレイヤーの位置座標大きさ保存用
+	Vec3 m_position = { 94.0f,14.0f,80.0f };				//座標
+	const Vec3 c_firstPosition = { 90.0f,25.0f,80.0f };	//初期位置
+	Vec3 m_oldPosition = {};								//1つ前の座標
+	const Vec3 c_speed = { 2.0f,2.0f,2.0f };				//走るスピード
+	const Vec3 c_walkSpeed = { 1.0f,1.0f,1.0f };			//歩くスピード
+	Vec3 m_angle = { -30.0f,180.0f,0.0f };				//角度
+	const Vec3 c_firstAngle = { -30.0f,180.0f,0.0f };		//最初の角度
+	Vec3 m_pScale = { 12.0f,5.0f,12.0f };					//プレイヤーの大きさ
+	Box m_pBox;											//プレイヤーBOX
+	Vec3 m_vec = {};
+	bool m_changeBreakFlag = false;
 
-	const int remainLivesMax = 3;						//１ステージの残機数
-	int remainLives = 3;								//残機
+	const int c_remainLivesMax = 3;						//１ステージの残機数
+	int m_remainLives = 3;								//残機
 
 	//ジャンプ
-	const float jumpPowerMax = 8.0f;					//ジャンプパワー
-	const float jumpBoxPowerMax = 9.0f;					//ジャンプ台のジャンプパワー
-	bool jumpBoxFlag = false;							//ジャンプで箱を壊したか
-	float jumpPower = 8.0f;								//ジャンプパワー
-	float jumpPowerDelay = 0.2f;						//ジャンプパワー減衰
-	float gravity = 5.0f;								//重力
-	bool groundFlag = false;							//地面に接しているかどうか
-	bool oldGroundFlag = false;							//地面に接していたかどうか
-	bool blockStepOnFlag = false;						//ブロックを踏んで壊したかどうか
+	const float c_jumpPowerMax = 8.0f;					//ジャンプパワー
+	const float c_jumpBoxPowerMax = 9.0f;					//ジャンプ台のジャンプパワー
+	bool m_jumpBoxFlag = false;							//ジャンプで箱を壊したか
+	float m_jumpPower = 8.0f;								//ジャンプパワー
+	float m_jumpPowerDelay = 0.2f;						//ジャンプパワー減衰
+	float m_gravity = 5.0f;								//重力
+	bool m_groundFlag = false;							//地面に接しているかどうか
+	bool m_oldGroundFlag = false;							//地面に接していたかどうか
+	bool m_blockStepOnFlag = false;						//ブロックを踏んで壊したかどうか
 
 	//スピンステータス
-	Box spinAttack = {};								//スピン箱
-	const float spinScale = 10.0f;						//スピンの大きさ
-	const int spinCoolTimeMax = 100;					//スピンのクールタイム最大
-	int spinCoolTime = 0;								//スピンのクールタイム
-	bool spinFlag = false;								//スピンをしたか
+	Box m_spinAttack = {};								//スピン箱
+	const float c_spinScale = 10.0f;						//スピンの大きさ
+	const int c_spinCoolTimeMax = 100;					//スピンのクールタイム最大
+	int m_spinCoolTime = 0;								//スピンのクールタイム
+	bool m_spinFlag = false;								//スピンをしたか
 
 	//魚
-	bool fishFlag = false;								//魚を獲得したか								
-	int fishNum = 0;									//魚獲得数
-	const int fishMax = 100;							//最大獲得数
-	const int fishPlas = 5;								//一回の獲得数
+	bool m_fishFlag = false;								//魚を獲得したか								
+	int m_fishNum = 0;									//魚獲得数
+	const int c_fishMax = 100;							//最大獲得数
+	const int c_fishPlas = 5;								//一回の獲得数
 
 	//プレイヤー演出
-	Staging staging;									//演出クラス
-	int dieNowTime = 0;									//死亡演出時間
-	int dieType = DIENULL;								//死亡タイプ
-	const int walkTimeMax = 5;							//歩くパーティクルを出す時間
-	int walkTime = walkTimeMax;							//歩くパーティクルを出す時間最大
+	Staging m_staging;									//演出クラス
+	int m_dieNowTime = 0;									//死亡演出時間
+	int m_dieType = DIENULL;								//死亡タイプ
+	const int c_walkTimeMax = 5;							//歩くパーティクルを出す時間
+	int m_walkTime = c_walkTimeMax;							//歩くパーティクルを出す時間最大
 
 	//ステージ開始時の演出フラグ
-	bool starStaging = false;
-	const int startTimeMax = 60;
-	int startTime = 0;
+	bool m_starStaging = false;
+	const int c_startTimeMax = 60;
+	int m_startTime = 0;
 
 	//死亡時の情報
-	const float fallPos = -30.0f;						//落下死の座標
+	const float c_fallPos = -30.0f;						//落下死の座標
 	//魚死亡時
-	Vec3 fishDiePos = {};
-	Vec3 fishDieAngle = {};
-	bool isFishDie = false;
-	int decLifeTime = 0;
+	Vec3 m_fishDiePos = {};
+	Vec3 m_fishDieAngle = {};
+	bool m_isFishDie = false;
+	int m_decLifeTime = 0;
 
 	//FBXクラス
-	PlayerFBX pFbx;										
+	PlayerFBX m_pFbx;
 	//音データ
-	int audioTime = 0;									//音を出す間隔
-	SoundData walkSE = {};								//歩く音
-	SoundData fallSE = {};								//落ちる音
-	SoundData electSE = {};								//電気の音
+	int m_audioTime = 0;									//音を出す間隔
+	SoundData m_walkSE = {};								//歩く音
+	SoundData m_fallSE = {};								//落ちる音
+	SoundData m_electSE = {};								//電気の音
 };

@@ -1,5 +1,5 @@
 #include"Pipeline.h"
-
+#include<ShaderManager.h>
 Pipeline::PipelineSet Pipeline::OBJPipeline;
 Pipeline::PipelineSet Pipeline::NoShadowOBJPipeline;
 Pipeline::PipelineSet Pipeline::ShadowMapPipeline;
@@ -75,8 +75,8 @@ Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev,
 	};
 #pragma region//パイプラインステート設定変数の宣言と、各種項目の設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
-	gpipeline.VS = CD3DX12_SHADER_BYTECODE(spriteShader.vsBlob.Get());
-	gpipeline.PS = CD3DX12_SHADER_BYTECODE(spriteShader.psBlob.Get());
+	gpipeline.VS = CD3DX12_SHADER_BYTECODE(ShaderManager::spriteShader.vsBlob.Get());
+	gpipeline.PS = CD3DX12_SHADER_BYTECODE(ShaderManager::spriteShader.psBlob.Get());
 
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
 

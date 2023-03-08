@@ -41,53 +41,53 @@ public:
 	/// </summary>
 	void DrawShadow();
 
-	void StagePlas() { stageNum++; }
+	void StagePlas() { m_stageNum++; }
 
 	void SetBreakBoxNum(int breakBox_);
 public:
 	std::unique_ptr<LightGroup>lightGroup;
 public:
-	int GetStageNum() { return stageNum; }
+	int GetStageNum() { return  m_stageNum; }
 
-	bool GetSelectFlag() { return selectFlag; }
+	bool GetSelectFlag() { return  m_selectFlag; }
 private://定義
-	static const int stageNumMax = 3;	//最大ステージ数
+	static const int c_stageNumMax = 3;	//最大ステージ数
 
-	bool selectFlag = false;			//次のシーンへ移動
+	bool  m_selectFlag = false;			//次のシーンへ移動
 
-	ObjectData selectOBJ;				//セレクト数字のOBJ
-	int selectGraph[stageNumMax];		//セレクトOBJの画像
-	const float selectScale = 10.0f;	//セレクトOBJの大きさ
-	Vec3 selectPos[stageNumMax];		//セレクトOBJの座標
-	Box selectBox[stageNumMax];			//セレクトOBJのBOX
-	PSR selectPsr[stageNumMax];			//セレクトOBJのPSR
+	ObjectData  m_selectOBJ;				//セレクト数字のOBJ
+	int  m_selectGraph[c_stageNumMax];		//セレクトOBJの画像
+	const float c_selectScale = 10.0f;	//セレクトOBJの大きさ
+	Vec3  m_selectPos[c_stageNumMax];		//セレクトOBJの座標
+	Box  m_selectBox[c_stageNumMax];			//セレクトOBJのBOX
+	PSR  m_selectPsr[c_stageNumMax];			//セレクトOBJのPSR
 
 	//ステージごとの箱の壊した数
-	ObjectData boxBreakOBJ = {};		//壊した箱の数を表示する
-	ObjectData flameOBJ = {};			//フレーム
-	PSR boxBreakPSR[stageNumMax] = {};	//壊した箱のPSR保存
-	PSR flamePSR[stageNumMax] = {};		//フレームPSR
-	int boxBreakGraph = 0;				//壊した箱の画像
-	int boxFramGraph = 0;
-	int numberGraph[11] = {};			//数字の画像
+	ObjectData  m_boxBreakOBJ = {};		//壊した箱の数を表示する
+	ObjectData  m_flameOBJ = {};			//フレーム
+	PSR  m_boxBreakPSR[c_stageNumMax] = {};	//壊した箱のPSR保存
+	PSR  m_flamePSR[c_stageNumMax] = {};		//フレームPSR
+	int  m_boxBreakGraph = 0;				//壊した箱の画像
+	int  m_boxFramGraph = 0;
+	int  m_numberGraph[11] = {};			//数字の画像
 
 	//壊した箱を保存する用
-	const int breakBoxMax[stageNumMax] = { 9,11,10 };
-	int breakNumMax[stageNumMax] = { 0,0,0 };
-	int breakNumTenMax[stageNumMax] = { 0,0,0 };
+	const int c_breakBoxMax[c_stageNumMax] = { 9,11,10 };
+	int  m_breakNumMax[c_stageNumMax] = { 0,0,0 };
+	int  m_breakNumTenMax[c_stageNumMax] = { 0,0,0 };
 
-	int breakBox[stageNumMax] = { 0,0,0 };
-	int breakNum[stageNumMax] = { 0,0,0 };
-	int breakNumTen[stageNumMax] = { 0,0,0 };
+	int  m_breakBox[c_stageNumMax] = { 0,0,0 };
+	int  m_breakNum[c_stageNumMax] = { 0,0,0 };
+	int  m_breakNumTen[c_stageNumMax] = { 0,0,0 };
 
-	int stageNum = 0;					//現在のステージ
+	int  m_stageNum = 0;					//現在のステージ
 
 	//演出
-	bool productionFlag[3] = {};
-	const int productionTimeMax = 30;
-	int productionTime = 0;
+	bool  m_productionFlag[3] = {};
+	const int c_productionTimeMax = 30;
+	int  m_productionTime = 0;
 
-	SoundData boxSE = {};
+	SoundData  m_boxSE = {};
 };
 
 

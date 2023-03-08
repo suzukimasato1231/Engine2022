@@ -11,18 +11,18 @@ class Staging
 {
 private://メンバ変数
 	//落下死
-	ObjectData fallDown;
-	std::unique_ptr<Particle3D> fallParicle = nullptr;
+	ObjectData  m_fallDown;
+	std::unique_ptr<Particle3D>  m_fallParicle = nullptr;
 	//電気死亡
-	std::unique_ptr<ParticleManager>electDie = nullptr;
+	std::unique_ptr<ParticleManager> m_electDie = nullptr;
 	//歩き
-	std::unique_ptr<ParticleManager> walk = nullptr;
+	std::unique_ptr<ParticleManager> m_walk = nullptr;
 	//プレイヤー登場時の演出
-	ObjectData startObject;
-	std::unique_ptr<Particle3D> startParicle;
-	int start_color[3];
+	ObjectData  m_startObject;
+	std::unique_ptr<Particle3D>  m_startParicle;
+	int  m_start_color[3];
 
-	int graph = 0;
+	int  m_graph = 0;
 public://メンバ関数
 	/// <summary>
 	/// コンストラクタ

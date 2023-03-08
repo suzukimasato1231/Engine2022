@@ -11,106 +11,106 @@ void PlayerFBX::Load()
 {
 	//モデル名を指定してファイル読み込み
 	Model* model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin2", "FBX/");
-	fbxModel = std::make_unique<Model>();
-	fbxModel = std::unique_ptr<Model>(model1);
+	m_fbxModel = std::make_unique<Model>();
+	m_fbxModel = std::unique_ptr<Model>(model1);
 
 	Model* model2 = FbxLoader::GetInstance()->LoadModelFromFile("movePengin", "FBX/");
-	stopModel = std::make_unique<Model>();
-	stopModel = std::unique_ptr<Model>(model2);
+	m_stopModel = std::make_unique<Model>();
+	m_stopModel = std::unique_ptr<Model>(model2);
 
 	Model* model3 = FbxLoader::GetInstance()->LoadModelFromFile("penginElect", "FBX/");
-	electModel = std::make_unique<Model>();
-	electModel = std::unique_ptr<Model>(model3);
+	m_electModel = std::make_unique<Model>();
+	m_electModel = std::unique_ptr<Model>(model3);
 
 	Model* model4 = FbxLoader::GetInstance()->LoadModelFromFile("goalJump", "FBX/");
-	goalJumpModel = std::make_unique<Model>();
-	goalJumpModel = std::unique_ptr<Model>(model4);
+	m_goalJumpModel = std::make_unique<Model>();
+	m_goalJumpModel = std::unique_ptr<Model>(model4);
 
 	Model* model5 = FbxLoader::GetInstance()->LoadModelFromFile("goalHand", "FBX/");
-	goalHandModel = std::make_unique<Model>();
-	goalHandModel = std::unique_ptr<Model>(model5);
+	m_goalHandModel = std::make_unique<Model>();
+	m_goalHandModel = std::unique_ptr<Model>(model5);
 
 	Model* model6 = FbxLoader::GetInstance()->LoadModelFromFile("jumpFbx", "FBX/");
-	jumpModel = std::make_unique<Model>();
-	jumpModel = std::unique_ptr<Model>(model6);
+	m_jumpModel = std::make_unique<Model>();
+	m_jumpModel = std::unique_ptr<Model>(model6);
  
 	Model* model7 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "FBX/");
-	walkModel = std::make_unique<Model>();
-	walkModel = std::unique_ptr<Model>(model7);
+	m_walkModel = std::make_unique<Model>();
+	m_walkModel = std::unique_ptr<Model>(model7);
 
 	Model* model8 = FbxLoader::GetInstance()->LoadModelFromFile("spinFbx", "FBX/");
-	spinModel = std::make_unique<Model>();
-	spinModel = std::unique_ptr<Model>(model8);
+	m_spinModel = std::make_unique<Model>();
+	m_spinModel = std::unique_ptr<Model>(model8);
   
 
 	//3Dオブジェクトの生成とモデルのセット
-	fbxObject1 = std::make_unique<FBXObject3d>();
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(fbxModel.get());
+	m_fbxObject1 = std::make_unique<FBXObject3d>();
+	m_fbxObject1->Initialize();
+	m_fbxObject1->SetModel(m_fbxModel.get());
 
-	stopFbx = std::make_unique<FBXObject3d>();
-	stopFbx->Initialize();
-	stopFbx->SetModel(stopModel.get());
+	m_stopFbx = std::make_unique<FBXObject3d>();
+	m_stopFbx->Initialize();
+	m_stopFbx->SetModel(m_stopModel.get());
 
-	electFbx = std::make_unique<FBXObject3d>();
-	electFbx->Initialize();
-	electFbx->SetModel(electModel.get());
+	m_electFbx = std::make_unique<FBXObject3d>();
+	m_electFbx->Initialize();
+	m_electFbx->SetModel(m_electModel.get());
 
-	goalJumpFbx = std::make_unique<FBXObject3d>();
-	goalJumpFbx->Initialize();
-	goalJumpFbx->SetModel(goalJumpModel.get());
+	m_goalJumpFbx = std::make_unique<FBXObject3d>();
+	m_goalJumpFbx->Initialize();
+	m_goalJumpFbx->SetModel(m_goalJumpModel.get());
 
-	goalHandFbx = std::make_unique<FBXObject3d>();
-	goalHandFbx->Initialize();
-	goalHandFbx->SetModel(goalHandModel.get());
+	m_goalHandFbx = std::make_unique<FBXObject3d>();
+	m_goalHandFbx->Initialize();
+	m_goalHandFbx->SetModel(m_goalHandModel.get());
 
-	jumpFbx = std::make_unique<FBXObject3d>();
-	jumpFbx->Initialize();
-	jumpFbx->SetModel(jumpModel.get());
+	m_jumpFbx = std::make_unique<FBXObject3d>();
+	m_jumpFbx->Initialize();
+	m_jumpFbx->SetModel(m_jumpModel.get());
 
-	walkFbx = std::make_unique<FBXObject3d>();
-	walkFbx->Initialize();
-	walkFbx->SetModel(walkModel.get());
+	m_walkFbx = std::make_unique<FBXObject3d>();
+	m_walkFbx->Initialize();
+	m_walkFbx->SetModel(m_walkModel.get());
 
-	spinFbx = std::make_unique<FBXObject3d>();
-	spinFbx->Initialize();
-	spinFbx->SetModel(spinModel.get());
+	m_spinFbx = std::make_unique<FBXObject3d>();
+	m_spinFbx->Initialize();
+	m_spinFbx->SetModel(m_spinModel.get());
 }
 
 void PlayerFBX::Update(const Vec3& fbxPos, const Vec3& angle)
 {
-	jumpTime--;
-	spinTime--;
+	m_jumpTime--;
+	m_spinTime--;
 
 	//FBX試し
 	FBXObject3d* updateFbx = nullptr;
 	Vec3 updatePos = fbxPos;
 	Vec3 updateAngle = angle;
-	switch (fbxType)
+	switch (m_fbxType)
 	{
 	case FbxNone:
-		updateFbx = stopFbx.get();
+		updateFbx = m_stopFbx.get();
 		break;
 	case FbxWalk:
-		updateFbx = fbxObject1.get();
+		updateFbx = m_fbxObject1.get();
 		break;
 	case FbxElectDie:
-		updateFbx = electFbx.get();
+		updateFbx = m_electFbx.get();
 		break;
 	case FbxGoalJump:
-		updateFbx = goalJumpFbx.get();
+		updateFbx = m_goalJumpFbx.get();
 		break;
 	case FbxGoalHand:
-		updateFbx = goalHandFbx.get();
+		updateFbx = m_goalHandFbx.get();
 		break;
 	case FbxJump:
-		updateFbx = jumpFbx.get();
+		updateFbx = m_jumpFbx.get();
 		break;
 	case FbxWalking:
-		updateFbx = walkFbx.get();
+		updateFbx = m_walkFbx.get();
 		break;
 	case FbxSpin:
-		updateFbx = spinFbx.get();
+		updateFbx = m_spinFbx.get();
 		updateAngle = Vec3(angle.x + 30.0f, angle.y, angle.z);
 		break;
 	default:
@@ -127,31 +127,31 @@ void PlayerFBX::Update(const Vec3& fbxPos, const Vec3& angle)
 
 void PlayerFBX::Draw(bool shadowFlag)
 {
-	switch (fbxType)
+	switch (m_fbxType)
 	{
 	case FbxNone:
-		stopFbx->Draw(shadowFlag);
+		m_stopFbx->Draw(shadowFlag);
 		break;
 	case FbxWalk:
-		fbxObject1->Draw(shadowFlag);
+		m_fbxObject1->Draw(shadowFlag);
 		break;
 	case FbxElectDie:
-		electFbx->Draw(shadowFlag);
+		m_electFbx->Draw(shadowFlag);
 		break;
 	case FbxGoalJump:
-		goalJumpFbx->Draw(shadowFlag);
+		m_goalJumpFbx->Draw(shadowFlag);
 		break;
 	case FbxGoalHand:
-		goalHandFbx->Draw(shadowFlag);
+		m_goalHandFbx->Draw(shadowFlag);
 		break;
 	case FbxJump:
-		jumpFbx->Draw(shadowFlag);
+		m_jumpFbx->Draw(shadowFlag);
 		break;
 	case FbxWalking:
-		walkFbx->Draw(shadowFlag);
+		m_walkFbx->Draw(shadowFlag);
 		break;
 	case FbxSpin:
-		spinFbx->Draw(shadowFlag);
+		m_spinFbx->Draw(shadowFlag);
 		break;
 	default:
 		break;
@@ -160,7 +160,7 @@ void PlayerFBX::Draw(bool shadowFlag)
 
 void PlayerFBX::Reset()
 {
-	fbxType = FbxNone;
+	m_fbxType = FbxNone;
 }
 
 
@@ -170,56 +170,56 @@ void PlayerFBX::PlayFBX(int fbxType)
 	switch (fbxType)
 	{
 	case FbxNone:
-		if (jumpTime > 0 || spinTime > 0) { break; }
-		if (fbxFlag != FbxLoopStop)
+		if (m_jumpTime > 0 || m_spinTime > 0) { break; }
+		if (m_fbxFlag != FbxLoopStop)
 		{
-			fbxFlag = FbxLoopStop;
-			stopFbx->PlayAnimation(true);
+			m_fbxFlag = FbxLoopStop;
+			m_stopFbx->PlayAnimation(true);
 		}
-		this->fbxType = fbxType;
+		m_fbxType = fbxType;
 		break;
 	case FbxWalk:
-		if (jumpTime > 0 || spinTime > 0) { break; }
-		if (fbxFlag != FbxLoopRun)
+		if (m_jumpTime > 0 || m_spinTime > 0) { break; }
+		if (m_fbxFlag != FbxLoopRun)
 		{//アニメーション開始
-			fbxObject1->PlayAnimation(true);
-			fbxFlag = FbxLoopRun;
+			m_fbxObject1->PlayAnimation(true);
+			m_fbxFlag = FbxLoopRun;
 		}
-		this->fbxType = fbxType;
+		m_fbxType = fbxType;
 		break;
 	case FbxElectDie:
-		electFbx->PlayAnimation(false);
-		this->fbxType = fbxType;
+		m_electFbx->PlayAnimation(false);
+		m_fbxType = fbxType;
 		break;
 	case FbxGoalJump:
-		goalJumpFbx->PlayAnimation(false);
-		this->fbxType = fbxType;
+		m_goalJumpFbx->PlayAnimation(false);
+		m_fbxType = fbxType;
 		break;
 	case FbxGoalHand:
-		goalHandFbx->PlayAnimation(false);
-		this->fbxType = fbxType;
+		m_goalHandFbx->PlayAnimation(false);
+		m_fbxType = fbxType;
 		break;
 	case FbxJump:
-		jumpFbx->PlayAnimation(false);
-		jumpTime = jumpTimeMax;
-		this->fbxType = fbxType;
+		m_jumpFbx->PlayAnimation(false);
+		m_jumpTime = m_jumpTimeMax;
+		m_fbxType = fbxType;
 		break;
 	case FbxWalking:
-		if (jumpTime > 0 || spinTime > 0) { break; }
-		if (fbxFlag != FbxLoopWalk)
+		if (m_jumpTime > 0 || m_spinTime > 0) { break; }
+		if (m_fbxFlag != FbxLoopWalk)
 		{
-			walkFbx->PlayAnimation(true);
-			fbxFlag = FbxLoopWalk;
+			m_walkFbx->PlayAnimation(true);
+			m_fbxFlag = FbxLoopWalk;
 		}
-		this->fbxType = fbxType;
+		m_fbxType = fbxType;
 		break;
 	case FbxSpin:
-		spinTime = spinTimeMax;
-		spinFbx->PlayAnimation(false);
-		this->fbxType = fbxType;
+		m_spinTime = c_spinTimeMax;
+		m_spinFbx->PlayAnimation(false);
+		m_fbxType = fbxType;
 		break;
 	case FBXMAX:
-		this->fbxType = fbxType;
+		m_fbxType = fbxType;
 		break;
 	default:
 		break;
@@ -228,27 +228,27 @@ void PlayerFBX::PlayFBX(int fbxType)
 
 void PlayerFBX::StopAnimation()
 {
-	menuStopFlag = true;
-	fbxFlag = FbxLoopMax;
-	stopFbx->StopAnimation();
-	fbxObject1->StopAnimation();
-	electFbx->StopAnimation();
-	goalJumpFbx->StopAnimation();
-	goalHandFbx->StopAnimation();
-	jumpFbx->StopAnimation();
-	walkFbx->StopAnimation();
-	spinFbx->StopAnimation();
+	m_menuStopFlag = true;
+	m_fbxFlag = FbxLoopMax;
+	m_stopFbx->StopAnimation();
+	m_fbxObject1->StopAnimation();
+	m_electFbx->StopAnimation();
+	m_goalJumpFbx->StopAnimation();
+	m_goalHandFbx->StopAnimation();
+	m_jumpFbx->StopAnimation();
+	m_walkFbx->StopAnimation();
+	m_spinFbx->StopAnimation();
 }
 
 void PlayerFBX::StartAnimation()
 {
-	if (menuStopFlag == false) { return; }
-	stopFbx->PlayAnimation(true);
-	fbxObject1->PlayAnimation(true);
-	electFbx->PlayAnimation(false);
-	goalJumpFbx->PlayAnimation(false);
-	goalHandFbx->PlayAnimation(false);
-	jumpFbx->PlayAnimation(false);
-	walkFbx->PlayAnimation(true);
-	spinFbx->PlayAnimation(false);
+	if (m_menuStopFlag == false) { return; }
+	m_stopFbx->PlayAnimation(true);
+	m_fbxObject1->PlayAnimation(true);
+	m_electFbx->PlayAnimation(false);
+	m_goalJumpFbx->PlayAnimation(false);
+	m_goalHandFbx->PlayAnimation(false);
+	m_jumpFbx->PlayAnimation(false);
+	m_walkFbx->PlayAnimation(true);
+	m_spinFbx->PlayAnimation(false);
 }

@@ -14,15 +14,15 @@ StageSelect::~StageSelect()
 }
 void StageSelect::Initialize()
 {
-	selectOBJ = Shape::CreateOBJ("cube");
-	boxBreakOBJ = Shape::CreateRect(30.0f, 30.0f);
+	m_selectOBJ = Shape::CreateOBJ("cube");
+	m_boxBreakOBJ = Shape::CreateRect(30.0f, 30.0f);
 
-	selectGraph[0] = Texture::Get()->LoadTexture(L"Resources/select/select1.png");
-	selectGraph[1] = Texture::Get()->LoadTexture(L"Resources/select/select2.png");
-	selectGraph[2] = Texture::Get()->LoadTexture(L"Resources/select/select3.png");
+	m_selectGraph[0] = Texture::Get()->LoadTexture(L"Resources/select/select1.png");
+	m_selectGraph[1] = Texture::Get()->LoadTexture(L"Resources/select/select2.png");
+	m_selectGraph[2] = Texture::Get()->LoadTexture(L"Resources/select/select3.png");
 
-	boxFramGraph = Texture::Get()->LoadTexture(L"Resources/select/selectFram.png");
-	boxBreakGraph = Texture::Get()->LoadTexture(L"Resources/UI/UIBox.png");
+	m_boxFramGraph = Texture::Get()->LoadTexture(L"Resources/select/selectFram.png");
+	m_boxBreakGraph = Texture::Get()->LoadTexture(L"Resources/UI/UIBox.png");
 	// ライトグループクラス作成
 	lightGroup = std::make_unique<LightGroup>();
 	lightGroup->Initialize();
@@ -30,20 +30,20 @@ void StageSelect::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, -1));
-	boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
+	m_boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
 
 
-	numberGraph[0] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber1.png");
-	numberGraph[1] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber2.png");
-	numberGraph[2] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber3.png");
-	numberGraph[3] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber4.png");
-	numberGraph[4] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber5.png");
-	numberGraph[5] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber6.png");
-	numberGraph[6] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber7.png");
-	numberGraph[7] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber8.png");
-	numberGraph[8] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber9.png");
-	numberGraph[9] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber10.png");
-	numberGraph[10] = Texture::Get()->LoadTexture(L"Resources/UI/UISlash.png");
+	m_numberGraph[0] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber1.png");
+	m_numberGraph[1] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber2.png");
+	m_numberGraph[2] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber3.png");
+	m_numberGraph[3] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber4.png");
+	m_numberGraph[4] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber5.png");
+	m_numberGraph[5] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber6.png");
+	m_numberGraph[6] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber7.png");
+	m_numberGraph[7] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber8.png");
+	m_numberGraph[8] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber9.png");
+	m_numberGraph[9] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber10.png");
+	m_numberGraph[10] = Texture::Get()->LoadTexture(L"Resources/UI/UISlash.png");
 }
 
 void StageSelect::Init()
@@ -53,22 +53,22 @@ void StageSelect::Init()
 	Player::Get()->ChangeMoveFlag(false);
 	Player::Get()->Reset();
 	Player::Get()->GetClearFlag(false);
-	for (size_t i = 0; i < stageNumMax; i++)
+	for (size_t i = 0; i < c_stageNumMax; i++)
 	{
-		selectPos[i] = Vec3(50.0f + 50 * i, 30.0f, 150.0f);
-		selectBox[i].maxPosition = XMVectorSet(selectPos[i].x + selectScale / 2, selectPos[i].y + selectScale / 2, selectPos[i].z + selectScale / 2, 1);
-		selectBox[i].minPosition = XMVectorSet(selectPos[i].x - selectScale / 2, selectPos[i].y - selectScale / 2, selectPos[i].z - selectScale / 2, 1);
+		m_selectPos[i] = Vec3(50.0f + 50 * i, 30.0f, 150.0f);
+		m_selectBox[i].maxPosition = XMVectorSet(m_selectPos[i].x + c_selectScale / 2, m_selectPos[i].y + c_selectScale / 2, m_selectPos[i].z + c_selectScale / 2, 1);
+		m_selectBox[i].minPosition = XMVectorSet(m_selectPos[i].x - c_selectScale / 2, m_selectPos[i].y - c_selectScale / 2, m_selectPos[i].z - c_selectScale / 2, 1);
 	}
-	selectFlag = false;
+	m_selectFlag = false;
 	Stage::Get()->LoadStage(0);
 	Player::Get()->SetPosition(Vec3(20.0f, 10.0f, 150.0f));
 
 	//演出初期化
-	for (int i = 0; i < stageNumMax; i++)
+	for (int i = 0; i < c_stageNumMax; i++)
 	{
-		productionFlag[i] = false;
+		m_productionFlag[i] = false;
 	}
-	productionTime = 0;
+	m_productionTime = 0;
 }
 
 
@@ -77,17 +77,17 @@ void StageSelect::Update()
 	//ステージ選択
 	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3(0.0f, 15.0f, -130.0f));
 
-	for (int i = 0; i < stageNumMax; i++)
+	for (int i = 0; i < c_stageNumMax; i++)
 	{
-		if (Collision::CheckBox2Box(Player::Get()->GetBox(), selectBox[i]))
+		if (Collision::CheckBox2Box(Player::Get()->GetBox(), m_selectBox[i]))
 		{
-			if (selectPos[i].y - selectScale / 2 > Player::Get()->GetOldPosition().y + Player::Get()->GetPSize().y / 2 && productionTime == 0)
+			if (m_selectPos[i].y - c_selectScale / 2 > Player::Get()->GetOldPosition().y + Player::Get()->GetPSize().y / 2 && m_productionTime == 0)
 			{
-				stageNum = i + 1;
-				productionFlag[i] = true;
-				productionTime = productionTimeMax;
+				m_stageNum = i + 1;
+				m_productionFlag[i] = true;
+				m_productionTime = c_productionTimeMax;
 				Player::Get()->JumpPoweZero();
-				Audio::Get()->SoundSEPlayWave(boxSE);
+				Audio::Get()->SoundSEPlayWave(m_boxSE);
 			}
 			else
 			{
@@ -96,7 +96,7 @@ void StageSelect::Update()
 		}
 	}
 
-	if (productionFlag[0] == true || productionFlag[1] == true || productionFlag[2] == true)
+	if (m_productionFlag[0] == true || m_productionFlag[1] == true || m_productionFlag[2] == true)
 	{
 		Player::Get()->DieType(1);
 		Player::Get()->JumpPoweZero();
@@ -109,24 +109,24 @@ void StageSelect::Update()
 	lightGroup->Update();
 
 	//箱が上に上がる演出
-	for (int i = 0; i < stageNumMax; i++)
+	for (int i = 0; i < c_stageNumMax; i++)
 	{
-		if (productionFlag[i] == true && productionTime > 0)
+		if (m_productionFlag[i] == true && m_productionTime > 0)
 		{
-			productionTime--;
+			m_productionTime--;
 
-			if (productionTime > productionTimeMax - 10)
+			if (m_productionTime > c_productionTimeMax - 10)
 			{
-				selectPos[i].y += 1.0f;
+				m_selectPos[i].y += 1.0f;
 			}
-			else if (productionTime > productionTimeMax - 20)
+			else if (m_productionTime > c_productionTimeMax - 20)
 			{
-				selectPos[i].y -= 1.0f;
+				m_selectPos[i].y -= 1.0f;
 			}
 
-			if (productionTime <= 0)
+			if (m_productionTime <= 0)
 			{
-				selectFlag = true;
+				m_selectFlag = true;
 			}
 		}
 	}
@@ -135,12 +135,12 @@ void StageSelect::Update()
 	//最大箱の数
 	for (int i = 0; i < 3; i++)
 	{
-		breakNumMax[i] = breakBoxMax[i] % 10;
-		breakNumTenMax[i] = breakBoxMax[i] / 10;
+		m_breakNumMax[i] = c_breakBoxMax[i] % 10;
+		m_breakNumTenMax[i] = c_breakBoxMax[i] / 10;
 
 
-		breakNum[i] = breakBox[i] % 10;
-		breakNumTen[i] = breakBox[i] / 10;
+		m_breakNum[i] = m_breakBox[i] % 10;
+		m_breakNumTen[i] = m_breakBox[i] / 10;
 	}
 }
 
@@ -149,30 +149,30 @@ void StageSelect::Draw()
 	//背景描画
 	Player::Get()->Draw(true);
 	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
-	for (size_t i = 0; i < stageNumMax; i++)
+	for (size_t i = 0; i < c_stageNumMax; i++)
 	{
-		Object::NoShadowDraw(boxBreakOBJ, flamePSR[i], Vec3(50.0f + 50 * i, 50.0f, 150.0f),
-			Vec3(1.3f, 1.0f, 1.0f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), boxFramGraph);
-		Object::NoShadowDraw(boxBreakOBJ, boxBreakPSR[i], Vec3(40.0f + 50 * i, 50.0f, 149.5f),
-			Vec3(0.4f, 0.4f, 0.4f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), boxBreakGraph);
+		Object::NoShadowDraw(m_boxBreakOBJ, m_flamePSR[i], Vec3(50.0f + 50 * i, 50.0f, 150.0f),
+			Vec3(1.3f, 1.0f, 1.0f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_boxFramGraph);
+		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(40.0f + 50 * i, 50.0f, 149.5f),
+			Vec3(0.4f, 0.4f, 0.4f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_boxBreakGraph);
 		//数字十の桁
-		Object::NoShadowDraw(boxBreakOBJ, boxBreakPSR[i], Vec3(48.0f + 50 * i, 57.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), numberGraph[breakNumTen[i]]);
+		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(48.0f + 50 * i, 57.0f, 149.5f),
+			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNumTen[i]]);
 		//数字一の桁
-		Object::NoShadowDraw(boxBreakOBJ, boxBreakPSR[i], Vec3(56.0f + 50 * i, 57.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), numberGraph[breakNum[i]]);
+		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(56.0f + 50 * i, 57.0f, 149.5f),
+			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNum[i]]);
 		//最大数字十の桁
-		Object::NoShadowDraw(boxBreakOBJ, boxBreakPSR[i], Vec3(53.0f + 50 * i, 42.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), numberGraph[breakNumTenMax[i]]);
+		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(53.0f + 50 * i, 42.0f, 149.5f),
+			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNumTenMax[i]]);
 		//最大数字一の桁
-		Object::NoShadowDraw(boxBreakOBJ, boxBreakPSR[i], Vec3(60.0f + 50 * i, 42.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), numberGraph[breakNumMax[i]]);
+		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(60.0f + 50 * i, 42.0f, 149.5f),
+			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNumMax[i]]);
 
-		Object::NoShadowDraw(boxBreakOBJ, boxBreakPSR[i], Vec3(54.0f + 50 * i, 50.0f, 149.0f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), numberGraph[10]);
+		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(54.0f + 50 * i, 50.0f, 149.0f),
+			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[10]);
 
-		Object::Draw(selectOBJ, selectPsr[i], selectPos[i],
-			Vec3(selectScale, selectScale, selectScale), Vec3(), Vec2(), selectGraph[i], true);
+		Object::Draw(m_selectOBJ, m_selectPsr[i], m_selectPos[i],
+			Vec3(c_selectScale, c_selectScale, c_selectScale), Vec3(), Vec2(), m_selectGraph[i], true);
 	}
 }
 
@@ -184,9 +184,9 @@ void StageSelect::DrawShadow()
 
 void StageSelect::SetBreakBoxNum(int breakBox_)
 {
-	if (breakBox_ > breakBox[stageNum - 1])
+	if (breakBox_ > m_breakBox[m_stageNum - 1])
 	{
-		this->breakBox[stageNum - 1] = breakBox_;
+		m_breakBox[m_stageNum - 1] = breakBox_;
 	}
 
 }

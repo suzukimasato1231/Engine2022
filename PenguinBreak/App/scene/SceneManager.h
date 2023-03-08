@@ -1,5 +1,5 @@
 #pragma once
-#include"GameSceneManager.h"
+#include"GameScene.h"
 #include"TitleScene.h"
 #include"StageSelect.h"
 #include"ResultScene.h"
@@ -61,20 +61,20 @@ private:
 	/// </summary>
 	void SceneChange();
 private://定義
-	TitleScene titleScene;
-	StageSelect stageScene;
-	GameSceneManager gameScene;
-	ResultScene resultScene;
-	int scene = Title;	//シーン管理
-	int sceneMe = Title;
-	SpriteData changeBlack;
-	int changeSceneFlag = false;
-	Vec4 changeSceneColor = { 1.0f,1.0f,1.0f,0.0f };//シーンが変わる時の色
-	bool Flag = false;
+	TitleScene  m_titleScene;
+	StageSelect  m_stageScene;
+	GameSceneManager  m_gameScene;
+	ResultScene  m_resultScene;
+	int  m_scene = Title;	//シーン管理
+	int  m_sceneMe = Title;
+	SpriteData  m_changeBlack;
+	int  m_changeSceneFlag = false;
+	Vec4  m_changeSceneColor = { 1.0f,1.0f,1.0f,0.0f };//シーンが変わる時の色
+	bool  m_Flag = false;
 
-	Audio* audio = nullptr;
-	SoundData bgm={};
-	SoundData buttonSE={};
+	Audio* m_audio = nullptr;
+	SoundData  m_bgm={};
+	SoundData  m_buttonSE={};
 
-	ShadowMap shadowMapFar;
+	ShadowMap  m_shadowMapFar;
 };

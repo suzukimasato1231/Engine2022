@@ -8,39 +8,39 @@ Staging::~Staging()
 
 void Staging::Init()
 {
-	electDie = std::make_unique<ParticleManager>();
-	electDie->Initialize();
-	walk = std::make_unique<ParticleManager>();
-	walk->Initialize();
-	fallParicle = std::make_unique <Particle3D>();
-	startParicle = std::make_unique <Particle3D>();
+	m_electDie = std::make_unique<ParticleManager>();
+	m_electDie->Initialize();
+	m_walk = std::make_unique<ParticleManager>();
+	m_walk->Initialize();
+	m_fallParicle = std::make_unique <Particle3D>();
+	m_startParicle = std::make_unique <Particle3D>();
 
-	fallDown = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
-	startObject = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
+	m_fallDown = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
+	m_startObject = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 
-	start_color[0] = Texture::Get()->LoadTexture(L"Resources/Paricle/startWhite.png");
-	start_color[1] = Texture::Get()->LoadTexture(L"Resources/Paricle/starBlack.png");
-	start_color[2] = Texture::Get()->LoadTexture(L"Resources/Paricle/startYellow.png");
+	m_start_color[0] = Texture::Get()->LoadTexture(L"Resources/Paricle/startWhite.png");
+	m_start_color[1] = Texture::Get()->LoadTexture(L"Resources/Paricle/starBlack.png");
+	m_start_color[2] = Texture::Get()->LoadTexture(L"Resources/Paricle/startYellow.png");
 }
 
 void Staging::Update()
 {
-	electDie->Update();
-	walk->Update();
-	fallParicle->Update();
-	startParicle->Update();
+	m_electDie->Update();
+	m_walk->Update();
+	m_fallParicle->Update();
+	m_startParicle->Update();
 }
 
 void Staging::Draw()
 {
-	electDie->Draw(graph);
-	walk->Draw(graph);
+	m_electDie->Draw(m_graph);
+	m_walk->Draw(m_graph);
 }
 
 void Staging::Draw3D()
 {
-	fallParicle->Draw(fallDown);
-	startParicle->Draw(startObject);
+	m_fallParicle->Draw(m_fallDown);
+	m_startParicle->Draw(m_startObject);
 }
 
 void Staging::CreateElect(const Vec3 pPos)
@@ -60,7 +60,7 @@ void Staging::CreateElect(const Vec3 pPos)
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += 5.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		electDie->Add(particleTime, pos, velocity, accel, start_scale, end_scale, start_color, end_color);
+		m_electDie->Add(particleTime, pos, velocity, accel, start_scale, end_scale, start_color, end_color);
 	}
 }
 
@@ -80,7 +80,7 @@ void Staging::CreateWalk(const Vec3& pPos, const Vec3& vec)
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += 0.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		walk->Add(particleTime, pos, -vec, accel, start_scale, end_scale, start_color, end_color);
+		m_walk->Add(particleTime, pos, -vec, accel, start_scale, end_scale, start_color, end_color);
 	}
 }
 
@@ -103,7 +103,7 @@ void Staging::CreateFallDown(const Vec3& pPos)
 		velocity.x += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.y += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.z += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
-		fallParicle->Create(pos, velocity, accel,anglePlas, particleTime);
+		m_fallParicle->Create(pos, velocity, accel,anglePlas, particleTime);
 	}
 }
 
@@ -129,9 +129,9 @@ void Staging::CreateStart(const Vec3& pPos)
 
 		int graph_num = rand() % 3;
 
-		if (graph_num == 0) { graph_num = start_color[0]; }
-		else if (graph_num == 1) { graph_num = start_color[1]; }
-		else { graph_num = start_color[2]; }
-		startParicle->Create(pos, velocity, accel,anglePlas, particleTime, graph_num);
+		if (graph_num == 0) { graph_num = m_start_color[0]; }
+		else if (graph_num == 1) { graph_num = m_start_color[1]; }
+		else { graph_num = m_start_color[2]; }
+		m_startParicle->Create(pos, velocity, accel,anglePlas, particleTime, graph_num);
 	}
 }

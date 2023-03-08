@@ -18,13 +18,13 @@ public:
 	//ï`âÊ
 	void Draw(StageOBJ* stageObj, const bool shadowFlag);
 
-	Vec3 GetGoalScale() { return goalScale; }
+	Vec3 GetGoalScale() { return m_goalScale; }
 private:
 	//ÉSÅ[Éã
-	ObjectData goalOBJ = {};
-	Vec3 goalScale = { 20.0f,25.0f,20.0f };
-	bool goalFlag = false;
+	ObjectData  m_goalOBJ = {};
+	Vec3  m_goalScale = { 20.0f,25.0f,20.0f };
+	bool  m_goalFlag = false;
 
-	Vec3 angle = { 0.0f,0.0f,0.0f };
+	Vec3  m_angle = { 0.0f,0.0f,0.0f };
 };
 
