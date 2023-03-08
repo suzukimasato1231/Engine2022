@@ -25,6 +25,7 @@ void Particle3D::Update()
 		//‘¬“x‚ð‘«‚·
 		particle[i]->position += particle[i]->velocity;
 		particle[i]->velocity += particle[i]->accel;
+		particle[i]->angle += particle[i]->anglePlas;
 		float f = (float)particle[i]->framNow / particle[i]->framMax;
 		if (f >= 1.0f)
 		{
@@ -34,30 +35,31 @@ void Particle3D::Update()
 	}
 }
 
-void Particle3D::Draw(const ObjectData &objectData, int graph)
+void Particle3D::Draw(const ObjectData& objectData, int graph)
 {
-	for (size_t i = 0; i < particle.size(); i++)
+	for (auto p : particle)
 	{
-		if (particle[i]->graph == 0)
+		if (p->graph == 0)
 		{
-			Object::NoShadowDraw(objectData, particle[i]->psr,
-				particle[i]->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec2(), graph);
+			Object::NoShadowDraw(objectData, p->psr,
+				p->position, Vec3(1.0f, 1.0f, 1.0f), p->angle, Vec2(), graph);
 		}
 		else
 		{
-			Object::NoShadowDraw(objectData, particle[i]->psr,
-				particle[i]->position, Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec2(), particle[i]->graph);
+			Object::NoShadowDraw(objectData, p->psr,
+				p->position, Vec3(1.0f, 1.0f, 1.0f), p->angle, Vec2(), p->graph);
 		}
 	}
 }
 
-void Particle3D::Create(const Vec3 &pos,const Vec3 &velocity,const Vec3 &accel,const int time,const int graph)
+void Particle3D::Create(const Vec3& pos, const Vec3& velocity, const Vec3& accel, const Vec3& anglePlas, const int time, const int graph)
 {
 	particle.push_back(new ParticleData);
 	size_t num = particle.size() - 1;
 	particle[num]->position = pos;
 	particle[num]->velocity = velocity;
 	particle[num]->accel = accel;
+	particle[num]->anglePlas = anglePlas;
 	particle[num]->framMax = time;
 	particle[num]->graph = graph;
 }

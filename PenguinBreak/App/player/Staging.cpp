@@ -92,18 +92,18 @@ void Staging::CreateFallDown(const Vec3& pPos)
 
 	const float md_pos = 1.0f;
 	Vec3 pos = pPos;
-	const float md_vec = 3.0f;
+	const float md_vec = 6.0f;
 	Vec3 velocity = Velocity;
+	const Vec3 anglePlas = {};
 	for (int i = 0; i < 5; i++)
 	{
 		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.y += 0.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		velocity.x += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.y += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.z += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
-		fallParicle->Create(pos, velocity, accel, particleTime);
+		fallParicle->Create(pos, velocity, accel,anglePlas, particleTime);
 	}
 }
 
@@ -112,6 +112,7 @@ void Staging::CreateStart(const Vec3& pPos)
 	static const int particleTime = 30;
 	static const Vec3 accel = {};
 	Vec3 m_pos = pPos + Vec3(0.0f, 3.0f, 0.0f);
+	static const Vec3 anglePlas = {};
 	for (int i = 0; i < 30; i++)
 	{
 		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
@@ -131,6 +132,6 @@ void Staging::CreateStart(const Vec3& pPos)
 		if (graph_num == 0) { graph_num = start_color[0]; }
 		else if (graph_num == 1) { graph_num = start_color[1]; }
 		else { graph_num = start_color[2]; }
-		startParicle->Create(pos, velocity, accel, particleTime, graph_num);
+		startParicle->Create(pos, velocity, accel,anglePlas, particleTime, graph_num);
 	}
 }
