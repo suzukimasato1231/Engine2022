@@ -9,7 +9,7 @@ FloorPitfall::~FloorPitfall()
 
 void FloorPitfall::Init()
 {
-	pitfallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
+	m_pitfallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 }
 
 void FloorPitfall::Update(Floor* floorData)
@@ -20,7 +20,7 @@ void FloorPitfall::Update(Floor* floorData)
 	{
 		if (floorData->time <= 0)
 		{
-			floorData->time = pitfallTime;
+			floorData->time = c_pitfallTime;
 			floorData->moveFlag = 1;
 		}
 		if (floorData->time <= 5)
@@ -32,7 +32,7 @@ void FloorPitfall::Update(Floor* floorData)
 	{
 		if (floorData->time <= 0)
 		{
-			floorData->time = pitfallTime;
+			floorData->time = c_pitfallTime;
 			floorData->moveFlag = 0;
 		}
 		if (floorData->time <= 5)
@@ -46,12 +46,12 @@ void FloorPitfall::Draw(Floor* floorData, const bool shadowFlag)
 {
 	if (floorData->moveFlag == 0)
 	{
-		Object::Draw(pitfallOBJ, floorData->psr,Vec3(floorData->position.x, floorData->position.y-2.5f, floorData->position.z) ,Vec3(25.0f,5.0f,25.0f),
-			floorData->drawAngle, Vec2(), pitfallGraph, shadowFlag);
+		Object::Draw(m_pitfallOBJ, floorData->psr,Vec3(floorData->position.x, floorData->position.y-2.5f, floorData->position.z) ,Vec3(25.0f,5.0f,25.0f),
+			floorData->drawAngle, Vec2(), m_pitfallGraph, shadowFlag);
 	}//•Â‚¶‚Ä‚¢‚é
 	else if (floorData->moveFlag == 1)
 	{
-		Object::Draw(pitfallOBJ, floorData->psr, floorData->position, Vec3(25.0f, 5.0f, 25.0f),
-			floorData->drawAngle, Vec2(), pitfallGraph, shadowFlag);
+		Object::Draw(m_pitfallOBJ, floorData->psr, floorData->position, Vec3(25.0f, 5.0f, 25.0f),
+			floorData->drawAngle, Vec2(), m_pitfallGraph, shadowFlag);
 	}
 }

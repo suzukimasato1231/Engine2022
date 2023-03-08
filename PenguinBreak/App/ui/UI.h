@@ -5,47 +5,66 @@
 /// </summary>
 class UI
 {
-
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	UI();
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~UI();
-	//初期化
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="fishNum">魚数</param>
+	/// <param name="clearFlag">クリアフラグ</param>
+	/// <param name="changeScene">チェンジフラグ</param>
+	/// <param name="sceneNum">シーン数</param>
 	void Update(int fishNum, bool clearFlag, bool& changeScene, int& sceneNum);
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="pLives">残機数</param>
+	/// <param name="gameoverFlag">ゲームオーバーフラグ</param>
 	void Draw(const int pLives, const  bool gameoverFlag);
-
+	/// <summary>
+	/// リセット
+	/// </summary>
 	void Reset();
 
-	bool GetMenuFlag() { return menuFlag; }
+	bool GetMenuFlag() { return m_menuFlag; }
 private:
 	//ゲーム画面UI
-	SpriteData boxGraph;
+	SpriteData m_boxGraph;
 
-	SpriteData playerIcon;
+	SpriteData m_playerIcon;
 
-	SpriteData fishGraph;
+	SpriteData m_fishGraph;
 
-	SpriteData uiNumber[10];
-	SpriteData uiSlash;
+	SpriteData m_uiNumber[10];
+	SpriteData m_uiSlash;
 
 	//メニュー
-	Menu menu;
-	bool menuFlag = false;
+	Menu m_menu;
+	bool m_menuFlag = false;
 
 	//演出(ゲーム画面)
-	float fishPosPlas = 0.0f;
-	const int stagingTimeMax = 20;
-	const float stagingScaleMax = 1.5f;
-	float stagingScale[4] = { 0.0f,0.0f,0.0f,0.0f };
-	int stagingTime[4] = {};
-	bool stagingFlag[4] = {};
+	float m_fishPosPlas = 0.0f;
+	const int c_stagingTimeMax = 20;
+	const float c_stagingScaleMax = 1.5f;
+	float m_stagingScale[4] = { 0.0f,0.0f,0.0f,0.0f };
+	int m_stagingTime[4] = {};
+	bool m_stagingFlag[4] = {};
 	//壊した箱の数
-	int breakNumber = 1, breakRemain = 1;
+	int m_breakNumber = 1, m_breakRemain = 1;
 	//最大箱の数
-	int breakNumberMax = 1, breakRemainMax = 1;
+	int m_breakNumberMax = 1, m_breakRemainMax = 1;
 	//魚の数
-	int fishNumber = 1, fishRemain = 1;
+	int m_fishNumber = 1, m_fishRemain = 1;
 };
 

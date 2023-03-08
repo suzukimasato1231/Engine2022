@@ -6,33 +6,40 @@
 class FigurineOBJ
 {
 public:
-	//コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	FigurineOBJ();
 
 	//デスコンストラクタ
 	~FigurineOBJ();
-
-	//初期化
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
-
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
-
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="stageObj">ステージデータ</param>
+	/// <param name="shadowFlag">影フラグ</param>
 	void Draw(StageOBJ* stageObj, const bool shadowFlag);
 private:
 	//壁OBJ
-	ObjectData wallOBJ;
+	ObjectData m_wallOBJ;
 	//枯れ木OBJ
-	ObjectData deadTree;
+	ObjectData m_deadTree;
 	//岩
-	ObjectData stone;
+	ObjectData m_stone;
 	//氷のアーチ
-	ObjectData iceArch;
+	ObjectData m_iceArch;
 	//看板
-	ObjectData signboard;
-	int tutorialGraph[2] = {};
-	int tutorialNum = 40;		//チュートリアルの基本値
+	ObjectData m_signboard;
+	int m_tutorialGraph[2] = {};
+	int m_tutorialNum = 40;		//チュートリアルの基本値
 
 };
 

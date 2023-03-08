@@ -5,11 +5,11 @@
 #include"PushCollision.h"
 void BlockBox::Init()
 {
-	breakBoxOBJ = Shape::CreateOBJ("cube");
-	normalBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
-	hardBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Hard.png");
-	jumpBoxgraph = Texture::Get()->LoadTexture(L"Resources/cube/jumpBox.png");
-	bombBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/bomb.png");
+	m_breakBoxOBJ = Shape::CreateOBJ("cube");
+	m_normalBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
+	m_hardBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Hard.png");
+	m_jumpBoxgraph = Texture::Get()->LoadTexture(L"Resources/cube/jumpBox.png");
+	m_bombBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/bomb.png");
 }
 
 void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
@@ -19,10 +19,10 @@ void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
-			if (box_count >= 4) { return; }
-			obj_data[box_count] = *stageObj;
-			box_count++;
-			is_hit = true;
+			if (m_box_count >= 4) { return; }
+			m_obj_data[m_box_count] = *stageObj;
+			m_box_count++;
+			m_is_hit = true;
 		}
 	}
 }
@@ -35,10 +35,10 @@ void BlockBox::PlayerSpinHit(StageOBJ* stageObj, const int X, const int Z)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetSpinBox()))
 		{
-			if (spin_count >= 4) { return; }
-			obj_spin[spin_count] = *stageObj;
-			spin_count++;
-			is_spin = true;
+			if (m_spin_count >= 4) { return; }
+			m_obj_spin[m_spin_count] = *stageObj;
+			m_spin_count++;
+			m_is_spin = true;
 		}
 	}
 }
@@ -54,20 +54,20 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	switch (stageObj->type)
 	{
 	case BOX:
-		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec2(), normalBoxGraph, shadowFlag);
+		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
+			stageObj->angle, Vec2(), m_normalBoxGraph, shadowFlag);
 		break;
 	case BOXJUMP:
-		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec2(), jumpBoxgraph, shadowFlag);
+		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
+			stageObj->angle, Vec2(), m_jumpBoxgraph, shadowFlag);
 		break;
 	case BOXHARD:
-		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec2(), hardBoxGraph, shadowFlag);
+		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
+			stageObj->angle, Vec2(), m_hardBoxGraph, shadowFlag);
 		break;
 	case BOXBOMB:
-		Object::Draw(breakBoxOBJ, stageObj->psr, stageObj->position + bombPlas, stageObj->scale,
-			bombBoxAngle, Vec2(), bombBoxGraph, shadowFlag);
+		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position + m_bombPlas, stageObj->scale,
+			m_bombBoxAngle, Vec2(), m_bombBoxGraph, shadowFlag);
 		break;
 	}
 }
@@ -75,47 +75,47 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 void BlockBox::BombUpdate()
 {
 	//”š’e” ‚Ì‰‰o
-	bombTime++;
-	if (bombBoxFlag == true)
+	m_bombTime++;
+	if (m_bombBoxFlag == true)
 	{
-		bombBoxAngle += bombSpeedAngle;
+		m_bombBoxAngle += c_bombSpeedAngle;
 		//”š’e‚ª’µ‚Ë‚éˆ—
-		if (bombTime >= bombTimeMax / 2)
+		if (m_bombTime >= c_bombTimeMax / 2)
 		{
-			bombPlas -= bombPlasSpeed;
+			m_bombPlas -= c_bombPlasSpeed;
 		}
 		else
 		{
-			bombPlas += bombPlasSpeed;
+			m_bombPlas += c_bombPlasSpeed;
 		}
 		//‰‰oI‚í‚è
-		if (bombTime >= bombTimeMax)
+		if (m_bombTime >= c_bombTimeMax)
 		{
-			bombBoxFlag = false;
-			bombTime = {};
+			m_bombBoxFlag = false;
+			m_bombTime = {};
 		}
 	}
 	else
 	{	//‰‰o‚Í‚¶‚ß
-		if (bombTime >= bombTimeMax)
+		if (m_bombTime >= c_bombTimeMax)
 		{
-			bombBoxFlag = true;
-			bombTime = {};
-			bombPlas = {};
+			m_bombBoxFlag = true;
+			m_bombTime = {};
+			m_bombPlas = {};
 		}
 	}
 }
 
 void BlockBox::Update()
 {
-	is_hit = false;
-	box_count = 0;
-	is_spin = false;
-	spin_count = 0;
+	m_is_hit = false;
+	m_box_count = 0;
+	m_is_spin = false;
+	m_spin_count = 0;
 	for (int i = 0; i < 4; i++)
 	{
-		obj_data[i] = {};
-		obj_spin[i] = {};
+		m_obj_data[i] = {};
+		m_obj_spin[i] = {};
 	}
 	//”š’eˆ—‚ÌXV
 	BombUpdate();

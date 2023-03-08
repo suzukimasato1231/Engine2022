@@ -4,22 +4,22 @@
 #include"Object.h"
 enum StageFloor
 {
-	NoneFloor,
-	FloorNormal,	//普通の床
-	Floor169,		//斜め床
-	Floor11,		//斜め床
-	FloorMove,		//移動床
-	FloorPitfall_A,	//落とし穴A
-	FloorPitfall_B,	//落とし穴B
-	FloorMove2,		//移動床
+	NONEFLOOR,
+	FLOORNORMAL,	//普通の床
+	FLOOR169,		//斜め床
+	FLOOR11,		//斜め床
+	FLOORMOVE,		//移動床
+	FLOORPITFALL_A,	//落とし穴A
+	FLOORPITFALL_B,	//落とし穴B
+	FLOORMOVE2,		//移動床
 };
 
 enum StageType
 {
-	NoneOBJ = 0,
-	Wall = 1,			//壁
-	Goal = 2,			//ゴール
-	BarrierWall = 3,	//バリアブロック
+	NONEOBJ = 0,
+	WALL = 1,			//壁
+	GOAL = 2,			//ゴール
+	BARRIERWALL = 3,	//バリアブロック
 	BOX = 10,			//壊れる箱
 	BOXDOUBLE = 11,		//壊れる箱ダブル
 	BOXHARD = 12,		//固い箱
@@ -72,6 +72,6 @@ struct StageOBJ
 	Vec3 angle = {};
 	Vec2 map = {};
 	Box box = {};
-	int type = NoneOBJ;
+	int type = NONEOBJ;
 	Vec3 actionPos = {};
 };

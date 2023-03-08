@@ -8,8 +8,13 @@
 class BlockBox
 {
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	BlockBox() {};
-
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~BlockBox() {};
 	/// <summary>
 	/// 初期化
@@ -44,48 +49,48 @@ private:
 	/// </summary>
 	void BombUpdate();
 public:
-	StageOBJ* GetObj_Data() { return obj_data; }
+	StageOBJ* GetObj_Data() { return m_obj_data; }
 
-	StageOBJ GetObj_Data(int i) { return obj_data[i]; }
+	StageOBJ GetObj_Data(int i) { return m_obj_data[i]; }
 
-	int GetBox_Count() { return box_count; }
+	int GetBox_Count() { return m_box_count; }
 
-	bool GetIs_Hit() { return is_hit; }
+	bool GetIs_Hit() { return m_is_hit; }
 
-	StageOBJ GetObj_Spin(int i) { return obj_spin[i]; }
+	StageOBJ GetObj_Spin(int i) { return m_obj_spin[i]; }
 
-	int GetSpin_Count() { return spin_count; }
+	int GetSpin_Count() { return m_spin_count; }
 
-	bool GetIs_Spin() { return is_spin; }
+	bool GetIs_Spin() { return m_is_spin; }
 
-	Vec3 GetBoxScale() { return breakBoxScale; }
+	Vec3 GetBoxScale() { return c_breakBoxScale; }
 private:
-	ObjectData breakBoxOBJ = {};
+	ObjectData m_breakBoxOBJ = {};
 	//箱の大きさ
-	const Vec3 breakBoxScale = { 20.0f,20.0f,20.0f };
+	const Vec3 c_breakBoxScale = { 20.0f,20.0f,20.0f };
 	//壊れる箱の画像
-	int normalBoxGraph = 0;
+	int m_normalBoxGraph = 0;
 	//固い箱の画像
-	int hardBoxGraph = 0;
+	int m_hardBoxGraph = 0;
 	//ジャンプの箱の画像
-	int jumpBoxgraph = 0;
+	int m_jumpBoxgraph = 0;
 	//爆弾の箱の画像
-	int bombBoxGraph = 0;
-	Vec3 bombBoxAngle = {};							//爆弾角度
-	const Vec3 bombSpeedAngle = { 0.0f,2.0f,0.0f };	//回転速度
-	bool bombBoxFlag = false;						//爆弾演出フラグ
-	int bombTime = 0;								//開店時間
-	const int bombTimeMax = 45;						//回転時間最大
-	const Vec3 bombPlasSpeed = {0.0f,0.2f,0.0f};	//跳ねる速度
-	Vec3 bombPlas = {0.0f,0.0f,0.0f};				//爆弾箱の跳ねる距離
+	int m_bombBoxGraph = 0;
+	Vec3 m_bombBoxAngle = {};							//爆弾角度
+	const Vec3 c_bombSpeedAngle = { 0.0f,2.0f,0.0f };	//回転速度
+	bool m_bombBoxFlag = false;						//爆弾演出フラグ
+	int m_bombTime = 0;								//開店時間
+	const int c_bombTimeMax = 45;						//回転時間最大
+	const Vec3 c_bombPlasSpeed = {0.0f,0.2f,0.0f};	//跳ねる速度
+	Vec3 m_bombPlas = {0.0f,0.0f,0.0f};				//爆弾箱の跳ねる距離
 
 	//接触時の判定に使う箱
-	bool is_hit = false;
-	int box_count = 0;
-	StageOBJ obj_data[5] = {};
+	bool m_is_hit = false;
+	int m_box_count = 0;
+	StageOBJ m_obj_data[5] = {};
 	//スピンの当たり判定に使う箱
-	bool is_spin = false;
-	int spin_count = 0;
-	StageOBJ obj_spin[5] = {};
+	bool m_is_spin = false;
+	int m_spin_count = 0;
+	StageOBJ m_obj_spin[5] = {};
 };
 

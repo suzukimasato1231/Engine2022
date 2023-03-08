@@ -38,9 +38,9 @@ public:
 	//ステージ作成
 	void LoadStage(int stageNum);
 public://マップ
-	inline bool GetClearFlag() { return goalFlag; }
-	inline int GetBlockNum() { return blockNum; }
-	inline int GetBlockMax() { return blockMax; }
+	inline bool GetClearFlag() { return m_goalFlag; }
+	inline int GetBlockNum() { return m_blockNum; }
+	inline int GetBlockMax() { return m_blockMax; }
 private:
 	//川の描画
 	void DrawWater();
@@ -59,55 +59,55 @@ private:
 
 	void SetFishAttack(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map);
 private:
-	const float mapSize = 25.0f;
-	const int drawNumY = 35;
+	const float c_mapSize = 25.0f;
+	const int c_drawNumY = 35;
 private://床関連
 	//雪の床
-	ObjectData floorOBJ;
+	ObjectData m_floorOBJ;
 	std::vector<Floor*>floor;
-	int floorGraph = 0;
+	int m_floorGraph = 0;
 	//動く床
-	MoveFloor moveFloor;
+	MoveFloor m_moveFloor;
 
-	FloorPitfall floorPitfall;
+	FloorPitfall m_floorPitfall;
 private://罠ブロック
 	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
-	int wallGraph = 0;
-	const Vec3 wallScale = { 25.0f, 70.0f, 25.0f };
+	int m_wallGraph = 0;
+	const Vec3 m_wallScale = { 25.0f, 70.0f, 25.0f };
 	//ゴール
-	GoalFish goalFish;
-	bool goalFlag = false;
+	GoalFish m_goalFish;
+	bool m_goalFlag = false;
 	//箱
-	BlockBox blockBox;
+	BlockBox m_blockBox;
 	//電撃の罠
-	Electricity elect;
+	Electricity m_elect;
 	//危険魚
-	DangerFish dangerFish;
+	DangerFish m_dangerFish;
 	//置物
-	FigurineOBJ figurineOBJ;
+	FigurineOBJ m_figurineOBJ;
 private:
 	//壊した時に出る魚
-	FishBox fishBox;
+	FishBox m_fishBox;
 
-	int blockMax = 0;	//ステージにある最大のブロック数
-	int blockNum = 0;	//壊したブロック
+	int m_blockMax = 0;	//ステージにある最大のブロック数
+	int m_blockNum = 0;	//壊したブロック
 
 
-	ObjectData water = {};
-	int waterGraph = 0;
-	Vec2 waterUV = {};
+	ObjectData m_water = {};
+	int m_waterGraph = 0;
+	Vec2 m_waterUV = {};
 
-	PSR blackPsr[3] = {};
+	PSR m_blackPsr[3] = {};
 	//落下地点表示クラス
-	DropPoint dropPoint;
+	DropPoint m_dropPoint;
 
-	BoxStaring boxStaring;
+	BoxStaring m_boxStaring;
 
 	//サウンド
-	SoundData boxSE = {};
-	SoundData jumpSE = {};
-	SoundData goalSE = {};
-	SoundData bombSE = {};
-	bool goalSEFlag = false;
+	SoundData m_boxSE = {};
+	SoundData m_jumpSE = {};
+	SoundData m_goalSE = {};
+	SoundData m_bombSE = {};
+	bool m_goalSEFlag = false;
 };

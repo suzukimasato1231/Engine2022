@@ -48,20 +48,20 @@ private:
 private:
 	//2D
 	//箱が壊れるパーティクル
-	std::unique_ptr<ParticleManager>breakBoxParticle;
-	Vec3 breakPos = {};
-	int graph = 0;
-	bool breakBoxFlag = false;
+	std::unique_ptr<ParticleManager>m_breakBoxParticle;
+	Vec3 m_breakPos = {};
+	int m_graph = 0;
+	bool m_breakBoxFlag = false;
 	//爆弾箱は壊れるパーティクル
-	std::unique_ptr<ParticleManager>bombParticle;
-	Vec3 bombPos = {};
-	bool bombFlag = false;
-	const int bombTimeMax = 10;
-	int bombTime = 0;
+	std::unique_ptr<ParticleManager>m_bombParticle;
+	Vec3 m_bombPos = {};
+	bool m_bombFlag = false;
+	const int c_bombTimeMax = 10;
+	int m_bombTime = 0;
 	//3D
 	//壊れた箱が飛び散る
-	std::unique_ptr<Particle3D>break3DParticle;
-	ObjectData boxData;
-	int boxGraph = 0;
+	std::unique_ptr<Particle3D>m_break3DParticle;
+	ObjectData m_boxData;
+	int m_boxGraph = 0;
 };
 

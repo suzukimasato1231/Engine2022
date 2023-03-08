@@ -2,21 +2,43 @@
 #include"StegeObject.h"
 #include"ParticleManager.h"
 #include<memory>
+/// <summary>
+/// 電気の罠
+/// </summary>
 class Electricity
 {
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Electricity();
-
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~Electricity();
-	//初期化
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
-	//全体的な更新
+	/// <summary>
+	/// 全体の更新
+	/// </summary>
 	void AllUpdate();
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="stageObj">ステージデータ</param>
+	/// <param name="Z">Z軸位置</param>
 	void Update(StageOBJ* stageObj, const int Z);
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="stageObj">ステージデータ</param>
+	/// <param name="shadowFlag">影フラグ</param>
 	void Draw(StageOBJ* stageObj, const bool shadowFlag);
-
+	/// <summary>
+	/// パーティクル描画
+	/// </summary>
 	void DrawParicle();
 
 	static StageOBJ SetElect(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, const int type);
@@ -39,6 +61,6 @@ private:
 	std::unique_ptr<ParticleManager>m_electParicle = nullptr;
 	int m_electParicleGraph = 0;
 
-	Vec2 uvScroll = { 0.0f ,0.0f };
+	Vec2 m_uvScroll = { 0.0f ,0.0f };
 };
 
