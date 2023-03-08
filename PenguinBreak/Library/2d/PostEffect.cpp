@@ -33,23 +33,23 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&sprite.vertBuff));
+		IID_PPV_ARGS(&m_sprite.vertBuff));
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	sprite.vertBuff->SetName(L"SpriteVert");
+	m_sprite.vertBuff->SetName(L"SpriteVert");
 #endif
 	//頂点バッファへのデータ転送
 	Sprite::VertexPosUv* vertMap = nullptr;
-	result = sprite.vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = m_sprite.vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		memcpy(vertMap, vertices, sizeof(vertices));
-		sprite.vertBuff->Unmap(0, nullptr);
+		m_sprite.vertBuff->Unmap(0, nullptr);
 	}
 
 	//頂点バッファビューの作成
-	sprite.vbView.BufferLocation = sprite.vertBuff->GetGPUVirtualAddress();
-	sprite.vbView.SizeInBytes = sizeof(Sprite::VertexPosUv) * 4;
-	sprite.vbView.StrideInBytes = sizeof(Sprite::VertexPosUv);
+	m_sprite.vbView.BufferLocation = m_sprite.vertBuff->GetGPUVirtualAddress();
+	m_sprite.vbView.SizeInBytes = sizeof(Sprite::VertexPosUv) * 4;
+	m_sprite.vbView.StrideInBytes = sizeof(Sprite::VertexPosUv);
 
 	//定数バッファ
 	result = dev->CreateCommittedResource(
@@ -58,12 +58,12 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(Sprite::ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuff)
+		IID_PPV_ARGS(&m_constBuff)
 	);
 	assert(SUCCEEDED(result));
 
 #ifdef _DEBUG
-	constBuff->SetName(L"SpriteConst");
+	m_constBuff->SetName(L"SpriteConst");
 #endif
 
 	//テクスチャリソース設定
@@ -83,11 +83,11 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		&texresDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
-		IID_PPV_ARGS(&texbuff));
+		IID_PPV_ARGS(&m_texbuff));
 	assert(SUCCEEDED(result));
 
 #ifdef _DEBUG
-	texbuff->SetName(L"SpriteBuff");
+	m_texbuff->SetName(L"SpriteBuff");
 #endif
 
 	{//テクスチャを赤クリア
@@ -102,7 +102,7 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		for (int i = 0; unsigned(i) < pixelCount; i++) { img[i] = 0xff0000ff; }
 
 		//テクスチャバッファにデータ転送
-		result = texbuff->WriteToSubresource(0, nullptr,
+		result = m_texbuff->WriteToSubresource(0, nullptr,
 			img, rowPitch, depthPitch);
 		assert(SUCCEEDED(result));
 		delete[] img;
@@ -114,16 +114,16 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	srvDescHeapDesc.NumDescriptors = 2;
 	//SRV用デスクリプタヒープを生成
-	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
+	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&m_descHeapSRV));
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	descHeapSRV->SetName(L"SpriteSRV");
+	m_descHeapSRV->SetName(L"SpriteSRV");
 #endif
 
-	Texture::Get()->LoadPostEfectTexture(texbuff.Get());
+	Texture::Get()->LoadPostEfectTexture(m_texbuff.Get());
 
 #ifdef _DEBUG
-	texbuff->SetName(L"SpriteBuff");
+	m_texbuff->SetName(L"SpriteBuff");
 #endif
 
 	//RTV用デスクリプタヒープ設定
@@ -131,15 +131,15 @@ void PostEffect::Initialize(ID3D12Device* dev)
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	rtvDescHeapDesc.NumDescriptors = 1;
 	//RTV用デスクリプタヒープを生成
-	result = dev->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
+	result = dev->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&m_descHeapRTV));
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	descHeapRTV->SetName(L"SpriteRTV");
+	m_descHeapRTV->SetName(L"SpriteRTV");
 #endif
 	//デスクリプタヒープにRTV作成
-	dev->CreateRenderTargetView(texbuff.Get(),
+	dev->CreateRenderTargetView(m_texbuff.Get(),
 		nullptr,
-		descHeapRTV->GetCPUDescriptorHandleForHeapStart());
+		m_descHeapRTV->GetCPUDescriptorHandleForHeapStart());
 
 	//深度バッファリソース設定
 	CD3DX12_RESOURCE_DESC depthResDesc =
@@ -158,39 +158,39 @@ void PostEffect::Initialize(ID3D12Device* dev)
 		&depthResDesc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
-		IID_PPV_ARGS(&depthBuff));
+		IID_PPV_ARGS(&m_depthBuff));
 
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	depthBuff->SetName(L"SpriteDepth");
+	m_depthBuff->SetName(L"SpriteDepth");
 #endif
 	//DSV用デスクリプタヒープ
 	D3D12_DESCRIPTOR_HEAP_DESC DescHeapDesc{};
 	DescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DescHeapDesc.NumDescriptors = 1;
 	//DSV用デスクリプタヒープを作成
-	result = dev->CreateDescriptorHeap(&DescHeapDesc, IID_PPV_ARGS(&descHeapDSV));
+	result = dev->CreateDescriptorHeap(&DescHeapDesc, IID_PPV_ARGS(&m_descHeapDSV));
 	assert(SUCCEEDED(result));
 
 	//デスクリプタヒープにDSV作成
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;//深度値フォーマット
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	dev->CreateDepthStencilView(depthBuff.Get(),
+	dev->CreateDepthStencilView(m_depthBuff.Get(),
 		&dsvDesc,
-		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
+		m_descHeapDSV->GetCPUDescriptorHandleForHeapStart());
 }
 
 void PostEffect::CreatePipeline(ID3D12Device* dev)
 {
-	pipelineSet = Pipeline::DepthOfFieldPipeline;
+	m_pipelineSet = Pipeline::DepthOfFieldPipeline;
 	//SetPipeline(2);
 }
 
 void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList,const Vec4 &color)
 {
 
-	DrawPost(sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false);
+	DrawPost(m_sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false);
 
 }
 
@@ -198,16 +198,16 @@ void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
 	//リソースバリアを変更
 	cmdList->ResourceBarrier(1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(m_texbuff.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 	//レンダーターゲットビュー用ディスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvH =
-		descHeapRTV->GetCPUDescriptorHandleForHeapStart();
+		m_descHeapRTV->GetCPUDescriptorHandleForHeapStart();
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH =
-		descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+		m_descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 	//レンダーターゲットをセット
 	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
 
@@ -226,7 +226,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
 	//リソースバリアを変更
 	cmdList->ResourceBarrier(1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(m_texbuff.Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }
@@ -235,18 +235,18 @@ void PostEffect::UpdatePost(SpriteData& sprite, const Vec2 &position, float widt
 {
 	//定数バッファの転送
 	Sprite::ConstBufferData* constMap = nullptr;
-	HRESULT result = constBuff->Map(0, nullptr, (void**)&constMap);
+	HRESULT result = m_constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = XMMatrixIdentity();
 	constMap->color = color;
-	constBuff->Unmap(0, nullptr);
+	m_constBuff->Unmap(0, nullptr);
 }
 
 void PostEffect::DrawPost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
 {
 	//パイプラインステートの設定
-	Sprite::cmdList->SetPipelineState(pipelineSet.pipelinestate.Get());
+	Sprite::cmdList->SetPipelineState(m_pipelineSet.pipelinestate.Get());
 	//ルートシグネチャの設定
-	Sprite::cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
+	Sprite::cmdList->SetGraphicsRootSignature(m_pipelineSet.rootsignature.Get());
 	//プリミティブ形状を設定
 	Sprite::cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
@@ -254,7 +254,7 @@ void PostEffect::DrawPost(SpriteData& sprite, const Vec2 &position, float width,
 	//頂点バッファをセット
 	Sprite::cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
 	//定数バッファをセット
-	Sprite::cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	Sprite::cmdList->SetGraphicsRootConstantBufferView(0, m_constBuff->GetGPUVirtualAddress());
 
 
 	//テクスチャ用デスクリプタヒープの設定
@@ -278,13 +278,13 @@ void PostEffect::SetPipeline(int num)
 	switch (num)
 	{
 	case 0:
-		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
+		m_pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
 		break;
 	case 1:
-		pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postTestShader);
+		m_pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postTestShader);
 		break;
 	case 2:
-		pipelineSet = Pipeline::DepthOfFieldPipeline;
+		m_pipelineSet = Pipeline::DepthOfFieldPipeline;
 		break;
 	}
 }

@@ -61,26 +61,26 @@ public:
 	//パイプライン切り替え
 	void SetPipeline(int num);
 
-	ID3D12Resource* GetDepth() { return depthBuff.Get(); }
+	ID3D12Resource* GetDepth() { return m_depthBuff.Get(); }
 private:
 
 	//テクスチャバッファ
-	ComPtr<ID3D12Resource>texbuff;
+	ComPtr<ID3D12Resource>m_texbuff;
 	//SRV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap>descHeapSRV;
+	ComPtr<ID3D12DescriptorHeap>m_descHeapSRV;
 	//深度バッファ
-	ComPtr<ID3D12Resource>depthBuff;
+	ComPtr<ID3D12Resource>m_depthBuff;
 	//RTV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap>descHeapRTV;
+	ComPtr<ID3D12DescriptorHeap>m_descHeapRTV;
 	//DSV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap>descHeapDSV;
+	ComPtr<ID3D12DescriptorHeap>m_descHeapDSV;
 
 	//GPUリソースの生成1
-	ComPtr<ID3D12Resource> constBuff;
+	ComPtr<ID3D12Resource> m_constBuff;
 
-	SpriteData sprite;
+	SpriteData m_sprite;
 
 	//パイプラインセット
-	Pipeline::PipelineSet pipelineSet;
+	Pipeline::PipelineSet m_pipelineSet;
 };
 

@@ -14,23 +14,28 @@ class Camera :public Singleton<Camera>
 private:
 	friend Singleton<Camera>;
 	//ビュー変換行列
-	XMMATRIX matView;
+	XMMATRIX m_matView;
 	//射影変換
-	XMMATRIX matProjection;
+	XMMATRIX m_matProjection;
+	
+	XMMATRIX m_matViewProjection;
 
-	XMMATRIX matViewProjection;
-
-	Vec3 eye = {}, target = {}, up = {};
+	Vec3 m_eye = {}, m_target = {}, m_up = {};
 
 	//カメラ追従
-	bool followDirty = false;
-	float followX = 0.0f;
-	float followY = 0.0f;
-	Vec3 followD = {};
-	Vec3 followF3 = {};
+	bool m_followDirty = false;
+	float m_followX = 0.0f;
+	float m_followY = 0.0f;
+	Vec3 m_followD = {};
+	Vec3 m_followF3 = {};
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Camera();
-
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~Camera();
 
 	/// <summary>
@@ -59,10 +64,19 @@ public:
 	 XMMATRIX GetProjection();
 
 	 XMMATRIX GetMatViewProjection();
-
+	 /// <summary>
+	 /// Eye取得
+	 /// </summary>
+	 /// <returns></returns>
 	 Vec3 GetEye();
-
+	 /// <summary>
+	 /// ターゲット取得
+	 /// </summary>
+	 /// <returns></returns>
 	 Vec3 GetTarget();
-
+	 /// <summary>
+	 /// UP取得
+	 /// </summary>
+	 /// <returns></returns>
 	 Vec3 GetUp();
 };

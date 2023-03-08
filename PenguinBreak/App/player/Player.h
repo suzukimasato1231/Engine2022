@@ -128,6 +128,12 @@ private:
 	/// 音の更新
 	/// </summary>
 	void AudioUpdate();
+	/// <summary>
+	/// 落下したか
+	/// </summary>
+	/// <param name="pos">プレイヤー位置</param>
+	/// <returns></returns>
+	bool OutofFallDown(const Vec3& pos);
 public://取得系
 	inline Vec3 GetPosition() { return m_position; }
 

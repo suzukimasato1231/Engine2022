@@ -3,7 +3,7 @@
 #include "Safe_delete.h"
 #include <stdio.h>
 #include <stdarg.h>
-
+#include<memory>
 extern const int window_width;
 extern const int window_height;
 /// <summary>
@@ -45,10 +45,10 @@ public:
 	/// </summary>
 	void DrawAll();
 private:
-	Sprite* sprite = nullptr;
+	std::unique_ptr<Sprite> sprite = nullptr;
 
 	// スプライトデータの配列
-	SpriteData sprites[maxCharCount] = {};
+	SpriteData m_sprites[maxCharCount] = {};
 	// スプライトデータ配列の添え字番号
-	int spriteIndex = 0;
+	int m_spriteIndex = 0;
 };

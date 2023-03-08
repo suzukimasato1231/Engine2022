@@ -3,9 +3,9 @@ using namespace DirectX;
 
 Camera::Camera()
 {
-	matView = XMMatrixIdentity();
+	m_matView = XMMatrixIdentity();
 	//射影変換
-	matProjection = XMMatrixIdentity();
+	m_matProjection = XMMatrixIdentity();
 }
 
 Camera::~Camera()
@@ -27,37 +27,37 @@ Camera* Camera::Create()
 void Camera::Initilize(const Vec3 &eye, const Vec3 &target, const Vec3 &up)
 {
 	//射影変換用
-	matProjection = XMMatrixPerspectiveFovLH(
+	m_matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
 		(float)window_width / window_height,
 		1.0f, 100.0f
 	);
-	this->eye = eye, this->target = target, this->up = up;
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+	m_eye = eye, m_target = target, m_up = up;
+	m_matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 }
 
 void Camera::SetCamera(const Vec3 &eye, const Vec3 &target, const Vec3 &up)
 {
-	this->eye = eye, this->target = target, this->up = up;
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+	m_eye = eye, m_target = target, m_up = up;
+	m_matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 	//射影変換用
-	matProjection = XMMatrixPerspectiveFovLH(
+	m_matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
 		(float)window_width / window_height,
 		1.0f, 1500.0f
 	);
-	matViewProjection = matView * matProjection;
+	m_matViewProjection = m_matView * m_matProjection;
 }
 
 void Camera::FollowCamera(const Vec3 &position, const Vec3 &d, float angleX, float angleY)
 {
-	target = position;//注視点座標
+	m_target = position;//注視点座標
 
    //カメラ追従
-	if (angleX != followX || angleY != followY || !(d == followD))
+	if (angleX != m_followX || angleY != m_followY || !(d == m_followD))
 	{
-		followX = angleX, followY = angleY, followD = d;
+		m_followX = angleX, m_followY = angleY, m_followD = d;
 		//1
 		Vec3 V0 = d;
 		//2
@@ -70,42 +70,42 @@ void Camera::FollowCamera(const Vec3 &position, const Vec3 &d, float angleX, flo
 		XMVECTOR v = XMVector3TransformNormal(v3, followRotM);
 
 		//4
-		followF3 = { v.m128_f32[0],v.m128_f32[1],v.m128_f32[2] };
+		m_followF3 = { v.m128_f32[0],v.m128_f32[1],v.m128_f32[2] };
 	}
-	eye.x = target.x + followF3.x, eye.y = target.y + followF3.y, eye.z = target.z + followF3.z;
+	m_eye.x = m_target.x + m_followF3.x, m_eye.y = m_target.y + m_followF3.y, m_eye.z = m_target.z + m_followF3.z;
 
 	//5
 	//ビュー変換行列
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+	m_matView = XMMatrixLookAtLH(XMLoadFloat3(&m_eye), XMLoadFloat3(&m_target), XMLoadFloat3(&m_up));
 
-	matViewProjection = matView * matProjection;
+	m_matViewProjection = m_matView * m_matProjection;
 }
 
 XMMATRIX Camera::GetMatView()
 {
-	return matView;
+	return m_matView;
 }
 
 XMMATRIX Camera::GetProjection()
 {
-	return matProjection;
+	return m_matProjection;
 }
 
 XMMATRIX Camera::GetMatViewProjection()
 {
-	return matViewProjection;
+	return m_matViewProjection;
 }
 
 Vec3 Camera::GetEye()
 {
-	return eye;
+	return m_eye;
 }
 Vec3 Camera::GetTarget()
 {
-	return target;
+	return m_target;
 }
 
 Vec3 Camera::GetUp()
 {
-	return up;
+	return m_up;
 }

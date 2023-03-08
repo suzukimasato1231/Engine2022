@@ -168,6 +168,15 @@ void Player::AudioUpdate()
 	}
 }
 
+bool Player::OutofFallDown(const Vec3& pos)
+{
+	if (pos.y < c_fallPos && m_dieType == DIENULL)
+	{
+		return true;
+	}
+	return false;
+}
+
 
 //ˆÚ“®
 void Player::Move()
@@ -282,7 +291,7 @@ void Player::Jump()
 
 void Player::FallDie()
 {
-	if (m_position.y < c_fallPos && m_dieType == DIENULL)
+	if (OutofFallDown(m_position))
 	{
 		static const int dieTime = 30;	//Ž€‚ñ‚¾‚Æ‚«‚Ì‰‰oŽžŠÔ
 		m_dieNowTime = dieTime;

@@ -43,8 +43,6 @@ public://サブクラス
 		XMMATRIX lightproj;
 	};
 
-
-
 	//定数バッファ用データ構造体(スキニング)
 	struct ConstBufferDataSkin
 	{
@@ -87,14 +85,14 @@ public://メンバ関数
 	/// </summary>
 	void StopAnimation();
 
-	void SetPosition(const Vec3 &pos) { FBXObject3d::position = pos; }
-	void SetScale(const Vec3 &scale) { FBXObject3d::scale = scale; }
-	void SetRotation(const Vec3 &rotation) { FBXObject3d::rotation = rotation; }
+	void SetPosition(const Vec3 &pos) { m_position = pos; }
+	void SetScale(const Vec3 &scale) { m_scale = scale; }
+	void SetRotation(const Vec3 &rotation) { m_rotation = rotation; }
 protected://メンバ変数
 	//定数バッファ
-	ComPtr<ID3D12Resource>constBuffTransform;
+	ComPtr<ID3D12Resource>m_constBuffTransform;
 	//定数バッファ
-	ComPtr<ID3D12Resource>constBufferSkin;
+	ComPtr<ID3D12Resource>m_constBufferSkin;
 
 	//ルートシグネチャ
 	static ComPtr<ID3D12RootSignature>rootsignature;
@@ -106,26 +104,26 @@ protected://メンバ変数
 	static ComPtr<ID3D12PipelineState>pipelinestateShadow;
 
 	//ローカルスケール
-	Vec3 scale = { 0.025f,0.025f,0.025f };//ペンギン
+	Vec3 m_scale = { 0.025f,0.025f,0.025f };//ペンギン
 	//X,Y,Z軸回りのローカル回転角
-	Vec3 rotation = { 0.0f,180.0f,0.0f };
+	Vec3 m_rotation = { 0.0f,180.0f,0.0f };
 	//ローカル座標
-	Vec3 position = { 0,0,0 };
+	Vec3 m_position = { 0,0,0 };
 	//ローカルワールド変換行列
-	XMMATRIX matWorld;
+	XMMATRIX m_matWorld;
 	//モデル
 	Model *model = nullptr;
 
 	//1フレームの時間
-	FbxTime frameTime;
+	FbxTime m_frameTime;
 	//アニメーション開始時間
-	FbxTime startTime;
+	FbxTime m_startTime;
 	//アニメーション終了時間
-	FbxTime endTime;
+	FbxTime m_endTime;
 	//現在時間
-	FbxTime currentTime;
+	FbxTime m_currentTime;
 	//アニメーション再生中
-	bool isPlay = false;
+	bool m_isPlay = false;
 	//アニメーションをループさせるかどうか
-	bool isLoop = false;
+	bool m_isLoop = false;
 };

@@ -48,13 +48,14 @@ class Sprite :public Singleton<Sprite>
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMMATRIX = DirectX::XMMATRIX;
 public://構造体
+	/// <summary>
+	/// 頂点データ
+	/// </summary>
 	struct VertexPosUv
 	{
 		Vec3 pos;//xyz座標
 		Vec2 uv;//uv座標
 	};
-
-
 	//定数バッファ用データ構造体
 	struct ConstBufferData
 	{
@@ -70,16 +71,23 @@ public://構造体
 		////射影行列
 		XMMATRIX matProjection{};
 	};
-
+	/// <summary>
+	/// コンストバッファ
+	/// </summary>
 	struct ConstBuffer
 	{
 		//GPUリソースの生成1
 		ComPtr<ID3D12Resource> constBuff;
 
 	};
-
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Sprite();
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~Sprite();
 public:
 	static ID3D12Device* dev;
@@ -89,26 +97,37 @@ public:
 public://静的関数
 	//スプライト設定静的初期化
 	static void StaticInit(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
-
+	/// <summary>
+	/// Spriteクラス生成
+	/// </summary>
+	/// <returns></returns>
 	static Sprite* Sprite::Create();
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
-
+	/// <summary>
+	/// スプライト初期化
+	/// </summary>
+	/// <param name="widow_width">横サイズ</param>
+	/// <param name="window_height">縦サイズ</param>
 	void SpriteAllInitialization(int widow_width, int window_height);
 
 	//スプライト共通データを生成
 	SpriteCommon SpriteCommonCreate(int window_width, int window_height);
 public:
-
-
 	//スプライト生成
 	SpriteData SpriteCreate(const wchar_t* filename);
 
 	//スプライト単体頂点バッファの転送 大きさを変えれる
 	void SpriteTransferVertexBuffer(const SpriteData& sprite);
-
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
 	void PreDraw();
-
+	/// <summary>
+	/// コンストバッファ作成
+	/// </summary>
 	void CreateConstBuffer();
 
 	//スプライト単体更新

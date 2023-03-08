@@ -43,6 +43,7 @@ int Texture::LoadTexture(const wchar_t* filename)
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
+	std::string i;
 	//WICテクスチャのロード
 	result = LoadFromWICFile(
 		filename,

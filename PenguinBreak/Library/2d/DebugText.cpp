@@ -6,14 +6,13 @@ DebugText::DebugText()
 }
 
 DebugText::~DebugText()
-{
-	safe_delete(sprite);
-}
+{}
 
 void DebugText::Initialize()
 {
 	//スプライト
-	sprite = new Sprite();
+	sprite = std::make_unique<Sprite>();
+
 	if (sprite == nullptr)
 	{
 		assert(sprite);
@@ -21,10 +20,10 @@ void DebugText::Initialize()
 	sprite->Init();
 
 	// 全てのスプライトデータについて
-	for (int i = 0; i < _countof(sprites); i++)
+	for (int i = 0; i < _countof(m_sprites); i++)
 	{
 		// スプライトを生成する
-		sprites[i] = sprite->SpriteCreate(L"Resources/debugfont.png");
+		m_sprites[i] = sprite->SpriteCreate(L"Resources/debugfont.png");
 	}
 }
 // 1文字列追加
@@ -70,7 +69,7 @@ void DebugText::Print(const float x, const  float y, const  float size,std::stri
 	for (size_t i = 0; text[i] != '\0'; i++)
 	{
 		// 最大文字数超過
-		if (spriteIndex >= maxCharCount) {
+		if (m_spriteIndex >= maxCharCount) {
 			break;
 		}
 
@@ -88,22 +87,22 @@ void DebugText::Print(const float x, const  float y, const  float size,std::stri
 
 
 		// 座標計算
-		sprites[spriteIndex].position = { x + fontWidth * size * i, y ,0 };
+		m_sprites[m_spriteIndex].position = { x + fontWidth * size * i, y ,0 };
 
-		sprites[spriteIndex].texLeftTop = { (float)fontIndexX * fontWidth,(float)fontIndexY * fontHeight };
+		m_sprites[m_spriteIndex].texLeftTop = { (float)fontIndexX * fontWidth,(float)fontIndexY * fontHeight };
 
-		sprites[spriteIndex].texSize = { fontWidth,fontHeight };
+		m_sprites[m_spriteIndex].texSize = { fontWidth,fontHeight };
 
-		sprites[spriteIndex].size = { fontWidth * size, fontHeight * size };
+		m_sprites[m_spriteIndex].size = { fontWidth * size, fontHeight * size };
 
 		//頂点バッファ転送
-		sprite->SpriteTransferVertexBuffer(sprites[spriteIndex]);
+		sprite->SpriteTransferVertexBuffer(m_sprites[m_spriteIndex]);
 
 		//更新
-		sprite->DebugUpdate(sprites[spriteIndex]);
+		sprite->DebugUpdate(m_sprites[m_spriteIndex]);
 
 		// 文字を１つ進める
-		spriteIndex++;
+		m_spriteIndex++;
 	}
 }
 
@@ -111,11 +110,11 @@ void DebugText::DrawAll()
 {
 	sprite->PreDraw();
 	// 全ての文字のスプライトについて
-	for (size_t i = 0; i < spriteIndex; i++)
+	for (size_t i = 0; i < m_spriteIndex; i++)
 	{
 		// スプライト描画
-		sprite->DebugDraw(sprites[i]);
+		sprite->DebugDraw(m_sprites[i]);
 	}
-	spriteIndex = 0;
+	m_spriteIndex = 0;
 }
 

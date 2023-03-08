@@ -23,10 +23,10 @@ void ShadowMap::Init()
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexPosUv) * 4),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&vertBuff));
+		IID_PPV_ARGS(&m_vertBuff));
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	vertBuff->SetName(L"ShadowVert");
+	m_vertBuff->SetName(L"ShadowVert");
 #endif
 	//頂点データ転送
 	VertexPosUv vertices[4] = {};
@@ -43,16 +43,16 @@ void ShadowMap::Init()
 
 	//頂点バッファへのデータ転送
 	VertexPosUv* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = m_vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		memcpy(vertMap, vertices, sizeof(vertices));
-		vertBuff->Unmap(0, nullptr);
+		m_vertBuff->Unmap(0, nullptr);
 	}
 
 	//頂点バッファビューの作成
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	vbView.SizeInBytes = sizeof(VertexPosUv) * 4;
-	vbView.StrideInBytes = sizeof(VertexPosUv);
+	m_vbView.BufferLocation = m_vertBuff->GetGPUVirtualAddress();
+	m_vbView.SizeInBytes = sizeof(VertexPosUv) * 4;
+	m_vbView.StrideInBytes = sizeof(VertexPosUv);
 
 	//定数バッファの生成
 	result = dev->CreateCommittedResource(
@@ -61,11 +61,11 @@ void ShadowMap::Init()
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstantBuffer_b0) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuff)
+		IID_PPV_ARGS(&m_constBuff)
 	);
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	constBuff->SetName(L"shadowConst");
+	m_constBuff->SetName(L"shadowConst");
 #endif
 	//テクスチャリソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -83,11 +83,11 @@ void ShadowMap::Init()
 		&texresDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, color),
-		IID_PPV_ARGS(&texbuff)
+		IID_PPV_ARGS(&m_texbuff)
 	);
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	texbuff->SetName(L"shadowTex");
+	m_texbuff->SetName(L"shadowTex");
 #endif
 	//テクスチャを仮想生成
 	const UINT pixelCount = window_width * window_height;
@@ -100,7 +100,7 @@ void ShadowMap::Init()
 	for (int i = 0; i < static_cast<int>(pixelCount); i++) { img[i] = 0xff0000ff; }
 
 	//テクスチャバッファにデータ転送
-	result = texbuff->WriteToSubresource(0, nullptr,
+	result = m_texbuff->WriteToSubresource(0, nullptr,
 		img, rowPitch, depthPitch);
 	assert(SUCCEEDED(result));
 	delete[] img;
@@ -114,24 +114,24 @@ void ShadowMap::Init()
 	//RTV用デスクリプタヒープを生成
 	result = dev->CreateDescriptorHeap(
 		&rtvDescHeapDesc,
-		IID_PPV_ARGS(&descHeapRTV)
+		IID_PPV_ARGS(&m_descHeapRTV)
 	);
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	descHeapRTV->SetName(L"ShadowRTV");
+	m_descHeapRTV->SetName(L"ShadowRTV");
 #endif
 	dev->CreateRenderTargetView(
-		texbuff.Get(),
+		m_texbuff.Get(),
 		nullptr,
-		descHeapRTV->GetCPUDescriptorHandleForHeapStart()
+		m_descHeapRTV->GetCPUDescriptorHandleForHeapStart()
 	);
 
 	//深度バッファリソース設定
 	CD3DX12_RESOURCE_DESC depthResDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_R32_TYPELESS,
-			texture_width,
-			texture_height,
+			c_texture_width,
+			c_texture_height,
 			1, 0,
 			1, 0,
 			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
@@ -144,11 +144,11 @@ void ShadowMap::Init()
 		&depthResDesc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
-		IID_PPV_ARGS(&depthbuff)
+		IID_PPV_ARGS(&m_depthbuff)
 	);
 	assert(SUCCEEDED(result));
 #ifdef _DEBUG
-	depthbuff->SetName(L"ShadowDepth");
+	m_depthbuff->SetName(L"ShadowDepth");
 #endif
 	//DSV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC DescHeapDesc{};
@@ -157,7 +157,7 @@ void ShadowMap::Init()
 	//DSV用デスクリプタヒープを作成
 	result = dev->CreateDescriptorHeap(
 		&DescHeapDesc,
-		IID_PPV_ARGS(&descHeapDSV)
+		IID_PPV_ARGS(&m_descHeapDSV)
 	);
 	assert(SUCCEEDED(result));
 
@@ -166,13 +166,13 @@ void ShadowMap::Init()
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	dev->CreateDepthStencilView(
-		depthbuff.Get(),
+		m_depthbuff.Get(),
 		&dsvDesc,
-		descHeapDSV->GetCPUDescriptorHandleForHeapStart()
+		m_descHeapDSV->GetCPUDescriptorHandleForHeapStart()
 	);
 
 #ifdef _DEBUG
-	descHeapDSV->SetName(L"ShadowDSV");
+	m_descHeapDSV->SetName(L"ShadowDSV");
 #endif
 }
 
@@ -187,19 +187,19 @@ void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 	//GPU上のバッファに対応した仮想メモリを取得
 	ConstantBuffer_b0* constMap = nullptr;
 	void* dst = nullptr;
-	result = constBuff->Map(0, nullptr, (void**)&dst);
+	result = m_constBuff->Map(0, nullptr, (void**)&dst);
 	memcpy(dst, &data, sizeof(ConstantBuffer_b0));
-	constBuff->Unmap(0, nullptr);
+	m_constBuff->Unmap(0, nullptr);
 
 	//パイプラインステートの設定
-	cmdList->SetPipelineState(pipelineState.Get());
+	cmdList->SetPipelineState(m_pipelineState.Get());
 	//ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootSignature.Get());
+	cmdList->SetGraphicsRootSignature(m_rootSignature.Get());
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	//頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &this->vbView);
+	cmdList->IASetVertexBuffers(0, 1, &m_vbView);
 
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	//デスクリプタヒープをセット
@@ -207,7 +207,7 @@ void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 
 
 	//定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, this->constBuff->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, m_constBuff->GetGPUVirtualAddress());
 
 	//SRV
 	cmdList->SetGraphicsRootDescriptorTable(
@@ -222,29 +222,29 @@ void ShadowMap::PreDraw(ID3D12GraphicsCommandList* cmdList)
 	//リソースバリアを変更
 	cmdList->ResourceBarrier(
 		1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(m_texbuff.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			D3D12_RESOURCE_STATE_RENDER_TARGET)
 	);
 
 	//レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvH =
-		descHeapRTV->GetCPUDescriptorHandleForHeapStart();
+		m_descHeapRTV->GetCPUDescriptorHandleForHeapStart();
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH =
-		descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+		m_descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 	//レンダーターゲットをセット
 	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
 
 	//ビューポートの設定
 	cmdList->RSSetViewports(
 		1,
-		&CD3DX12_VIEWPORT(0.0f, 0.0f, static_cast<FLOAT>(texture_width), static_cast<FLOAT>(texture_height))
+		&CD3DX12_VIEWPORT(0.0f, 0.0f, static_cast<FLOAT>(c_texture_width), static_cast<FLOAT>(c_texture_height))
 	);
 	//シザリング矩形の設定
 	cmdList->RSSetScissorRects(
 		1,
-		&CD3DX12_RECT(0, 0, static_cast<LONG>(texture_width), static_cast<LONG>(texture_height))
+		&CD3DX12_RECT(0, 0, static_cast<LONG>(c_texture_width), static_cast<LONG>(c_texture_height))
 	);
 
 	//深度バッファのクリア
@@ -255,7 +255,7 @@ void ShadowMap::PostDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	cmdList->ResourceBarrier(
 		1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texbuff.Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(m_texbuff.Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE)
 	);
@@ -407,11 +407,11 @@ void ShadowMap::CreateGraphicsPipelineState(ID3D12Device* dev)
 
 	//ルートシグネチャの生成
 	result = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
-		rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
+		rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&m_rootSignature));
 	assert(SUCCEEDED(result));
 
-	gpipeline.pRootSignature = rootSignature.Get();
+	gpipeline.pRootSignature = m_rootSignature.Get();
 	//グラフィックスパイプラインの生成
-	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState));
+	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&m_pipelineState));
 	assert(SUCCEEDED(result));
 }
