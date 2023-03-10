@@ -41,8 +41,13 @@ public:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	ComPtr<IXAudio2>xAudio2;
 	IXAudio2MasteringVoice *masterVoice;
-
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Audio();
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
 	/// <summary>

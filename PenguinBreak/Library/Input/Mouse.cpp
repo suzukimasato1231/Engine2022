@@ -8,28 +8,28 @@ bool Mouse::Init()
 	HRESULT result = S_FALSE;
 
 	// DirectInputオブジェクトの生成	
-	result = DirectInput8Create(_Window::Get()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&dinput, nullptr);
+	result = DirectInput8Create(_Window::Get()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&m_dinput, nullptr);
 	if (FAILED(result)) {
 		assert(0);
 		return result;
 	}
 
 	// マウスデバイスの生成	
-	result = dinput->CreateDevice(GUID_SysMouse, &devMouse, NULL);
+	result = m_dinput->CreateDevice(GUID_SysMouse, &m_devMouse, NULL);
 	if (FAILED(result)) {
 		assert(0);
 		return result;
 	}
 
 	// 入力データ形式のセット
-	result = devMouse->SetDataFormat(&c_dfDIMouse2); // 標準形式
+	result = m_devMouse->SetDataFormat(&c_dfDIMouse2); // 標準形式
 	if (FAILED(result)) {
 		assert(0);
 		return result;
 	}
 
 	// 排他制御レベルのセット
-	result = devMouse->SetCooperativeLevel(_Window::Get()->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	result = m_devMouse->SetCooperativeLevel(_Window::Get()->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	if (FAILED(result)) {
 		assert(0);
 		return result;
@@ -40,19 +40,19 @@ bool Mouse::Init()
 void Mouse::Update()
 {
 	HRESULT result;
-	result = devMouse->Acquire();	// マウス動作開始
+	result = m_devMouse->Acquire();	// マウス動作開始
 
 	// 前回の入力を保存
-	mouseStatePre = mouseState;
+	m_mouseStatePre = m_mouseState;
 
 	// マウスの入力
-	result = devMouse->GetDeviceState(sizeof(mouseState), &mouseState);
+	result = m_devMouse->GetDeviceState(sizeof(m_mouseState), &m_mouseState);
 }
 
 bool Mouse::PushMouseLeft()
 {
 	// 0でなければ押している
-	if (mouseState.rgbButtons[0]) {
+	if (m_mouseState.rgbButtons[0]) {
 		return true;
 	}
 
@@ -63,7 +63,7 @@ bool Mouse::PushMouseLeft()
 bool  Mouse::PushMouseMiddle()
 {
 	// 0でなければ押している
-	if (mouseState.rgbButtons[2]) {
+	if (m_mouseState.rgbButtons[2]) {
 		return true;
 	}
 
@@ -74,7 +74,7 @@ bool  Mouse::PushMouseMiddle()
 bool  Mouse::TriggerMouseLeft()
 {
 	// 前回が0で、今回が0でなければトリガー
-	if (!mouseStatePre.rgbButtons[0] && mouseState.rgbButtons[0]) {
+	if (!m_mouseStatePre.rgbButtons[0] && m_mouseState.rgbButtons[0]) {
 		return true;
 	}
 
@@ -85,7 +85,7 @@ bool  Mouse::TriggerMouseLeft()
 bool  Mouse::TriggerMouseMiddle()
 {
 	// 前回が0で、今回が0でなければトリガー
-	if (!mouseStatePre.rgbButtons[2] && mouseState.rgbButtons[2]) {
+	if (!m_mouseStatePre.rgbButtons[2] && m_mouseState.rgbButtons[2]) {
 		return true;
 	}
 
@@ -96,8 +96,8 @@ bool  Mouse::TriggerMouseMiddle()
 Mouse::MouseMove  Mouse::GetMouseMove()
 {
 	MouseMove tmp;
-	tmp.lX = mouseState.lX;
-	tmp.lY = mouseState.lY;
-	tmp.lZ = mouseState.lZ;
+	tmp.lX = m_mouseState.lX;
+	tmp.lY = m_mouseState.lY;
+	tmp.lZ = m_mouseState.lZ;
 	return tmp;
 }

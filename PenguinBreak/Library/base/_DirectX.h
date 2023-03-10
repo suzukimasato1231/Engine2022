@@ -23,25 +23,25 @@ private://メンバ変数
 	//ウィンドウ関連
 
 	//DirectX3D関連
-	ComPtr<ID3D12Device> dev;
-	ComPtr<ID3D12GraphicsCommandList >cmdList;
-	ComPtr<IDXGIFactory6> dxgiFactory;
-	ComPtr<ID3D12CommandAllocator> cmdAllocator;
-	ComPtr<ID3D12CommandQueue >cmdQueue;
-	ComPtr<IDXGISwapChain4> swapchain;
+	ComPtr<ID3D12Device> m_dev;
+	ComPtr<ID3D12GraphicsCommandList >m_cmdList;
+	ComPtr<IDXGIFactory6> m_dxgiFactory;
+	ComPtr<ID3D12CommandAllocator> m_cmdAllocator;
+	ComPtr<ID3D12CommandQueue >m_cmdQueue;
+	ComPtr<IDXGISwapChain4> m_swapchain;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
-	ComPtr<ID3D12Resource> depthBuffer;
-	ComPtr<ID3D12DescriptorHeap>rtvHeaps;
+	ComPtr<ID3D12Resource> m_depthBuffer;
+	ComPtr<ID3D12DescriptorHeap>m_rtvHeaps;
 	//深度設定
-	ComPtr<ID3D12DescriptorHeap> dsvHeap;
+	ComPtr<ID3D12DescriptorHeap> m_dsvHeap;
 	//フェンスの生成
-	ComPtr<ID3D12Fence> fence;
-	UINT64 fenceVal = 0;
+	ComPtr<ID3D12Fence> m_fence;
+	UINT64 m_fenceVal = 0;
 
-	ComPtr<ID3D12DescriptorHeap> imguiHeap;
-	float deltaTime = 0.0f;
-	float frameRate = 0.0f;
-	float commandWaitTime = 0.0f;
+	ComPtr<ID3D12DescriptorHeap> m_imguiHeap;
+	float m_deltaTime = 0.0f;
+	float m_frameRate = 0.0f;
+	float m_commandWaitTime = 0.0f;
 	std::chrono::steady_clock::time_point lastUpdate;
 private:
 	//アダプタの列挙
@@ -77,7 +77,7 @@ public://メンバ関数
 
 	ID3D12GraphicsCommandList* GetCmandList();
 
-	ID3D12Resource* GetDeth() { return depthBuffer.Get(); };
+	ID3D12Resource* GetDeth() { return m_depthBuffer.Get(); };
 
 	void ClearDepthBuffer();
 	

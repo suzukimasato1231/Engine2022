@@ -34,89 +34,89 @@ public: // メンバ関数
 	/// ライト方向をセット
 	/// </summary>
 	/// <param name="lightdir">ライト方向</param>
-	inline void SetLightDir(const XMVECTOR& lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
+	inline void SetLightDir(const XMVECTOR& lightdir) { m_lightdir = DirectX::XMVector3Normalize(lightdir); }
 
 	/// <summary>
 	/// ライト方向を取得
 	/// </summary>
 	/// <returns>ライト方向</returns>
-	inline const XMVECTOR& GetLightDir() { return lightdir; }
+	inline const XMVECTOR& GetLightDir() { return m_lightdir; }
 
 	/// <summary>
 	/// ライト座標をセット
 	/// </summary>
 	/// <param name="lightpos">ライト座標</param>
-	inline void SetLightPos(const Vec3& lightpos) { this->lightpos = lightpos; }
+	inline void SetLightPos(const Vec3& lightpos) { m_lightpos = lightpos; }
 
 	/// <summary>
 	/// ライト座標を取得
 	/// </summary>
 	/// <returns>ライト座標</returns>
-	inline const Vec3& GetLightPos() { return lightpos; }
+	inline const Vec3& GetLightPos() { return m_lightpos; }
 
 	/// <summary>
 	/// ライト色をセット
 	/// </summary>
 	/// <param name="lightcolor">ライト色</param>
-	inline void SetLightColor(const Vec3& lightcolor) { this->lightcolor = lightcolor; }
+	inline void SetLightColor(const Vec3& lightcolor) { m_lightcolor = lightcolor; }
 
 	/// <summary>
 	/// ライト色を取得
 	/// </summary>
 	/// <returns>ライト色</returns>
-	inline const Vec3& GetLightColor() { return lightcolor; }
+	inline const Vec3& GetLightColor() { return m_lightcolor; }
 
 	/// <summary>
 	/// ライト距離減衰係数をセット
 	/// </summary>
 	/// <param name="lightatten">ライト距離減衰係数</param>
-	inline void SetLightAtten(const Vec3& lightAtten) { this->lightAtten = lightAtten; }
+	inline void SetLightAtten(const Vec3& lightAtten) { m_lightAtten = lightAtten; }
 
 	/// <summary>
 	/// ライト距離減衰係数を取得
 	/// </summary>
 	/// <returns>ライト距離減衰係数</returns>
-	inline const Vec3& GetLightAtten() { return lightAtten; }
+	inline const Vec3& GetLightAtten() { return m_lightAtten; }
 
 	/// <summary>
 	/// ライト減衰角度をセット
 	/// </summary>
 	/// <param name="lightFactorAngle">x:減衰開始角度 y:減衰終了角度[degree]</param>
 	inline void SetLightFactorAngle(const Vec2& lightFactorAngle) { 
-		this->lightFactorAngleCos.x = cosf(DirectX::XMConvertToRadians(lightFactorAngle.x));
-		this->lightFactorAngleCos.y = cosf(DirectX::XMConvertToRadians(lightFactorAngle.y));
+		m_lightFactorAngleCos.x = cosf(DirectX::XMConvertToRadians(lightFactorAngle.x));
+		m_lightFactorAngleCos.y = cosf(DirectX::XMConvertToRadians(lightFactorAngle.y));
 	}
 
 	/// <summary>
 	/// ライト減衰角度を取得
 	/// </summary>
 	/// <returns>ライト距離減衰係数</returns>
-	inline const Vec2& GetLightFactorAngleCos() { return lightFactorAngleCos; }
+	inline const Vec2& GetLightFactorAngleCos() { return m_lightFactorAngleCos; }
 
 	/// <summary>
 	/// 有効フラグをセット
 	/// </summary>
 	/// <param name="active">有効フラグ</param>
-	inline void SetActive(bool active) { this->active = active; }
+	inline void SetActive(bool active) { m_active = active; }
 
 	/// <summary>
 	/// 有効チェック
 	/// </summary>
 	/// <returns>有効フラグ</returns>
-	inline bool IsActive() { return active; }
+	inline bool IsActive() { return m_active; }
 
 private: // メンバ変数
 	// ライト方向（単位ベクトル）
-	XMVECTOR lightdir = { 1,0,0,0 };
+	XMVECTOR m_lightdir = { 1,0,0,0 };
 	// ライト座標（ワールド座標系）
-	Vec3 lightpos = { 0,0,0 };
+	Vec3 m_lightpos = { 0,0,0 };
 	// ライト色
-	Vec3 lightcolor = { 1,1,1 };
+	Vec3 m_lightcolor = { 1,1,1 };
 	// ライト距離減衰係数
-	Vec3 lightAtten = { 1.0f, 1.0f, 1.0f };
+	Vec3 m_lightAtten = { 1.0f, 1.0f, 1.0f };
 	// ライト減衰角度
-	Vec2 lightFactorAngleCos = { 0.2f, 0.5f };
+	Vec2 m_lightFactorAngleCos = { 0.2f, 0.5f };
 	// 有効フラグ
-	bool active = false;
+	bool m_active = false;
 };
 

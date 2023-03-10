@@ -47,24 +47,24 @@ public:
 	//desc獲得
 	ID3D12DescriptorHeap* GetDescHeap();
 
-	int GetShadowTexture() { return shadowTexture; }
+	int GetShadowTexture() { return m_shadowTexture; }
 
-	int GetCameraDepth() { return cameraDepth; }
+	int GetCameraDepth() { return m_cameraDepth; }
 
-	int GetPostEfect() { return postEfect; }
+	int GetPostEfect() { return m_postEfect; }
 private:
 	//定数バッファ用のデスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap >descHeap = { nullptr };
+	ComPtr<ID3D12DescriptorHeap >m_descHeap = { nullptr };
 
 	//テクスチャデータの作成
 	std::vector <TextureData*>textureData;
 
-	int texNum = 0;
+	int m_texNum = 0;
 
-	int shadowTexture = 0;
+	int m_shadowTexture = 0;
 
-	int cameraDepth = 0;
+	int m_cameraDepth = 0;
 
-	int postEfect = 0;
+	int m_postEfect = 0;
 };
 

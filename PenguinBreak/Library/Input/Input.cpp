@@ -3,34 +3,34 @@
 void Input::Initialize()
 {
 	//キーボード初期化
-	keybord.Initialize();
+	m_keybord.Initialize();
 
 	//コントローラー初期化
-	controller.InitController();
+	m_controller.InitController();
 
 	//マウス初期化
-	mouse.Init();
+	m_mouse.Init();
 }
 
 void Input::Update()
 {
 	//キーボード更新	
-	keybord.Update();
+	m_keybord.Update();
 	//コントローラー更新
-	controller.UpdateInput();
+	m_controller.UpdateInput();
 	//マウス更新
-	mouse.Update();
+	m_mouse.Update();
 }
 
 
 bool Input::KeybordPush(BYTE keyNumber)
 {
-	return keybord.PushKey(keyNumber);
+	return m_keybord.PushKey(keyNumber);
 }
 
 bool Input::KeybordTrigger(BYTE keyNumber)
 {
-	return keybord.TriggerKey(keyNumber);
+	return m_keybord.TriggerKey(keyNumber);
 }
 
 bool Input::KeybordInputArrow()
@@ -45,27 +45,27 @@ bool Input::KeybordInputArrow()
 
 bool Input::ControllerPush(ButtonKind button)
 {
-	return controller.IsButtonPush(button);
+	return m_controller.IsButtonPush(button);
 }
 
 bool Input::ControllerUp(ButtonKind button)
 {
-	return controller.IsButtonUp(button);
+	return m_controller.IsButtonUp(button);
 }
 
 bool Input::ControllerDown(ButtonKind button)
 {
-	return controller.IsButtonDown(button);
+	return m_controller.IsButtonDown(button);
 }
 
 float Input::GetLeftAngle()
 {
-	return controller.GetLeftAngle();
+	return m_controller.GetLeftAngle();
 }
 
 float Input::GetRightAngle()
 {
-	return controller.GetRightAngle();
+	return m_controller.GetRightAngle();
 }
 
 bool Input::ConRightInput()
@@ -106,26 +106,26 @@ bool Input::ConLeftInput()
 
 bool Input::MousePushLeft()
 {
-	return mouse.PushMouseLeft();
+	return m_mouse.PushMouseLeft();
 }
 
 bool Input::MousePushMiddle()
 {
-	return mouse.PushMouseMiddle();
+	return m_mouse.PushMouseMiddle();
 }
 
 bool Input::MouseTriggerLeft()
 {
-	return mouse.TriggerMouseLeft();
+	return m_mouse.TriggerMouseLeft();
 }
 
 bool Input::MouseTriggerMiddle()
 {
-	return mouse.TriggerMouseMiddle();
+	return m_mouse.TriggerMouseMiddle();
 }
 
 Mouse::MouseMove Input::GetMouseMove()
 {
-	return mouse.GetMouseMove();
+	return m_mouse.GetMouseMove();
 }
 

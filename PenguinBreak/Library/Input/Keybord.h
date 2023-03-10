@@ -15,13 +15,13 @@ class Keybord
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 private://メンバ変数
 	//全キーの入力状態を取得
-	BYTE key[256]={};
+	BYTE m_key[256]={};
 	//1つ前の入力状態を取得
-	BYTE oldkey[256]={};
+	BYTE m_oldkey[256]={};
 	//キーボード入力
-	ComPtr<IDirectInput8> dinput = nullptr;
+	ComPtr<IDirectInput8> m_dinput = nullptr;
 	//キーボードデバイスの生成
-	ComPtr<IDirectInputDevice8> devkeyboard = nullptr;
+	ComPtr<IDirectInputDevice8> m_devkeyboard = nullptr;
 public://メンバ関数
 	//初期化
 	void Initialize();

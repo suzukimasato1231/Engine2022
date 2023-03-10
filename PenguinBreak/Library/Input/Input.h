@@ -12,11 +12,11 @@ class Input :public Singleton<Input>
 	friend Singleton<Input>;
 private://メンバ変数
 	//キーボード
-	Keybord keybord;
+	Keybord m_keybord;
 	//コントローラー
-	Controller controller;
+	Controller m_controller;
 	//マウス
-	Mouse mouse;
+	Mouse m_mouse;
 public://静的メンバ変数
 	//static Input *GetInstance();
 public://メンバ関数

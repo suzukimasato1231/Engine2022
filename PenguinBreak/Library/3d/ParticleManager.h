@@ -151,13 +151,13 @@ private: // メンバ変数
 	std::forward_list<Particle>particles;
 
 	// ローカルスケール
-	Vec3 scale = { 1,1,1 };
+	Vec3 m_scale = { 1,1,1 };
 	//ローカルカラー
-	Vec4 color = { 1,1,1,1 };
-	ComPtr<ID3D12Resource> vertBuff;
-	ComPtr<ID3D12Resource>constBuff; // 定数バッファ
+	Vec4 m_color = { 1,1,1,1 };
+	ComPtr<ID3D12Resource> m_vertBuff;
+	ComPtr<ID3D12Resource>m_constBuff; // 定数バッファ
 
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
-	ParticleManager::VertexPos vertices[vertexCount];
+	D3D12_VERTEX_BUFFER_VIEW m_vbView{};
+	ParticleManager::VertexPos m_vertices[vertexCount];
 };
 

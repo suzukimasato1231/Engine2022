@@ -25,15 +25,15 @@ public://メンバ関数
 	void TerminateGameWindow();
 
 	//Hwnd獲得
-	HWND GetHwnd() { return hwnd; }
+	HWND GetHwnd() { return m_hwnd; }
 
 	//w.hInstance獲得
-	HINSTANCE GetInstance() { return w.hInstance; }
+	HINSTANCE GetInstance() { return m_w.hInstance; }
 
 private://メンバ変数
 	// ウィンドウオブジェクトの生成
-	HWND hwnd = nullptr;
-	WNDCLASSEX w{};//ウィンドウクラスの設定
+	HWND m_hwnd = nullptr;
+	WNDCLASSEX m_w{};//ウィンドウクラスの設定
 
 	
 };

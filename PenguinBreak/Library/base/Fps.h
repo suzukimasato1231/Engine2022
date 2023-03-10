@@ -11,14 +11,14 @@
 class FPS final
 {
 private:
-	const float MIN_FREAM_TIME = 1.0f / 60.0f;
-	float frameTime = 0;
-	LARGE_INTEGER timeStart;
-	LARGE_INTEGER timeEnd;
-	LARGE_INTEGER timeFreq;
+	const float c_MIN_FREAM_TIME = 1.0f / 60.0f;
+	float m_frameTime = 0;
+	LARGE_INTEGER m_timeStart;
+	LARGE_INTEGER m_timeEnd;
+	LARGE_INTEGER m_timeFreq;
 
 	// fpsを取得するなら0で初期化
-	float fps = 0;
+	float m_fps = 0;
 	//コンストラクタ、デストラクタを隠蔽
 	FPS() {};
 	~FPS() {};

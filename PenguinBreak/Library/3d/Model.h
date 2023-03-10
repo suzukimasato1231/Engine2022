@@ -98,7 +98,7 @@ public:
 
 private:
 	// モデル名
-	std::string name;
+	std::string m_name;
 	// ノード配列
 	std::vector<Node> nodes;
 	// メッシュを持つノード
@@ -108,24 +108,24 @@ private:
 	// 頂点インデックス配列
 	std::vector<unsigned short> indices;
 	// アンビエント係数
-	DirectX::XMFLOAT3 ambient = { 1,1,1 };
+	DirectX::XMFLOAT3 m_ambient = { 1,1,1 };
 	// ディフューズ係数
-	DirectX::XMFLOAT3 diffuse = { 1,1,1 };
+	DirectX::XMFLOAT3 m_diffuse = { 1,1,1 };
 	// テクスチャメタデータ
-	DirectX::TexMetadata metadata = {};
+	DirectX::TexMetadata m_metadata = {};
 	// スクラッチイメージ
-	DirectX::ScratchImage scratchImg = {};
+	DirectX::ScratchImage m_scratchImg = {};
 	// 頂点バッファ
-	ComPtr<ID3D12Resource> vertBuff;
+	ComPtr<ID3D12Resource>m_vertBuff;
 	// インデックスバッファ
-	ComPtr<ID3D12Resource> indexBuff;
+	ComPtr<ID3D12Resource> m_indexBuff;
 	// 頂点バッファビュー
-	D3D12_VERTEX_BUFFER_VIEW vbView = {};
+	D3D12_VERTEX_BUFFER_VIEW m_vbView = {};
 	// インデックスバッファビュー
-	D3D12_INDEX_BUFFER_VIEW ibView = {};
+	D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 	//ボーン配列
 	std::vector<Bone>bones;
 
-	int textureNum = 0;
+	int m_textureNum = 0;
 };
 

@@ -148,30 +148,30 @@ void ParticleManager::CreateModel()
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),
+		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(m_vertices)),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&vertBuff));
+		IID_PPV_ARGS(&m_vertBuff));
 	if (FAILED(result)) {
 		assert(0);
 		return;
 	}
 #ifdef _DEBUG
-	vertBuff->SetName(L"Particle");
+	m_vertBuff->SetName(L"Particle");
 #endif
 	// 頂点バッファへのデータ転送
 	VertexPos* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = m_vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
-		memcpy(vertMap, vertices, sizeof(vertices));
-		vertBuff->Unmap(0, nullptr);
+		memcpy(vertMap, m_vertices, sizeof(m_vertices));
+		m_vertBuff->Unmap(0, nullptr);
 	}
 
 
 	// 頂点バッファビューの作成
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	vbView.SizeInBytes = sizeof(vertices);
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	m_vbView.BufferLocation = m_vertBuff->GetGPUVirtualAddress();
+	m_vbView.SizeInBytes = sizeof(m_vertices);
+	m_vbView.StrideInBytes = sizeof(m_vertices[0]);
 }
 
 
@@ -272,7 +272,7 @@ bool ParticleManager::Initialize()
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuff));
+		IID_PPV_ARGS(&m_constBuff));
 
 #ifdef _DEBUG
 
@@ -319,7 +319,7 @@ void ParticleManager::Update()
 
 	//頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = m_vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result))
 	{
 		//パーティクル情報を１つずつ反映
@@ -336,17 +336,17 @@ void ParticleManager::Update()
 			vertMap++;
 		}
 
-		vertBuff->Unmap(0, nullptr);
+		m_vertBuff->Unmap(0, nullptr);
 	}
 	//ビルボード行列の更新
 	MatBillboardUpdate();
 
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
-	result = constBuff->Map(0, nullptr, (void**)&constMap);
+	result = m_constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();	// 行列の合成
 	constMap->matBillboard = matBillboard;
-	constBuff->Unmap(0, nullptr);
+	m_constBuff->Unmap(0, nullptr);
 }
 
 void ParticleManager::Draw(int graph)
@@ -363,14 +363,14 @@ void ParticleManager::Draw(int graph)
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	// 頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	cmdList->IASetVertexBuffers(0, 1, &m_vbView);
 
 	// デスクリプタヒープの配列
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, m_constBuff->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(graph));
 	// 描画コマンド

@@ -17,19 +17,19 @@ void _Window::CreateGameWindow()
 	// ウィンドウサイズ{ X座標 Y座標 横幅 縦幅 }
 	RECT wrc = { 0, 0, window_width, window_height };
 	//ウィンドウクラスの設定
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProce; // ウィンドウプロシージャを設定
-	w.lpszClassName = L"ペンギンブレーク"; // ウィンドウクラス名
-	w.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
-	w.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
+	m_w.cbSize = sizeof(WNDCLASSEX);
+	m_w.lpfnWndProc = (WNDPROC)WindowProce; // ウィンドウプロシージャを設定
+	m_w.lpszClassName = L"ペンギンブレーク"; // ウィンドウクラス名
+	m_w.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
+	m_w.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
 
 	// ウィンドウクラスをOSに登録
-	RegisterClassEx(&w);
+	RegisterClassEx(&m_w);
 
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false); // 自動でサイズ補正
 
 	// ウィンドウオブジェクトの生成
-	hwnd = CreateWindow(w.lpszClassName, // クラス名
+	m_hwnd = CreateWindow(m_w.lpszClassName, // クラス名
 		L"ペンギンブレーク",         // タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,        // 標準的なウィンドウスタイル
 		CW_USEDEFAULT,              // 表示X座標（OSに任せる）
@@ -38,11 +38,11 @@ void _Window::CreateGameWindow()
 		wrc.bottom - wrc.top,   // ウィンドウ縦幅
 		nullptr,                // 親ウィンドウハンドル
 		nullptr,                // メニューハンドル
-		w.hInstance,            // 呼び出しアプリケーションハンドル
+		m_w.hInstance,            // 呼び出しアプリケーションハンドル
 		nullptr);               // オプション
 
 	// ウィンドウ表示
-	ShowWindow(hwnd, SW_SHOW);
+	ShowWindow(m_hwnd, SW_SHOW);
 }
 
 
@@ -66,7 +66,7 @@ bool _Window::ProcessMessage()
 void _Window::TerminateGameWindow()
 {
 	// ウィンドウクラスを登録解除
-	UnregisterClass(w.lpszClassName, w.hInstance);
+	UnregisterClass(m_w.lpszClassName, m_w.hInstance);
 
 }
 

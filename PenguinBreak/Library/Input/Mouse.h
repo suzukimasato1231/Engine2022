@@ -19,9 +19,14 @@ private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public://メンバ関数
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <returns></returns>
 	bool Init();
-
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
 	/// <summary>
@@ -54,9 +59,8 @@ public://メンバ関数
 	/// <returns>マウス移動量</returns>
 	MouseMove GetMouseMove();
 private:
-	ComPtr<IDirectInput8> dinput = nullptr;
-	ComPtr<IDirectInputDevice8> devMouse;
-	DIMOUSESTATE2 mouseState = {};
-	DIMOUSESTATE2 mouseStatePre = {};
-public:
+	ComPtr<IDirectInput8> m_dinput = nullptr;
+	ComPtr<IDirectInputDevice8> m_devMouse;
+	DIMOUSESTATE2 m_mouseState = {};
+	DIMOUSESTATE2 m_mouseStatePre = {};
 };

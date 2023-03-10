@@ -26,44 +26,44 @@ public: // メンバ関数
 	/// ライト方向をセット
 	/// </summary>
 	/// <param name="lightdir">ライト方向</param>
-	inline void SetLightDir(const XMVECTOR& lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
+	inline void SetLightDir(const XMVECTOR& lightdir) { m_lightdir = DirectX::XMVector3Normalize(lightdir); }
 
 	/// <summary>
 	/// ライト方向を取得
 	/// </summary>
 	/// <returns>ライト方向</returns>
-	inline const XMVECTOR& GetLightDir() { return lightdir; }
+	inline const XMVECTOR& GetLightDir() { return m_lightdir; }
 
 	/// <summary>
 	/// ライト色をセット
 	/// </summary>
 	/// <param name="lightcolor">ライト色</param>
-	inline void SetLightColor(const Vec3& lightcolor) { this->lightcolor = lightcolor; }
+	inline void SetLightColor(const Vec3& lightcolor) { m_lightcolor = lightcolor; }
 
 	/// <summary>
 	/// ライト色を取得
 	/// </summary>
 	/// <returns>ライト色</returns>
-	inline const Vec3& GetLightColor() { return lightcolor; }
+	inline const Vec3& GetLightColor() { return m_lightcolor; }
 
 	/// <summary>
 	/// 有効フラグをセット
 	/// </summary>
 	/// <param name="active">有効フラグ</param>
-	inline void SetActive(bool active) { this->active = active; }
+	inline void SetActive(bool active) { m_active = active; }
 
 	/// <summary>
 	/// 有効チェック
 	/// </summary>
 	/// <returns>有効フラグ</returns>
-	inline bool IsActive() { return active; }
+	inline bool IsActive() { return m_active; }
 
 private: // メンバ変数
 	// ライト方向（単位ベクトル）
-	XMVECTOR lightdir = { 1,0,0,0 };
+	XMVECTOR m_lightdir = { 1,0,0,0 };
 	// ライト色
-	Vec3 lightcolor = { 1,1,1 };
+	Vec3 m_lightcolor = { 1,1,1 };
 	// 有効フラグ
-	bool active = false;
+	bool m_active = false;
 };
 

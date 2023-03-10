@@ -77,7 +77,7 @@ Model *FbxLoader::LoadModelFromFile(const string& modelName, const string &file)
 
 	// モデル生成
 	Model* model = new Model();
-	model->name = modelName;
+	model->m_name = modelName;
 	// FBXノードの数を取得
 	int nodeCount = fbxScene->GetNodeCount();
 	// あらかじめ必要数分のメモリを確保することで、アドレスがずれるのを予防
@@ -277,15 +277,15 @@ void FbxLoader::ParseMaterial(Model* model, FbxNode* fbxNode, const string& file
 
 				//環境光係数
 				FbxPropertyT<FbxDouble3> ambient = lambert->Ambient;
-				model->ambient.x = (float)ambient.Get()[0];
-				model->ambient.y = (float)ambient.Get()[1];
-				model->ambient.z = (float)ambient.Get()[2];
+				model->m_ambient.x = (float)ambient.Get()[0];
+				model->m_ambient.y = (float)ambient.Get()[1];
+				model->m_ambient.z = (float)ambient.Get()[2];
 
 				//拡散反射光係数
 				FbxPropertyT<FbxDouble3> diffuse = lambert->Diffuse;
-				model->diffuse.x = (float)diffuse.Get()[0];
-				model->diffuse.y = (float)diffuse.Get()[1];
-				model->diffuse.z = (float)diffuse.Get()[2];
+				model->m_diffuse.x = (float)diffuse.Get()[0];
+				model->m_diffuse.y = (float)diffuse.Get()[1];
+				model->m_diffuse.z = (float)diffuse.Get()[2];
 			}
 
 			// ディフューズテクスチャを取り出す
@@ -299,7 +299,7 @@ void FbxLoader::ParseMaterial(Model* model, FbxNode* fbxNode, const string& file
 					string path_str(filepath);
 					string name = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					LoadTexture(model, baseDirectory + file + model->name + "/" + name);
+					LoadTexture(model, baseDirectory + file + model->m_name + "/" + name);
 					textureLoaded = true;
 				}
 			}
@@ -317,8 +317,8 @@ void FbxLoader::LoadTexture(Model* model, const std::string& fullpath)
 	HRESULT result = S_FALSE;
 
 	// WICテクスチャのロード
-	TexMetadata& metadata = model->metadata;
-	ScratchImage& scratchImg = model->scratchImg;
+	TexMetadata& metadata = model->m_metadata;
+	ScratchImage& scratchImg = model->m_scratchImg;
 
 	// ユニコード文字列に変換
 	wchar_t wfilepath[128];

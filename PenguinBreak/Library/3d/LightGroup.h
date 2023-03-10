@@ -238,41 +238,41 @@ public: // メンバ関数
 	void SetShadowDir(const Vec3 shadowDir);
 
 
-	XMMATRIX GetLightMatProjection() { return lightMatViewProjection; }
+	XMMATRIX GetLightMatProjection() { return m_lightMatViewProjection; }
 
 private: // メンバ変数
 	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuff;
+	ComPtr<ID3D12Resource> m_constBuff;
 
 	// 環境光の色
-	Vec3 ambientColor = { 1,1,1 };
+	Vec3 m_ambientColor = { 1,1,1 };
 
 	// 平行光源の配列
-	DirectionalLight dirLights[DirLightNum];
+	DirectionalLight m_dirLights[DirLightNum];
 
 	// 点光源の配列
-	PointLight pointLights[PointLightNum];
+	PointLight m_pointLights[PointLightNum];
 
 	// スポットライトの配列
-	SpotLight spotLights[SpotLightNum];
+	SpotLight m_spotLights[SpotLightNum];
 
 	// 丸影の配列
-	CircleShadow circleShadows[CircleShadowNum];
+	CircleShadow m_circleShadows[CircleShadowNum];
 
 	// ダーティフラグ
-	bool dirty = false;
+	bool m_dirty = false;
 
 	//ビュー変換行列
-	XMMATRIX matView;
+	XMMATRIX m_matView;
 	//射影変換
-	XMMATRIX matProjection;
+	XMMATRIX m_matProjection;
 
 	//影用行列
-	XMMATRIX lightMatViewProjection;
+	XMMATRIX m_lightMatViewProjection;
 
-	XMMATRIX shadowProjection;
+	XMMATRIX m_shadowProjection;
 
-	Vec3 shadowDir = { 1,1,0 };
+	Vec3 m_shadowDir = { 1,1,0 };
 
 
 };

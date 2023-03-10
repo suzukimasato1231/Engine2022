@@ -29,7 +29,7 @@ int Texture::LoadTexture(const wchar_t* filename)
 
 	textureData.push_back(new Texture::TextureData);
 
-	if (texNum == 0)
+	if (m_texNum == 0)
 	{
 		//設定構造体
 		D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
@@ -37,7 +37,7 @@ int Texture::LoadTexture(const wchar_t* filename)
 		descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダーから見える
 		descHeapDesc.NumDescriptors = textureMax;//定数バッファの数
 		//デスクリプタヒープの生成
-		result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
+		result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&m_descHeap));
 	}
 
 
@@ -67,12 +67,12 @@ int Texture::LoadTexture(const wchar_t* filename)
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,//テクスチャ用指定
 		nullptr,
-		IID_PPV_ARGS(&textureData[texNum]->texbuff));
+		IID_PPV_ARGS(&textureData[m_texNum]->texbuff));
 #ifdef _DEBUG
-	textureData[texNum]->texbuff->SetName(L"Texture");
+	textureData[m_texNum]->texbuff->SetName(L"Texture");
 #endif
 	//テクスチャバッファにデータ転送
-	result = textureData[texNum]->texbuff->WriteToSubresource(
+	result = textureData[m_texNum]->texbuff->WriteToSubresource(
 		0,
 		nullptr,//全領域へコピー
 		img->pixels,//元データアドレス
@@ -81,15 +81,15 @@ int Texture::LoadTexture(const wchar_t* filename)
 	);
 
 	//デスクリプタヒープの先頭ハンドルを取得
-	textureData[texNum]->cpuDescHandleSRV = descHeap->GetCPUDescriptorHandleForHeapStart();
+	textureData[m_texNum]->cpuDescHandleSRV = m_descHeap->GetCPUDescriptorHandleForHeapStart();
 	//ハンドルのアドレスを進める
-	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	textureData[m_texNum]->cpuDescHandleSRV.ptr += m_texNum * dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleStart = descHeap->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleStart = m_descHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//1番SRV
-	textureData[texNum]->gpuDescHandleSRV = gpuDescHandleStart;
-	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
+	textureData[m_texNum]->gpuDescHandleSRV = gpuDescHandleStart;
+	textureData[m_texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * m_texNum;
 
 	//シェーダリソースビュー設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
@@ -99,19 +99,19 @@ int Texture::LoadTexture(const wchar_t* filename)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//ヒープの２番目にシェーダーリソースビューを作成
-	dev->CreateShaderResourceView(textureData[texNum]->texbuff.Get(),//ビューと関連付けるバッファ
+	dev->CreateShaderResourceView(textureData[m_texNum]->texbuff.Get(),//ビューと関連付けるバッファ
 		&srvDesc,//テクスチャ設定構造
-		textureData[texNum]->cpuDescHandleSRV
+		textureData[m_texNum]->cpuDescHandleSRV
 	);
-	texNum++;
-	return (int)texNum - 1;
+	m_texNum++;
+	return (int)m_texNum - 1;
 }
 
 int Texture::OBJLoadTexture(const std::string& directoryPath, const std::string& filename)
 {
 	HRESULT result = S_FALSE;
 	textureData.push_back(new Texture::TextureData);
-	if (texNum == 0)
+	if (m_texNum == 0)
 	{
 		//設定構造体
 		D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
@@ -119,7 +119,7 @@ int Texture::OBJLoadTexture(const std::string& directoryPath, const std::string&
 		descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダーから見える
 		descHeapDesc.NumDescriptors = textureMax;//定数バッファの数
 		//デスクリプタヒープの生成
-		result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
+		result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&m_descHeap));
 	}
 	// WICテクスチャのロード
 	TexMetadata metadata{};
@@ -156,12 +156,12 @@ int Texture::OBJLoadTexture(const std::string& directoryPath, const std::string&
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
 		nullptr,
-		IID_PPV_ARGS(&textureData[texNum]->texbuff));
+		IID_PPV_ARGS(&textureData[m_texNum]->texbuff));
 	if (FAILED(result)) {
 		return result;
 	}
 	// テクスチャバッファにデータ転送
-	result = textureData[texNum]->texbuff->WriteToSubresource(
+	result = textureData[m_texNum]->texbuff->WriteToSubresource(
 		0,
 		nullptr, // 全領域へコピー
 		img->pixels,    // 元データアドレス
@@ -173,26 +173,26 @@ int Texture::OBJLoadTexture(const std::string& directoryPath, const std::string&
 	}
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// シェーダリソースビュー作成
-	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
 	//ハンドルのアドレスを進める
-	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * descHandleIncrementSize;
-	textureData[texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
-	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
+	textureData[m_texNum]->cpuDescHandleSRV.ptr += m_texNum * descHandleIncrementSize;
+	textureData[m_texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(m_descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * m_texNum;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-	D3D12_RESOURCE_DESC resDesc = textureData[texNum]->texbuff->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = textureData[m_texNum]->texbuff->GetDesc();
 
 	srvDesc.Format = resDesc.Format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	dev->CreateShaderResourceView(textureData[texNum]->texbuff.Get(), //ビューと関連付けるバッファ
+	dev->CreateShaderResourceView(textureData[m_texNum]->texbuff.Get(), //ビューと関連付けるバッファ
 		&srvDesc, //テクスチャ設定情報
-		textureData[texNum]->cpuDescHandleSRV
+		textureData[m_texNum]->cpuDescHandleSRV
 	);
-	texNum++;
-	return (int)texNum - 1;
+	m_texNum++;
+	return (int)m_texNum - 1;
 }
 
 int Texture::FbxLoadTexture(const DirectX::Image* img, CD3DX12_RESOURCE_DESC texresDesc)
@@ -207,10 +207,10 @@ int Texture::FbxLoadTexture(const DirectX::Image* img, CD3DX12_RESOURCE_DESC tex
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
 		nullptr,
-		IID_PPV_ARGS(&textureData[texNum]->texbuff));
+		IID_PPV_ARGS(&textureData[m_texNum]->texbuff));
 
 	// テクスチャバッファにデータ転送
-	result = textureData[texNum]->texbuff->WriteToSubresource(
+	result = textureData[m_texNum]->texbuff->WriteToSubresource(
 		0,
 		nullptr, // 全領域へコピー
 		img->pixels,    // 元データアドレス
@@ -220,27 +220,27 @@ int Texture::FbxLoadTexture(const DirectX::Image* img, CD3DX12_RESOURCE_DESC tex
 
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// シェーダリソースビュー作成
-	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
 	//ハンドルのアドレスを進める
-	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * descHandleIncrementSize;
-	textureData[texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
-	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
+	textureData[m_texNum]->cpuDescHandleSRV.ptr += m_texNum * descHandleIncrementSize;
+	textureData[m_texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(m_descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * m_texNum;
 
 	// シェーダリソースビュー(SRV)作成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-	D3D12_RESOURCE_DESC resDesc = textureData[texNum]->texbuff->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = textureData[m_texNum]->texbuff->GetDesc();
 
 	srvDesc.Format = resDesc.Format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	dev->CreateShaderResourceView(textureData[texNum]->texbuff.Get(), //ビューと関連付けるバッファ
+	dev->CreateShaderResourceView(textureData[m_texNum]->texbuff.Get(), //ビューと関連付けるバッファ
 		&srvDesc, //テクスチャ設定情報
-		textureData[texNum]->cpuDescHandleSRV // ヒープの先頭アドレス
+		textureData[m_texNum]->cpuDescHandleSRV // ヒープの先頭アドレス
 	);
-	texNum++;
-	return texNum - 1;
+	m_texNum++;
+	return m_texNum - 1;
 }
 
 void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
@@ -249,11 +249,11 @@ void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 	textureData[textureData.size() - 1]->texbuff = texbuff;
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// シェーダリソースビュー作成
-	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
 	//ハンドルのアドレスを進める
-	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * descHandleIncrementSize;
-	textureData[texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
-	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
+	textureData[m_texNum]->cpuDescHandleSRV.ptr += m_texNum * descHandleIncrementSize;
+	textureData[m_texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(m_descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * m_texNum;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
 	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
@@ -261,12 +261,12 @@ void Texture::LoadShadowTexture(ID3D12Resource* texbuff)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	dev->CreateShaderResourceView(textureData[texNum]->texbuff.Get(), //ビューと関連付けるバッファ
+	dev->CreateShaderResourceView(textureData[m_texNum]->texbuff.Get(), //ビューと関連付けるバッファ
 		&srvDesc, //テクスチャ設定情報
-		textureData[texNum]->cpuDescHandleSRV
+		textureData[m_texNum]->cpuDescHandleSRV
 	);
-	shadowTexture = texNum;
-	texNum++;
+	m_shadowTexture = m_texNum;
+	m_texNum++;
 }
 
 void Texture::LoadCameraTexture(ID3D12Resource* texbuff)
@@ -275,11 +275,11 @@ void Texture::LoadCameraTexture(ID3D12Resource* texbuff)
 	textureData[textureData.size() - 1]->texbuff = texbuff;
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// シェーダリソースビュー作成
-	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
 	//ハンドルのアドレスを進める
-	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * descHandleIncrementSize;
-	textureData[texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
-	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
+	textureData[m_texNum]->cpuDescHandleSRV.ptr += m_texNum * descHandleIncrementSize;
+	textureData[m_texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(m_descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * m_texNum;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
 	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
@@ -287,12 +287,12 @@ void Texture::LoadCameraTexture(ID3D12Resource* texbuff)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	dev->CreateShaderResourceView(textureData[texNum]->texbuff.Get(), //ビューと関連付けるバッファ
+	dev->CreateShaderResourceView(textureData[m_texNum]->texbuff.Get(), //ビューと関連付けるバッファ
 		&srvDesc, //テクスチャ設定情報
-		textureData[texNum]->cpuDescHandleSRV
+		textureData[m_texNum]->cpuDescHandleSRV
 	);
-	cameraDepth = texNum;
-	texNum++;
+	m_cameraDepth = m_texNum;
+	m_texNum++;
 }
 
 void Texture::LoadPostEfectTexture(ID3D12Resource* texbuff)
@@ -301,10 +301,10 @@ void Texture::LoadPostEfectTexture(ID3D12Resource* texbuff)
 	textureData[textureData.size() - 1]->texbuff = texbuff;
 	UINT descHandleIncrementSize = dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// シェーダリソースビュー作成
-	textureData[texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
-	textureData[texNum]->cpuDescHandleSRV.ptr += texNum * descHandleIncrementSize;
-	textureData[texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
-	textureData[texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * texNum;
+	textureData[m_texNum]->cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->cpuDescHandleSRV.ptr += m_texNum * descHandleIncrementSize;
+	textureData[m_texNum]->gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(m_descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descHandleIncrementSize);
+	textureData[m_texNum]->gpuDescHandleSRV.ptr += descHandleIncrementSize * m_texNum;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
 	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -312,12 +312,12 @@ void Texture::LoadPostEfectTexture(ID3D12Resource* texbuff)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	dev->CreateShaderResourceView(textureData[texNum]->texbuff.Get(), //ビューと関連付けるバッファ
+	dev->CreateShaderResourceView(textureData[m_texNum]->texbuff.Get(), //ビューと関連付けるバッファ
 		&srvDesc, //テクスチャ設定情報
-		textureData[texNum]->cpuDescHandleSRV
+		textureData[m_texNum]->cpuDescHandleSRV
 	);
-	postEfect = texNum;
-	texNum++;
+	m_postEfect = m_texNum;
+	m_texNum++;
 }
 
 
@@ -333,5 +333,5 @@ ID3D12Resource* Texture::GetTexbuff(int i)
 
 ID3D12DescriptorHeap* Texture::GetDescHeap()
 {
-	return descHeap.Get();
+	return m_descHeap.Get();
 }

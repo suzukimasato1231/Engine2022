@@ -18,20 +18,20 @@ void Model::CreateBuffers(ID3D12Device* device)
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeVB),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&vertBuff));
+		IID_PPV_ARGS(&m_vertBuff));
 
 	// 頂点バッファへのデータ転送
 	VertexPosNormalUvSkin* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = m_vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		std::copy(vertices.begin(), vertices.end(), vertMap);
-		vertBuff->Unmap(0, nullptr);
+		m_vertBuff->Unmap(0, nullptr);
 	}
 
 	// 頂点バッファビュー(VBV)の作成
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	vbView.SizeInBytes = sizeVB;
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	m_vbView.BufferLocation = m_vertBuff->GetGPUVirtualAddress();
+	m_vbView.SizeInBytes = sizeVB;
+	m_vbView.StrideInBytes = sizeof(vertices[0]);
 	// 頂点インデックス全体のサイズ
 	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * indices.size());
 	// インデックスバッファ生成
@@ -41,50 +41,50 @@ void Model::CreateBuffers(ID3D12Device* device)
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeIB),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&indexBuff));
+		IID_PPV_ARGS(&m_indexBuff));
 
 	// インデックスバッファへのデータ転送
 	unsigned short* indexMap = nullptr;
-	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	result = m_indexBuff->Map(0, nullptr, (void**)&indexMap);
 	if (SUCCEEDED(result)) {
 		std::copy(indices.begin(), indices.end(), indexMap);
-		indexBuff->Unmap(0, nullptr);
+		m_indexBuff->Unmap(0, nullptr);
 	}
 
 	// インデックスバッファビュー(IBV)の作成
-	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	ibView.Format = DXGI_FORMAT_R16_UINT;
-	ibView.SizeInBytes = sizeIB;
+	m_ibView.BufferLocation = m_indexBuff->GetGPUVirtualAddress();
+	m_ibView.Format = DXGI_FORMAT_R16_UINT;
+	m_ibView.SizeInBytes = sizeIB;
 
 	// テクスチャ画像データ
-	const DirectX::Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
+	const DirectX::Image* img = m_scratchImg.GetImage(0, 0, 0); // 生データ抽出
 	assert(img);
 
 	// リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		metadata.format,
-		metadata.width,
-		(UINT)metadata.height,
-		(UINT16)metadata.arraySize,
-		(UINT16)metadata.mipLevels
+		m_metadata.format,
+		m_metadata.width,
+		(UINT)m_metadata.height,
+		(UINT16)m_metadata.arraySize,
+		(UINT16)m_metadata.mipLevels
 	);
 
-	textureNum = Texture::Get()->FbxLoadTexture(img, texresDesc);
+	m_textureNum = Texture::Get()->FbxLoadTexture(img, texresDesc);
 }
 
 void Model::Draw(ID3D12GraphicsCommandList* cmdList, bool shadowFlag)
 {
 	// 頂点バッファをセット(VBV)
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	cmdList->IASetVertexBuffers(0, 1, &m_vbView);
 	// インデックスバッファをセット(IBV)
-	cmdList->IASetIndexBuffer(&ibView);
+	cmdList->IASetIndexBuffer(&m_ibView);
 	if (shadowFlag)
 	{
 		// デスクリプタヒープのセット
 		ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		// シェーダリソースビューをセット
-		cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(textureNum));
+		cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(m_textureNum));
 	}
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
