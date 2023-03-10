@@ -81,7 +81,6 @@ void PlayerFBX::Update(const Vec3& fbxPos, const Vec3& angle)
 {
 	m_jumpTime--;
 	m_spinTime--;
-
 	//FBXŽŽ‚µ
 	FBXObject3d* updateFbx = nullptr;
 	Vec3 updatePos = fbxPos;
@@ -162,8 +161,6 @@ void PlayerFBX::Reset()
 {
 	m_fbxType = FbxNone;
 }
-
-
 
 void PlayerFBX::PlayFBX(int fbxType)
 {

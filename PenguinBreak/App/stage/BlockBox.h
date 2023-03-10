@@ -78,12 +78,13 @@ private:
 	int m_bombBoxGraph = 0;
 	Vec3 m_bombBoxAngle = {};							//爆弾角度
 	const Vec3 c_bombSpeedAngle = { 0.0f,2.0f,0.0f };	//回転速度
-	bool m_bombBoxFlag = false;						//爆弾演出フラグ
-	int m_bombTime = 0;								//開店時間
+	bool m_bombBoxFlag = false;							//爆弾演出フラグ
+	int m_bombTime = 0;									//開店時間
 	const int c_bombTimeMax = 45;						//回転時間最大
-	const Vec3 c_bombPlasSpeed = {0.0f,0.2f,0.0f};	//跳ねる速度
-	Vec3 m_bombPlas = {0.0f,0.0f,0.0f};				//爆弾箱の跳ねる距離
-
+	const Vec3 c_bombPlasSpeed = {0.0f,0.2f,0.0f};		//跳ねる速度
+	Vec3 m_bombPlas = {0.0f,0.0f,0.0f};					//爆弾箱の跳ねる距離
+	//最大ヒット数
+	const int hitMax = 4;
 	//接触時の判定に使う箱
 	bool m_is_hit = false;
 	int m_box_count = 0;

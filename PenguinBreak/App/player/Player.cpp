@@ -14,9 +14,7 @@ void Player::Init()
 	m_oldPosition = m_position;
 	m_pBox.maxPosition = XMVectorSet(m_position.x + m_pScale.x / 2, m_position.y + m_pScale.y / 2, m_position.z + m_pScale.z / 2, 1);
 	m_pBox.minPosition = XMVectorSet(m_position.x - m_pScale.x / 2, m_position.y - m_pScale.y / 2, m_position.z - m_pScale.z / 2, 1);
-
 	m_staging.Init();
-
 	m_walkSE = Audio::SoundLoadWave("Resources/sound/SE/walk.wav");
 	m_fallSE = Audio::SoundLoadWave("Resources/sound/SE/fall.wav");
 	m_electSE = Audio::SoundLoadWave("Resources/sound/SE/elect.wav");

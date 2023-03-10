@@ -46,21 +46,16 @@ private:
 	//電気パーティクル
 	void AddElect(Vec3 pos);
 private:
-	//電気柱オブジェクト
-	ObjectData m_electOBJ;
-	//電気オブジェクト
-	ObjectData m_electShockOBJ;
-
-	//電気ON/OFF
-	bool m_electFlag = false;
-	//電気切り替え最大時間時間
-	const int c_electTimeMax = 150;
-	//切り替えまでの時間
-	int m_electTime = 0;
+	ObjectData m_electOBJ;			//電気柱オブジェクト
+	ObjectData m_electShockOBJ;		//電気オブジェクト
+	bool m_electFlag = false;		//電気ON/OFF
+	const int c_electTimeMax = 150;	//電気切り替え最大時間時間
+	int m_electTime = 0;			//切り替えまでの時間
 	//電気びりびり
 	std::unique_ptr<ParticleManager>m_electParicle = nullptr;
 	int m_electParicleGraph = 0;
 
-	Vec2 m_uvScroll = { 0.0f ,0.0f };
+	const Vec2 c_uvScrollSpeed = { 0.0f, 0.002f };	//uvスクロール速度
+	Vec2 m_uvScroll = { 0.0f ,0.0f };				//uv位置
 };
 

@@ -33,8 +33,8 @@ enum StageType
 	DEADTREE = 30,		//枯れ木
 	STLON = 31,			//岩
 	ICEARCH = 32,		//氷のアーチ
-	SIGNBOARD1 = 40,		//看板
-	SIGNBOARD2 = 41,		//看板
+	SIGNBOARD1 = 40,	//看板ジャンプ
+	SIGNBOARD2 = 41,	//看板スピン
 };
 struct Floor
 {
@@ -61,7 +61,6 @@ struct FloorPitfallData
 	Vec2 map = {};
 	int time = 0;
 	int moveFlag = 0;
-
 };
 
 struct StageOBJ

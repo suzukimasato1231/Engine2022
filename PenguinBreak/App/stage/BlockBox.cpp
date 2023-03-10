@@ -19,7 +19,7 @@ void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
-			if (m_box_count >= 4) { return; }
+			if (m_box_count >= hitMax) { return; }
 			m_obj_data[m_box_count] = *stageObj;
 			m_box_count++;
 			m_is_hit = true;
@@ -35,7 +35,7 @@ void BlockBox::PlayerSpinHit(StageOBJ* stageObj, const int X, const int Z)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetSpinBox()))
 		{
-			if (m_spin_count >= 4) { return; }
+			if (m_spin_count >= hitMax) { return; }
 			m_obj_spin[m_spin_count] = *stageObj;
 			m_spin_count++;
 			m_is_spin = true;
@@ -68,6 +68,8 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 	case BOXBOMB:
 		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position + m_bombPlas, stageObj->scale,
 			m_bombBoxAngle, Vec2(), m_bombBoxGraph, shadowFlag);
+		break;
+	default:
 		break;
 	}
 }
@@ -112,7 +114,7 @@ void BlockBox::Update()
 	m_box_count = 0;
 	m_is_spin = false;
 	m_spin_count = 0;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < hitMax; i++)
 	{
 		m_obj_data[i] = {};
 		m_obj_spin[i] = {};

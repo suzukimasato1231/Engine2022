@@ -32,19 +32,16 @@ public:
 	/// </summary>
 	/// <param name="pPos">座標</param>
 	void Draw(const Vec3 &pPos);
-
-	void ChangeFlag() { m_isPointFlag = false; }
+	/// <summary>
+	/// 地面ポイントフラグをリセット
+	/// </summary>
+	void ActiveNo() { m_isPointFlag = false; }
 private:
 	ObjectData  m_dropPointOBJ = {};					//足元OBJ
-
 	int  m_dropPointGraph = 0;							//足元画像
-
 	PSR  m_dropPointPSR = {};
-
 	Vec3  m_position = {};								//座標
-
 	bool  m_isPointFlag = false;
-
 	float  m_groundDistance = 0.0f;
 };
 

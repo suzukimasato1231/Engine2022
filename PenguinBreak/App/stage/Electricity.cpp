@@ -44,12 +44,11 @@ void Electricity::AllUpdate()
 	}
 	m_electParicle->Update();
 	//UVƒXƒNƒ[ƒ‹
-	m_uvScroll += {0.0f, 0.002f};
+	m_uvScroll += c_uvScrollSpeed;
 	if (m_uvScroll.y >= 1.0f)
 	{
 		m_uvScroll.y = 0.0f;
 	}
-
 }
 
 void Electricity::Update(StageOBJ* stageObj, const int Z)
@@ -82,7 +81,7 @@ void Electricity::Draw(StageOBJ* stageObj, const bool shadowFlag)
 
 	if (m_electFlag == true)
 	{
-		Vec3 pos = { 11.0f,5.0f,0.0f };
+		const Vec3 pos = { 11.0f,5.0f,0.0f };
 		Object::DrawUVScroll(m_electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
 			Vec3(0.0f, 90.0f, 0.0f), m_uvScroll, 0);
 	}

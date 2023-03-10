@@ -14,22 +14,22 @@ void MoveFloor::Init()
 void MoveFloor::Update(Floor* floorData)
 {
 	floorData->time++;
-	if (floorData->moveFlag == 1)
+	if (floorData->moveFlag == MOVEBACK)
 	{
-		floorData->position -= m_speed;
-		if (floorData->time >= 150)
+		floorData->position -= c_speed;
+		if (floorData->time >= c_timeMax)
 		{
-			floorData->moveFlag = 0;
-			floorData->time = 0;
+			floorData->moveFlag = MOVEFRONT;
+			floorData->time = {};
 		}
 	}
 	else
 	{
-		floorData->position += m_speed;
-		if (floorData->time >= 150)
+		floorData->position += c_speed;
+		if (floorData->time >= c_timeMax)
 		{
-			floorData->moveFlag = 1;
-			floorData->time = 0;
+			floorData->moveFlag = MOVEBACK;
+			floorData->time = {};
 		}
 	}
 }
@@ -37,5 +37,5 @@ void MoveFloor::Update(Floor* floorData)
 void MoveFloor::Draw(Floor* floorData, const bool shadowFlag)
 {
 	Object::Draw(m_moveFloorOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y - 15.0f, floorData->position.z),
-		Vec3(12.5f, 12.5f, 12.5f) * 2, floorData->angle, Vec2(), 0, shadowFlag);
+		c_OBJScale, floorData->angle, Vec2(), 0, shadowFlag);
 }

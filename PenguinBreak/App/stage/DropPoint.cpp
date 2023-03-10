@@ -4,14 +4,10 @@
 #include"../player/Player.h"
 #include"Texture.h"
 DropPoint::DropPoint()
-{
-}
-
+{}
 
 DropPoint::~DropPoint()
-{
-}
-
+{}
 
 void DropPoint::Init()
 {
@@ -19,7 +15,7 @@ void DropPoint::Init()
 	m_dropPointGraph = Texture::Get()->LoadTexture(L"Resources/UI/dropPoint.png");
 }
 
-void DropPoint::Update(const Vec3 &pPos, const Vec3 &pos, const Vec3 &angle, const Vec3 &scale)
+void DropPoint::Update(const Vec3& pPos, const Vec3& pos, const Vec3& angle, const Vec3& scale)
 {
 	//°OBB‚Ì“–‚½‚è”»’è‰Ÿ‚µ–ß‚µˆ—
 	OBB diagonal;
@@ -28,20 +24,19 @@ void DropPoint::Update(const Vec3 &pPos, const Vec3 &pos, const Vec3 &angle, con
 	OBB eOBB;
 	Vec3 pSize = Player::Get()->GetPSize();
 	eOBB.Initilize(pPos, Vec3{}, Vec3(pSize.x, pSize.y + 100.0f, pSize.z));
-	if (OBBCollision::ColOBBs(eOBB, diagonal))
+	if (OBBCollision::ColOBBs(eOBB, diagonal) == true)
 	{
 		m_groundDistance = pos.y + scale.y / 2;
 		m_isPointFlag = true;
 	}
 }
 
-
-void DropPoint::Draw(const Vec3 &pPos)
+void DropPoint::Draw(const Vec3& pPos)
 {
-	if (Player::Get()->GetGroundFlag() == false && m_isPointFlag == true)
-	{
-		Object::NoShadowDraw(m_dropPointOBJ, m_dropPointPSR,
-			Vec3(pPos.x, m_groundDistance, pPos.z),
-			Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec2(), m_dropPointGraph);
-	}
+	if (Player::Get()->GetGroundFlag() == true || m_isPointFlag == false) { return; }
+
+	Object::NoShadowDraw(m_dropPointOBJ, m_dropPointPSR,
+		Vec3(pPos.x, m_groundDistance, pPos.z),
+		Vec3(1.0f, 1.0f, 1.0f), Vec3(), Vec2(), m_dropPointGraph);
+
 }

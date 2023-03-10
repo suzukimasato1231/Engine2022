@@ -2,8 +2,7 @@
 #include<Shape.h>
 #include"Easing.h"
 FishBox::FishBox()
-{
-}
+{}
 
 FishBox::~FishBox()
 {
@@ -52,7 +51,7 @@ void FishBox::Create(const Vec3& pos)
 	size_t num = fishData.size() - 1;
 	fishData[num]->position = pos;
 	fishData[num]->startPosition = pos;
-	fishData[num]->fishTime = 0.0f;
+	fishData[num]->fishTime = {};
 	fishData[num]->endFlag = false;
 }
 

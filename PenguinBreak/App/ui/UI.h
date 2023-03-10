@@ -25,7 +25,7 @@ public:
 	/// <param name="clearFlag">クリアフラグ</param>
 	/// <param name="changeScene">チェンジフラグ</param>
 	/// <param name="sceneNum">シーン数</param>
-	void Update(int fishNum, bool clearFlag, bool& changeScene, int& sceneNum);
+	void Update(const int fishNum,const bool clearFlag, bool& changeScene, int& sceneNum);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -38,6 +38,16 @@ public:
 	void Reset();
 
 	bool GetMenuFlag() { return m_menuFlag; }
+
+private:
+	/// <summary>
+	/// 表示する数字を決定
+	/// </summary>
+	void NumberDecision(const int fishNum);
+	/// <summary>
+	/// 数字強調処理
+	/// </summary>
+	void NumberEmphasis();
 private:
 	//ゲーム画面UI
 	SpriteData m_boxGraph;
@@ -57,9 +67,10 @@ private:
 	float m_fishPosPlas = 0.0f;
 	const int c_stagingTimeMax = 20;
 	const float c_stagingScaleMax = 1.5f;
-	float m_stagingScale[4] = { 0.0f,0.0f,0.0f,0.0f };
-	int m_stagingTime[4] = {};
-	bool m_stagingFlag[4] = {};
+	static const int numberNum = 4;
+	float m_stagingScale[numberNum] = { 0.0f,0.0f,0.0f,0.0f };
+	int m_stagingTime[numberNum] = {};
+	bool m_stagingFlag[numberNum] = {};
 	//壊した箱の数
 	int m_breakNumber = 1, m_breakRemain = 1;
 	//最大箱の数

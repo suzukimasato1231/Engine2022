@@ -96,7 +96,6 @@ int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
 				breakFlag = 2;
 				num = i;
 			}
-
 		}
 	}
 

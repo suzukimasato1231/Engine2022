@@ -45,7 +45,7 @@ void GameSceneManager::Init(int stageNum)
 {
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
-	Player::Get()->ChangeMoveFlag(true);
+	Player::Get()->SetMoveFlag(true);
 	Reset(stageNum);
 	m_stageNum = stageNum;
 	m_decLifeStaging.Reset();

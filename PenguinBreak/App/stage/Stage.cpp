@@ -76,7 +76,7 @@ void Stage::Update(const Vec3& pPos)
 	int Z = static_cast<int>(PPos.z / (-c_mapSize));
 	int X = static_cast<int>(PPos.x / c_mapSize);
 
-	m_dropPoint.ChangeFlag();
+	m_dropPoint.ActiveNo();
 
 	m_boxStaring.Update();
 

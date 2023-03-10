@@ -31,8 +31,9 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	Player();
-
-	//デスコンストラクタ
+	/// <summary>
+	/// デスコンストラクタ
+	/// </summary>
 	~Player();
 	/// <summary>
 	/// 初期化
@@ -76,7 +77,7 @@ public:
 	/// 2D false 3D true　
 	/// </summary>
 	/// <param name="moveFlag">2Dか3Dのフラグ</param>
-	void ChangeMoveFlag(bool moveFlag) { m_moveFlag = moveFlag; }
+	void SetMoveFlag(bool moveFlag) { m_moveFlag = moveFlag; }
 	/// <summary>
 	/// ジャンプ箱を踏んだか
 	/// </summary>

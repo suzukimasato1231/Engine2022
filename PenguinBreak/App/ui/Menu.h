@@ -44,6 +44,31 @@ public:
 	/// </summary>
 	void Reset();
 private:
+	/// <summary>
+	/// メニューを開く処理
+	/// </summary>
+	void MenuOpen(bool& menuFlag);
+	/// <summary>
+	/// メニューの決定処理
+	/// </summary>
+	void MenuDecision(bool& menuFlag, int& sceneNum, bool& changeScene);
+	/// <summary>
+	/// 音の設定
+	/// </summary>
+	void AudioOpition();
+	/// <summary>
+	/// メニューが出るときのイージング処理
+	/// </summary>
+	void MenuEasing(const bool menuFlag);
+	/// <summary>
+	/// メニューの描画
+	/// </summary>
+	void DrawMenuDraw(const bool gameoverFlag);
+	/// <summary>
+	/// 音量調節描画
+	/// </summary>
+	void DrawAudioOption();
+private:
 	//メニュー関連
 	SpriteData m_menuButton;
 	SpriteData m_menuFream;
@@ -71,13 +96,13 @@ private:
 	SpriteData m_menuAudioLandmark;
 	//音量調整フラグ
 	bool m_audioFlag = false;
-	
+
 	const float c_volumMax = 0.10f;
 	const float c_volumMin = 0.0f;
 	float m_volum = 0.02f;
-	
+
 	//音データ
-	SoundData m_decisionSE={};
-	SoundData m_selectSE={};
+	SoundData m_decisionSE = {};
+	SoundData m_selectSE = {};
 
 };

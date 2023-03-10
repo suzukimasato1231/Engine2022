@@ -1,12 +1,10 @@
 #include "GoalFish.h"
 #include"Shape.h"
 GoalFish::GoalFish()
-{
-}
+{}
 
 GoalFish::~GoalFish()
-{
-}
+{}
 
 void GoalFish::Init()
 {
@@ -15,16 +13,15 @@ void GoalFish::Init()
 
 void GoalFish::Update()
 {
-	m_goalScale.y += 1.0f;
-	if (m_goalScale.y == 360.0f)
+	m_goalAngle.y += c_angleSpeed;
+	if (m_goalAngle.y == c_angleMax)
 	{
-		m_goalScale.y = 0.0f;
+		m_goalAngle.y = {};
 	}
-
 }
 
 void GoalFish::Draw(StageOBJ* stageObj, const bool shadowFlag)
 {
-	Object::Draw(m_goalOBJ, stageObj->psr, stageObj->position, Vec3(3.0f, 3.0f, 3.0f),
-		Vec3(0.0f, m_goalScale.y, 180.0f), Vec2(), 0, shadowFlag);
+	Object::Draw(m_goalOBJ, stageObj->psr, stageObj->position,c_OBJScale,
+		m_goalAngle, Vec2(), 0, shadowFlag);
 }
