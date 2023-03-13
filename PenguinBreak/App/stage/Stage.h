@@ -47,17 +47,17 @@ private:
 	//âÛÇÍÇÈî†ÇÃèàóù
 	void BreakBoxs();
 
-	void SetFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type, int size = 0);
+	void SetFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, int type, int size = 0);
 
-	void SetObject(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int type);
+	void SetObject(const Vec3& position, const Vec3& scale, const Vec3& angle, int type);
 
-	void SetMoveFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map,const int type);
+	void SetMoveFloor(const Vec3& position, const Vec3& scale, const Vec3& angle,const int type);
 
-	void SetPitfallFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map, int time);
+	void SetPitfallFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, int time);
 
-	void SetElectricity(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map);
+	void SetElectricity(const Vec3& position, const Vec3& scale, const Vec3& angle);
 
-	void SetFishAttack(const Vec3& position, const Vec3& scale, const Vec3& angle, const Vec2& map);
+	void SetFishAttack(const Vec3& position, const Vec3& scale, const Vec3& angle);
 private:
 	const float c_mapSize = 25.0f;
 	const int c_drawNumY = 35;

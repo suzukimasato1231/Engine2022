@@ -340,7 +340,7 @@ void Player::FallDie()
 				m_decLifeTime--;
 				if (m_decLifeTime <= 0)
 				{
-					m_position = c_firstPosition;	//À•W
+					SetPosition(c_firstPosition);
 					m_angle = c_firstAngle;	//Šp“x
 					m_oldPosition = m_position;
 					m_remainLives--;

@@ -12,35 +12,31 @@ void BlockBox::Init()
 	m_bombBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/bomb.png");
 }
 
-void BlockBox::PlayerHit(StageOBJ* stageObj, const int X, const int Z)
+void BlockBox::PlayerHit(StageOBJ* stageObj)
 {
-	if ((X - 1 <= stageObj->map.x && stageObj->map.x <= X + 1)
-		&& ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 1))
+
+	if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 	{
-		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
-		{
-			if (m_box_count >= hitMax) { return; }
-			m_obj_data[m_box_count] = *stageObj;
-			m_box_count++;
-			m_is_hit = true;
-		}
+		if (m_box_count >= hitMax) { return; }
+		m_obj_data[m_box_count] = *stageObj;
+		m_box_count++;
+		m_is_hit = true;
 	}
+
 }
 
-void BlockBox::PlayerSpinHit(StageOBJ* stageObj, const int X, const int Z)
+void BlockBox::PlayerSpinHit(StageOBJ* stageObj)
 {
 	if (Player::Get()->GetSpinFlag() == false) { return; }
-	if ((X - 3 <= stageObj->map.x && stageObj->map.x <= X + 3)
-		&& ((MAP_HEIGHT - 1 + Z) - 3 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 3))
+
+	if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetSpinBox()))
 	{
-		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetSpinBox()))
-		{
-			if (m_spin_count >= hitMax) { return; }
-			m_obj_spin[m_spin_count] = *stageObj;
-			m_spin_count++;
-			m_is_spin = true;
-		}
+		if (m_spin_count >= hitMax) { return; }
+		m_obj_spin[m_spin_count] = *stageObj;
+		m_spin_count++;
+		m_is_spin = true;
 	}
+
 }
 
 void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)

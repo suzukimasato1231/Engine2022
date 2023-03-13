@@ -51,9 +51,9 @@ void Electricity::AllUpdate()
 	}
 }
 
-void Electricity::Update(StageOBJ* stageObj, const int Z)
+void Electricity::Update(StageOBJ* stageObj)
 {
-	if ((MAP_HEIGHT - 1 + Z) - 1 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 1 && m_electFlag == true)
+	if ( m_electFlag == true)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
@@ -61,8 +61,7 @@ void Electricity::Update(StageOBJ* stageObj, const int Z)
 		}
 	}
 
-	if (((m_electFlag == FALSE && m_electTime < 50) || m_electFlag == true) &&
-		(MAP_HEIGHT - 1 + Z) - 10 <= stageObj->map.y && stageObj->map.y <= (MAP_HEIGHT - 1 + Z) + 10)
+	if ((m_electFlag == FALSE && m_electTime < 50) || m_electFlag == true)
 	{
 		AddElect(stageObj->position);
 	}
@@ -92,11 +91,10 @@ void Electricity::DrawParicle()
 	m_electParicle->Draw(m_electParicleGraph);
 }
 
-StageOBJ Electricity::SetElect(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const Vec2 &map, const int type)
+StageOBJ Electricity::SetElect(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const int type)
 {
 	const Vec3 boxScale = { 220.0f,40.0f,0.0f };
 	StageOBJ stageObj = {};
-	stageObj.map = { static_cast<float>(map.x),static_cast<float>(map.y) };
 	stageObj.position = position;
 	stageObj.scale = scale;
 	stageObj.angle = angle;

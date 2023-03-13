@@ -26,14 +26,14 @@ public:
 	/// <param name="stageObj">オブジェクト情報</param>
 	/// <param name="X">X軸の位置</param>
 	/// <param name="Z">Z軸の位置</param>
-	void PlayerHit(StageOBJ* stageObj, const int X, const int Z);
+	void PlayerHit(StageOBJ* stageObj);
 	/// <summary>
 	/// スピンと箱の当たり判定
 	/// </summary>
 	/// <param name="stageObj">オブジェクト情報</param>
 	/// <param name="X">X軸の位置</param>
 	/// <param name="Z">Z軸の位置</param>
-	void PlayerSpinHit(StageOBJ* stageObj, const int X, const int Z);
+	void PlayerSpinHit(StageOBJ* stageObj);
 	/// <summary>
 	/// 更新
 	/// </summary>

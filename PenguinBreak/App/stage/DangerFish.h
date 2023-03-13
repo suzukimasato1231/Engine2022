@@ -42,7 +42,7 @@ public:
 	/// <param name="map">ステージ位置</param>
 	/// <param name="type">種類</param>
 	/// <returns></returns>
-	static StageOBJ SetDangerFish(const Vec3 &position, const Vec3& scale, const Vec3 &angle, const Vec2 &map, const int type);
+	static StageOBJ SetDangerFish(const Vec3 &position, const Vec3& scale, const Vec3 &angle, const int type);
 public:
 	Vec3 GetFishAngle() { return m_rotation; }
 private:

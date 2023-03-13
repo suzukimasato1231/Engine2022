@@ -42,7 +42,6 @@ struct Floor
 	Vec3 position = {};
 	Vec3 scale = {};
 	Vec3 angle = {};
-	Vec2 map = {};
 	int type = 0;
 	int time = 0;
 	int moveFlag = 0;
@@ -58,7 +57,6 @@ struct FloorPitfallData
 	Vec3 scale = {};
 	Vec3 angle = {};
 	Vec3 drawAngle = {};//•`‰æ—p
-	Vec2 map = {};
 	int time = 0;
 	int moveFlag = 0;
 };
@@ -69,7 +67,6 @@ struct StageOBJ
 	Vec3 position = {};
 	Vec3 scale = {};
 	Vec3 angle = {};
-	Vec2 map = {};
 	Box box = {};
 	int type = NONEOBJ;
 	Vec3 actionPos = {};
