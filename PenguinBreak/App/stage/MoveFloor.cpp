@@ -11,31 +11,31 @@ void MoveFloor::Init()
 	m_moveFloorOBJ = Shape::CreateOBJ("ice", false, "OBJ/");
 }
 
-void MoveFloor::Update(Floor* floorData)
+void MoveFloor::Update(StageData* floorData)
 {
-	floorData->time++;
-	if (floorData->moveFlag == MOVEBACK)
+	floorData->actionTime++;
+	if (floorData->actionType == MOVEBACK)
 	{
 		floorData->position -= c_speed;
-		if (floorData->time >= c_timeMax)
+		if (floorData->actionTime >= c_timeMax)
 		{
-			floorData->moveFlag = MOVEFRONT;
-			floorData->time = {};
+			floorData->actionType = MOVEFRONT;
+			floorData->actionTime = {};
 		}
 	}
 	else
 	{
 		floorData->position += c_speed;
-		if (floorData->time >= c_timeMax)
+		if (floorData->actionTime >= c_timeMax)
 		{
-			floorData->moveFlag = MOVEBACK;
-			floorData->time = {};
+			floorData->actionType = MOVEBACK;
+			floorData->actionTime = {};
 		}
 	}
 }
 
-void MoveFloor::Draw(Floor* floorData, const bool shadowFlag)
+void MoveFloor::Draw(StageData* floorData, const bool shadowFlag)
 {
-	Object::Draw(m_moveFloorOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y - 15.0f, floorData->position.z),
-		c_OBJScale, floorData->angle, Vec2(), 0, shadowFlag);
+	Object::Draw(m_moveFloorOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y, floorData->position.z),
+		floorData->scale, Vec3(floorData->rotation.x, floorData->rotation.y-90.0f, floorData->rotation.z), Vec2(), 0, shadowFlag);
 }

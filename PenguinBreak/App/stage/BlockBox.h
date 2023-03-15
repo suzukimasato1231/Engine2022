@@ -26,14 +26,14 @@ public:
 	/// <param name="stageObj">オブジェクト情報</param>
 	/// <param name="X">X軸の位置</param>
 	/// <param name="Z">Z軸の位置</param>
-	void PlayerHit(StageOBJ* stageObj);
+	void PlayerHit(StageData* stageObj);
 	/// <summary>
 	/// スピンと箱の当たり判定
 	/// </summary>
 	/// <param name="stageObj">オブジェクト情報</param>
 	/// <param name="X">X軸の位置</param>
 	/// <param name="Z">Z軸の位置</param>
-	void PlayerSpinHit(StageOBJ* stageObj);
+	void PlayerSpinHit(StageData* stageObj);
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -42,22 +42,22 @@ public:
 	/// 描画
 	/// </summary>
 	/// <returns></returns>
-	void Draw(StageOBJ* stageObj, bool shadowFlag);
+	void Draw(StageData* stageObj, bool shadowFlag);
 private:
 	/// <summary>
 	/// 爆弾演出
 	/// </summary>
 	void BombUpdate();
 public:
-	StageOBJ* GetObj_Data() { return m_obj_data; }
+	StageData* GetObj_Data() { return m_obj_data; }
 
-	StageOBJ GetObj_Data(int i) { return m_obj_data[i]; }
+	StageData GetObj_Data(int i) { return m_obj_data[i]; }
 
 	int GetBox_Count() { return m_box_count; }
 
 	bool GetIs_Hit() { return m_is_hit; }
 
-	StageOBJ GetObj_Spin(int i) { return m_obj_spin[i]; }
+	StageData GetObj_Spin(int i) { return m_obj_spin[i]; }
 
 	int GetSpin_Count() { return m_spin_count; }
 
@@ -88,10 +88,10 @@ private:
 	//接触時の判定に使う箱
 	bool m_is_hit = false;
 	int m_box_count = 0;
-	StageOBJ m_obj_data[5] = {};
+	StageData m_obj_data[5] = {};
 	//スピンの当たり判定に使う箱
 	bool m_is_spin = false;
 	int m_spin_count = 0;
-	StageOBJ m_obj_spin[5] = {};
+	StageData m_obj_spin[5] = {};
 };
 

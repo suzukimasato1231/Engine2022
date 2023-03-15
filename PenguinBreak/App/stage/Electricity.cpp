@@ -51,7 +51,7 @@ void Electricity::AllUpdate()
 	}
 }
 
-void Electricity::Update(StageOBJ* stageObj)
+void Electricity::Update(StageData* stageObj)
 {
 	if ( m_electFlag == true)
 	{
@@ -67,7 +67,7 @@ void Electricity::Update(StageOBJ* stageObj)
 	}
 }
 
-void Electricity::Draw(StageOBJ* stageObj, const bool shadowFlag)
+void Electricity::Draw(StageData* stageObj, const bool shadowFlag)
 {
 #ifdef _DEBUG
 	if (stageObj == nullptr)
@@ -91,24 +91,6 @@ void Electricity::DrawParicle()
 	m_electParicle->Draw(m_electParicleGraph);
 }
 
-StageOBJ Electricity::SetElect(const Vec3 &position, const Vec3 &scale, const Vec3 &angle, const int type)
-{
-	const Vec3 boxScale = { 220.0f,40.0f,0.0f };
-	StageOBJ stageObj = {};
-	stageObj.position = position;
-	stageObj.scale = scale;
-	stageObj.angle = angle;
-	stageObj.box.maxPosition = XMVectorSet(
-		position.x + boxScale.x / 2,
-		position.y + boxScale.y / 2,
-		position.z + boxScale.z / 2, 1);
-	stageObj.box.minPosition = XMVectorSet(
-		position.x - boxScale.x / 2,
-		position.y - boxScale.y / 2,
-		position.z - boxScale.z / 2, 1);
-	stageObj.type = type;
-	return stageObj;
-}
 
 void Electricity::AddElect(Vec3 pos)
 {

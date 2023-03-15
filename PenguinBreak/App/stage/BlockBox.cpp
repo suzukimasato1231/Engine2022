@@ -12,7 +12,7 @@ void BlockBox::Init()
 	m_bombBoxGraph = Texture::Get()->LoadTexture(L"Resources/cube/bomb.png");
 }
 
-void BlockBox::PlayerHit(StageOBJ* stageObj)
+void BlockBox::PlayerHit(StageData* stageObj)
 {
 
 	if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
@@ -25,7 +25,7 @@ void BlockBox::PlayerHit(StageOBJ* stageObj)
 
 }
 
-void BlockBox::PlayerSpinHit(StageOBJ* stageObj)
+void BlockBox::PlayerSpinHit(StageData* stageObj)
 {
 	if (Player::Get()->GetSpinFlag() == false) { return; }
 
@@ -39,7 +39,7 @@ void BlockBox::PlayerSpinHit(StageOBJ* stageObj)
 
 }
 
-void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
+void BlockBox::Draw(StageData* stageObj, const bool shadowFlag)
 {
 #ifdef _DEBUG
 	if (stageObj == nullptr)
@@ -47,27 +47,28 @@ void BlockBox::Draw(StageOBJ* stageObj, const bool shadowFlag)
 		assert(0);
 	}
 #endif
-	switch (stageObj->type)
+
+	if (stageObj->fileName.compare("BOX") == 0)
 	{
-	case BOX:
 		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec2(), m_normalBoxGraph, shadowFlag);
-		break;
-	case BOXJUMP:
+			stageObj->rotation, Vec2(), m_normalBoxGraph, shadowFlag);
+	}
+	else if (stageObj->fileName.compare("BOXJUMP") == 0)
+	{
 		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec2(), m_jumpBoxgraph, shadowFlag);
-		break;
-	case BOXHARD:
+			stageObj->rotation, Vec2(), m_jumpBoxgraph, shadowFlag);
+	}
+	else if (stageObj->fileName.compare("BOXHARD") == 0)
+	{
 		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-			stageObj->angle, Vec2(), m_hardBoxGraph, shadowFlag);
-		break;
-	case BOXBOMB:
+			stageObj->rotation, Vec2(), m_hardBoxGraph, shadowFlag);
+	}
+	else if (stageObj->fileName.compare("BOXBOMB") == 0)
+	{
 		Object::Draw(m_breakBoxOBJ, stageObj->psr, stageObj->position + m_bombPlas, stageObj->scale,
 			m_bombBoxAngle, Vec2(), m_bombBoxGraph, shadowFlag);
-		break;
-	default:
-		break;
 	}
+	
 }
 
 void BlockBox::BombUpdate()

@@ -20,7 +20,7 @@ void GoalFish::Update()
 	}
 }
 
-void GoalFish::Draw(StageOBJ* stageObj, const bool shadowFlag)
+void GoalFish::Draw(StageData* stageObj, const bool shadowFlag)
 {
 	Object::Draw(m_goalOBJ, stageObj->psr, stageObj->position,c_OBJScale,
 		m_goalAngle, Vec2(), 0, shadowFlag);

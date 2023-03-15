@@ -31,13 +31,13 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="floorData">床データ</param>
-	void Update(Floor* floorData);
+	void Update(StageData* floorData);
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="floorData">床データ</param>
 	/// <param name="shadowFlag">影フラグ</param>
-	void Draw(Floor* floorData, const bool shadowFlag);
+	void Draw(StageData* floorData, const bool shadowFlag);
 private:
 	ObjectData m_pitfallOBJ;						//床OBJ
 	int m_pitfallGraph = 0;							//床画像

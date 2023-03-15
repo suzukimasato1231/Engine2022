@@ -49,6 +49,7 @@ struct PSR
 	XMMATRIX matWorld;
 	//親クラス
 	PSR* parent = nullptr;
+	std::string fileName;
 };
 
 //オブジェクトデータ構造体
@@ -153,7 +154,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static void MatWord(const ObjectData &polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv = {}, bool shadowFlag=false);
+	static void MatWord(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv = {}, bool shadowFlag = false);
 	/// <summary>
 	/// OBJ描画
 	/// </summary>
@@ -162,7 +163,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static	void Draw(const ObjectData &polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv = {}, int graph = 0, bool shadowFlag = false);
+	static	void Draw(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv = {}, int graph = 0, bool shadowFlag = false);
 
 	/// <summary>
 	/// オブジェクトのデータ更新
@@ -171,7 +172,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static void MatWordUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &color);
+	static void MatWordUVScroll(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& color);
 	/// <summary>
 	/// OBJ描画
 	/// </summary>
@@ -180,7 +181,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static	void DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv = { 0.0f,0.0f }, int graph = 0);
+	static	void DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv = { 0.0f,0.0f }, int graph = 0);
 	/// <summary>
 	/// 影無しオブジェクトのデータ更新
 	/// </summary>
@@ -188,7 +189,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static void NoShadowMatWorld(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv = {});
+	static void NoShadowMatWorld(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv = {});
 
 	/// <summary>
 	/// 影無しOBJ描画
@@ -198,7 +199,7 @@ public://オブジェクト関連
 	/// <param name="scale">大きさ</param>
 	/// <param name="matRot">回転</param>
 	/// <param name="color">色</param>
-	static	void NoShadowDraw(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &color = {}, int graph = 0);
+	static	void NoShadowDraw(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& color = {}, int graph = 0);
 
 public:
 	static size_t OBJNum;//OBJ読み込みの数

@@ -12,46 +12,46 @@ void FloorPitfall::Init()
 	m_pitfallOBJ = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 }
 
-void FloorPitfall::Update(Floor* floorData)
+void FloorPitfall::Update(StageData* floorData)
 {
-	floorData->time--;
+	floorData->actionTime--;
 	//ŠJ‚¢‚Ä‚¢‚é
-	if (floorData->moveFlag == PITFALLCLOSE)
+	if (floorData->actionType == PITFALLCLOSE)
 	{
-		if (floorData->time <= 0)
+		if (floorData->actionTime <= 0)
 		{
-			floorData->time = c_pitfallTime;
-			floorData->moveFlag = PITFALLOPEN;
+			floorData->actionTime = c_pitfallTime;
+			floorData->actionType = PITFALLOPEN;
 		}
-		if (floorData->time <= 5)
+		if (floorData->actionTime <= 5)
 		{
-			floorData->drawAngle.z += c_pitfallSpeed;
+			floorData->rotation.z += c_pitfallSpeed;
 		}
 	}//•Â‚¶‚Ä‚¢‚é
-	else if (floorData->moveFlag == PITFALLOPEN)
+	else if (floorData->actionType == PITFALLOPEN)
 	{
-		if (floorData->time <= 0)
+		if (floorData->actionTime <= 0)
 		{
-			floorData->time = c_pitfallTime;
-			floorData->moveFlag = PITFALLCLOSE;
+			floorData->actionTime = c_pitfallTime;
+			floorData->actionType = PITFALLCLOSE;
 		}
-		if (floorData->time <= 5)
+		if (floorData->actionTime <= 5)
 		{
-			floorData->drawAngle.z += c_pitfallSpeed;
+			floorData->rotation.z += c_pitfallSpeed;
 		}
 	}
 }
 
-void FloorPitfall::Draw(Floor* floorData, const bool shadowFlag)
+void FloorPitfall::Draw(StageData* floorData, const bool shadowFlag)
 {
-	if (floorData->moveFlag == PITFALLCLOSE)
+	if (floorData->actionType == PITFALLCLOSE)
 	{
 		Object::Draw(m_pitfallOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y - 2.5f, floorData->position.z), c_pitfallScale,
-			floorData->drawAngle, Vec2(), m_pitfallGraph, shadowFlag);
+			floorData->rotation, Vec2(), m_pitfallGraph, shadowFlag);
 	}//•Â‚¶‚Ä‚¢‚é
-	else if (floorData->moveFlag == PITFALLOPEN)
+	else if (floorData->actionType == PITFALLOPEN)
 	{
 		Object::Draw(m_pitfallOBJ, floorData->psr, floorData->position, c_pitfallScale,
-			floorData->drawAngle, Vec2(), m_pitfallGraph, shadowFlag);
+			floorData->rotation, Vec2(), m_pitfallGraph, shadowFlag);
 	}
 }

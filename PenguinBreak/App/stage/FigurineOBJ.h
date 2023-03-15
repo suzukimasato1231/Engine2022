@@ -26,7 +26,7 @@ public:
 	/// </summary>
 	/// <param name="stageObj">ステージデータ</param>
 	/// <param name="shadowFlag">影フラグ</param>
-	void Draw(StageOBJ* stageObj, const bool shadowFlag);
+	void Draw(StageData* stageObj, const bool shadowFlag);
 private:
 	//壁OBJ
 	ObjectData m_wallOBJ;
@@ -39,7 +39,7 @@ private:
 	//看板
 	ObjectData m_signboard;
 	int m_tutorialGraph[2] = {};
-	int m_tutorialNum = 40;		//チュートリアルの基本値
+	int m_tutorialNum = SIGNBOARD1;		//チュートリアルの基本値
 
 };
 

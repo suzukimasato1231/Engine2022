@@ -1,17 +1,17 @@
 #pragma once
 #include"./StegeObject.h"
+
+//前へ進むか後ろへ進むか
+enum MoveUpDown
+{
+	MOVEFRONT,
+	MOVEBACK,
+};
 /// <summary>
 /// 動く床クラス
 /// </summary>
 class MoveFloor
 {
-private:
-	//前へ進むか後ろへ進むか
-	enum MoveUpDown
-	{
-		MOVEFRONT,
-		MOVEBACK,
-	};
 
 public:
 	/// <summary>
@@ -30,13 +30,13 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="floorData">床データ</param>
-	void Update(Floor* floorData);
+	void Update(StageData* floorData);
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="floorData">床データ</param>
 	/// <param name="shadowFlag">影フラグ</param>
-	void Draw(Floor* floorData, const bool shadowFlag);
+	void Draw(StageData* floorData, const bool shadowFlag);
 private:
 	ObjectData m_moveFloorOBJ;						//床OBJ
 	const Vec3 c_speed = { 0.0f,0.0f,0.5f };		//床が進むスピード

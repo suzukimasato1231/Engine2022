@@ -29,19 +29,17 @@ public:
 	/// </summary>
 	/// <param name="stageObj">ステージデータ</param>
 	/// <param name="Z">Z軸位置</param>
-	void Update(StageOBJ* stageObj);
+	void Update(StageData* stageObj);
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="stageObj">ステージデータ</param>
 	/// <param name="shadowFlag">影フラグ</param>
-	void Draw(StageOBJ* stageObj, const bool shadowFlag);
+	void Draw(StageData* stageObj, const bool shadowFlag);
 	/// <summary>
 	/// パーティクル描画
 	/// </summary>
 	void DrawParicle();
-
-	static StageOBJ SetElect(const Vec3& position, const Vec3& scale, const Vec3& angle, const int type);
 private:
 	//電気パーティクル
 	void AddElect(Vec3 pos);

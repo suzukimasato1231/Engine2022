@@ -24,32 +24,37 @@ void FigurineOBJ::Init()
 void FigurineOBJ::Update()
 {}
 
-void FigurineOBJ::Draw(StageOBJ* stageObj, const bool shadowFlag)
+void FigurineOBJ::Draw(StageData* stageObj, const bool shadowFlag)
 {
-	switch (stageObj->type)
+
+	if (stageObj->fileName.compare("WALL") == 0)
 	{
-	case WALL:
-		Object::Draw(m_wallOBJ, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y - 22.0f, stageObj->position.z),
-			Vec3(12.0f, 12.0f, 12.0f), stageObj->angle, Vec2(), 0, shadowFlag);
-		break;
-	case DEADTREE:
+		Object::Draw(m_wallOBJ, stageObj->psr, stageObj->position,
+			stageObj->scale, stageObj->rotation, Vec2(), 0, shadowFlag);
+	}
+	else if (stageObj->fileName.compare("STLON") == 0)
+	{
+		Object::Draw(m_stone, stageObj->psr, stageObj->position,
+			stageObj->scale, stageObj->rotation, Vec2(), 0, shadowFlag);
+	}
+	else if (stageObj->fileName.compare("DEADTREE") == 0)
+	{
 		Object::Draw(m_deadTree, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y, stageObj->position.z),
-			Vec3(12.0f, 12.0f, 12.0f), stageObj->angle, Vec2(), 0, shadowFlag);
-		break;
-	case STLON:
-		Object::Draw(m_stone, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y - 2.0f, stageObj->position.z),
-			Vec3(12.0f, 16.0f, 12.0f) / 2, stageObj->angle, Vec2(), 0, shadowFlag);
-		break;
-	case ICEARCH:
-		Object::Draw(m_iceArch, stageObj->psr, Vec3(stageObj->position.x + 145.0f, stageObj->position.y - 2.0f, stageObj->position.z),
-			Vec3(10.2f, 10.0f, 10.5f) * 3, Vec3(0.0f, 90.0f, 0.0f), Vec2(), 0, shadowFlag);
-		break;
-	case SIGNBOARD1:
-	case SIGNBOARD2:
-		Object::Draw(m_signboard, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y + 6.0f, stageObj->position.z),
-			Vec3(4.0f, 4.0f, 4.0f) * 3, Vec3(0.0f, -60.0f, 0.0f), Vec2(), m_tutorialGraph[stageObj->type - m_tutorialNum], shadowFlag);
-		break;
-	default:
-		break;
+			stageObj->scale, stageObj->rotation, Vec2(), 0, shadowFlag);
+	}
+	else if (stageObj->fileName.compare("ICEARCH") == 0)
+	{
+		Object::Draw(m_iceArch, stageObj->psr, stageObj->position, stageObj->scale,
+			Vec3(stageObj->rotation.x, stageObj->rotation.y - 90.0f, stageObj->rotation.z), Vec2(), 0, shadowFlag);
+	}
+	else if (stageObj->fileName.compare("SIGNBOARD1") == 0)
+	{
+		Object::Draw(m_signboard, stageObj->psr, stageObj->position, stageObj->scale,
+			Vec3(stageObj->rotation.x, stageObj->rotation.y - 90.0f, stageObj->rotation.z), Vec2(), m_tutorialGraph[0], shadowFlag);
+	}
+	else if (stageObj->fileName.compare("SIGNBOARD2") == 0)
+	{
+		Object::Draw(m_signboard, stageObj->psr, stageObj->position, stageObj->scale,
+			Vec3(stageObj->rotation.x, stageObj->rotation.y - 90.0f, stageObj->rotation.z), Vec2(), m_tutorialGraph[1], shadowFlag);
 	}
 }

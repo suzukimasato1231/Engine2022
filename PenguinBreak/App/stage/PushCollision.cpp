@@ -43,21 +43,14 @@ int PushCollision::Player2Floor(const Vec3 &pos, const Vec3 &angle, const Vec3 &
 	return 0;
 }
 
-int PushCollision::PlayerBreakBox(StageOBJ data1[4], int& num)
+int PushCollision::PlayerBreakBox(StageData data1[4], int& num)
 {
 	int breakFlag = 0;
 	Box BlockBox[4] = {};
 	Box pBox = {};
 	for (int i = 0; i < 4; i++)
 	{
-		BlockBox[i].maxPosition = XMVectorSet(
-			data1[i].position.x + data1[i].scale.x / 2,
-			data1[i].position.y + data1[i].scale.y / 2,
-			data1[i].position.z + data1[i].scale.z / 2, 1);
-		BlockBox[i].minPosition = XMVectorSet(
-			data1[i].position.x - data1[i].scale.x / 2,
-			data1[i].position.y - data1[i].scale.y / 2,
-			data1[i].position.z - data1[i].scale.z / 2, 1);
+		BlockBox[i] = data1[i].box;
 	}
 
 	const Vec3 oldPosition = Player::Get()->GetOldPosition();

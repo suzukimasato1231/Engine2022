@@ -9,18 +9,7 @@ Stage::Stage()
 {}
 
 Stage::~Stage()
-{
-	for (int i = (int)floor.size() - 1; i >= 0; i--)
-	{
-		delete floor[i];
-		floor.erase(floor.begin() + i);
-	}
-	for (int i = (int)stageObj.size() - 1; i >= 0; i--)
-	{
-		delete stageObj[i];
-		stageObj.erase(stageObj.begin() + i);
-	}
-}
+{}
 
 void Stage::Init()
 {
@@ -75,28 +64,21 @@ void Stage::Update(const Vec3& pPos)
 
 	m_dropPoint.ActiveNo();
 	m_boxStaring.Update();
-
-	for (auto& s : stageObj)
+	for (auto& s : stageData)
 	{
-		switch (s->type)
+		if (s->fileName.compare("WALL") == 0 || s->fileName.compare("STLON") == 0 || s->fileName.compare("DEADTREE") == 0 || s->fileName.compare("BARRIERWALL") == 0
+			|| s->fileName.compare("SIGNBOARD1") == 0 || s->fileName.compare("SIGNBOARD2") == 0 || CheckBoxJudge(s) == true)
 		{
-		case WALL:
-		case BARRIERWALL:
-		case DEADTREE:
-		case STLON:
-		case BOX:
-		case BOXJUMP:
-		case BOXHARD:
-		case BOXBOMB:
 			m_blockBox.PlayerHit(s);
 			m_blockBox.PlayerSpinHit(s);
-			if (!(s->type == WALL || s->type == DEADTREE || s->type == BARRIERWALL))
+			if (!(s->fileName.compare("WALL") == 0 || s->fileName.compare("DEADTREE") == 0 || s->fileName.compare("BARRIERWALL") == 0))
 			{
 				m_dropPoint.Update(PPos, s->position,
-					s->angle, s->scale);
+					s->rotation, s->scale);
 			}
-			break;
-		case GOAL:
+		}
+		else if (s->fileName.compare("GOAL") == 0)
+		{
 			if (Collision::CheckBox2Box(s->box, Player::Get()->GetBox()))
 			{
 				//ゴール
@@ -108,24 +90,76 @@ void Stage::Update(const Vec3& pPos)
 				m_goalSEFlag = true;
 			}
 			m_goalFish.Update();
-			break;
-		case ELECTRICITY:
-			m_elect.Update(s);
-			break;
-		case FISHATTACK:
-			if (Collision::CheckBox2Box(s->box, Player::Get()->GetBox()))
-			{
-				Player::Get()->DieType(EATDIE);
-				Player::Get()->FishDie(s->actionPos, m_dangerFish.GetFishAngle());
-			}
-			m_dangerFish.Update(s);
-			break;
-		default:
-			break;
 		}
 	}
 	//壊れる箱の処理
 	BreakBoxs();
+	for (auto& s : stageData)
+	{
+		if (s->fileName.compare("FLOORNORMAL") == 0)
+		{
+			m_dropPoint.Update(PPos, s->position,
+				s->rotation, s->scale);
+			if (Player::Get()->GetIsFishDie() == false)
+			{
+				//プレイヤー
+				PushCollision::Player2Floor(s->position,
+					s->rotation, s->scale);
+			}
+		}
+		else if (s->fileName.compare("FLOORMOVE") == 0 || s->fileName.compare("FLOORMOVE2") == 0)
+		{
+			if (Player::Get()->GetIsFishDie() == false)
+			{
+				//プレイヤー
+				PushCollision::Player2Floor(s->position,
+					s->rotation, s->scale, s->actionType);
+				m_dropPoint.Update(PPos, s->position,
+					s->rotation, s->scale);
+
+			}
+			m_moveFloor.Update(s);
+		}
+	}
+
+	//	case ELECTRICITY:
+	//		m_elect.Update(s);
+	//		break;
+	//	case FISHATTACK:
+	//		if (Collision::CheckBox2Box(s->box, Player::Get()->GetBox()))
+	//		{
+	//			Player::Get()->DieType(EATDIE);
+	//			Player::Get()->FishDie(s->position, m_dangerFish.GetFishAngle());
+	//		}
+	//		m_dangerFish.Update(s);
+	//		break;
+	//	case FLOOR11:
+	//	case FLOOR169:
+	//		if (Player::Get()->GetIsFishDie() == false)
+	//		{
+	//			//プレイヤー
+	//			PushCollision::Player2Floor(s->position,
+	//				s->rotation, s->scale);
+	//		}
+	//		break;
+	//	case FLOORPITFALL_A:
+	//	case FLOORPITFALL_B:
+	//		if (Player::Get()->GetIsFishDie() == false)
+	//		{
+	//			if (s->actionType == 0)
+	//			{
+	//				PushCollision::Player2Floor(s->position,
+	//					s->rotation, s->scale);
+	//				m_dropPoint.Update(PPos, s->position,
+	//					s->rotation, s->scale);
+	//			}
+	//		}
+	//		m_floorPitfall.Update(s);
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//}
 
 	//箱の更新
 	m_blockBox.Update();
@@ -133,53 +167,6 @@ void Stage::Update(const Vec3& pPos)
 	m_elect.AllUpdate();
 
 	m_dangerFish.AllUpdate();
-	//床
-	for (auto f : floor)
-	{
-		switch (f->type)
-		{
-		case FLOORNORMAL:
-			m_dropPoint.Update(PPos, f->position,
-				f->angle, f->scale);
-		case FLOOR11:
-		case FLOOR169:
-			if (Player::Get()->GetIsFishDie() == false)
-			{
-				//プレイヤー
-				PushCollision::Player2Floor(f->position,
-					f->angle, f->scale);
-			}
-			break;
-		case FLOORMOVE:
-			if (Player::Get()->GetIsFishDie() == false)
-			{
-				//プレイヤー
-				PushCollision::Player2Floor(f->position,
-					f->angle, f->scale, f->moveFlag);
-				m_dropPoint.Update(PPos, f->position,
-					f->angle, f->scale);
-
-			}
-			m_moveFloor.Update(f);
-			break;
-		case FLOORPITFALL_A:
-		case FLOORPITFALL_B:
-			if (Player::Get()->GetIsFishDie() == false)
-			{
-				if (f->moveFlag == 0)
-				{
-					PushCollision::Player2Floor(f->position,
-						f->angle, f->scale);
-					m_dropPoint.Update(PPos, f->position,
-						f->angle, f->scale);
-				}
-			}
-			m_floorPitfall.Update(f);
-			break;
-		default:
-			break;
-		}
-	}
 	//魚の更新
 	m_fishBox.Update(pPos);
 }
@@ -187,78 +174,53 @@ void Stage::Update(const Vec3& pPos)
 void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 {
 	Vec3 PPos = pPos;
-	//床の描画
-	for (auto f : floor)
-	{
-		switch (f->type)
-		{
-		case FLOORNORMAL:
-			Object::Draw(m_floorOBJ, f->psr, Vec3(f->position.x, f->position.y - 20.0f, f->position.z),
-				Vec3(25.0f, 40.0f, 25.0f * (f->size + 1)),
-				f->angle, Vec2(), 0, shadowFlag);
-			break;
-		case FLOOR169:
-			Object::Draw(m_floorOBJ, f->psr, Vec3(f->position.x, f->position.y - 12.0f, f->position.z + 9.5f),
-				Vec3(25.0f, 30.0f, 32.1f * 2),
-				f->angle, Vec2(), m_floorGraph, shadowFlag);
-			break;
-		case FLOOR11:
-			Object::Draw(m_floorOBJ, f->psr, Vec3(f->position.x, f->position.y - 12.0f, f->position.z - 9.5f),
-				Vec3(25.0f, 30.0f, 32.1f),
-				f->angle, Vec2(), m_floorGraph, shadowFlag);
-			break;
-		case FLOORMOVE:
-			m_moveFloor.Draw(f, shadowFlag);
-			break;
-		case FLOORPITFALL_A:
-		case FLOORPITFALL_B:
-			m_floorPitfall.Draw(f, shadowFlag);
-			break;
-		default:
-			break;
-		}
 
-	}
-	//オブジェクト描画
-	for (auto s : stageObj)
+	for (auto& s : stageData)
 	{
-		switch (s->type)
+		if (s->fileName.compare("WALL") == 0 || s->fileName.compare("STLON") == 0
+			|| s->fileName.compare("DEADTREE") == 0 || s->fileName.compare("BARRIERWALL") == 0
+			|| s->fileName.compare("ICEARCH") == 0 || s->fileName.compare("SIGNBOARD1") == 0 || s->fileName.compare("SIGNBOARD2") == 0)
 		{
-		case WALL:
-		case DEADTREE:
-		case STLON:
-		case ICEARCH:
-		case SIGNBOARD1:
-		case SIGNBOARD2:
 			m_figurineOBJ.Draw(s, shadowFlag);
-			break;
-		case  GOAL:
-			m_goalFish.Draw(s, shadowFlag);
-			break;
-		case BOX:
-		case BOXJUMP:
-		case BOXHARD:
-		case BOXBOMB:
-			m_blockBox.Draw(s, shadowFlag);
-			break;
-		case ELECTRICITY:
-			m_elect.Draw(s, shadowFlag);
-			break;
-		case FISHATTACK:
-			m_dangerFish.Draw(s, shadowFlag);
-			break;
-		default:
-			break;
 		}
+		else if (CheckBoxJudge(s) == true)
+		{
+			m_blockBox.Draw(s, shadowFlag);
+		}
+		else if (s->fileName.compare("FLOORNORMAL") == 0)
+		{
+			Object::Draw(m_floorOBJ, s->psr, Vec3(s->position.x, s->position.y, s->position.z),
+				s->scale, s->rotation, Vec2(), 0, shadowFlag);
+		}
+		else if (s->fileName.compare("GOAL") == 0)
+		{
+			m_goalFish.Draw(s, shadowFlag);
+		}
+		else if (s->fileName.compare("FLOORMOVE") == 0 || s->fileName.compare("FLOORMOVE2") == 0)
+		{
+			m_moveFloor.Draw(s, shadowFlag);
+		}
+
 	}
 
-	//左右の床の描画
-	Object::Draw(m_floorOBJ, m_blackPsr[1], Vec3(-340.0f, 5.0f, pPos.z + 600.0f),
-		Vec3(650.0f, 15.0f, 1500.0f),
-		Vec3(), Vec2(), 0, shadowFlag);
-	Object::Draw(m_floorOBJ, m_blackPsr[2], Vec3(560.0f, 5.0f, pPos.z + 600.0f),
-		Vec3(650.0f, 15.0f, 1500.0f),
-		Vec3(), Vec2(), 0, shadowFlag);
+	//switch (s->type)
+	//{
+	//case FLOOR169:
+	//	Object::Draw(m_floorOBJ, s->psr, Vec3(s->position.x, s->position.y - 12.0f, s->position.z + 9.5f),
+	//		Vec3(25.0f, 30.0f, 32.1f * 2),
+	//		s->rotation, Vec2(), m_floorGraph, shadowFlag);
+	//case FLOOR11:
+	//	Object::Draw(m_floorOBJ, s->psr, Vec3(s->position.x, s->position.y - 12.0f, s->position.z - 9.5f),
+	//		Vec3(25.0f, 30.0f, 32.1f),
+	//		s->rotation, Vec2(), m_floorGraph, shadowFlag);
+	//case FLOORPITFALL_A:
+	//case FLOORPITFALL_B:
+	//	m_floorPitfall.Draw(s, shadowFlag);
+	//case ELECTRICITY:
+	//	m_elect.Draw(s, shadowFlag);
+	//case FISHATTACK:
+	//	m_dangerFish.Draw(s, shadowFlag);
+
 
 	DrawWater();
 
@@ -279,190 +241,80 @@ void Stage::DrawParicle()
 
 void Stage::LoadStage(int stageNum)
 {
-	for (int i = (int)floor.size() - 1; i >= 0; i--)
-	{
-		delete floor[i];
-		floor.erase(floor.begin() + i);
-	}
-	for (int i = (int)stageObj.size() - 1; i >= 0; i--)
-	{
-		delete stageObj[i];
-		stageObj.erase(stageObj.begin() + i);
-	}
-	const string basePath = "Resources/map/";
+
+	stageData.clear();
+
 	string FilepathFloor = "";
-	string FilepathFloorPos = "";
-	string FilepathOBJ = "";
-	string FilepathOBJPos = "";
+
 	switch (stageNum)
 	{
 	case 0:
-		//Floor
-		FilepathFloor = "selectFloor.csv";
-		FilepathFloorPos = "Resources/map/selectTitlePos.csv";
-		//OBJ
-		FilepathOBJ = "selectObj.csv";
-		FilepathOBJPos = "selectObjPos.csv";
+		FilepathFloor = "select";
 		break;
 	case 1:
-		//Floor
-		FilepathFloor = "Floor_Title1.csv";
-		FilepathFloorPos = "Floor_TitlePos1.csv";
-		//OBJ
-		FilepathOBJ = "OBJTitle1.csv";
-		FilepathOBJPos = "Obj_TitlePos1.csv";
+		FilepathFloor = "stage01";
 		break;
 	case 2:
-		//Floor
-		FilepathFloor = "Floor_Title2.csv";
-		FilepathFloorPos = "Floor_TitlePos2.csv";
-		//OBJ
-		FilepathOBJ = "OBJTitle2.csv";
-		FilepathOBJPos = "Obj_TitlePos2.csv";
+		FilepathFloor = "stage02";
 		break;
 	case 3:
-		//Floor
-		FilepathFloor = "Floor_Title3.csv";
-		FilepathFloorPos = "Floor_TitlePos3.csv";
-		//OBJ
-		FilepathOBJ = "OBJTitle3.csv";
-		FilepathOBJPos = "Obj_TitlePos3.csv";
+		FilepathFloor = "stage03";
 		break;
 	default:
 		break;
 	}
 
-	////ブロック
-	int	Map[MAP_HEIGHT][MAP_WIDTH] = {};		//マップチップ
-	int MapPos[MAP_HEIGHT][MAP_WIDTH] = {};
-
-	int MapOBJ[MAP_HEIGHT][MAP_WIDTH] = {};		//壁などのOBJ
-	int MapOBJPos[MAP_HEIGHT][MAP_WIDTH] = {};	//壁などのOBJの座標
-	LoadCSV(Map, basePath + FilepathFloor);
-	LoadCSV(MapPos, basePath + FilepathFloorPos);
-
-	LoadCSV(MapOBJ, basePath + FilepathOBJ);
-	LoadCSV(MapOBJPos, basePath + FilepathOBJPos);
-
-	for (size_t y = 0; y < MAP_HEIGHT; y++)
+	levelData = LoadJson::Load(FilepathFloor);
+	for (auto& loadData : levelData->objects)
 	{
-		for (size_t x = 0; x < MAP_WIDTH; x++)
+		switch (loadData.type)
 		{
-			Vec2 map = { static_cast<float>(x), static_cast<float>(y) };
-			//OBJ
-			switch (Map[y][x])
+		case MESHTYPE:
+		{
+			StageData* objectData = new StageData();
+			objectData->position = loadData.translation;
+			objectData->rotation = loadData.rotation;
+			objectData->scale = loadData.scaling;
+			objectData->fileName = loadData.fileName;
+			if (objectData->fileName.compare("WALL") == 0 || objectData->fileName.compare("STLON") == 0
+				|| objectData->fileName.compare("DEADTREE") == 0 || objectData->fileName.compare("BARRIERWALL") == 0
+				|| objectData->fileName.compare("ICEARCH") == 0 || objectData->fileName.compare("SIGNBOARD1") == 0 || objectData->fileName.compare("SIGNBOARD2") == 0)
 			{
-			case NONEFLOOR:
-				break;
-			case FLOORNORMAL:
-			{
-				int num_ = 1;
-				while (Map[y + num_][x] == FLOORNORMAL)
-				{
-					Map[y + num_][x] = 0;
-					num_++;
-					if (y + num_ >= MAP_HEIGHT)
-					{
-						break;
-					}
-				}
-				SetFloor(Vec3(map.x * c_mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), FLOORNORMAL, num_ - 1);
+				objectData->rotation.z -= 90.0f;
+				objectData->box.maxPosition =
+					XMVectorSet(objectData->position.x + m_wallScale.x / 2, objectData->position.y + m_wallScale.y / 2, objectData->position.z + m_wallScale.z / 2, 1);
+				objectData->box.minPosition =
+					XMVectorSet(objectData->position.x - m_wallScale.x / 2, objectData->position.y - m_wallScale.y / 2, objectData->position.z - m_wallScale.z / 2, 1);
 			}
+			else if (CheckBoxJudge(objectData) == true)
+			{
+				objectData->rotation.z -= 90.0f;
+				objectData->box.maxPosition =
+					XMVectorSet(objectData->position.x + boxScale / 2, objectData->position.y + boxScale / 2, objectData->position.z + boxScale / 2, 1);
+				objectData->box.minPosition =
+					XMVectorSet(objectData->position.x - boxScale / 2, objectData->position.y - boxScale / 2, objectData->position.z - boxScale / 2, 1);
+			}
+			else if (objectData->fileName.compare("GOAL") == 0)
+			{
+				objectData->rotation.z -= 90.0f;
+				objectData->box.maxPosition =
+					XMVectorSet(objectData->position.x + m_goalFish.GetGoalScale().x / 2, objectData->position.y + m_goalFish.GetGoalScale().y / 2, objectData->position.z + m_goalFish.GetGoalScale().z / 2, 1);
+				objectData->box.minPosition =
+					XMVectorSet(objectData->position.x - m_goalFish.GetGoalScale().x / 2, objectData->position.y - m_goalFish.GetGoalScale().y / 2, objectData->position.z - m_goalFish.GetGoalScale().z / 2, 1);
+			}
+			else if (objectData->fileName.compare("FLOORMOVE") == 0)
+			{
+				objectData->actionType = MOVEFRONT;
+			}
+			else if (objectData->fileName.compare("FLOORMOVE2") == 0)
+			{
+				objectData->actionType = MOVEBACK;
+			}
+			stageData.push_back(objectData);
+		}
+		break;
+		default:
 			break;
-			case FLOOR169:
-				SetFloor(Vec3(map.x * c_mapSize, static_cast<float>(MapPos[y][x]) * 20.0f + 0.0f, (MAP_HEIGHT - 1 - y) * c_mapSize + 12.3f),
-					Vec3(c_mapSize, 1.0f, 32.01f * 2), Vec3(141.61f, 0.0f, 0.0f), FLOOR169);
-				break;
-			case FLOOR11:
-				SetFloor(Vec3(map.x * c_mapSize, static_cast<float>(MapPos[y][x]) * 20.0f - 10.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					Vec3(c_mapSize, 1.0f, 32.01f), Vec3(38.39f, 0.0f, 0.0f), FLOOR11);
-				break;
-			case FLOORMOVE:
-				SetMoveFloor(Vec3(map.x * c_mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), FLOORMOVE);
-				break;
-			case FLOORPITFALL_A:
-				SetPitfallFloor(Vec3(map.x * c_mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), 70);
-				break;
-			case FLOORPITFALL_B:
-				SetPitfallFloor(Vec3(map.x * c_mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), 140);
-				break;
-			case FLOORMOVE2:
-				SetMoveFloor(Vec3(map.x * c_mapSize, static_cast<float>(MapPos[y][x]) * 20.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					Vec3(25.0f, 1.0f, 25.0f), Vec3(), FLOORMOVE2);
-				break;
-			default:
-				break;
-			}
-			switch (MapOBJ[y][x])
-			{
-			case NONEOBJ:
-				break;
-			case WALL:
-			case BARRIERWALL:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_wallScale.y / 2 - 20.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_wallScale, Vec3(), MapOBJ[y][x]);
-				break;
-			case GOAL:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20 + 5.0f, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_goalFish.GetGoalScale(), Vec3(), GOAL);
-				break;
-			case BOX:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOX);
-				break;
-			case BOXDOUBLE:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOX);
-				SetObject(Vec3(static_cast<float>(x) * c_mapSize, (static_cast<float>(MapOBJPos[y][x]) + 1.0f) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOX);
-				break;
-			case BOXJUMP:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOXJUMP);
-				break;
-			case BOXHARD:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOXHARD);
-				break;
-			case BOXBOMB:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOXBOMB);
-				break;
-			case BOX_BOMB:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOX);
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x] + 1.0f) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOXBOMB);
-				break;
-			case BOMB_BOX:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOXBOMB);
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x] + 1.0f) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3(), BOX);
-				break;
-			case ELECTRICITY:
-				SetElectricity(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3());
-				break;
-			case FISHATTACK:
-				SetFishAttack(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_blockBox.GetBoxScale(), Vec3());
-				break;
-			case DEADTREE:
-			case STLON:
-			case ICEARCH:
-			case SIGNBOARD1:
-			case SIGNBOARD2:
-				SetObject(Vec3(map.x * c_mapSize, static_cast<float>(MapOBJPos[y][x]) * 20.0f + m_blockBox.GetBoxScale().y / 2, (MAP_HEIGHT - 1 - y) * c_mapSize),
-					m_wallScale, Vec3(), MapOBJ[y][x]);
-				break;
-			default:
-				break;
-			}
 		}
 	}
 }
@@ -491,64 +343,64 @@ void Stage::BreakBoxs()
 		int breakFlag = PushCollision::PlayerBreakBox(m_blockBox.GetObj_Data(), breakNum);
 		if (breakFlag == 1 && Player::Get()->GetOldGroundFlag() == false)
 		{
-			for (int i = 0; i < stageObj.size(); i++)
+			for (int i = 0; i < stageData.size(); i++)
 			{
 				if (breakNum == -1) { break; }
-				if (m_blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOX == stageObj[i]->type)
+				if (m_blockBox.GetObj_Data(breakNum).position == stageData[i]->position &&
+					stageData[i]->fileName.compare("BOX") == 0)
 				{
 					Player::Get()->ActivateBlockStepOn();
 					Player::Get()->ActivateChangeBreak();
-					m_boxStaring.BreakBoxFlag(stageObj[i]->position);
-					m_fishBox.Create(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
+					m_boxStaring.BreakBoxFlag(stageData[i]->position);
+					m_fishBox.Create(stageData[i]->position);
+					delete stageData[i];
+					stageData.erase(stageData.begin() + i);
 					m_blockNum++;
 					Audio::Get()->SoundSEPlayWave(m_boxSE);
 					break;
 				}//ジャンプ台
-				else if (m_blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOXJUMP == stageObj[i]->type)
+				else if (m_blockBox.GetObj_Data(breakNum).position == stageData[i]->position &&
+					stageData[i]->fileName.compare("BOXJUMP") == 0)
 				{
 					Player::Get()->ActivateJumpBox();
 					Player::Get()->ActivateBlockStepOn();
 					Audio::Get()->SoundSEPlayWave(m_jumpSE);
 				}//爆発箱
-				else if (m_blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOXBOMB == stageObj[i]->type)
+				else if (m_blockBox.GetObj_Data(breakNum).position == stageData[i]->position &&
+					stageData[i]->fileName.compare("BOXBOMB") == 0)
 				{
 					Player::Get()->DieType(BOMBDIE);
-					m_boxStaring.BombBoxFlag(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
+					m_boxStaring.BombBoxFlag(stageData[i]->position);
+					delete stageData[i];
+					stageData.erase(stageData.begin() + i);
 					Audio::Get()->SoundSEPlayWave(m_bombSE);
 				}
 			}
 		}
 		else if (breakFlag == 2)
 		{
-			for (int i = 0; i < stageObj.size(); i++)
+			for (int i = 0; i < stageData.size(); i++)
 			{
 				if (breakNum == -1) { break; }
-				if (m_blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOX == stageObj[i]->type)
+				if (m_blockBox.GetObj_Data(breakNum).position == stageData[i]->position &&
+					stageData[i]->fileName.compare("BOX") == 0)
 				{
 					Player::Get()->JumpPoweZero();
 					Player::Get()->ActivateChangeBreak();
-					m_boxStaring.BreakBoxFlag(stageObj[i]->position);
-					m_fishBox.Create(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
+					m_boxStaring.BreakBoxFlag(stageData[i]->position);
+					m_fishBox.Create(stageData[i]->position);
+					delete stageData[i];
+					stageData.erase(stageData.begin() + i);
 					m_blockNum++;
 					Audio::Get()->SoundSEPlayWave(m_boxSE);
 				}
-				else if (m_blockBox.GetObj_Data(breakNum).position == stageObj[i]->position &&
-					BOXBOMB == stageObj[i]->type)
+				else if (m_blockBox.GetObj_Data(breakNum).position == stageData[i]->position &&
+					stageData[i]->fileName.compare("BOXBOMB") == 0)
 				{
 					Player::Get()->DieType(BOMBDIE);
-					m_boxStaring.BombBoxFlag(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
+					m_boxStaring.BombBoxFlag(stageData[i]->position);
+					delete stageData[i];
+					stageData.erase(stageData.begin() + i);
 					Audio::Get()->SoundSEPlayWave(m_bombSE);
 				}
 			}
@@ -557,100 +409,46 @@ void Stage::BreakBoxs()
 	//スピンで壊れる箱の処理
 	if (m_blockBox.GetIs_Spin() == true)
 	{
-		for (int i = 0; i < stageObj.size(); i++)
+		for (int i = 0; i < stageData.size(); i++)
 		{
 			for (int j = 0; j < 5; j++)
 			{
-				if (m_blockBox.GetObj_Spin(j).position == stageObj[i]->position &&
-					BOX == stageObj[i]->type)
+				if (stageData.size() != i)
 				{
-					m_boxStaring.BreakBoxFlag(stageObj[i]->position);
-					m_fishBox.Create(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
-					m_blockNum++;
-					Audio::Get()->SoundSEPlayWave(m_boxSE);
-				}
-				else if (m_blockBox.GetObj_Spin(j).position == stageObj[i]->position &&
-					BOXBOMB == stageObj[i]->type)
-				{
-					//爆発オン
-					Player::Get()->DieType(BOMBDIE);
-					//爆発演出
-					m_boxStaring.BombBoxFlag(stageObj[i]->position);
-					delete stageObj[i];
-					stageObj.erase(stageObj.begin() + i);
-					Audio::Get()->SoundSEPlayWave(m_bombSE);
+					if (m_blockBox.GetObj_Spin(j).position == stageData[i]->position &&
+						stageData[i]->fileName.compare("BOX") == 0)
+					{
+						m_boxStaring.BreakBoxFlag(stageData[i]->position);
+						m_fishBox.Create(stageData[i]->position);
+						delete stageData[i];
+						stageData.erase(stageData.begin() + i);
+						m_blockNum++;
+						Audio::Get()->SoundSEPlayWave(m_boxSE);
+					}
+					else if (m_blockBox.GetObj_Spin(j).position == stageData[i]->position &&
+						stageData[i]->fileName.compare("BOXBOMB") == 0)
+					{
+						//爆発オン
+						Player::Get()->DieType(BOMBDIE);
+						//爆発演出
+						m_boxStaring.BombBoxFlag(stageData[i]->position);
+						delete stageData[i];
+						stageData.erase(stageData.begin() + i);
+						Audio::Get()->SoundSEPlayWave(m_bombSE);
+					}
 				}
 			}
 		}
 	}
 }
 
-void Stage::SetFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, int type, int size)
+bool Stage::CheckBoxJudge(StageData* stageData)
 {
-	floor.push_back(new Floor);
-	size_t Num = floor.size() - 1;
-	floor[Num]->position = position;
-	floor[Num]->position.z -= size * scale.z / 2;
-	floor[Num]->scale = scale;
-	floor[Num]->scale.z += scale.z * size;
-	floor[Num]->angle = angle;
-	floor[Num]->type = type;
-	floor[Num]->size = size;
-}
-
-void Stage::SetObject(const Vec3& position, const Vec3& scale, const Vec3& angle, int type)
-{
-	stageObj.push_back(new StageOBJ);
-	size_t num = stageObj.size() - 1;
-	stageObj[num]->position = position;
-	stageObj[num]->scale = scale;
-	stageObj[num]->angle = angle;
-	stageObj[num]->box.maxPosition = XMVectorSet(
-		position.x + scale.x / 2,
-		position.y + scale.y / 2,
-		position.z + scale.z / 2, 1);
-	stageObj[num]->box.minPosition = XMVectorSet(
-		position.x - scale.x / 2,
-		position.y - scale.y / 2,
-		position.z - scale.z / 2, 1);
-	stageObj[num]->type = type;
-	if (type == BOX) { m_blockMax++; }
-}
-
-void Stage::SetMoveFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, const int type)
-{
-	floor.push_back(new Floor);
-	size_t NUM = floor.size() - 1;
-	floor[NUM]->position = position;
-	floor[NUM]->scale = scale;
-	floor[NUM]->angle = angle;
-	floor[NUM]->type = FLOORMOVE;
-	if (type == FLOORMOVE2) { floor[NUM]->moveFlag = 1; }
-}
-
-void Stage::SetPitfallFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, int time)
-{
-	floor.push_back(new Floor);
-	size_t NUM = floor.size() - 1;
-	floor[NUM]->position = position;
-	floor[NUM]->scale = scale;
-	floor[NUM]->angle = angle;
-	floor[NUM]->time = time;
-	floor[NUM]->type = FLOORPITFALL_A;
-}
-
-void Stage::SetElectricity(const Vec3& position, const Vec3& scale, const Vec3& angle)
-{
-	stageObj.push_back(new StageOBJ);
-	size_t num = stageObj.size() - 1;
-	*stageObj[num] = Electricity::SetElect(position, scale, angle, ELECTRICITY);
-}
-
-void Stage::SetFishAttack(const Vec3& position, const Vec3& scale, const Vec3& angle)
-{
-	stageObj.push_back(new StageOBJ);
-	size_t num = stageObj.size() - 1;
-	*stageObj[num] = DangerFish::SetDangerFish(position, scale, angle, FISHATTACK);
+	if (stageData == nullptr) { assert(0); }
+	if (stageData->fileName.compare("BOX") == 0 ||stageData->fileName.compare("BOXJUMP") == 0 ||
+		stageData->fileName.compare("BOXHARD") == 0 ||stageData->fileName.compare("BOXBOMB") == 0)
+	{
+		return true;
+	}
+	return false;
 }

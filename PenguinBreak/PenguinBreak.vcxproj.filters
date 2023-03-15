@@ -81,9 +81,6 @@
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{6f3fbcb8-b526-4612-b475-74afa45a70d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Stage\Box">
-      <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Stage\Base">
       <UniqueIdentifier>{e1cf664f-505e-45a0-9f07-634338a82202}</UniqueIdentifier>
     </Filter>
@@ -116,6 +113,9 @@
     </Filter>
     <Filter Include="HLSL\OBJ\FBX">
       <UniqueIdentifier>{0e6adcd5-ab8c-48bc-9914-c12b5a7f2a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Base\Box">
+      <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -382,10 +382,10 @@
       <Filter>Library\2d</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\FishBox.h">
-      <Filter>ソース ファイル\Stage\Box</Filter>
+      <Filter>ソース ファイル\Stage\Base\Box</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\BlockBox.h">
-      <Filter>ソース ファイル\Stage\Box</Filter>
+      <Filter>ソース ファイル\Stage\Base\Box</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\StegeObject.h">
       <Filter>ソース ファイル\Stage\Base</Filter>
@@ -427,7 +427,7 @@
       <Filter>ソース ファイル\Stage\Base</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\BoxStaring.h">
-      <Filter>ソース ファイル\Stage\Box</Filter>
+      <Filter>ソース ファイル\Stage\Base\Box</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\FigurineOBJ.h">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
@@ -446,6 +446,9 @@
     </ClInclude>
     <ClInclude Include="App\scene\TitleScene.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadJson.h">
+      <Filter>ソース ファイル\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -567,10 +570,10 @@
       <Filter>Library\2d</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\FishBox.cpp">
-      <Filter>ソース ファイル\Stage\Box</Filter>
+      <Filter>ソース ファイル\Stage\Base\Box</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\BlockBox.cpp">
-      <Filter>ソース ファイル\Stage\Box</Filter>
+      <Filter>ソース ファイル\Stage\Base\Box</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\Stage.cpp">
       <Filter>ソース ファイル\Stage\Base</Filter>
@@ -609,7 +612,7 @@
       <Filter>ソース ファイル\Stage\Base</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\BoxStaring.cpp">
-      <Filter>ソース ファイル\Stage\Box</Filter>
+      <Filter>ソース ファイル\Stage\Base\Box</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\FigurineOBJ.cpp">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
@@ -628,6 +631,9 @@
     </ClCompile>
     <ClCompile Include="App\scene\TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadJson.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

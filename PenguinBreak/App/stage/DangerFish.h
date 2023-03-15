@@ -22,7 +22,7 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="stageObj">ステージデータ</param>
-	void Update(StageOBJ* stageObj);
+	void Update(StageData* stageObj);
 	/// <summary>
 	/// 魚オブジェクト全体の更新
 	/// </summary>
@@ -32,17 +32,7 @@ public:
 	/// </summary>
 	/// <param name="stageObj">ステージデータ</param>
 	/// <param name="shadowFlag">影フラグ</param>
-	void Draw(StageOBJ* stageObj, const bool shadowFlag);
-	/// <summary>
-	/// 魚作成
-	/// </summary>
-	/// <param name="position">位置</param>
-	/// <param name="scale">スケール</param>
-	/// <param name="angle">角度</param>
-	/// <param name="map">ステージ位置</param>
-	/// <param name="type">種類</param>
-	/// <returns></returns>
-	static StageOBJ SetDangerFish(const Vec3 &position, const Vec3& scale, const Vec3 &angle, const int type);
+	void Draw(StageData* stageObj, const bool shadowFlag);
 public:
 	Vec3 GetFishAngle() { return m_rotation; }
 private:

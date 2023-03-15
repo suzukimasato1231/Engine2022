@@ -28,7 +28,7 @@ public:
 	/// </summary>
 	/// <param name="stageObj">ステージデータ</param>
 	/// <param name="shadowFlag">影フラグ</param>
-	void Draw(StageOBJ* stageObj, const bool shadowFlag);
+	void Draw(StageData* stageObj, const bool shadowFlag);
 
 	Vec3 GetGoalScale() { return m_goalScale; }
 private:

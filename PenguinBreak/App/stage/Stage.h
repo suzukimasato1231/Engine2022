@@ -12,6 +12,7 @@
 #include"BoxStaring.h"
 #include"FigurineOBJ.h"
 #include<Audio.h>
+#include"../PenguinBreak/LoadJson.h"
 class Player;
 /// <summary>
 /// ステージクラス
@@ -46,32 +47,20 @@ private:
 	void DrawWater();
 	//壊れる箱の処理
 	void BreakBoxs();
-
-	void SetFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, int type, int size = 0);
-
-	void SetObject(const Vec3& position, const Vec3& scale, const Vec3& angle, int type);
-
-	void SetMoveFloor(const Vec3& position, const Vec3& scale, const Vec3& angle,const int type);
-
-	void SetPitfallFloor(const Vec3& position, const Vec3& scale, const Vec3& angle, int time);
-
-	void SetElectricity(const Vec3& position, const Vec3& scale, const Vec3& angle);
-
-	void SetFishAttack(const Vec3& position, const Vec3& scale, const Vec3& angle);
+	//箱関連か
+	bool CheckBoxJudge(StageData* stageData);
 private:
 	const float c_mapSize = 25.0f;
 	const int c_drawNumY = 35;
 private://床関連
 	//雪の床
 	ObjectData m_floorOBJ;
-	std::vector<Floor*>floor;
 	int m_floorGraph = 0;
 	//動く床
 	MoveFloor m_moveFloor;
 
 	FloorPitfall m_floorPitfall;
 private://罠ブロック
-	std::vector<StageOBJ*>stageObj;
 	//壁OBJ
 	int m_wallGraph = 0;
 	const Vec3 m_wallScale = { 25.0f, 70.0f, 25.0f };
@@ -80,6 +69,7 @@ private://罠ブロック
 	bool m_goalFlag = false;
 	//箱
 	BlockBox m_blockBox;
+	const float boxScale = 20.0f;
 	//電撃の罠
 	Electricity m_elect;
 	//危険魚
@@ -110,4 +100,7 @@ private:
 	SoundData m_goalSE = {};
 	SoundData m_bombSE = {};
 	bool m_goalSEFlag = false;
+
+	std::vector<StageData*>stageData;
+	LevelData* levelData = nullptr;
 };
