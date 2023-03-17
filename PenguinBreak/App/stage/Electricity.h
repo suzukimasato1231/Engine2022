@@ -42,7 +42,7 @@ public:
 	void DrawParicle();
 private:
 	//電気パーティクル
-	void AddElect(Vec3 pos);
+	void AddElect(Vec3 pos, Vec3 scale);
 private:
 	ObjectData m_electOBJ;			//電気柱オブジェクト
 	ObjectData m_electShockOBJ;		//電気オブジェクト

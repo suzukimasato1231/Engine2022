@@ -37,5 +37,5 @@ void MoveFloor::Update(StageData* floorData)
 void MoveFloor::Draw(StageData* floorData, const bool shadowFlag)
 {
 	Object::Draw(m_moveFloorOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y, floorData->position.z),
-		floorData->scale, Vec3(floorData->rotation.x, floorData->rotation.y-90.0f, floorData->rotation.z), Vec2(), 0, shadowFlag);
+		floorData->scale, Vec3(floorData->rotation.x, floorData->rotation.y, floorData->rotation.z), Vec2(), 0, shadowFlag);
 }

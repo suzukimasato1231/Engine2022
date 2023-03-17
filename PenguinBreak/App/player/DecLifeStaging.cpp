@@ -42,7 +42,7 @@ void DecLifeStaging::Draw(bool gameoverFlag, int gameoverNum)
 		Sprite::Get()->Draw(m_gameoverGraph[i], Vec2(210.0f + 140.0f * i, 84.0f + m_charPos[i]),
 			167.0f, 219.0f, Vec2(), Vec4(1.0f, 1.0f, 1.0f, 1.0f) * m_charColor[i]);
 	}
-	if (gameoverNum == RETRY)
+	if (gameoverNum == SELECT)
 	{
 		Sprite::Get()->Draw(m_selectGraph, Vec2(220.0f, 400.0f), c_framSize.x, c_framSize.y);
 		Sprite::Get()->Draw(m_gameoverSelect[0], Vec2(387.0f, 474.0f),
@@ -50,7 +50,7 @@ void DecLifeStaging::Draw(bool gameoverFlag, int gameoverNum)
 		Sprite::Get()->Draw(m_gameoverSelect[1], Vec2(917.0f, 474.0f),
 			c_selectSize.x, c_selectSize.y, Vec2(0.5f, 0.5f));
 	}
-	else if (gameoverNum == SELECT)
+	else if (gameoverNum == RETRY)
 	{
 		Sprite::Get()->Draw(m_selectGraph, Vec2(744.0f, 400.0f), c_framSize.x, c_framSize.y);
 		Sprite::Get()->Draw(m_gameoverSelect[0], Vec2(387.0f, 474.0f),

@@ -114,7 +114,7 @@
     <Filter Include="HLSL\OBJ\FBX">
       <UniqueIdentifier>{0e6adcd5-ab8c-48bc-9914-c12b5a7f2a47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Stage\Base\Box">
+    <Filter Include="ソース ファイル\Stage\Box">
       <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -382,10 +382,10 @@
       <Filter>Library\2d</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\FishBox.h">
-      <Filter>ソース ファイル\Stage\Base\Box</Filter>
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\BlockBox.h">
-      <Filter>ソース ファイル\Stage\Base\Box</Filter>
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\StegeObject.h">
       <Filter>ソース ファイル\Stage\Base</Filter>
@@ -427,7 +427,7 @@
       <Filter>ソース ファイル\Stage\Base</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\BoxStaring.h">
-      <Filter>ソース ファイル\Stage\Base\Box</Filter>
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\FigurineOBJ.h">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>
@@ -570,10 +570,10 @@
       <Filter>Library\2d</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\FishBox.cpp">
-      <Filter>ソース ファイル\Stage\Base\Box</Filter>
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\BlockBox.cpp">
-      <Filter>ソース ファイル\Stage\Base\Box</Filter>
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\Stage.cpp">
       <Filter>ソース ファイル\Stage\Base</Filter>
@@ -612,7 +612,7 @@
       <Filter>ソース ファイル\Stage\Base</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\BoxStaring.cpp">
-      <Filter>ソース ファイル\Stage\Base\Box</Filter>
+      <Filter>ソース ファイル\Stage\Box</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\FigurineOBJ.cpp">
       <Filter>ソース ファイル\Stage\FigurineOBJ</Filter>

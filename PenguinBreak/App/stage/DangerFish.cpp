@@ -27,23 +27,23 @@ void DangerFish::Update(StageData* stageObj)
 	{
 		float t = min(m_start_endTime / c_start_endTimeMax, 1.0f);
 		//‹›”ò‚Ño‚µ
-		stageObj->position = Easing::easeOut(stageObj->position, stageObj->position + m_start_end, t);
+		stageObj->actionPos = Easing::easeOut(stageObj->position, stageObj->position + m_start_end, t);
 	}
 	else if (m_end_endTime < c_end_endTimeMax)
 	{
 		float t = min(m_end_endTime / c_end_endTimeMax, 1.0f);
 		//‹›”ò‚Ño‚µ
-		stageObj->position = Easing::easeIn(stageObj->position + m_start_end, stageObj->position + m_end_end, t);
+		stageObj->actionPos = Easing::easeIn(stageObj->position + m_start_end, stageObj->position + m_end_end, t);
 	}
 
 	stageObj->box.maxPosition = XMVectorSet(
-		stageObj->position.x + c_fishSize.x / 2,
-		stageObj->position.y + c_fishSize.y / 2,
-		stageObj->position.z + c_fishSize.z / 2, 1);
+		stageObj->actionPos.x + c_fishSize.x / 2,
+		stageObj->actionPos.y + c_fishSize.y / 2,
+		stageObj->actionPos.z + c_fishSize.z / 2, 1);
 	stageObj->box.minPosition = XMVectorSet(
-		stageObj->position.x - c_fishSize.x / 2,
-		stageObj->position.y - c_fishSize.y / 2,
-		stageObj->position.z - c_fishSize.z / 2, 1);
+		stageObj->actionPos.x - c_fishSize.x / 2,
+		stageObj->actionPos.y - c_fishSize.y / 2,
+		stageObj->actionPos.z - c_fishSize.z / 2, 1);
 }
 
 void DangerFish::AllUpdate()
@@ -95,7 +95,7 @@ void DangerFish::Draw(StageData* stageObj, const bool shadowFlag)
 		assert(0);
 	}
 #endif
-	Object::Draw(m_dangerFishOBJ, stageObj->psr, stageObj->position, Vec3(2.0f, 2.0f, 2.0f),
+	Object::Draw(m_dangerFishOBJ, stageObj->psr, stageObj->actionPos, stageObj->scale,
 		m_rotation, Vec2(), 0, shadowFlag);
 }
 

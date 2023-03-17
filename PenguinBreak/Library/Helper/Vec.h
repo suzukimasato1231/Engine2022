@@ -60,6 +60,7 @@ const Vec3 operator-(const Vec3 &v1, const Vec3 &v2);
 const Vec3 operator*(const Vec3 &v, float s);
 const Vec3 operator*(float s, const Vec3 &v);
 const Vec3 operator/(const Vec3 &v, float s);
+const Vec3 operator*(const Vec3& v1, const Vec3 &v2);
 /// <summary>
 /// XMFLOAT4�̕⏕
 /// </summary>

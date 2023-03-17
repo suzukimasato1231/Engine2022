@@ -24,8 +24,8 @@ private:
 	//ゲームオーバーセレクト
 	enum GameOverSelect
 	{
-		GameOverSelect = 1,
-		GameOverRetry,
+		GameOverRetry = 1,
+		GameOverSelect,
 	};
 public:
 	/// <summary>

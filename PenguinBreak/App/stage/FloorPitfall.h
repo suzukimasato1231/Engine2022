@@ -1,19 +1,18 @@
 #pragma once
 #include"./StegeObject.h"
 /// <summary>
+	/// 開いているか閉じているか
+	/// </summary>
+enum PitfallOpenClose
+{
+	PITFALLCLOSE,
+	PITFALLOPEN,
+};
+/// <summary>
 /// 回転床
 /// </summary>
 class FloorPitfall
 {
-private:
-	/// <summary>
-	/// 開いているか閉じているか
-	/// </summary>
-	enum PitfallOpenClose
-	{
-		PITFALLCLOSE,
-		PITFALLOPEN,
-	};
 public:
 	/// <summary>
 	/// コンストラクタ

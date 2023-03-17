@@ -28,7 +28,7 @@ void GameSceneManager::Initialize()
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
 	m_BGGraph.texNumber = Texture::Get()->GetShadowTexture();
-	//3Dオブジェクト画像読み込み
+
 	//プレイヤーの初期化
 	Player::Get()->Init();
 	//ステージ
@@ -129,7 +129,7 @@ void GameSceneManager::Update()
 			m_changeScene = true;
 			Audio::Get()->SoundSEPlayWave(m_decisionSE);
 		}
-		if (m_changeNum > GameOverSelect)
+		if (m_changeNum >GameOverSelect)
 		{
 			m_changeNum = GameOverRetry;
 		}

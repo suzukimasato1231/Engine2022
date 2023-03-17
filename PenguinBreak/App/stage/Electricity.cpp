@@ -16,7 +16,7 @@ void Electricity::Init()
 	m_electOBJ = Shape::CreateOBJ("elect", false, "OBJ/");
 	m_electShockOBJ = Shape::CreateOBJ("electShock", false, "OBJ/");
 
-	m_electParicle = std::make_unique<ParticleManager>(); 
+	m_electParicle = std::make_unique<ParticleManager>();
 	m_electParicle->Initialize();
 	m_electParicleGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/elect.png");
 }
@@ -53,7 +53,7 @@ void Electricity::AllUpdate()
 
 void Electricity::Update(StageData* stageObj)
 {
-	if ( m_electFlag == true)
+	if (m_electFlag == true)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
@@ -63,7 +63,7 @@ void Electricity::Update(StageData* stageObj)
 
 	if ((m_electFlag == FALSE && m_electTime < 50) || m_electFlag == true)
 	{
-		AddElect(stageObj->position);
+		AddElect(stageObj->position, stageObj->scale);
 	}
 }
 
@@ -75,14 +75,16 @@ void Electricity::Draw(StageData* stageObj, const bool shadowFlag)
 		assert(0);
 	}
 #endif
-	Object::Draw(m_electOBJ, stageObj->psr, stageObj->position, Vec3(2.0f, 2.0f, 2.0f),
-		Vec3(0.0f, 90.0f, 0.0f), Vec2(), 0, shadowFlag);
+	Object::Draw(m_electOBJ, stageObj->psr, stageObj->position, stageObj->scale,
+		stageObj->rotation, Vec2(), 0, shadowFlag);
 
 	if (m_electFlag == true)
 	{
-		const Vec3 pos = { 11.0f,5.0f,0.0f };
-		Object::DrawUVScroll(m_electShockOBJ, stageObj->psr, stageObj->position + pos, Vec3(1.0f, 2.0f, 5.3f),
-			Vec3(0.0f, 90.0f, 0.0f), m_uvScroll, 0);
+		Vec3 BasicPos = { -5.5f,0.0f,0.0f };
+		BasicPos.x *= stageObj->scale.z;
+		Vec3 BasicScale = { 1.0f,1.0f,2.7f };
+		Object::DrawUVScroll(m_electShockOBJ, stageObj->psr, stageObj->position + BasicPos * stageObj->scale, stageObj->scale * BasicScale,
+			stageObj->rotation, m_uvScroll, 0);
 	}
 }
 
@@ -92,7 +94,7 @@ void Electricity::DrawParicle()
 }
 
 
-void Electricity::AddElect(Vec3 pos)
+void Electricity::AddElect(Vec3 pos, Vec3 scale)
 {
 	static const int particleTime = 5;
 	static const Vec3 velocity = { 0.0f,0.0f,0.0f };
@@ -107,10 +109,12 @@ void Electricity::AddElect(Vec3 pos)
 	if (m_electFlag == true) { addNum = 20; }
 	else { addNum = 5; }
 
+	Vec3 md_pos = { 20.0f ,5.0f,5.0f };
+	md_pos.x *= scale.z;
+
 	for (int i = 0; i < addNum; i++)
 	{
-		//X,Y,Z‘S‚Ä{-5.0f,+5.0f}‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
-		const Vec3 md_pos = { 100.0f ,5.0f,5.0f };
+
 		pos.x += (float)rand() / RAND_MAX * md_pos.x - md_pos.x / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * md_pos.y - md_pos.y / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos.z - md_pos.z / 2.0f;

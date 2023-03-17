@@ -49,6 +49,10 @@ private:
 	void BreakBoxs();
 	//箱関連か
 	bool CheckBoxJudge(StageData* stageData);
+	//置物関連か
+	bool CheckFigurineJudge(StageData* stageData);
+	//ステージ上の調整
+	void SetStageBox(StageData* stageData, const Vec3& scale);
 private:
 	const float c_mapSize = 25.0f;
 	const int c_drawNumY = 35;
@@ -69,7 +73,7 @@ private://罠ブロック
 	bool m_goalFlag = false;
 	//箱
 	BlockBox m_blockBox;
-	const float boxScale = 20.0f;
+	const Vec3 boxScale = { 20.0f ,20.0f,20.0f };
 	//電撃の罠
 	Electricity m_elect;
 	//危険魚

@@ -170,6 +170,15 @@ const Vec3 operator/(const Vec3& v, float s) {
 	return  temp /= s;
 }
 
+const Vec3 operator*(const Vec3& v1, const Vec3& v2)
+{
+	Vec3 temp = {};
+	temp.x = v1.x * v2.x;
+	temp.y = v1.y * v2.y;
+	temp.z = v1.z * v2.z;
+	return temp;
+}
+
 const  Vec3 lerp(const Vec3& start, const Vec3& end, const float t) {
 	return start * (1.0f - t) + end * t;
 }
