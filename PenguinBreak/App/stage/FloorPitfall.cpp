@@ -46,12 +46,12 @@ void FloorPitfall::Draw(StageData* floorData, const bool shadowFlag)
 {
 	if (floorData->actionType == PITFALLCLOSE)
 	{
-		Object::Draw(m_pitfallOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y - 2.5f, floorData->position.z), c_pitfallScale,
+		Object::Draw(m_pitfallOBJ, floorData->psr, Vec3(floorData->position.x, floorData->position.y - 2.5f, floorData->position.z), floorData->scale,
 			floorData->rotation, Vec2(), m_pitfallGraph, shadowFlag);
 	}//•Â‚¶‚Ä‚¢‚é
 	else if (floorData->actionType == PITFALLOPEN)
 	{
-		Object::Draw(m_pitfallOBJ, floorData->psr, floorData->position, c_pitfallScale,
+		Object::Draw(m_pitfallOBJ, floorData->psr, floorData->position, floorData->scale,
 			floorData->rotation, Vec2(), m_pitfallGraph, shadowFlag);
 	}
 }
