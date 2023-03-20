@@ -261,6 +261,7 @@ void Stage::LoadStage(int stageNum)
 			else if (CheckBoxJudge(objectData))
 			{
 				SetStageBox(objectData, boxScale);
+				if (objectData->fileName.compare("BOX") == 0) { m_blockMax++; }
 			}
 			else if (objectData->fileName.compare("GOAL") == 0)
 			{
