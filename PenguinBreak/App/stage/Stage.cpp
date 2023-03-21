@@ -318,11 +318,16 @@ void Stage::DrawWater()
 	{
 		m_waterUV.y = 0.0f;
 	}
+	const Vec3 angle = { 90.0f,0.0f,0.0f };
+	const Vec3 scale = { 1.0f,1.0f,1.0f };
 	for (size_t i = 0; i < 6; i++)
 	{
-		Object::NoShadowDraw(m_water, PSR(),
-			Vec3(50.0f, -70.0f, 500.0f * i), Vec3(1.0f, 1.0f, 1.0f),
-			Vec3(90.0f, 0.0f, 0.0f), m_waterUV, m_waterGraph);
+		for (size_t j = 0; j < 3; j++)
+		{
+			Object::NoShadowDraw(m_water, m_blackPsr[i][j],
+				Vec3(50.0f + 500.0f * j, -70.0f, 500.0f * i), scale,
+				angle, m_waterUV, m_waterGraph);
+		}
 	}
 }
 

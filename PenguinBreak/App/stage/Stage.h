@@ -92,7 +92,7 @@ private:
 	int m_waterGraph = 0;
 	Vec2 m_waterUV = {};
 
-	PSR m_blackPsr[3] = {};
+	PSR m_blackPsr[6][4] = {};
 	//落下地点表示クラス
 	DropPoint m_dropPoint;
 
