@@ -320,7 +320,7 @@ void Stage::DrawWater()
 	}
 	const Vec3 angle = { 90.0f,0.0f,0.0f };
 	const Vec3 scale = { 1.0f,1.0f,1.0f };
-	for (size_t i = 0; i < 6; i++)
+	for (size_t i = 0; i < 5; i++)
 	{
 		for (size_t j = 0; j < 3; j++)
 		{

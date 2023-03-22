@@ -103,18 +103,16 @@ void Electricity::AddElect(Vec3 pos, Vec3 scale)
 	static const float end_scale = 3.0f;
 	static const Vec4 start_color = { 0.5f,0.0f,0.0f,1.0f };
 	static const Vec4 end_color = { 0.8f,0.8f,0.0f,1.0f };
-	static const int onAddNum = 20;
 	static const int offAddNum = 40;
 	int addNum = 0;
-	if (m_electFlag == true) { addNum = 20; }
-	else { addNum = 5; }
+	if (m_electFlag == true) { addNum = 8; }
+	else { addNum = 4; }
 
 	Vec3 md_pos = { 20.0f ,5.0f,5.0f };
 	md_pos.x *= scale.z;
 
 	for (int i = 0; i < addNum; i++)
 	{
-
 		pos.x += (float)rand() / RAND_MAX * md_pos.x - md_pos.x / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * md_pos.y - md_pos.y / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos.z - md_pos.z / 2.0f;
