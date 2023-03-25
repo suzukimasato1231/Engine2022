@@ -84,7 +84,7 @@ void Player::Reset()
 	m_remainLives = c_remainLivesMax;
 	m_fishNum = {};
 	m_gameoverFlag = false;
-	m_dieType = DIENULL;
+	m_dieType = static_cast<int>(DieType::DIENULL);
 	m_clearFlag = false;
 	m_angle = c_firstAngle;	//角度
 	m_decLifeTime = {};
@@ -117,7 +117,7 @@ void Player::SpinAttack()
 {
 	m_spinFlag = false;
 	if (((Input::Get()->KeybordPush(DIK_F) || Input::Get()->ControllerDown(ButtonX))
-		&& m_starStaging == false && m_dieType == DIENULL && m_clearFlag == false && m_spinCoolTime <= 0))
+		&& m_starStaging == false && m_dieType == static_cast<int>(DieType::DIENULL) && m_clearFlag == false && m_spinCoolTime <= 0))
 	{
 		m_pFbx.PlayFBX(FbxSpin);
 		m_spinCoolTime = c_spinCoolTimeMax;
@@ -168,7 +168,7 @@ void Player::AudioUpdate()
 
 bool Player::OutofFallDown(const Vec3& pos)
 {
-	if (pos.y < c_fallPos && m_dieType == DIENULL)
+	if (pos.y < c_fallPos && m_dieType == static_cast<int>(DieType::DIENULL))
 	{
 		return true;
 	}
@@ -179,7 +179,7 @@ bool Player::OutofFallDown(const Vec3& pos)
 //移動
 void Player::Move()
 {
-	if (m_dieType != DIENULL || m_clearFlag == true || m_gameoverFlag == true || m_starStaging == true) { return; }
+	if (m_dieType != static_cast<int>(DieType::DIENULL) || m_clearFlag == true || m_gameoverFlag == true || m_starStaging == true) { return; }
 	//キーボード移動
 	if (Input::Get()->KeybordInputArrow() == true)
 	{
@@ -261,7 +261,7 @@ void Player::Jump()
 {
 	//ジャンプ
 	if (((Input::Get()->KeybordPush(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
-		&& m_groundFlag == true && m_starStaging == false && m_dieType == DIENULL && m_clearFlag == false) || m_blockStepOnFlag)
+		&& m_groundFlag == true && m_starStaging == false && m_dieType == static_cast<int>(DieType::DIENULL) && m_clearFlag == false) || m_blockStepOnFlag)
 	{
 		if (m_jumpBoxFlag)
 		{
@@ -295,34 +295,34 @@ void Player::FallDie()
 		m_dieNowTime = dieTime;
 		m_staging.CreateFallDown(m_position);
 		Audio::Get()->SoundSEPlayWave(m_fallSE);
-		m_dieType = DIENOW;
+		m_dieType = static_cast<int>(DieType::DIENOW);
 	}
-	else if (m_dieType == ELECTDIE)
+	else if (m_dieType == static_cast<int>(DieType::ELECTDIE))
 	{
 		int dieTime = 200;				//死んだときの演出時間
 		m_dieNowTime = dieTime;
 		m_staging.CreateElect(m_position);
-		m_dieType = DIENOW;
+		m_dieType = static_cast<int>(DieType::DIENOW);
 		Audio::Get()->SoundSEPlayWave(m_electSE);
 		m_pFbx.PlayFBX(FbxElectDie);
 	}
-	else if (m_dieType == EATDIE)
+	else if (m_dieType == static_cast<int>(DieType::EATDIE))
 	{
 		const int dieTime = 100;		//死んだときの演出時間
 		m_dieNowTime = dieTime;
-		m_dieType = DIENOW;
+		m_dieType = static_cast<int>(DieType::DIENOW);
 		m_isFishDie = true;
 	}
-	else if (m_dieType == BOMBDIE)
+	else if (m_dieType == static_cast<int>(DieType::BOMBDIE))
 	{
 		const int dieTime = 50;			//死んだときの演出時間
 		m_dieNowTime = dieTime;
-		m_dieType = DIENOW;
+		m_dieType = static_cast<int>(DieType::DIENOW);
 		m_pFbx.PlayFBX(FBXMAX);
 	}
 
 
-	if (m_dieType == DIENOW)
+	if (m_dieType == static_cast<int>(DieType::DIENOW))
 	{
 		if (m_dieNowTime > 0)
 		{
@@ -345,14 +345,14 @@ void Player::FallDie()
 					m_oldPosition = m_position;
 					m_remainLives--;
 					m_isFishDie = false;
-					m_dieType = DIENULL;
+					m_dieType = static_cast<int>(DieType::DIENULL);
 					m_starStaging = true;
 				}
 			}
 			else if (m_remainLives == 0)
 			{
 				m_gameoverFlag = true;
-				m_dieType = DIENULL;
+				m_dieType = static_cast<int>(DieType::DIENULL);
 			}
 		}
 	}
@@ -385,7 +385,7 @@ void Player::RedFishDie()
 	m_position = m_fishDiePos;
 	m_oldPosition = m_position;
 	m_angle.x = m_fishDieAngle.x;
-	if (m_position.y < c_fallPos && m_dieType == DIENOW)
+	if (m_position.y < c_fallPos && m_dieType == static_cast<int>(DieType::DIENOW))
 	{
 		m_isFishDie = false;
 	}

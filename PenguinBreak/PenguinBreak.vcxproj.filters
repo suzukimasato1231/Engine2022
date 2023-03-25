@@ -447,8 +447,8 @@
     <ClInclude Include="App\scene\TitleScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="LoadJson.h">
-      <Filter>ソース ファイル\Stage</Filter>
+    <ClInclude Include="Library\Helper\LoadJson.h">
+      <Filter>Library\Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -632,8 +632,8 @@
     <ClCompile Include="App\scene\TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="LoadJson.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
+    <ClCompile Include="Library\Helper\LoadJson.cpp">
+      <Filter>Library\Helper</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

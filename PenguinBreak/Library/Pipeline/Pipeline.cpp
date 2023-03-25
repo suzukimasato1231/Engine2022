@@ -10,11 +10,7 @@ void Pipeline::CreatePipeline(ID3D12Device* dev)
 {
 	OBJPipeline = OBJCreateGraphicsPipeline(dev, ShaderManager::objShader);
 	NoShadowOBJPipeline = NoShadowOBJCreateGraphicsPipeline(dev, ShaderManager::noShadowOBJShader);
-
-
 	ShadowMapPipeline = ShadowCreateGraphicsPipeline(dev, ShaderManager::ShadowMapShader);
-
-
 	NormalMapPipeline = NormalMapCreatePipeline(dev, ShaderManager::normalMapShader);
 	DepthOfFieldPipeline = DepthOfFieldPipelineCreateGraphicesPipeline(dev, ShaderManager::DepthOfFieldShader);
 }
@@ -32,7 +28,6 @@ bool Pipeline::SetPipeline(int type)
 		return true;
 		break;
 	}
-
 	return false;
 }
 
@@ -93,23 +88,6 @@ Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev,
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
-	/*
-	//加算合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
-
-	//減算合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
-
-
-	//色反転
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
-	blenddesc.DestBlend = D3D12_BLEND_ZERO;
-	*/
 
 	//半透明
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -170,7 +148,6 @@ Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev,
 
 Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader)
 {
-
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 	if (shader.vsBlob == nullptr)
@@ -181,7 +158,6 @@ Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, co
 	{
 		assert(0);
 	}
-
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
@@ -211,8 +187,6 @@ Pipeline::PipelineSet  Pipeline::OBJCreateGraphicsPipeline(ID3D12Device* dev, co
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -303,8 +277,6 @@ Pipeline::PipelineSet Pipeline::ShadowCreateGraphicsPipeline(ID3D12Device* dev, 
 	{
 		assert(0);
 	}
-
-
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{ // xy座標(1行で書いたほうが見やすい)
@@ -333,8 +305,6 @@ Pipeline::PipelineSet Pipeline::ShadowCreateGraphicsPipeline(ID3D12Device* dev, 
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -446,8 +416,7 @@ Pipeline::PipelineSet Pipeline::NoShadowOBJCreateGraphicsPipeline(ID3D12Device* 
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -564,8 +533,7 @@ Pipeline::PipelineSet Pipeline::NormalMapCreatePipeline(ID3D12Device* dev, const
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -601,46 +569,29 @@ Pipeline::PipelineSet Pipeline::NormalMapCreatePipeline(ID3D12Device* dev, const
 	PipelineSet pipelineSet;
 #pragma region//ルートシグネチャの生成
 	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV={};
-	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
-
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV1={};
-	descRangeSRV1.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t0 レジスタ
-
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV2={};
-	descRangeSRV2.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2); // t0 レジスタ
-
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV3={};
-	descRangeSRV3.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3); // t0 レジスタ
-
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV[4] = {};
+	for (int i = 0; i < 4; i++)
+	{
+		descRangeSRV[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i); // t0 レジスタ
+	}
+	
 	// ルートパラメータ
 	CD3DX12_ROOT_PARAMETER rootparams[7] = {};
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV[0], D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV1, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[5].InitAsDescriptorTable(1, &descRangeSRV2, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[6].InitAsDescriptorTable(1, &descRangeSRV3, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV[1], D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[5].InitAsDescriptorTable(1, &descRangeSRV[2], D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[6].InitAsDescriptorTable(1, &descRangeSRV[3], D3D12_SHADER_VISIBILITY_ALL);
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc;
 	samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
-	/*samplerDesc[1] = samplerDesc[0];
-	samplerDesc[1].AddressU = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-	samplerDesc[1].AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-	samplerDesc[1].AddressW = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-
-	samplerDesc[1].ComparisonFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-	samplerDesc[1].Filter = D3D12_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
-	samplerDesc[1].MaxAnisotropy = 1;
-	samplerDesc[1].ShaderRegister = 2;*/
-
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-	/*rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 2, &samplerDesc[1],
-		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);*/
+
 
 	ComPtr<ID3DBlob >rootSigBlob;
 	//バージョン自動判定でのシリアライズ
@@ -707,8 +658,6 @@ Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device* dev
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
@@ -717,20 +666,13 @@ Pipeline::PipelineSet Pipeline::ParticleCreateGraphicsPipeline(ID3D12Device* dev
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
-	////半透明
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
 	//加算合成
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlend = D3D12_BLEND_ONE;
 	blenddesc.DestBlend = D3D12_BLEND_ONE;
 
-	//減算合成
-	/*blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;*/
+
 
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
@@ -823,7 +765,6 @@ Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* d
 			0
 
 		},
-		//座標以外に　色、テクスチャUVなどを渡す場合はさらに続ける
 	};
 #pragma region//パイプラインステート設定変数の宣言と、各種項目の設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
@@ -845,24 +786,6 @@ Pipeline::PipelineSet Pipeline::PostNormalCreateGraphicsPipeline(ID3D12Device* d
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
-	/*
-	//加算合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
-
-	//減算合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
-
-
-	//色反転
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
-	blenddesc.DestBlend = D3D12_BLEND_ZERO;
-	*/
-
 	//半透明
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
@@ -981,23 +904,6 @@ Pipeline::PipelineSet Pipeline::DepthOfFieldPipelineCreateGraphicesPipeline(ID3D
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
-	/*
-	//加算合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
-
-	//減算合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
-
-
-	//色反転
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
-	blenddesc.DestBlend = D3D12_BLEND_ZERO;
-	*/
 
 	//半透明
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;

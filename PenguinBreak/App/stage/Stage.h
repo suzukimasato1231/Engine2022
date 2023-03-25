@@ -1,6 +1,5 @@
 #pragma once
 #include<vector>
-#include <LoadCSV.h>
 #include"FishBox.h"
 #include"BlockBox.h"
 #include"Electricity.h"
@@ -12,7 +11,7 @@
 #include"BoxStaring.h"
 #include"FigurineOBJ.h"
 #include<Audio.h>
-#include"../PenguinBreak/LoadJson.h"
+#include<LoadJson.h>
 class Player;
 /// <summary>
 /// ステージクラス
@@ -53,6 +52,8 @@ private:
 	bool CheckFigurineJudge(StageData* stageData);
 	//ステージ上の調整
 	void SetStageBox(StageData* stageData, const Vec3& scale);
+	//床の当たり判定と足元表示
+	void FloorHitDropPoint(StageData* s, const Vec3& PPos);
 private:
 	const float c_mapSize = 25.0f;
 	const int c_drawNumY = 35;

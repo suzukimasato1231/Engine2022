@@ -9,7 +9,7 @@
 /// <summary>
 /// 死亡タイプ
 /// </summary>
-enum DieType
+enum class DieType
 {
 	DIENULL,
 	FALLDOWN,
@@ -87,7 +87,7 @@ public:
 	/// </summary>
 	void ActivateChangeBreak() { m_changeBreakFlag = true; }
 
-	void DieType(int type) { if (m_dieType != DIENOW) { m_dieType = type; } }
+	void DieType(int type) { if (m_dieType != static_cast<int>(DieType::DIENOW)) { m_dieType = type; } }
 
 	void FishDie(const Vec3& pos, const Vec3& angle) { m_fishDiePos = pos, m_fishDieAngle, angle; }
 	//ゴール時の演出
@@ -213,7 +213,7 @@ private:
 	//プレイヤー演出
 	Staging m_staging;									//演出クラス
 	int m_dieNowTime = 0;									//死亡演出時間
-	int m_dieType = DIENULL;								//死亡タイプ
+	int m_dieType = static_cast<int>(DieType::DIENULL);								//死亡タイプ
 	const int c_walkTimeMax = 5;							//歩くパーティクルを出す時間
 	int m_walkTime = c_walkTimeMax;							//歩くパーティクルを出す時間最大
 

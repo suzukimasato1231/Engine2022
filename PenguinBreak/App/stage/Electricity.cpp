@@ -2,7 +2,6 @@
 #include<Shape.h>
 #include"../player/Player.h"
 #include"Collision.h"
-#include <LoadCSV.h>
 #include<Input.h>
 Electricity::Electricity()
 {}
@@ -57,7 +56,7 @@ void Electricity::Update(StageData* stageObj)
 	{
 		if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 		{
-			Player::Get()->DieType(ELECTDIE);
+			Player::Get()->DieType(static_cast<int>(DieType::ELECTDIE));
 		}
 	}
 

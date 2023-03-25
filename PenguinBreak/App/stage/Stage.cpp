@@ -1,6 +1,5 @@
 #include "Stage.h"
 #include"Shape.h"
-#include <LoadCSV.h>
 #include"PushCollision.h"
 #include<string>
 
@@ -9,7 +8,9 @@ Stage::Stage()
 {}
 
 Stage::~Stage()
-{}
+{
+	stageData.clear();
+}
 
 void Stage::Init()
 {
@@ -66,8 +67,7 @@ void Stage::Update(const Vec3& pPos)
 	m_boxStaring.Update();
 	for (auto& s : stageData)
 	{
-		if (s->fileName.compare("WALL") == 0 || s->fileName.compare("STLON") == 0 || s->fileName.compare("DEADTREE") == 0 || s->fileName.compare("BARRIERWALL") == 0
-			|| s->fileName.compare("SIGNBOARD1") == 0 || s->fileName.compare("SIGNBOARD2") == 0 || CheckBoxJudge(s) == true)
+		if (CheckFigurineJudge(s) || CheckBoxJudge(s) == true)
 		{
 			m_blockBox.PlayerHit(s);
 			m_blockBox.PlayerSpinHit(s);
@@ -99,7 +99,7 @@ void Stage::Update(const Vec3& pPos)
 		{
 			if (Collision::CheckBox2Box(s->box, Player::Get()->GetBox()))
 			{
-				Player::Get()->DieType(EATDIE);
+				Player::Get()->DieType(static_cast<int>(DieType::EATDIE));
 				Player::Get()->FishDie(s->actionPos, m_dangerFish.GetFishAngle());
 			}
 			m_dangerFish.Update(s);
@@ -111,14 +111,7 @@ void Stage::Update(const Vec3& pPos)
 	{
 		if (s->fileName.compare("FLOORNORMAL") == 0)
 		{
-			m_dropPoint.Update(PPos, s->position,
-				s->rotation, s->scale);
-			if (Player::Get()->GetIsFishDie() == false)
-			{
-				//プレイヤー
-				PushCollision::Player2Floor(s->position,
-					s->rotation, s->scale);
-			}
+			FloorHitDropPoint(s, PPos);
 		}
 		else if (s->fileName.compare("FLOORMOVE") == 0 || s->fileName.compare("FLOORMOVE2") == 0)
 		{
@@ -126,24 +119,17 @@ void Stage::Update(const Vec3& pPos)
 			{
 				//プレイヤー
 				PushCollision::Player2Floor(s->position,
-					s->rotation, s->scale, s->actionType);
+					s->rotation, s->scale,s->actionType);
 				m_dropPoint.Update(PPos, s->position,
 					s->rotation, s->scale);
-
 			}
 			m_moveFloor.Update(s);
 		}
 		else if (s->fileName.compare("FLOORPITFALL_A") == 0 || s->fileName.compare("FLOORPITFALL_B") == 0)
 		{
-			if (Player::Get()->GetIsFishDie() == false)
+			if (s->actionType == 0)
 			{
-				if (s->actionType == 0)
-				{
-					PushCollision::Player2Floor(s->position,
-						s->rotation, s->scale);
-					m_dropPoint.Update(PPos, s->position,
-						s->rotation, s->scale);
-				}
+				FloorHitDropPoint(s, PPos);
 			}
 			m_floorPitfall.Update(s);
 		}
@@ -269,11 +255,11 @@ void Stage::LoadStage(int stageNum)
 			}
 			else if (objectData->fileName.compare("FLOORMOVE") == 0)
 			{
-				objectData->actionType = MOVEFRONT;
+				objectData->actionType = static_cast<int>(MoveType::MOVEFRONT);
 			}
 			else if (objectData->fileName.compare("FLOORMOVE2") == 0)
 			{
-				objectData->actionType = MOVEBACK;
+				objectData->actionType = static_cast<int>(MoveType::MOVEBACK);
 			}
 			else if (objectData->fileName.compare("FLOORPITFALL_A") == 0)
 			{
@@ -285,7 +271,7 @@ void Stage::LoadStage(int stageNum)
 			}
 			else if (objectData->fileName.compare("ELECTRICITY") == 0)
 			{
-				Vec3 BasicScale = { 180.0f ,40.0f,20.0f };
+				Vec3 BasicScale = { 180.0f ,40.0f,20.0f };	//基本の大きさ
 				BasicScale.x = 90.0f * objectData->scale.z;
 				Vec3 basicPos = objectData->position;
 				basicPos.x -= objectData->scale.z * 5.5f;
@@ -298,7 +284,7 @@ void Stage::LoadStage(int stageNum)
 			}
 			else if (objectData->fileName.compare("FISHATTACK") == 0)
 			{
-				const Vec3 BasicScale = { 25.0f ,25.0f,25.0f };
+				const Vec3 BasicScale = { 25.0f ,25.0f,25.0f };//基本の大きさ
 				objectData->actionPos = objectData->position;
 				SetStageBox(objectData, BasicScale);
 			}
@@ -365,7 +351,7 @@ void Stage::BreakBoxs()
 				else if (m_blockBox.GetObj_Data(breakNum).position == stageData[i]->position &&
 					stageData[i]->fileName.compare("BOXBOMB") == 0)
 				{
-					Player::Get()->DieType(BOMBDIE);
+					Player::Get()->DieType(static_cast<int>(DieType::BOMBDIE));
 					m_boxStaring.BombBoxFlag(stageData[i]->position);
 					stageData.erase(stageData.begin() + i);
 					Audio::Get()->SoundSEPlayWave(m_bombSE);
@@ -391,7 +377,7 @@ void Stage::BreakBoxs()
 				else if (m_blockBox.GetObj_Data(breakNum).position == stageData[i]->position &&
 					stageData[i]->fileName.compare("BOXBOMB") == 0)
 				{
-					Player::Get()->DieType(BOMBDIE);
+					Player::Get()->DieType(static_cast<int>(DieType::BOMBDIE));
 					m_boxStaring.BombBoxFlag(stageData[i]->position);
 					stageData.erase(stageData.begin() + i);
 					Audio::Get()->SoundSEPlayWave(m_bombSE);
@@ -421,7 +407,7 @@ void Stage::BreakBoxs()
 						stageData[i]->fileName.compare("BOXBOMB") == 0)
 					{
 						//爆発オン
-						Player::Get()->DieType(BOMBDIE);
+						Player::Get()->DieType(static_cast<int>(DieType::BOMBDIE));
 						//爆発演出
 						m_boxStaring.BombBoxFlag(stageData[i]->position);
 						stageData.erase(stageData.begin() + i);
@@ -464,4 +450,17 @@ void Stage::SetStageBox(StageData* stageData, const Vec3& scale)
 		XMVectorSet(stageData->position.x + scale.x / 2, stageData->position.y + scale.y / 2, stageData->position.z + scale.z / 2, 1);
 	stageData->box.minPosition =
 		XMVectorSet(stageData->position.x - scale.x / 2, stageData->position.y - scale.y / 2, stageData->position.z - scale.z / 2, 1);
+}
+
+void Stage::FloorHitDropPoint(StageData* s, const Vec3& PPos)
+{
+	if (s == nullptr) { assert(0); }
+	if (Player::Get()->GetIsFishDie() == true) { return; }
+
+	//プレイヤー
+	PushCollision::Player2Floor(s->position,
+		s->rotation, s->scale);
+	m_dropPoint.Update(PPos, s->position,
+		s->rotation, s->scale);
+
 }

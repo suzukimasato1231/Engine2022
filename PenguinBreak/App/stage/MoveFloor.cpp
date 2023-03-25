@@ -14,12 +14,12 @@ void MoveFloor::Init()
 void MoveFloor::Update(StageData* floorData)
 {
 	floorData->actionTime++;
-	if (floorData->actionType == MOVEBACK)
+	if (floorData->actionType == static_cast<int>(MoveType::MOVEBACK))
 	{
 		floorData->position -= c_speed;
 		if (floorData->actionTime >= c_timeMax)
 		{
-			floorData->actionType = MOVEFRONT;
+			floorData->actionType = static_cast<int>(MoveType::MOVEFRONT);
 			floorData->actionTime = {};
 		}
 	}
@@ -28,7 +28,7 @@ void MoveFloor::Update(StageData* floorData)
 		floorData->position += c_speed;
 		if (floorData->actionTime >= c_timeMax)
 		{
-			floorData->actionType = MOVEBACK;
+			floorData->actionType = static_cast<int>(MoveType::MOVEBACK);
 			floorData->actionTime = {};
 		}
 	}

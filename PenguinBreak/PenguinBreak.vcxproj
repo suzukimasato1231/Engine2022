@@ -336,6 +336,7 @@
     <ClInclude Include="Library\collision\CollisionPrimitive.h" />
     <ClInclude Include="Library\Helper\Easing.h" />
     <ClInclude Include="Library\Helper\LoadCSV.h" />
+    <ClInclude Include="Library\Helper\LoadJson.h" />
     <ClInclude Include="Library\Helper\Vec.h" />
     <ClInclude Include="Library\imgui\imconfig.h" />
     <ClInclude Include="Library\imgui\imgui.h" />
@@ -353,7 +354,6 @@
     <ClInclude Include="Library\Pipeline\Pipeline.h" />
     <ClInclude Include="Library\Pipeline\ShaderManager.h" />
     <ClInclude Include="Library\Texture\Texture.h" />
-    <ClInclude Include="LoadJson.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\player\DecLifeStaging.cpp" />
@@ -399,6 +399,7 @@
     <ClCompile Include="Library\collision\Collision.cpp" />
     <ClCompile Include="Library\Helper\Easing.cpp" />
     <ClCompile Include="Library\Helper\LoadCSV.cpp" />
+    <ClCompile Include="Library\Helper\LoadJson.cpp" />
     <ClCompile Include="Library\Helper\Vec.cpp" />
     <ClCompile Include="Library\imgui\imgui.cpp" />
     <ClCompile Include="Library\imgui\imgui_demo.cpp" />
@@ -415,7 +416,6 @@
     <ClCompile Include="Library\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Library\Pipeline\ShaderManager.cpp" />
     <ClCompile Include="Library\Texture\Texture.cpp" />
-    <ClCompile Include="LoadJson.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,7 +2,7 @@
 #include"./StegeObject.h"
 
 //ëOÇ÷êiÇﬁÇ©å„ÇÎÇ÷êiÇﬁÇ©
-enum MoveUpDown
+enum class MoveType
 {
 	MOVEFRONT,
 	MOVEBACK,

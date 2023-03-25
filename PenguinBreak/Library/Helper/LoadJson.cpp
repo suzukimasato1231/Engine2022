@@ -2,7 +2,6 @@
 #include<fstream>
 #include<cassert>
 #include<json.hpp>
-#include"App/stage/StegeObject.h"
 LevelData* LoadJson::Load(const std::string& fileName)
 {
 	//連結してフルパスを得る
@@ -76,16 +75,6 @@ LevelData* LoadJson::Load(const std::string& fileName)
 			objectData.scaling.y = (float)tranform["scaling"][2];
 			objectData.scaling.z = (float)tranform["scaling"][0];
 		}
-		
-
-
-		//再帰処理
-		if (object.contains("children"))
-		{
-
-		}
 	}
-
-
 	return levelData;
 }

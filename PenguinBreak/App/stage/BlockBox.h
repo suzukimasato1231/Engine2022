@@ -1,7 +1,6 @@
 #pragma once
 #include"StegeObject.h"
 #include"Object.h"
-#include"LoadCSV.h"
 /// <summary>
 /// ” ƒNƒ‰ƒX
 /// </summary>
