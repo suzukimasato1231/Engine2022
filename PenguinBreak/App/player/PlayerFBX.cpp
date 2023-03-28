@@ -84,6 +84,7 @@ void PlayerFBX::Update(const Vec3& fbxPos, const Vec3& angle)
 	//FBXŽŽ‚µ
 	FBXObject3d* updateFbx = nullptr;
 	Vec3 updatePos = fbxPos;
+	updatePos.y -= 2.0f;
 	Vec3 updateAngle = angle;
 	switch (m_fbxType)
 	{

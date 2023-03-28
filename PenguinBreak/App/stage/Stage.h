@@ -32,7 +32,7 @@ public:
 	//更新
 	void Update(const Vec3& pPos);
 	//描画
-	void Draw(const Vec3& pPos, bool shadowFlag = false);
+	void Draw(bool shadowFlag = false);
 	//パーティクル描画
 	void DrawParicle();
 	//ステージ作成

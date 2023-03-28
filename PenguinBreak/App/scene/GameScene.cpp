@@ -146,7 +146,7 @@ void GameSceneManager::Update()
 void GameSceneManager::Draw()
 {
 	//3D
-	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
+	Stage::Get()->Draw(true);
 
 	//プレイヤーの描画
 	Player::Get()->Draw(true);
@@ -158,7 +158,7 @@ void GameSceneManager::Draw()
 
 void GameSceneManager::ShadowDraw()
 {
-	Stage::Get()->Draw(Player::Get()->GetPosition());
+	Stage::Get()->Draw();
 	//プレイヤーの描画
 	Player::Get()->Draw();
 }

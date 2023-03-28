@@ -98,6 +98,10 @@ public:
 	int GetDecLifeFlag() { return m_decLifeTime; }
 
 	void StopAnimation();
+	/// <summary>
+	/// コントローラーの移動
+	/// </summary>
+	void MoveController(const Vec3& speed);
 private:
 	/// <summary>
 	/// プレイヤー移動
@@ -137,31 +141,18 @@ private:
 	bool OutofFallDown(const Vec3& pos);
 public://取得系
 	inline Vec3 GetPosition() { return m_position; }
-
 	inline Vec3 GetOldPosition() { return m_oldPosition; }
-
 	inline Vec3 GetPSize() { return m_pScale; }
-
 	inline Box GetBox() { return m_pBox; }
-
 	inline Vec3 GetVec() { return m_vec; }
-
 	inline float GetJumpPower() { return m_jumpPower; }
-
 	inline bool GetGroundFlag() { return m_groundFlag; }
-
-	inline bool GetOldGroundFlag() { return m_oldGroundFlag; }
-	
+	inline bool GetOldGroundFlag() { return m_oldGroundFlag; }	
 	inline int GetRemanLives() { return m_remainLives; }
-
 	inline int GetFishNum() { return m_fishNum; }
-
 	inline bool GetGameoverFlag() { return m_gameoverFlag; }
-
 	inline bool GetIsFishDie() { return m_isFishDie; }
-
 	inline Box GetSpinBox() { return m_spinAttack; }
-
 	inline bool GetSpinFlag() { return m_spinFlag; }
 private:
 	//ゲームフラグ
@@ -169,51 +160,49 @@ private:
 	bool m_gameoverFlag = false;							//ゲームオーバーかどうか
 	bool m_clearFlag = false;								//クリアしたかどうか
 	//プレイヤーステータス
-	ObjectData m_playerObject;							//プレイヤーオブジェクト
-	PSR m_psr = {};										//プレイヤーの位置座標大きさ保存用
-	Vec3 m_position = { 94.0f,14.0f,80.0f };				//座標
-	const Vec3 c_firstPosition = { 90.0f,25.0f,80.0f };	//初期位置
-	Vec3 m_oldPosition = {};								//1つ前の座標
+	const Vec3 c_firstPosition = { 90.0f,25.0f,80.0f }; 	//初期位置
+	Vec3 m_position =c_firstPosition;				        //座標
+	Vec3 m_oldPosition = c_firstPosition;					//1つ前の座標
 	const Vec3 c_speed = { 2.0f,2.0f,2.0f };				//走るスピード
 	const Vec3 c_walkSpeed = { 1.0f,1.0f,1.0f };			//歩くスピード
-	Vec3 m_angle = { -30.0f,180.0f,0.0f };				//角度
+	Vec3 m_angle = { -30.0f,180.0f,0.0f };				    //角度
 	const Vec3 c_firstAngle = { -30.0f,180.0f,0.0f };		//最初の角度
 	Vec3 m_pScale = { 12.0f,5.0f,12.0f };					//プレイヤーの大きさ
-	Box m_pBox;											//プレイヤーBOX
+	Box m_pBox;											    //プレイヤーBOX
 	Vec3 m_vec = {};
 	bool m_changeBreakFlag = false;
 
-	const int c_remainLivesMax = 3;						//１ステージの残機数
-	int m_remainLives = 3;								//残機
+	const int c_remainLivesMax = 3;						    //１ステージの残機数
+	int m_remainLives = 3;								    //残機
 
 	//ジャンプ
 	const float c_jumpPowerMax = 8.0f;					//ジャンプパワー
-	const float c_jumpBoxPowerMax = 9.0f;					//ジャンプ台のジャンプパワー
+	const float c_jumpBoxPowerMax = 9.0f;				//ジャンプ台のジャンプパワー
 	bool m_jumpBoxFlag = false;							//ジャンプで箱を壊したか
-	float m_jumpPower = 8.0f;								//ジャンプパワー
+	float m_jumpPower = 8.0f;							//ジャンプパワー
 	float m_jumpPowerDelay = 0.2f;						//ジャンプパワー減衰
 	float m_gravity = 5.0f;								//重力
 	bool m_groundFlag = false;							//地面に接しているかどうか
-	bool m_oldGroundFlag = false;							//地面に接していたかどうか
+	bool m_oldGroundFlag = false;						//地面に接していたかどうか
 	bool m_blockStepOnFlag = false;						//ブロックを踏んで壊したかどうか
 
 	//スピンステータス
 	Box m_spinAttack = {};								//スピン箱
-	const float c_spinScale = 10.0f;						//スピンの大きさ
+	const float c_spinScale = 10.0f;					//スピンの大きさ
 	const int c_spinCoolTimeMax = 100;					//スピンのクールタイム最大
 	int m_spinCoolTime = 0;								//スピンのクールタイム
-	bool m_spinFlag = false;								//スピンをしたか
+	bool m_spinFlag = false;							//スピンをしたか
 
 	//魚
-	bool m_fishFlag = false;								//魚を獲得したか								
+	bool m_fishFlag = false;							//魚を獲得したか								
 	int m_fishNum = 0;									//魚獲得数
 	const int c_fishMax = 100;							//最大獲得数
-	const int c_fishPlas = 5;								//一回の獲得数
+	const int c_fishPlas = 5;							//一回の獲得数
 
 	//プレイヤー演出
-	Staging m_staging;									//演出クラス
+	Staging m_staging;						     			//演出クラス
 	int m_dieNowTime = 0;									//死亡演出時間
-	int m_dieType = static_cast<int>(DieType::DIENULL);								//死亡タイプ
+	int m_dieType = static_cast<int>(DieType::DIENULL);		//死亡タイプ
 	const int c_walkTimeMax = 5;							//歩くパーティクルを出す時間
 	int m_walkTime = c_walkTimeMax;							//歩くパーティクルを出す時間最大
 
@@ -223,7 +212,7 @@ private:
 	int m_startTime = 0;
 
 	//死亡時の情報
-	const float c_fallPos = -30.0f;						//落下死の座標
+	const float c_fallPos = -30.0f;						    //落下死の座標
 	//魚死亡時
 	Vec3 m_fishDiePos = {};
 	Vec3 m_fishDieAngle = {};

@@ -61,8 +61,6 @@ void Stage::MainInit(int stageNum)
 
 void Stage::Update(const Vec3& pPos)
 {
-	Vec3 PPos = pPos;
-
 	m_dropPoint.ActiveNo();
 	m_boxStaring.Update();
 	for (auto& s : stageData)
@@ -73,7 +71,7 @@ void Stage::Update(const Vec3& pPos)
 			m_blockBox.PlayerSpinHit(s);
 			if (!(s->fileName.compare("WALL") == 0 || s->fileName.compare("DEADTREE") == 0 || s->fileName.compare("BARRIERWALL") == 0))
 			{
-				m_dropPoint.Update(PPos, s->position,
+				m_dropPoint.Update(pPos, s->position,
 					s->rotation, s->scale);
 			}
 		}
@@ -111,7 +109,7 @@ void Stage::Update(const Vec3& pPos)
 	{
 		if (s->fileName.compare("FLOORNORMAL") == 0)
 		{
-			FloorHitDropPoint(s, PPos);
+			FloorHitDropPoint(s, pPos);
 		}
 		else if (s->fileName.compare("FLOORMOVE") == 0 || s->fileName.compare("FLOORMOVE2") == 0)
 		{
@@ -120,7 +118,7 @@ void Stage::Update(const Vec3& pPos)
 				//プレイヤー
 				PushCollision::Player2Floor(s->position,
 					s->rotation, s->scale,s->actionType);
-				m_dropPoint.Update(PPos, s->position,
+				m_dropPoint.Update(pPos, s->position,
 					s->rotation, s->scale);
 			}
 			m_moveFloor.Update(s);
@@ -129,7 +127,7 @@ void Stage::Update(const Vec3& pPos)
 		{
 			if (s->actionType == 0)
 			{
-				FloorHitDropPoint(s, PPos);
+				FloorHitDropPoint(s, pPos);
 			}
 			m_floorPitfall.Update(s);
 		}
@@ -145,10 +143,8 @@ void Stage::Update(const Vec3& pPos)
 	m_fishBox.Update(pPos);
 }
 
-void Stage::Draw(const Vec3& pPos, bool shadowFlag)
+void Stage::Draw(bool shadowFlag)
 {
-	Vec3 PPos = pPos;
-
 	for (auto& s : stageData)
 	{
 		if (CheckFigurineJudge(s))
@@ -185,7 +181,6 @@ void Stage::Draw(const Vec3& pPos, bool shadowFlag)
 			m_dangerFish.Draw(s, shadowFlag);
 		}
 	}
-
 	DrawWater();
 
 	//箱壊した時に出る魚
@@ -271,8 +266,7 @@ void Stage::LoadStage(int stageNum)
 			}
 			else if (objectData->fileName.compare("ELECTRICITY") == 0)
 			{
-				Vec3 BasicScale = { 180.0f ,40.0f,20.0f };	//基本の大きさ
-				BasicScale.x = 90.0f * objectData->scale.z;
+				const Vec3 BasicScale = { 90.0f * objectData->scale.z ,40.0f,20.0f };	//基本の大きさ
 				Vec3 basicPos = objectData->position;
 				basicPos.x -= objectData->scale.z * 5.5f;
 				objectData->rotation.y -= 90.0f;

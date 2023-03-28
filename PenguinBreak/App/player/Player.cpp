@@ -48,9 +48,8 @@ void Player::Update()
 	Fish();
 
 	RedFishDie();
-
-	Vec3 fbxPos = { m_oldPosition.x, m_oldPosition.y - 2.0f, m_oldPosition.z };
-	m_pFbx.Update(fbxPos, m_angle);
+	
+	m_pFbx.Update(m_oldPosition, m_angle);
 
 	AnimationUpdate();
 }
@@ -110,6 +109,28 @@ void Player::GoalStaging(int fbxType)
 void Player::StopAnimation()
 {
 	m_pFbx.StopAnimation();
+}
+
+void Player::MoveController(const Vec3& speed)
+{
+	const int audioCoolTime = 15;//音を鳴らすまでの時間
+	if (m_groundFlag == true && m_audioTime % audioCoolTime == 0)
+	{
+		Audio::Get()->SoundSEPlayWave(m_walkSE);
+	}
+	float rad = Input::Get()->GetLeftAngle();
+	m_vec.x = speed.x * sinf(-rad);
+	if (m_moveFlag == true)
+	{
+		m_vec.z = speed.z * cosf(rad);;
+	}
+	m_angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
+	if (m_walkTime < 0)
+	{
+		m_staging.CreateWalk(m_position, m_vec);
+		m_walkTime = c_walkTimeMax;
+	}
+	m_walkTime--;
 }
 
 
@@ -207,48 +228,12 @@ void Player::Move()
 	//コントローラー移動
 	if (Input::Get()->ConLeftInput())
 	{
-		const int audioCoolTime = 15;//音を鳴らすまでの時間
-		if (m_groundFlag == true && m_audioTime % audioCoolTime == 0)
-		{
-			Audio::Get()->SoundSEPlayWave(m_walkSE);
-		}
-		float rad = Input::Get()->GetLeftAngle();
-		m_vec.x = c_speed.x * sinf(-rad);
-		if (m_moveFlag == true)
-		{
-			m_vec.z = c_speed.z * cosf(rad);;
-		}
-		m_angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
-		if (m_walkTime < 0)
-		{
-			m_staging.CreateWalk(m_position, m_vec);
-			m_walkTime = c_walkTimeMax;
-		}
-		m_walkTime--;
-
+		MoveController(c_speed);
 		m_pFbx.PlayFBX(FbxWalk);
 	}
 	else if (Input::Get()->ConLeftInputS())
-	{
-		const int audioCoolTime = 15;//音を鳴らすまでの時間
-		if (m_groundFlag == true && m_audioTime % audioCoolTime == 0)
-		{
-			Audio::Get()->SoundSEPlayWave(m_walkSE);
-		}
-		float rad = Input::Get()->GetLeftAngle();
-		m_vec.x = c_walkSpeed.x * sinf(-rad);
-		if (m_moveFlag == true)
-		{
-			m_vec.z = c_walkSpeed.z * cosf(rad);
-		}
-		m_angle.y = XMConvertToDegrees(atan2(sinf(-rad), cosf(rad)));
-		if (m_walkTime < 0)
-		{
-			m_staging.CreateWalk(m_position, m_vec);
-			m_walkTime = c_walkTimeMax;
-		}
-		m_walkTime--;
-
+	{	
+		MoveController(c_walkSpeed);
 		m_pFbx.PlayFBX(FbxWalking);
 	}
 	else
@@ -291,7 +276,7 @@ void Player::FallDie()
 {
 	if (OutofFallDown(m_position))
 	{
-		static const int dieTime = 30;	//死んだときの演出時間
+		const int dieTime = 30;	//死んだときの演出時間
 		m_dieNowTime = dieTime;
 		m_staging.CreateFallDown(m_position);
 		Audio::Get()->SoundSEPlayWave(m_fallSE);
@@ -299,7 +284,7 @@ void Player::FallDie()
 	}
 	else if (m_dieType == static_cast<int>(DieType::ELECTDIE))
 	{
-		int dieTime = 200;				//死んだときの演出時間
+		const int dieTime = 200;				//死んだときの演出時間
 		m_dieNowTime = dieTime;
 		m_staging.CreateElect(m_position);
 		m_dieType = static_cast<int>(DieType::DIENOW);

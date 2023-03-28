@@ -45,37 +45,38 @@ void Staging::Draw3D()
 
 void Staging::CreateElect(const Vec3 pPos)
 {
-	static const int particleTime = 15;
-	static const Vec3 velocity = { 0.0f,0.0f,0.0f };
-	static const Vec3 accel = { 0.0f,0.0f,0.0f };
-	static const float start_scale = 20.0f;
-	static const float end_scale = 5.0f;
-	static const Vec4 start_color = { 0.2f,0.2f,0.1f,0.5f };
-	static const Vec4 end_color = { 0.2f,0.2f,0.1f,1.0f };
+	//電気パーティクル
+	const int c_electTime = 15;                             //パーティクルが出てる時間
+	const Vec3 c_electVel = { 0.0f,0.0f,0.0f };			    //進む速度
+	const Vec3 c_electAccel = { 0.0f,0.0f,0.0f };           //加速度
+	const float c_electStart_scale = 20.0f;
+	const float c_electEnd_scale = 5.0f;
+	const Vec4 c_electStart_color = { 0.2f,0.2f,0.1f,0.5f };
+	const Vec4 c_electEnd_color = { 0.2f,0.2f,0.1f,1.0f };
+	//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
+	const float md_pos = 5.0f;
 	for (int i = 0; i < 5; i++)
 	{
-		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
-		const float md_pos = 5.0f;
 		Vec3 pos = pPos;
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += 5.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		m_electDie->Add(particleTime, pos, velocity, accel, start_scale, end_scale, start_color, end_color);
+		m_electDie->Add(c_electTime, pos, c_electVel, c_electAccel, c_electStart_scale, c_electEnd_scale, c_electStart_color, c_electEnd_color);
 	}
 }
 
 void Staging::CreateWalk(const Vec3& pPos, const Vec3& vec)
 {
-	static const int particleTime = 15;
-	static const Vec3 accel = { 0.0f,0.0f,0.0f };
-	static const float start_scale = 3.0f;
-	static const float end_scale = 0.0f;
-	static const Vec4 start_color = { 0.3f,0.3f,0.3f,0.3f };
-	static const Vec4 end_color = { 0.0f,0.0f,0.0f,0.0f };
+	const int particleTime = 15;
+	const Vec3 accel = { 0.0f,0.0f,0.0f };
+	const float start_scale = 3.0f;
+	const float end_scale = 0.0f;
+	const Vec4 start_color = { 0.3f,0.3f,0.3f,0.3f };
+	const Vec4 end_color = { 0.0f,0.0f,0.0f,0.0f };
+	//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
+	const float md_pos = 1.0f;
 	for (int i = 0; i < 1; i++)
 	{
-		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
-		const float md_pos = 1.0f;
 		Vec3 pos = pPos;
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += 0.0f;
@@ -86,14 +87,12 @@ void Staging::CreateWalk(const Vec3& pPos, const Vec3& vec)
 
 void Staging::CreateFallDown(const Vec3& pPos)
 {
-	static const int particleTime = 35;
-	static const Vec3 Velocity = { 0.0f,5.0f,0.0f };
-	static const Vec3 accel = { 0.0f,-0.2f,0.0f };
-
+	const int particleTime = 35;
+	const Vec3 accel = { 0.0f,-0.2f,0.0f };
 	const float md_pos = 1.0f;
 	Vec3 pos = pPos;
 	const float md_vec = 6.0f;
-	Vec3 velocity = Velocity;
+	Vec3 velocity = { 0.0f,5.0f,0.0f };
 	const Vec3 anglePlas = {};
 	for (int i = 0; i < 5; i++)
 	{
@@ -109,10 +108,10 @@ void Staging::CreateFallDown(const Vec3& pPos)
 
 void Staging::CreateStart(const Vec3& pPos)
 {
-	static const int particleTime = 30;
-	static const Vec3 accel = {};
+	const int particleTime = 30;
+	const Vec3 accel = {};
 	Vec3 m_pos = pPos + Vec3(0.0f, 3.0f, 0.0f);
-	static const Vec3 anglePlas = {};
+	const Vec3 anglePlas = {};
 	for (int i = 0; i < 30; i++)
 	{
 		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布

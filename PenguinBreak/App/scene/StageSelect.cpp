@@ -148,7 +148,7 @@ void StageSelect::Draw()
 {
 	//”wŒi•`‰æ
 	Player::Get()->Draw(true);
-	Stage::Get()->Draw(Player::Get()->GetPosition(), true);
+	Stage::Get()->Draw( true);
 	for (size_t i = 0; i < c_stageNumMax; i++)
 	{
 		Object::NoShadowDraw(m_boxBreakOBJ, m_flamePSR[i], Vec3(50.0f + 50 * i, 50.0f, 150.0f),
@@ -179,7 +179,7 @@ void StageSelect::Draw()
 void StageSelect::DrawShadow()
 {
 	Player::Get()->Draw();
-	Stage::Get()->Draw(Player::Get()->GetPosition());
+	Stage::Get()->Draw();
 }
 
 void StageSelect::SetBreakBoxNum(int breakBox_)
