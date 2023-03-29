@@ -10,7 +10,6 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	FigurineOBJ();
-
 	//デスコンストラクタ
 	~FigurineOBJ();
 	/// <summary>

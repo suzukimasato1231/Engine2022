@@ -4,25 +4,6 @@
 #include"StageSelect.h"
 #include"ResultScene.h"
 #include "ShadowMap.h"
-/// <summary>
-/// シーンタイプ
-/// </summary>
-enum Scene
-{
-	Title,
-	SelectScene,
-	GameScene,
-	Result,
-};
-/// <summary>
-/// シーンチェンジ状況
-/// </summary>
-enum ChangeNumber
-{
-	ChangeStand,
-	ChangeFirst,
-	ChangeEnd,
-};
 
 extern const int window_width;
 extern const int window_height;
@@ -30,6 +11,25 @@ class SceneManagerh :public Singleton<SceneManagerh>
 {
 private:
 	friend Singleton<SceneManagerh>;
+	/// <summary>
+	/// シーンタイプ
+	/// </summary>
+	enum Scene
+	{
+		Title,
+		SelectScene,
+		GameScene,
+		Result,
+	};
+	/// <summary>
+	/// シーンチェンジ状況
+	/// </summary>
+	enum ChangeNumber
+	{
+		ChangeStand,
+		ChangeFirst,
+		ChangeEnd,
+	};
 public:
 	/// <summary>
 	/// コンストラクタ

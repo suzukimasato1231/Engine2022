@@ -82,8 +82,6 @@ void ParticleManager::BreakBoxAdd(const Vec3 &Pos, float Vel, float start_scale,
 		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		//重力に見立ててYのみ{-0.001f,0}でランダム分布
 		Vec3 acc{};
-		//const float md_acc = 0.001f;
-		//acc.y = (float)rand() / RAND_MAX * md_acc;
 		//追加
 		Add(30, pos, vel, acc, start_scale, end_scale, start_color, end_color);
 	}
@@ -132,9 +130,6 @@ void ParticleManager::ParticleAdd2(const Vec3 &Pos, const Vec4 &start_color,cons
 		Vec3 acc{};
 		const float md_acc = 0.001f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
-
-		//	Vec4 start_color = { 1.0f,1.0f,1.0f,1.0f };
-		//	Vec4 end_color = { 1.0f,1.0f,1.0f,1.0f };
 			//追加
 		Add(90, pos, vel, acc, 4.0f, 8.0f, start_color, end_color);
 	}

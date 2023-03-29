@@ -35,27 +35,28 @@ void Particle3D::Update()
 	}
 }
 
-void Particle3D::Draw(const ObjectData& objectData, int graph)
+void Particle3D::Draw()
 {
 	for (auto p : particle)
 	{
 		if (p->graph == 0)
 		{
-			Object::NoShadowDraw(objectData, p->psr,
-				p->position, Vec3(1.0f, 1.0f, 1.0f), p->angle, Vec2(), graph);
+			Object::NoShadowDraw(p->objData, p->psr,
+				p->position, Vec3(1.0f, 1.0f, 1.0f), p->angle, Vec2(), p->graph);
 		}
 		else
 		{
-			Object::NoShadowDraw(objectData, p->psr,
+			Object::NoShadowDraw(p->objData, p->psr,
 				p->position, Vec3(1.0f, 1.0f, 1.0f), p->angle, Vec2(), p->graph);
 		}
 	}
 }
 
-void Particle3D::Create(const Vec3& pos, const Vec3& velocity, const Vec3& accel, const Vec3& anglePlas, const int time, const int graph)
+void Particle3D::Create(const ObjectData& objData, const Vec3& pos, const Vec3& velocity, const Vec3& accel, const Vec3& anglePlas, const int time, const int graph)
 {
 	particle.push_back(new ParticleData);
 	size_t num = particle.size() - 1;
+	particle[num]->objData = objData;
 	particle[num]->position = pos;
 	particle[num]->velocity = velocity;
 	particle[num]->accel = accel;

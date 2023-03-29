@@ -133,7 +133,7 @@ void StageSelect::Update()
 
 
 	//Å‘å” ‚Ì”
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < c_stageNumMax; i++)
 	{
 		m_breakNumMax[i] = c_breakBoxMax[i] % 10;
 		m_breakNumTenMax[i] = c_breakBoxMax[i] / 10;
@@ -148,28 +148,28 @@ void StageSelect::Draw()
 {
 	//”wŒi•`‰æ
 	Player::Get()->Draw(true);
-	Stage::Get()->Draw( true);
+	Stage::Get()->Draw(true);
 	for (size_t i = 0; i < c_stageNumMax; i++)
 	{
 		Object::NoShadowDraw(m_boxBreakOBJ, m_flamePSR[i], Vec3(50.0f + 50 * i, 50.0f, 150.0f),
-			Vec3(1.3f, 1.0f, 1.0f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_boxFramGraph);
+			Vec3(1.3f, 1.0f, 1.0f), c_numberAngle, Vec2(), m_boxFramGraph);
 		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(40.0f + 50 * i, 50.0f, 149.5f),
-			Vec3(0.4f, 0.4f, 0.4f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_boxBreakGraph);
+			Vec3(0.4f, 0.4f, 0.4f), c_numberAngle, Vec2(), m_boxBreakGraph);
 		//”š\‚ÌŒ…
 		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(48.0f + 50 * i, 57.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNumTen[i]]);
+			c_numberScale, c_numberAngle, Vec2(), m_numberGraph[m_breakNumTen[i]]);
 		//”šˆê‚ÌŒ…
 		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(56.0f + 50 * i, 57.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNum[i]]);
+			c_numberScale, c_numberAngle, Vec2(), m_numberGraph[m_breakNum[i]]);
 		//Å‘å”š\‚ÌŒ…
 		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(53.0f + 50 * i, 42.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNumTenMax[i]]);
+			c_numberScale, c_numberAngle, Vec2(), m_numberGraph[m_breakNumTenMax[i]]);
 		//Å‘å”šˆê‚ÌŒ…
 		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(60.0f + 50 * i, 42.0f, 149.5f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[m_breakNumMax[i]]);
+			c_numberScale, c_numberAngle, Vec2(), m_numberGraph[m_breakNumMax[i]]);
 
 		Object::NoShadowDraw(m_boxBreakOBJ, m_boxBreakPSR[i], Vec3(54.0f + 50 * i, 50.0f, 149.0f),
-			Vec3(0.3f, 0.3f, 0.3f), Vec3(0.0f, 0.0f, 0.0f), Vec2(), m_numberGraph[10]);
+			c_numberScale, c_numberAngle, Vec2(), m_numberGraph[10]);
 
 		Object::Draw(m_selectOBJ, m_selectPsr[i], m_selectPos[i],
 			Vec3(c_selectScale, c_selectScale, c_selectScale), Vec3(), Vec2(), m_selectGraph[i], true);

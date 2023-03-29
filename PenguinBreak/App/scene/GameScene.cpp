@@ -21,7 +21,7 @@ void GameSceneManager::Initialize()
 	// 3Dオブエクトにライトをセット
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
-	lightGroup->SetShadowDir(Vec3(1, 1, 0));
+	lightGroup->SetShadowDir(Vec3(0, 1, 0));
 	//音データ読み込み
 
 	//カメラ位置をセット
@@ -87,11 +87,11 @@ void GameSceneManager::Update()
 			m_goalStagingTime--;
 			if (m_goalCameraAngle >= c_goalCamraAngleMax)
 			{
-				m_goalCameraAngle -= 1.0f;
+				m_goalCameraAngle -= c_cameraSpeed;
 			}
 			if (m_goalDistance >= c_goalDistanceMin)
 			{
-				m_goalDistance -= 1.0f;
+				m_goalDistance -= c_cameraSpeed;
 			}
 
 			//カメラ移動始め
@@ -100,7 +100,7 @@ void GameSceneManager::Update()
 			if (m_goalStagingTime == 0)
 			{
 				m_changeScene = true;
-				m_changeNum = ChangeClear;
+				m_changeNum = static_cast<int>(ChangeStatus::ChangeClear);
 			}
 		}
 		//ライト更新

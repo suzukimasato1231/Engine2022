@@ -11,13 +11,10 @@ BoxStaring::~BoxStaring()
 void BoxStaring::Init()
 {
 	m_graph = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
-	m_breakBoxParticle = std::make_unique<ParticleManager >();
-	m_breakBoxParticle->Initialize();
+	particle2D = std::make_unique<ParticleManager >();
+	particle2D->Initialize();
 
-	m_bombParticle = std::make_unique<ParticleManager >();
-	m_bombParticle->Initialize();
-
-	m_break3DParticle = std::make_unique<Particle3D>();
+	particle3D = std::make_unique<Particle3D>();
 	m_boxData = Shape::CreateSquare(2.0f, 2.0f, 1.0f);
 	m_boxGraph = Texture::Get()->LoadTexture(L"Resources/Paricle/boxParticle.png");
 }
@@ -30,20 +27,18 @@ void BoxStaring::Update()
 	CreateBomb();
 
 	//パーティクル更新
-	m_breakBoxParticle->Update();
-	m_bombParticle->Update();
-	m_break3DParticle->Update();
+	particle2D->Update();
+	particle3D->Update();
 }
 
 void BoxStaring::Draw()
 {
-	m_breakBoxParticle->Draw(m_graph);
-	m_bombParticle->Draw(m_graph);
+	particle2D->Draw(m_graph);
 }
 
 void BoxStaring::Draw3D()
 {
-	m_break3DParticle->Draw(m_boxData, m_boxGraph);
+	particle3D->Draw();
 }
 
 void BoxStaring::BreakBoxFlag(const Vec3& breakPos)
@@ -63,7 +58,7 @@ void BoxStaring::CreateBreakBox()
 	//箱が壊れるパーティクル
 	if (m_breakBoxFlag == false) { return; }
 
-	m_breakBoxParticle->BreakBoxAdd(m_breakPos, 0.5f, 5.0f, 5.0f,
+	particle2D->BreakBoxAdd(m_breakPos, 0.5f, 5.0f, 5.0f,
 		Vec4(1.0f, 1.0f, 1.0f, 1.0f), Vec4(0.0f, 0.0f, 0.0f, 0.0f));
 	m_breakBoxFlag = false;
 
@@ -85,7 +80,7 @@ void BoxStaring::CreateBreakBox()
 		velocity.y += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.z += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 
-		m_break3DParticle->Create(pos, velocity, accel, anglePlas, particleTime);
+		particle3D->Create(m_boxData, pos, velocity, accel, anglePlas, particleTime, m_boxGraph);
 	}
 
 }
@@ -97,7 +92,7 @@ void BoxStaring::CreateBomb()
 
 	m_bombTime++;
 
-	m_bombParticle->BombAdd(m_bombPos, 1.8f, 5.0f, 3.0f,
+	particle2D->BombAdd(m_bombPos, 1.8f, 5.0f, 3.0f,
 		Vec4(1.0f, 1.0f, 0.3f, 1.0f), Vec4(0.5f, 0.0f, 0.0f, 1.0f));
 	if (m_bombTime <= c_bombTimeMax)
 	{

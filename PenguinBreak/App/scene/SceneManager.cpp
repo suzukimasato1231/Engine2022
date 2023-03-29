@@ -198,15 +198,15 @@ void SceneManagerh::SceneChange()
 	{
 		if (m_changeSceneFlag == ChangeStand && m_gameScene.GetChangeScene())
 		{
-			if (m_gameScene.GetChangeNum() == 0)
+			if (m_gameScene.GetChangeNum() == static_cast<int>(ChangeStatus::ChangeClear))
 			{
 				m_sceneMe = Result;
 			}
-			else if (m_gameScene.GetChangeNum() == 1)
+			else if (m_gameScene.GetChangeNum() == static_cast<int>(ChangeStatus::ChangeRetry))
 			{
 				m_sceneMe = GameScene;
 			}
-			else if (m_gameScene.GetChangeNum() == 2)
+			else if (m_gameScene.GetChangeNum() == static_cast<int>(ChangeStatus::ChangeSelect))
 			{
 				m_sceneMe = SelectScene;
 			}
@@ -217,12 +217,12 @@ void SceneManagerh::SceneChange()
 	{
 		if (m_changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
 		{
-			if (m_resultScene.GetScene() == ResultNextStage && m_stageScene.GetStageNum() != 3)
+			if (m_resultScene.GetScene() == static_cast<int>(ResultNext::ResultNextStage) && m_stageScene.GetStageNum() != 3)
 			{
 				m_sceneMe = GameScene;
 				m_stageScene.SetBreakBoxNum(Stage::Get()->GetBlockNum());
 			}
-			if (m_resultScene.GetScene() == ResultSelect || m_stageScene.GetStageNum() == 3)
+			if (m_resultScene.GetScene() == static_cast<int>(ResultNext::ResultSelect) || m_stageScene.GetStageNum() == 3)
 			{
 				m_sceneMe = SelectScene;
 				m_stageScene.SetBreakBoxNum(Stage::Get()->GetBlockNum());

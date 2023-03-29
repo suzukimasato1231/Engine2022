@@ -423,9 +423,6 @@
     <ClInclude Include="App\player\DecLifeStaging.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="App\stage\DropPoint.h">
-      <Filter>ソース ファイル\Stage\Base</Filter>
-    </ClInclude>
     <ClInclude Include="App\stage\BoxStaring.h">
       <Filter>ソース ファイル\Stage\Box</Filter>
     </ClInclude>
@@ -607,9 +604,6 @@
     </ClCompile>
     <ClCompile Include="App\player\DecLifeStaging.cpp">
       <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="App\stage\DropPoint.cpp">
-      <Filter>ソース ファイル\Stage\Base</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\BoxStaring.cpp">
       <Filter>ソース ファイル\Stage\Box</Filter>

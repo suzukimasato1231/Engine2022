@@ -14,7 +14,6 @@ void BlockBox::Init()
 
 void BlockBox::PlayerHit(StageData* stageObj)
 {
-
 	if (Collision::CheckBox2Box(stageObj->box, Player::Get()->GetBox()))
 	{
 		if (m_box_count >= hitMax) { return; }
@@ -22,7 +21,6 @@ void BlockBox::PlayerHit(StageData* stageObj)
 		m_box_count++;
 		m_is_hit = true;
 	}
-
 }
 
 void BlockBox::PlayerSpinHit(StageData* stageObj)

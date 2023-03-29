@@ -39,7 +39,7 @@ void ResultScene::Initialize()
 	m_penginHandFbx = std::make_unique<FBXObject3d>();
 	m_penginHandFbx->Initialize();
 	m_penginHandFbx->SetModel(m_penginModel.get());
-	m_penginHandFbx->SetScale(Vec3(0.015f, 0.015f, 0.015f));
+	m_penginHandFbx->SetScale(fbxScale);
 
 	m_fishObj = Shape::CreateOBJ("fish", false, "OBJ/");
 	m_floorObj = Shape::CreateOBJ("ice", false, "OBJ/");
@@ -61,19 +61,18 @@ void ResultScene::Init()
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 	m_penginHandFbx->PlayAnimation(true);
-
 }
 
 void ResultScene::Update()
 {
 	//順番にリザルトが出るように
-	if (m_resultTime <= 500)
+	if (m_resultTime <= c_resultTimeMax)
 	{
 		m_resultTime++;
 	}
 	//ボタンの点滅
 	m_buttonTime++;
-	if (m_buttonTime >= 60)
+	if (m_buttonTime >= c_buttonMax)
 	{
 		m_buttonTime = 0;
 	}
@@ -81,20 +80,20 @@ void ResultScene::Update()
 	//次のシーン
 	if (Input::Get()->ControllerDown(LButtonLeft) || Input::Get()->ControllerDown(LButtonRight))
 	{
-		if (m_nextScene == ResultNextStage)
+		if (m_nextScene == static_cast<int>(ResultNext::ResultNextStage))
 		{
-			m_nextScene = ResultSelect;
+			m_nextScene = static_cast<int>(ResultNext::ResultSelect);
 		}
 		else
 		{
-			m_nextScene = ResultNextStage;
+			m_nextScene = static_cast<int>(ResultNext::ResultNextStage);
 		}
 		Audio::Get()->SoundSEPlayWave(m_selectSE);
 	}
 	//選択した方の大きさを変える
 	if (m_nextScaleFlag == false)
 	{
-		m_nextScale += 0.02f;
+		m_nextScale += c_selectScaleSpeed;
 		if (m_nextScale >= c_nextScaleMax)
 		{
 			m_nextScaleFlag = true;
@@ -102,7 +101,7 @@ void ResultScene::Update()
 	}
 	else
 	{
-		m_nextScale -= 0.02f;
+		m_nextScale -= c_selectScaleSpeed;
 		if (m_nextScale <= c_nextScaleMin)
 		{
 			m_nextScaleFlag = false;
@@ -114,7 +113,6 @@ void ResultScene::Update()
 
 void ResultScene::Draw(const int stageNum)
 {
-
 	m_penginHandFbx->Draw(true);
 
 	Object::Draw(m_floorObj, m_objectPsr, Vec3(0.0f, -5.0f, 0.0f),
@@ -122,12 +120,12 @@ void ResultScene::Draw(const int stageNum)
 	Object::Draw(m_floorObj, m_objectPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),
 		Vec3(), Vec2(), m_floorObj.OBJTexture, true);
 
-	if (m_resultTime >= 30)
+	if (m_resultTime >= c_clearTimeMax)
 	{
 		Sprite::Get()->Draw(m_clearGraph, Vec2(), static_cast<float>(window_width), static_cast<float>(window_height));
 	}
 	//UI
-	if (m_resultTime >= 60)
+	if (m_resultTime >= c_numberTime)
 	{
 		//箱
 		Sprite::Get()->Draw(m_boxGraph, Vec2(300.0f, 200.0f), 150.0f, 150.0f);
@@ -135,36 +133,44 @@ void ResultScene::Draw(const int stageNum)
 		int Breaknumber = Stage::Get()->GetBlockNum() % 10, Breakremain = Stage::Get()->GetBlockNum() / 10;
 		if (Breakremain >= 1)
 		{
-			Sprite::Get()->Draw(m_uiNumber[Breakremain], Vec2(450.0f, 200.0f), 128.0f, 128.0f);
+			Sprite::Get()->Draw(m_uiNumber[Breakremain], Vec2(450.0f, 200.0f), numberScale, numberScale);
 		}
-		Sprite::Get()->Draw(m_uiNumber[Breaknumber], Vec2(550.0f, 200.0f), 128.0f, 128.0f);
+		Sprite::Get()->Draw(m_uiNumber[Breaknumber], Vec2(550.0f, 200.0f), numberScale, numberScale);
 
 		Sprite::Get()->Draw(m_uiSlash, Vec2(650.0f, 200.0f), 128.0f, 128.0f);
 		//最大箱の数
 		Breaknumber = Stage::Get()->GetBlockMax() % 10, Breakremain = Stage::Get()->GetBlockMax() / 10;
 		if (Breakremain >= 1)
 		{
-			Sprite::Get()->Draw(m_uiNumber[Breakremain], Vec2(750.0f, 200.0f), 128.0f, 128.0f);
+			Sprite::Get()->Draw(m_uiNumber[Breakremain], Vec2(750.0f, 200.0f), numberScale, numberScale);
 		}
-		Sprite::Get()->Draw(m_uiNumber[Breaknumber], Vec2(850.0f, 200.0f), 128.0f, 128.0f);
+		Sprite::Get()->Draw(m_uiNumber[Breaknumber], Vec2(850.0f, 200.0f), numberScale, numberScale);
 	}
 
 	//セレクト
-	if (stageNum == 3)
+	const Vec2 anchorpoint = { 0.5f,0.5f };      //アンカーポイント
+	const float basicPosY = 450.0f;              //数字のY軸の基本値
+	const float basicPosX[2] = { 385.0f,987.0f };//数字X軸の基本値
+	if (stageNum == stageMax)
 	{
-		Sprite::Get()->Draw(m_selectGraph, Vec2(520.0f + 334.0f / 2, 450.0f + 128.0f / 2), 334.0f * m_nextScale, 128.0f * m_nextScale, Vec2(0.5f, 0.5f));
+		Sprite::Get()->Draw(m_selectGraph, Vec2(687.0f, basicPosY + numberScale / 2),
+			334.0f * m_nextScale, numberScale * m_nextScale, anchorpoint);
 	}
 	else
 	{
-		if (m_nextScene == ResultSelect)
+		if (m_nextScene == static_cast<int>(ResultNext::ResultSelect))
 		{
-			Sprite::Get()->Draw(m_nextGraph, Vec2(120.0f + 533.0f / 2, 450.0f + 128.0f / 2), 533.0f, 128.0f, Vec2(0.5f, 0.5f));
-			Sprite::Get()->Draw(m_selectGraph, Vec2(820.0f + 334.0f / 2, 450.0f + 128.0f / 2), 334.0f * m_nextScale, 128.0f * m_nextScale, Vec2(0.5f, 0.5f));
+			Sprite::Get()->Draw(m_nextGraph, Vec2(basicPosX[0], basicPosY + numberScale / 2),
+				533.0f, numberScale, anchorpoint);
+			Sprite::Get()->Draw(m_selectGraph, Vec2(basicPosX[1], basicPosY + numberScale / 2),
+				334.0f * m_nextScale, numberScale * m_nextScale, anchorpoint);
 		}
 		else
 		{
-			Sprite::Get()->Draw(m_nextGraph, Vec2(120.0f + 533.0f / 2, 450.0f + 128.0f / 2), 533.0f * m_nextScale, 128.0f * m_nextScale, Vec2(0.5f, 0.5f));
-			Sprite::Get()->Draw(m_selectGraph, Vec2(820.0f + 334.0f / 2, 450.0f + 128.0f / 2), 334.0f, 128.0f, Vec2(0.5f, 0.5f));
+			Sprite::Get()->Draw(m_nextGraph, Vec2(basicPosX[0], basicPosY + numberScale / 2),
+				533.0f * m_nextScale, numberScale * m_nextScale, anchorpoint);
+			Sprite::Get()->Draw(m_selectGraph, Vec2(basicPosX[1], basicPosY + numberScale / 2),
+				334.0f, numberScale, anchorpoint);
 		}
 	}
 	if (m_resultTime >= 90 && m_buttonTime >= 30)
@@ -182,6 +188,6 @@ void ResultScene::ShadowDraw()
 
 	Object::Draw(m_floorObj, m_objectPsr, Vec3(0.0f, -5.0f, 0.0f),
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3());
-	Object::Draw(m_floorObj, m_objectPsr, Vec3(0.0f, 5.0f, 20.0f), Vec3(100.0f, 20.0f, 10.0f),
-		Vec3(), Vec2(), m_floorObj.OBJTexture);
+	Object::Draw(m_floorObj, m_objectPsr, Vec3(0.0f, 5.0f, 20.0f),
+		Vec3(100.0f, 20.0f, 10.0f), Vec3(), Vec2(), m_floorObj.OBJTexture);
 }

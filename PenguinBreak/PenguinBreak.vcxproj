@@ -296,7 +296,6 @@
     <ClInclude Include="App\scene\TitleScene.h" />
     <ClInclude Include="App\stage\BlockBox.h" />
     <ClInclude Include="App\stage\DangerFish.h" />
-    <ClInclude Include="App\stage\DropPoint.h" />
     <ClInclude Include="App\stage\Electricity.h" />
     <ClInclude Include="App\stage\FigurineOBJ.h" />
     <ClInclude Include="App\stage\FishBox.h" />
@@ -367,7 +366,6 @@
     <ClCompile Include="App\scene\TitleScene.cpp" />
     <ClCompile Include="App\stage\BlockBox.cpp" />
     <ClCompile Include="App\stage\DangerFish.cpp" />
-    <ClCompile Include="App\stage\DropPoint.cpp" />
     <ClCompile Include="App\stage\Electricity.cpp" />
     <ClCompile Include="App\stage\FigurineOBJ.cpp" />
     <ClCompile Include="App\stage\FishBox.cpp" />

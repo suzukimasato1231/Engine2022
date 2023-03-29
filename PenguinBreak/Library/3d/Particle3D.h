@@ -6,6 +6,7 @@ class Particle3D
 private:
 	struct ParticleData
 	{
+		ObjectData objData = {};
 		PSR psr = {};
 		Vec3 position = {};
 		Vec3 velocity = {};
@@ -26,9 +27,10 @@ public:
 	//çXêV
 	void Update();
 	//ï`âÊ
-	void Draw(const ObjectData& objectData, int graph = 0);
+	void Draw();
 	//çÏê¨
-	void Create(const Vec3& pos, const  Vec3& velocity,  const  Vec3& accel, const Vec3& anglePlas, const  int time, const int graph = 0);
+	void Create(const ObjectData& objData, const Vec3& pos, const  Vec3& velocity,
+		const  Vec3& accel, const Vec3& anglePlas, const  int time, const int graph = 0);
 
 	static Particle3D* Create();
 private:

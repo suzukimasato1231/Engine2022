@@ -8,12 +8,10 @@ Staging::~Staging()
 
 void Staging::Init()
 {
-	m_electDie = std::make_unique<ParticleManager>();
-	m_electDie->Initialize();
-	m_walk = std::make_unique<ParticleManager>();
-	m_walk->Initialize();
-	m_fallParicle = std::make_unique <Particle3D>();
-	m_startParicle = std::make_unique <Particle3D>();
+	particle = std::make_unique<ParticleManager>();
+	particle->Initialize();
+	
+	paricle3D = std::make_unique <Particle3D>();
 
 	m_fallDown = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
 	m_startObject = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
@@ -25,22 +23,19 @@ void Staging::Init()
 
 void Staging::Update()
 {
-	m_electDie->Update();
-	m_walk->Update();
-	m_fallParicle->Update();
-	m_startParicle->Update();
+	particle->Update();
+	
+	paricle3D->Update();
 }
 
 void Staging::Draw()
 {
-	m_electDie->Draw(m_graph);
-	m_walk->Draw(m_graph);
+	particle->Draw(m_graph);
 }
 
 void Staging::Draw3D()
 {
-	m_fallParicle->Draw(m_fallDown);
-	m_startParicle->Draw(m_startObject);
+	paricle3D->Draw();
 }
 
 void Staging::CreateElect(const Vec3 pPos)
@@ -61,7 +56,7 @@ void Staging::CreateElect(const Vec3 pPos)
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += 5.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		m_electDie->Add(c_electTime, pos, c_electVel, c_electAccel, c_electStart_scale, c_electEnd_scale, c_electStart_color, c_electEnd_color);
+		particle->Add(c_electTime, pos, c_electVel, c_electAccel, c_electStart_scale, c_electEnd_scale, c_electStart_color, c_electEnd_color);
 	}
 }
 
@@ -81,7 +76,7 @@ void Staging::CreateWalk(const Vec3& pPos, const Vec3& vec)
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += 0.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		m_walk->Add(particleTime, pos, -vec, accel, start_scale, end_scale, start_color, end_color);
+		particle->Add(particleTime, pos, -vec, accel, start_scale, end_scale, start_color, end_color);
 	}
 }
 
@@ -102,7 +97,7 @@ void Staging::CreateFallDown(const Vec3& pPos)
 		velocity.x += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.y += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.z += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
-		m_fallParicle->Create(pos, velocity, accel,anglePlas, particleTime);
+		paricle3D->Create(m_fallDown,pos, velocity, accel,anglePlas, particleTime);
 	}
 }
 
@@ -131,6 +126,6 @@ void Staging::CreateStart(const Vec3& pPos)
 		if (graph_num == 0) { graph_num = m_start_color[0]; }
 		else if (graph_num == 1) { graph_num = m_start_color[1]; }
 		else { graph_num = m_start_color[2]; }
-		m_startParicle->Create(pos, velocity, accel,anglePlas, particleTime, graph_num);
+		paricle3D->Create(m_startObject,pos, velocity, accel,anglePlas, particleTime, graph_num);
 	}
 }

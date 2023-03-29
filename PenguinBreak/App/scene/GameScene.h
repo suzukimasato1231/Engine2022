@@ -9,7 +9,7 @@
 #include<memory>
 extern const int window_width;
 extern const int window_height;
-enum ChangeStatus
+enum class ChangeStatus
 {
 	ChangeClear,
 	ChangeRetry,
@@ -75,7 +75,6 @@ private://定義
 
 	//スプライトデータ
 	SpriteData  m_BGGraph;
-
 	Vec2  m_pos = { 0.0f,0.0f };
 
 	//シーンが変わるかどうか
@@ -92,6 +91,7 @@ private://定義
 	const float c_cameraAngle = 37.5f;
 	const float c_goalCamraAngleMax = 25.0f;
 	float  m_goalCameraAngle = 0.0f;
+	const float c_cameraSpeed = 1.0f;       //カメラの変わるスピード
 	//カメラ距離
 	const float c_goalDistanceMax = 100.0f;
 	const float c_goalDistanceMin = 50.0f;

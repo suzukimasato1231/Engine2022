@@ -31,8 +31,6 @@ void Stage::Init()
 	m_elect.Init();
 	//危険魚を初期化
 	m_dangerFish.Init();
-	//落下地点
-	m_dropPoint.Init();
 
 	m_figurineOBJ.Init();
 
@@ -61,7 +59,6 @@ void Stage::MainInit(int stageNum)
 
 void Stage::Update(const Vec3& pPos)
 {
-	m_dropPoint.ActiveNo();
 	m_boxStaring.Update();
 	for (auto& s : stageData)
 	{
@@ -69,11 +66,6 @@ void Stage::Update(const Vec3& pPos)
 		{
 			m_blockBox.PlayerHit(s);
 			m_blockBox.PlayerSpinHit(s);
-			if (!(s->fileName.compare("WALL") == 0 || s->fileName.compare("DEADTREE") == 0 || s->fileName.compare("BARRIERWALL") == 0))
-			{
-				m_dropPoint.Update(pPos, s->position,
-					s->rotation, s->scale);
-			}
 		}
 		else if (s->fileName.compare("GOAL") == 0)
 		{
@@ -117,9 +109,7 @@ void Stage::Update(const Vec3& pPos)
 			{
 				//プレイヤー
 				PushCollision::Player2Floor(s->position,
-					s->rotation, s->scale,s->actionType);
-				m_dropPoint.Update(pPos, s->position,
-					s->rotation, s->scale);
+					s->rotation, s->scale, s->actionType);
 			}
 			m_moveFloor.Update(s);
 		}
@@ -185,8 +175,6 @@ void Stage::Draw(bool shadowFlag)
 
 	//箱壊した時に出る魚
 	m_fishBox.Draw();
-
-	m_dropPoint.Draw(Player::Get()->GetPosition());
 
 	m_boxStaring.Draw3D();
 }
@@ -413,18 +401,17 @@ void Stage::BreakBoxs()
 	}
 }
 
-bool Stage::CheckBoxJudge(StageData* stageData)
+bool Stage::CheckBoxJudge(const StageData* stageData)
 {
 	if (stageData == nullptr) { assert(0); }
-	if (stageData->fileName.compare("BOX") == 0 || stageData->fileName.compare("BOXJUMP") == 0 ||
-		stageData->fileName.compare("BOXHARD") == 0 || stageData->fileName.compare("BOXBOMB") == 0)
+	if (stageData->fileName.compare("BOX") == 0 || stageData->fileName.compare("BOXJUMP") == 0 || stageData->fileName.compare("BOXHARD") == 0 || stageData->fileName.compare("BOXBOMB") == 0)
 	{
 		return true;
 	}
 	return false;
 }
 
-bool Stage::CheckFigurineJudge(StageData* stageData)
+bool Stage::CheckFigurineJudge(const StageData* stageData)
 {
 	if (stageData == nullptr) { assert(0); }
 	if (stageData->fileName.compare("WALL") == 0 || stageData->fileName.compare("STLON") == 0
@@ -446,15 +433,14 @@ void Stage::SetStageBox(StageData* stageData, const Vec3& scale)
 		XMVectorSet(stageData->position.x - scale.x / 2, stageData->position.y - scale.y / 2, stageData->position.z - scale.z / 2, 1);
 }
 
-void Stage::FloorHitDropPoint(StageData* s, const Vec3& PPos)
+void Stage::FloorHitDropPoint(const StageData* s, const Vec3& PPos)
 {
-	if (s == nullptr) { assert(0); }
+	if (s == nullptr) {}
+	assert(0);
 	if (Player::Get()->GetIsFishDie() == true) { return; }
 
 	//プレイヤー
 	PushCollision::Player2Floor(s->position,
-		s->rotation, s->scale);
-	m_dropPoint.Update(PPos, s->position,
 		s->rotation, s->scale);
 
 }

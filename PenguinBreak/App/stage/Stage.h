@@ -6,7 +6,6 @@
 #include"DangerFish.h"
 #include"MoveFloor.h"
 #include"FloorPitfall.h"
-#include"DropPoint.h"
 #include"GoalFish.h"
 #include"BoxStaring.h"
 #include"FigurineOBJ.h"
@@ -47,13 +46,13 @@ private:
 	//壊れる箱の処理
 	void BreakBoxs();
 	//箱関連か
-	bool CheckBoxJudge(StageData* stageData);
+	bool CheckBoxJudge(const StageData* stageData);
 	//置物関連か
-	bool CheckFigurineJudge(StageData* stageData);
+	bool CheckFigurineJudge(const StageData* stageData);
 	//ステージ上の調整
 	void SetStageBox(StageData* stageData, const Vec3& scale);
 	//床の当たり判定と足元表示
-	void FloorHitDropPoint(StageData* s, const Vec3& PPos);
+	void FloorHitDropPoint(const StageData* s, const Vec3& PPos);
 private:
 	const float c_mapSize = 25.0f;
 	const int c_drawNumY = 35;
@@ -94,8 +93,6 @@ private:
 	Vec2 m_waterUV = {};
 
 	PSR m_blackPsr[6][4] = {};
-	//落下地点表示クラス
-	DropPoint m_dropPoint;
 
 	BoxStaring m_boxStaring;
 
