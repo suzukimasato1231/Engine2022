@@ -117,6 +117,9 @@
     <Filter Include="ソース ファイル\Stage\Box">
       <UniqueIdentifier>{fbfb8927-e445-4735-bac7-2a0e821b7e79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Stage\CameraControl">
+      <UniqueIdentifier>{6cbc2531-a9f4-4342-a7a0-483e408fc536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -300,10 +303,10 @@
     <ClInclude Include="Library\Helper\Vec.h">
       <Filter>Library\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="Library\base\_DirectX.h">
+    <ClInclude Include="Library\base\DirectXBase.h">
       <Filter>Library\DirectXCommon</Filter>
     </ClInclude>
-    <ClInclude Include="Library\base\_Window.h">
+    <ClInclude Include="Library\base\Window.h">
       <Filter>Library\DirectXCommon</Filter>
     </ClInclude>
     <ClInclude Include="Library\base\Fps.h">
@@ -506,10 +509,10 @@
     <ClCompile Include="Library\Helper\Vec.cpp">
       <Filter>Library\Helper</Filter>
     </ClCompile>
-    <ClCompile Include="Library\base\_DirectX.cpp">
+    <ClCompile Include="Library\base\DirectXBase.cpp">
       <Filter>Library\DirectXCommon</Filter>
     </ClCompile>
-    <ClCompile Include="Library\base\_Window.cpp">
+    <ClCompile Include="Library\base\Window.cpp">
       <Filter>Library\DirectXCommon</Filter>
     </ClCompile>
     <ClCompile Include="Library\base\Fps.cpp">

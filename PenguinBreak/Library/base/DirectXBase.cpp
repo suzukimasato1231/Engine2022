@@ -1,11 +1,11 @@
-#include "_DirectX.h"
+#include "DirectXBase.h"
 #include <cassert>
 #include"Fps.h"
-#include"_Window.h"
-_DirectX::_DirectX()
+#include"Window.h"
+DirectXBase::DirectXBase()
 {
 }
-void _DirectX::Initilize()
+void DirectXBase::Initilize()
 {
 	HRESULT result;
 #ifdef _DEBUG
@@ -49,7 +49,7 @@ void _DirectX::Initilize()
 #endif
 }
 
-void _DirectX::Adapter()
+void DirectXBase::Adapter()
 {
 	HRESULT result;
 	//DXGIファクトリーの生成
@@ -108,7 +108,7 @@ void _DirectX::Adapter()
 	}
 }
 
-void _DirectX::CommandListInitilize()
+void DirectXBase::CommandListInitilize()
 {
 	HRESULT result;
 	//コマンドアロケータを生成
@@ -128,7 +128,7 @@ void _DirectX::CommandListInitilize()
 	m_dev->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&m_cmdQueue));
 }
 
-void _DirectX::Swapchain()
+void DirectXBase::Swapchain()
 {
 	HRESULT result;
 	//各種設定をしてスワップチェーンを生成
@@ -147,7 +147,7 @@ void _DirectX::Swapchain()
 
 	m_dxgiFactory->CreateSwapChainForHwnd(
 		m_cmdQueue.Get(),
-		_Window::Get()->GetHwnd(),
+		Window::Get()->GetHwnd(),
 		&swapchainDesc,
 		nullptr,
 		nullptr,
@@ -180,7 +180,7 @@ void _DirectX::Swapchain()
 	}
 }
 
-void _DirectX::DepthBuffer()
+void DirectXBase::DepthBuffer()
 {
 	HRESULT result;
 #pragma region	//深度設定
@@ -220,7 +220,7 @@ void _DirectX::DepthBuffer()
 
 }
 
-bool _DirectX::InitImgui()
+bool DirectXBase::InitImgui()
 {
 	HRESULT result = S_FALSE;
 
@@ -247,7 +247,7 @@ bool _DirectX::InitImgui()
 }
 
 
-void _DirectX::PreDraw()
+void DirectXBase::PreDraw()
 {
 	//バックバッファの番号を取得（２つなので０番か１番）
 	UINT bbIndex = m_swapchain->GetCurrentBackBufferIndex();
@@ -292,14 +292,14 @@ void _DirectX::PreDraw()
 			float cputime = m_deltaTime - m_commandWaitTime;
 			char str[50];
 			sprintf_s(str, "fps=%03.0f cpu usage=%06.2f%%", m_frameRate, cputime * FPS_BASIS * 100.0f);
-			SetWindowTextA(_Window::Get()->GetHwnd(), str);
+			SetWindowTextA(Window::Get()->GetHwnd(), str);
 		}
 	}
 #endif
 }
 
 //リソースバリアを戻す
-void _DirectX::ResourceBarrier()
+void DirectXBase::ResourceBarrier()
 {
 #ifdef _DEBUG
 	// imgui描画
@@ -334,17 +334,17 @@ void _DirectX::ResourceBarrier()
 	m_cmdList->Reset(m_cmdAllocator.Get(), nullptr);//再びコマンドリストを貯める準備
 }
 
-ID3D12Device* _DirectX::GetDevice()
+ID3D12Device* DirectXBase::GetDevice()
 {
 	return m_dev.Get();
 }
 
-ID3D12GraphicsCommandList* _DirectX::GetCmandList()
+ID3D12GraphicsCommandList* DirectXBase::GetCmandList()
 {
 	return m_cmdList.Get();
 }
 
-void _DirectX::ClearDepthBuffer()
+void DirectXBase::ClearDepthBuffer()
 {
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_dsvHeap->GetCPUDescriptorHandleForHeapStart());

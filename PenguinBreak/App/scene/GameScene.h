@@ -1,5 +1,5 @@
 #pragma once
-#include "_DirectX.h"
+#include "DirectXBase.h"
 #include"DebugText.h"
 #include"ParticleManager.h"
 #include"../App/player/Player.h"

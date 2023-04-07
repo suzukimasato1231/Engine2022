@@ -2,7 +2,7 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include"Vec.h"
-#include"_DirectX.h"
+#include"DirectXBase.h"
 /// <summary>
 /// シャドウマップ
 /// </summary>

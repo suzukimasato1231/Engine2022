@@ -3,7 +3,7 @@
 #include<wrl.h>
 #include <d3dx12.h>
 #include <cstdlib>
-#include "_Window.h."
+#include "Window.h."
 #include"Singleton.h"
 #include <imgui_impl_win32.h>
 #include <imgui_impl_dx12.h>
@@ -13,10 +13,10 @@ extern const int window_height;
 /// <summary>
 /// DirectX12クラス
 /// </summary>
-class _DirectX :public Singleton<_DirectX>
+class DirectXBase :public Singleton<DirectXBase>
 {
 public:
-	friend Singleton<_DirectX>;
+	friend Singleton<DirectXBase>;
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	
 private://メンバ変数
@@ -58,9 +58,9 @@ private:
 	bool InitImgui();
 	
 public://メンバ関数
-	_DirectX();
+	DirectXBase();
 
-	~_DirectX()
+	~DirectXBase()
 	{
 
 	}

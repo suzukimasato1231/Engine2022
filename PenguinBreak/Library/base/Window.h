@@ -12,9 +12,9 @@ extern const int window_height;
 /// <summary>
 /// ウィンドウクラス
 /// </summary>
-class _Window:public Singleton<_Window>
+class Window:public Singleton<Window>
 {
-	friend Singleton<_Window>;
+	friend Singleton<Window>;
 public://メンバ関数
 	void CreateGameWindow();
 
@@ -35,5 +35,5 @@ private://メンバ変数
 	HWND m_hwnd = nullptr;
 	WNDCLASSEX m_w{};//ウィンドウクラスの設定
 
-	
+
 };

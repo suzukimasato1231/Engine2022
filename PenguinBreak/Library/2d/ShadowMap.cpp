@@ -10,7 +10,7 @@ ShadowMap::~ShadowMap()
 {}
 void ShadowMap::Init()
 {
-	ID3D12Device* dev = _DirectX::Get()->GetDevice();
+	ID3D12Device* dev = DirectXBase::Get()->GetDevice();
 	HRESULT result;
 #ifdef _DEBUG
 	dev->SetName(L"shadow");

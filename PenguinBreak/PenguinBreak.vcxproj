@@ -329,8 +329,8 @@
     <ClInclude Include="Library\base\Fps.h" />
     <ClInclude Include="Library\base\Safe_delete.h" />
     <ClInclude Include="Library\base\Singleton.h" />
-    <ClInclude Include="Library\base\_DirectX.h" />
-    <ClInclude Include="Library\base\_Window.h" />
+    <ClInclude Include="Library\base\DirectXBase.h" />
+    <ClInclude Include="Library\base\Window.h" />
     <ClInclude Include="Library\collision\Collision.h" />
     <ClInclude Include="Library\collision\CollisionPrimitive.h" />
     <ClInclude Include="Library\Helper\Easing.h" />
@@ -392,8 +392,8 @@
     <ClCompile Include="Library\3d\Shape.cpp" />
     <ClCompile Include="Library\Audio\Audio.cpp" />
     <ClCompile Include="Library\base\Fps.cpp" />
-    <ClCompile Include="Library\base\_DirectX.cpp" />
-    <ClCompile Include="Library\base\_Window.cpp" />
+    <ClCompile Include="Library\base\DirectXBase.cpp" />
+    <ClCompile Include="Library\base\Window.cpp" />
     <ClCompile Include="Library\collision\Collision.cpp" />
     <ClCompile Include="Library\Helper\Easing.cpp" />
     <ClCompile Include="Library\Helper\LoadCSV.cpp" />

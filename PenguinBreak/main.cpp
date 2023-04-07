@@ -6,22 +6,22 @@ const int window_height = 720;
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	SceneManagerh::Get()->Initialize();
+	SceneManager::Get()->Initialize();
 	while (true)  // ゲームループ
 	{
 		//メッセージ処理
-		if (_Window::Get()->ProcessMessage()) { break; }
+		if (Window::Get()->ProcessMessage()) { break; }
 
-		SceneManagerh::Get()->Update();
+		SceneManager::Get()->Update();
 
-		SceneManagerh::Get()->Draw();
+		SceneManager::Get()->Draw();
 
 	}
 #pragma region	//データ解放
-	SceneManagerh::Get()->Delete();
+	SceneManager::Get()->Delete();
 	FbxLoader::GetInstance()->Finalize();
 	//ゲームウィンドウの破棄
-	_Window::Get()->TerminateGameWindow();
+	Window::Get()->TerminateGameWindow();
 
 	return 0;
 }

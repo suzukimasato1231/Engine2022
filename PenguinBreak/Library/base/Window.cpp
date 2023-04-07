@@ -1,4 +1,4 @@
-#include "_Window.h"
+#include "Window.h"
 
 //ウィンドウプロシージャ
 LRESULT WindowProce(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -12,7 +12,7 @@ LRESULT WindowProce(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-void _Window::CreateGameWindow()
+void Window::CreateGameWindow()
 {
 	// ウィンドウサイズ{ X座標 Y座標 横幅 縦幅 }
 	RECT wrc = { 0, 0, window_width, window_height };
@@ -46,7 +46,7 @@ void _Window::CreateGameWindow()
 }
 
 
-bool _Window::ProcessMessage()
+bool Window::ProcessMessage()
 {
 	MSG msg{};	// メッセージ
 
@@ -63,7 +63,7 @@ bool _Window::ProcessMessage()
 	return false;
 }
 
-void _Window::TerminateGameWindow()
+void Window::TerminateGameWindow()
 {
 	// ウィンドウクラスを登録解除
 	UnregisterClass(m_w.lpszClassName, m_w.hInstance);

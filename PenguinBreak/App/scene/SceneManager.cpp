@@ -4,9 +4,9 @@
 #include "Input.h"
 #include"Shape.h"
 #include"PostEffect.h"
-SceneManagerh::SceneManagerh()
+SceneManager::SceneManager()
 {}
-SceneManagerh::~SceneManagerh()
+SceneManager::~SceneManager()
 {
 	//XAudio2解放
 	Audio::Get()->xAudio2.Reset();
@@ -14,42 +14,42 @@ SceneManagerh::~SceneManagerh()
 	Audio::SoundUnload(&m_bgm);
 	Audio::SoundUnload(&m_buttonSE);
 }
-void SceneManagerh::Initialize()
+void SceneManager::Initialize()
 {
 	//汎用機能
 	//ゲームウィンドウの作成
-	_Window::Get()->CreateGameWindow();
+	Window::Get()->CreateGameWindow();
 	// DirectX初期化処理
-	_DirectX::Get()->Initilize();
+	DirectXBase::Get()->Initilize();
 	//入力の初期化
 	Input::Get()->Initialize();
 	//シェーダーの読み込み
 	ShaderManager::LoadShaders();
 	//ライト静的初期化
-	LightGroup::StaticInitialize(_DirectX::Get()->GetDevice());
+	LightGroup::StaticInitialize(DirectXBase::Get()->GetDevice());
 	//スプライト静的初期化
-	Sprite::StaticInit(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
+	Sprite::StaticInit(DirectXBase::Get()->GetDevice(), DirectXBase::Get()->GetCmandList());
 	//テキストクラス初期化
-	Texture::Get()->Init(_DirectX::Get()->GetDevice());
-	Pipeline::CreatePipeline(_DirectX::Get()->GetDevice());
+	Texture::Get()->Init(DirectXBase::Get()->GetDevice());
+	Pipeline::CreatePipeline(DirectXBase::Get()->GetDevice());
 	//デバックテキスト初期化
 	DebugText::Get()->Initialize();
 	//スプライトクラス作成
 	Sprite::Get()->Init();
 	//FBX初期化
-	FbxLoader::GetInstance()->Initialize(_DirectX::Get()->GetDevice());
-	FBXObject3d::SetDevice(_DirectX::Get()->GetDevice());
-	FBXObject3d::SetCmdList(_DirectX::Get()->GetCmandList());
+	FbxLoader::GetInstance()->Initialize(DirectXBase::Get()->GetDevice());
+	FBXObject3d::SetDevice(DirectXBase::Get()->GetDevice());
+	FBXObject3d::SetCmdList(DirectXBase::Get()->GetCmandList());
 	FBXObject3d::CreateGraphicsPipeline();
 	FBXObject3d::CreateShadowPipeline();
 	//図形モデル初期化
-	Shape::Init(_DirectX::Get()->GetDevice());
+	Shape::Init(DirectXBase::Get()->GetDevice());
 	//パーティクル初期化
-	ParticleManager::StaticInitialize(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList(), window_width, window_height);
+	ParticleManager::StaticInitialize(DirectXBase::Get()->GetDevice(), DirectXBase::Get()->GetCmandList(), window_width, window_height);
 	//3Dオブジェクト初期化
-	Object::Init(_DirectX::Get()->GetDevice(), _DirectX::Get()->GetCmandList());
+	Object::Init(DirectXBase::Get()->GetDevice(), DirectXBase::Get()->GetCmandList());
 
-	PostEffect::Get()->Initialize(_DirectX::Get()->GetDevice());
+	PostEffect::Get()->Initialize(DirectXBase::Get()->GetDevice());
 	////影
 	m_shadowMapFar.Init();
 	Texture::Get()->LoadShadowTexture(m_shadowMapFar.GetTexbuff());
@@ -75,7 +75,7 @@ void SceneManagerh::Initialize()
 	Audio::Get()->SetVolume(0.02f);
 }
 
-void SceneManagerh::Update()
+void SceneManager::Update()
 {
 	Input::Get()->Update();
 
@@ -108,10 +108,10 @@ void SceneManagerh::Update()
 	}
 }
 
-void SceneManagerh::Draw()
+void SceneManager::Draw()
 {
 	//影深度値取得
-	m_shadowMapFar.PreDraw(_DirectX::Get()->GetCmandList());
+	m_shadowMapFar.PreDraw(DirectXBase::Get()->GetCmandList());
 	Object::InitDraw();
 	if (m_scene == Title)
 	{
@@ -129,10 +129,10 @@ void SceneManagerh::Draw()
 	{
 		m_resultScene.ShadowDraw();
 	}
-	m_shadowMapFar.PostDraw(_DirectX::Get()->GetCmandList());
+	m_shadowMapFar.PostDraw(DirectXBase::Get()->GetCmandList());
 
 
-	PostEffect::Get()->PreDrawScene(_DirectX::Get()->GetCmandList());
+	PostEffect::Get()->PreDrawScene(DirectXBase::Get()->GetCmandList());
 	Object::InitDraw(), Sprite::Get()->PreDraw();
 	//カメラ目線の描画
 	if (m_scene == Title)
@@ -156,25 +156,25 @@ void SceneManagerh::Draw()
 	{
 		Sprite::Get()->Draw(m_changeBlack, Vec2(), static_cast<float>(window_width), static_cast<float>(window_height), Vec2(), m_changeSceneColor);
 	}
-	PostEffect::Get()->PostDrawScene(_DirectX::Get()->GetCmandList());
+	PostEffect::Get()->PostDrawScene(DirectXBase::Get()->GetCmandList());
 
-	_DirectX::Get()->PreDraw();
+	DirectXBase::Get()->PreDraw();
 	////ポストエフェクトの描画
-	PostEffect::Get()->Draw(_DirectX::Get()->GetCmandList());
+	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList());
 	//UI描画
 	if (m_scene == GameScene)
 	{
 		m_gameScene.SecondDraw();
 	}
-	_DirectX::Get()->ResourceBarrier();
+	DirectXBase::Get()->ResourceBarrier();
 }
 
-void SceneManagerh::Delete()
+void SceneManager::Delete()
 {
 	Object::Delete();
 }
 
-void SceneManagerh::SceneChange()
+void SceneManager::SceneChange()
 {
 	//シーン切り替え
 	if (m_scene == Title)

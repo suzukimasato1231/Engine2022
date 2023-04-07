@@ -1,7 +1,7 @@
 #pragma once
 #include<dinput.h>
 #include<wrl.h>
-#include"_Window.h"
+#include"Window.h"
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 /// <summary>

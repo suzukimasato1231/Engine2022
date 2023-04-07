@@ -7,10 +7,10 @@
 
 extern const int window_width;
 extern const int window_height;
-class SceneManagerh :public Singleton<SceneManagerh>
+class SceneManager :public Singleton<SceneManager>
 {
 private:
-	friend Singleton<SceneManagerh>;
+	friend Singleton<SceneManager>;
 	/// <summary>
 	/// シーンタイプ
 	/// </summary>
@@ -34,11 +34,11 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	SceneManagerh();
+	SceneManager();
 	/// <summary>
 	/// デスコンストラクタ
 	/// </summary>
-	~SceneManagerh();
+	~SceneManager();
 	/// <summary>
 	/// 初期化
 	/// </summary>
