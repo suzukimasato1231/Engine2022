@@ -12,7 +12,6 @@ void UI::Init()
 	m_boxGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/UIBox.png");
 	m_playerIcon = Sprite::Get()->SpriteCreate(L"Resources/UI/penginIcon.png");
 	m_fishGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/fish.png");
-
 	m_uiNumber[0] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber1.png");
 	m_uiNumber[1] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber2.png");
 	m_uiNumber[2] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber3.png");

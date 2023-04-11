@@ -321,7 +321,7 @@ void Texture::LoadPostEfectTexture(ID3D12Resource* texbuff)
 }
 
 
-const D3D12_GPU_DESCRIPTOR_HANDLE &Texture::GetGPUSRV(int i)
+const D3D12_GPU_DESCRIPTOR_HANDLE& Texture::GetGPUSRV(int i)
 {
 	return 	textureData[i]->gpuDescHandleSRV;
 }
@@ -334,4 +334,9 @@ ID3D12Resource* Texture::GetTexbuff(int i)
 ID3D12DescriptorHeap* Texture::GetDescHeap()
 {
 	return m_descHeap.Get();
+}
+
+
+void Texture::DeleteTexture()
+{
 }

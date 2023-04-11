@@ -52,6 +52,8 @@ public:
 	int GetCameraDepth() { return m_cameraDepth; }
 
 	int GetPostEfect() { return m_postEfect; }
+	//テクスチャ解放
+	void DeleteTexture();
 private:
 	//定数バッファ用のデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap >m_descHeap = { nullptr };

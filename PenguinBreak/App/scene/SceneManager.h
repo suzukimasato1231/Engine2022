@@ -18,7 +18,7 @@ private:
 	{
 		Title,
 		SelectScene,
-		GameScene,
+		Game,
 		Result,
 	};
 	/// <summary>
@@ -60,11 +60,17 @@ private:
 	/// シーンチェンジの処理
 	/// </summary>
 	void SceneChange();
+	//次のシーン予約
+	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
 private://定義
-	TitleScene  m_titleScene;
-	StageSelect  m_stageScene;
-	GameSceneManager  m_gameScene;
-	ResultScene  m_resultScene;
+	//今のシーン
+	BaseScene* scene_ = nullptr;
+	//次のシーン
+	BaseScene* nextScene_ = nullptr;
+
+	int m_stageNum = 0;
+	int m_breakBox[3] = {};
+
 	int  m_scene = Title;	//シーン管理
 	int  m_sceneMe = Title;
 	SpriteData  m_changeBlack;

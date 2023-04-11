@@ -4,14 +4,15 @@
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
-GameSceneManager::GameSceneManager()
+GameScene::GameScene()
 {}
-GameSceneManager::~GameSceneManager()
+GameScene::~GameScene()
 {
 	//XAudio2解放
 	audio->xAudio2.Reset();
 }
-void GameSceneManager::Initialize()
+
+void GameScene::Init(int stageNum)
 {
 	//Audioクラス作成
 	audio = std::make_unique<Audio>();
@@ -23,37 +24,25 @@ void GameSceneManager::Initialize()
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, 0));
 	//音データ読み込み
-
 	//カメラ位置をセット
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	//スプライト画像読み込み
 	m_BGGraph.texNumber = Texture::Get()->GetShadowTexture();
-
-	//プレイヤーの初期化
-	Player::Get()->Init();
-	//ステージ
-	Stage::Get()->Init();
 	m_ui.Init();
-
 	m_decLifeStaging.Init();
-
 	m_decisionSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
 	m_selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
-}
 
-void GameSceneManager::Init(int stageNum)
-{
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 	Player::Get()->SetMoveFlag(true);
 	Reset(stageNum);
 	m_stageNum = stageNum;
 	m_decLifeStaging.Reset();
-	m_changeScene = false;
 	m_ui.Reset();
 }
 
-void GameSceneManager::Update()
+void GameScene::Update(int& stageNum, const int m_breakBox[])
 {
 	//プレイヤーの更新
 	if (Input::Get()->KeybordTrigger(DIK_R))
@@ -76,7 +65,7 @@ void GameSceneManager::Update()
 		if (Stage::Get()->GetClearFlag() == true)
 		{
 			//プレイヤーゴールFbx始め
-			if (m_goalStagingTime <= 0 && m_changeScene == false)
+			if (m_goalStagingTime <= 0 && m_sceneFlag==false)//m_changeScene == false)
 			{
 				m_goalStagingTime = c_goalStagingTimeMax;
 				Player::Get()->GoalStaging(FbxGoalJump);
@@ -99,8 +88,8 @@ void GameSceneManager::Update()
 
 			if (m_goalStagingTime == 0)
 			{
-				m_changeScene = true;
-				m_changeNum = static_cast<int>(ChangeStatus::ChangeClear);
+				m_sceneFlag = true;
+				m_sceneNum = static_cast<int>(ChangeStatus::ChangeClear);
 			}
 		}
 		//ライト更新
@@ -116,34 +105,34 @@ void GameSceneManager::Update()
 	{
 		if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft) == true)
 		{
-			m_changeNum++;
+			m_sceneNum++;
 			Audio::Get()->SoundSEPlayWave(m_selectSE);
 		}
 		if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight) == true)
 		{
-			m_changeNum--;
+			m_sceneNum--;
 			Audio::Get()->SoundSEPlayWave(m_selectSE);
 		}
 		if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA) == true)
 		{
-			m_changeScene = true;
+			m_sceneFlag = true;
 			Audio::Get()->SoundSEPlayWave(m_decisionSE);
 		}
-		if (m_changeNum >GameOverSelect)
+		if (m_sceneNum >GameOverSelect)
 		{
-			m_changeNum = GameOverRetry;
+			m_sceneNum = GameOverRetry;
 		}
-		else if (m_changeNum < GameOverRetry)
+		else if (m_sceneNum < GameOverRetry)
 		{
-			m_changeNum = GameOverSelect;
+			m_sceneNum = GameOverSelect;
 		}
 	}
-	m_ui.Update(Player::Get()->GetFishNum(), Stage::Get()->GetClearFlag(), m_changeScene, m_changeNum);
+	m_ui.Update(Player::Get()->GetFishNum(), Stage::Get()->GetClearFlag(), m_sceneFlag, m_sceneNum);
 
 	m_decLifeStaging.Update(Player::Get()->GetDecLifeFlag(), Player::Get()->GetGameoverFlag());
 }
 
-void GameSceneManager::Draw()
+void GameScene::Draw(const int stageNum)
 {
 	//3D
 	Stage::Get()->Draw(true);
@@ -156,24 +145,29 @@ void GameSceneManager::Draw()
 	Stage::Get()->DrawParicle();
 }
 
-void GameSceneManager::ShadowDraw()
+void GameScene::ShadowDraw()
 {
 	Stage::Get()->Draw();
 	//プレイヤーの描画
 	Player::Get()->Draw();
 }
 
-void GameSceneManager::SecondDraw()
+void GameScene::SecondDraw()
 {
 	m_ui.Draw(Player::Get()->GetRemanLives(),
 		Player::Get()->GetGameoverFlag());
 
-	m_decLifeStaging.Draw(Player::Get()->GetGameoverFlag(), m_changeNum);
+	m_decLifeStaging.Draw(Player::Get()->GetGameoverFlag(), m_sceneNum);
 }
 
-void GameSceneManager::Reset(int stageNum)
+void GameScene::Reset(int stageNum)
 {
 	Player::Get()->Reset();
 	Stage::Get()->MainInit(stageNum);
+}
+
+void GameScene::Finalize()
+{
+
 }
 

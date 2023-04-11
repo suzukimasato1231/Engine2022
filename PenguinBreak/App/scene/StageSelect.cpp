@@ -12,8 +12,10 @@ StageSelect::StageSelect()
 StageSelect::~StageSelect()
 {
 }
-void StageSelect::Initialize()
+
+void StageSelect::Init(int stageNum)
 {
+
 	m_selectOBJ = Shape::CreateOBJ("cube");
 	m_boxBreakOBJ = Shape::CreateRect(30.0f, 30.0f);
 
@@ -44,10 +46,9 @@ void StageSelect::Initialize()
 	m_numberGraph[8] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber9.png");
 	m_numberGraph[9] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber10.png");
 	m_numberGraph[10] = Texture::Get()->LoadTexture(L"Resources/UI/UISlash.png");
-}
 
-void StageSelect::Init()
-{
+
+
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 	Player::Get()->SetMoveFlag(false);
@@ -59,7 +60,7 @@ void StageSelect::Init()
 		m_selectBox[i].maxPosition = XMVectorSet(m_selectPos[i].x + c_selectScale / 2, m_selectPos[i].y + c_selectScale / 2, m_selectPos[i].z + c_selectScale / 2, 1);
 		m_selectBox[i].minPosition = XMVectorSet(m_selectPos[i].x - c_selectScale / 2, m_selectPos[i].y - c_selectScale / 2, m_selectPos[i].z - c_selectScale / 2, 1);
 	}
-	m_selectFlag = false;
+
 	Stage::Get()->LoadStage(0);
 	Player::Get()->SetPosition(Vec3(20.0f, 10.0f, 150.0f));
 
@@ -72,7 +73,7 @@ void StageSelect::Init()
 }
 
 
-void StageSelect::Update()
+void StageSelect::Update(int& stageNum, const int m_breakBox[])
 {
 	//ƒXƒe[ƒW‘I‘ð
 	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3(0.0f, 15.0f, -130.0f));
@@ -83,7 +84,7 @@ void StageSelect::Update()
 		{
 			if (m_selectPos[i].y - c_selectScale / 2 > Player::Get()->GetOldPosition().y + Player::Get()->GetPSize().y / 2 && m_productionTime == 0)
 			{
-				m_stageNum = i + 1;
+				stageNum = i + 1;
 				m_productionFlag[i] = true;
 				m_productionTime = c_productionTimeMax;
 				Player::Get()->JumpPoweZero();
@@ -126,7 +127,7 @@ void StageSelect::Update()
 
 			if (m_productionTime <= 0)
 			{
-				m_selectFlag = true;
+				m_sceneFlag = true;
 			}
 		}
 	}
@@ -144,7 +145,7 @@ void StageSelect::Update()
 	}
 }
 
-void StageSelect::Draw()
+void StageSelect::Draw(const int stageNum)
 {
 	//”wŒi•`‰æ
 	Player::Get()->Draw(true);
@@ -176,17 +177,18 @@ void StageSelect::Draw()
 	}
 }
 
-void StageSelect::DrawShadow()
+void StageSelect::ShadowDraw()
 {
 	Player::Get()->Draw();
 	Stage::Get()->Draw();
 }
 
-void StageSelect::SetBreakBoxNum(int breakBox_)
+void StageSelect::SecondDraw()
 {
-	if (breakBox_ > m_breakBox[m_stageNum - 1])
-	{
-		m_breakBox[m_stageNum - 1] = breakBox_;
-	}
-
 }
+
+void StageSelect::Finalize()
+{
+	
+}
+

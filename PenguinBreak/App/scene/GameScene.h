@@ -7,6 +7,7 @@
 #include"../App/ui/UI.h"
 #include"../App/player/DecLifeStaging.h"
 #include<memory>
+#include"BaseScene.h"
 extern const int window_width;
 extern const int window_height;
 enum class ChangeStatus
@@ -18,7 +19,7 @@ enum class ChangeStatus
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameSceneManager
+class GameScene:public BaseScene
 {
 private:
 	//ゲームオーバーセレクト
@@ -31,42 +32,37 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	GameSceneManager();
+	GameScene();
 	/// <summary>
 	/// デスコンストラクタ
 	/// </summary>
-	~GameSceneManager();
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
-
-	void Init(int stageNum);
+	~GameScene();
+	void Init(int stageNum)override;
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(int& stageNum, const int m_breakBox[])override;
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(const int stageNum)override;
 	/// <summary>
 	/// 影描画
 	/// </summary>
-	void ShadowDraw();
+	void ShadowDraw()override;
 	/// <summary>
 	/// 
 	/// </summary>
-	void SecondDraw();
+	void SecondDraw()override;
+	
+
+	void Finalize()override;
+private:
 	/// <summary>
 	/// リセット
 	/// </summary>
 	/// <param name="stageNum">ステージ</param>
 	void Reset(int stageNum);
-public:
-	bool GetChangeScene() { return  m_changeScene; }
-
-	int GetChangeNum() { return  m_changeNum; }
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 	std::unique_ptr<Audio> audio;
@@ -76,11 +72,6 @@ private://定義
 	//スプライトデータ
 	SpriteData  m_BGGraph;
 	Vec2  m_pos = { 0.0f,0.0f };
-
-	//シーンが変わるかどうか
-	bool  m_changeScene = false;
-	//ゲームオーバー時
-	int  m_changeNum = 0;
 
 	//ゴール時の演出はじめ
 	bool  m_goalStagingFlag = false;

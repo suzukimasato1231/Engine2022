@@ -87,9 +87,6 @@
     <Filter Include="ソース ファイル\Stage\Trap">
       <UniqueIdentifier>{08fcf23e-6e0a-4b37-a9fa-e4aadccd9139}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Stage\Floor">
-      <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HLSL\OBJ\NormalMap">
       <UniqueIdentifier>{153b2164-6bd9-4e26-956b-16936230434e}</UniqueIdentifier>
     </Filter>
@@ -119,6 +116,9 @@
     </Filter>
     <Filter Include="ソース ファイル\Stage\CameraControl">
       <UniqueIdentifier>{6cbc2531-a9f4-4342-a7a0-483e408fc536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage\Floor">
+      <UniqueIdentifier>{f10f5615-ca58-4eab-b0dd-fd66927b9abe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +450,9 @@
     <ClInclude Include="Library\Helper\LoadJson.h">
       <Filter>Library\Helper</Filter>
     </ClInclude>
+    <ClInclude Include="App\scene\BaseScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -631,6 +634,9 @@
     </ClCompile>
     <ClCompile Include="Library\Helper\LoadJson.cpp">
       <Filter>Library\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\BaseScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,6 +13,10 @@ SceneManager::~SceneManager()
 	//音データ解放
 	Audio::SoundUnload(&m_bgm);
 	Audio::SoundUnload(&m_buttonSE);
+
+	scene_->Finalize();
+	delete scene_;
+
 }
 void SceneManager::Initialize()
 {
@@ -57,14 +61,14 @@ void SceneManager::Initialize()
 
 	//音作成
 	Audio::Get()->Init();
-	////ゲームシーン
-	m_titleScene.Initialize();
-	m_gameScene.Initialize();
-	m_stageScene.Initialize();
-	m_resultScene.Initialize();
-	m_gameScene.Init(0);
-	m_resultScene.Init();
-	m_titleScene.Init();
+	//プレイヤーの初期化
+	Player::Get()->Init();
+	//ステージ
+	Stage::Get()->Init();
+
+	BaseScene* scene = new TitleScene();
+	SetNextScene(scene);
+
 
 	m_changeBlack = Sprite::Get()->SpriteCreate(L"Resources/black.png");
 
@@ -82,29 +86,29 @@ void SceneManager::Update()
 	//シーンチェンジ
 	SceneChange();
 
+	//次のシーンの予約があるなら
+	if (nextScene_)
+	{
+		if (scene_)
+		{
+			scene_->Finalize();
+			delete scene_;
+		}
+		//シーン切り替え
+		scene_ = nextScene_;
+		nextScene_ = nullptr;
+		//次のシーンを初期化する
+		scene_->Init(m_stageNum);
+	}
 	//更新
-	if (m_scene == Title)
-	{
-		m_titleScene.Update();
-	}
-	else if (m_scene == SelectScene)
-	{
-		m_stageScene.Update();
-	}
-	else if (m_scene == GameScene)
-	{
-		m_gameScene.Update();
-	}
-	else if (m_scene == Result)
-	{
-		m_resultScene.Update();
-	}
+	scene_->Update(m_stageNum,m_breakBox);
 
 
 	if (Input::Get()->KeybordTrigger(DIK_T) == true)
 	{
 		m_scene = Title;
-		m_titleScene.Init();
+		BaseScene* scene = new TitleScene();
+		SetNextScene(scene);
 	}
 }
 
@@ -113,44 +117,16 @@ void SceneManager::Draw()
 	//影深度値取得
 	m_shadowMapFar.PreDraw(DirectXBase::Get()->GetCmandList());
 	Object::InitDraw();
-	if (m_scene == Title)
-	{
-		m_titleScene.ShadowDraw();
-	}
-	else if (m_scene == SelectScene)
-	{
-		m_stageScene.DrawShadow();
-	}
-	else if (m_scene == GameScene)
-	{
-		m_gameScene.ShadowDraw();
-	}
-	else if (m_scene == Result)
-	{
-		m_resultScene.ShadowDraw();
-	}
+
+	scene_->ShadowDraw();
+
 	m_shadowMapFar.PostDraw(DirectXBase::Get()->GetCmandList());
 
 
 	PostEffect::Get()->PreDrawScene(DirectXBase::Get()->GetCmandList());
 	Object::InitDraw(), Sprite::Get()->PreDraw();
 	//カメラ目線の描画
-	if (m_scene == Title)
-	{
-		m_titleScene.Draw();
-	}
-	else if (m_scene == SelectScene)
-	{
-		m_stageScene.Draw();
-	}
-	else if (m_scene == GameScene)
-	{
-		m_gameScene.Draw();
-	}
-	else if (m_scene == Result)
-	{
-		m_resultScene.Draw(m_stageScene.GetStageNum());
-	}
+	scene_->Draw(m_stageNum);
 	DebugText::Get()->DrawAll();
 	if (m_changeSceneFlag == ChangeFirst || m_changeSceneFlag == ChangeEnd)
 	{
@@ -162,10 +138,7 @@ void SceneManager::Draw()
 	////ポストエフェクトの描画
 	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList());
 	//UI描画
-	if (m_scene == GameScene)
-	{
-		m_gameScene.SecondDraw();
-	}
+	scene_->SecondDraw();
 	DirectXBase::Get()->ResourceBarrier();
 }
 
@@ -177,61 +150,67 @@ void SceneManager::Delete()
 void SceneManager::SceneChange()
 {
 	//シーン切り替え
-	if (m_scene == Title)
+	switch (m_scene)
 	{
+	case Title:
 		if (m_changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
 		{
 			m_changeSceneFlag = ChangeFirst;
 			m_sceneMe = SelectScene;
 			Audio::Get()->SoundSEPlayWave(m_buttonSE);
 		}
-	}
-	else if (m_scene == SelectScene)
-	{
-		if (m_changeSceneFlag == ChangeStand && m_stageScene.GetSelectFlag() == true)
+		break;
+	case SelectScene:
+		if (m_changeSceneFlag == ChangeStand && scene_->GetSceneFlag() == true)
 		{
-			m_sceneMe = GameScene;
+			m_sceneMe = Game;
 			m_changeSceneFlag = ChangeFirst;
 		}
-	}
-	else if (m_scene == GameScene)
-	{
-		if (m_changeSceneFlag == ChangeStand && m_gameScene.GetChangeScene())
+		break;
+	case Game:
+		if (m_changeSceneFlag == ChangeStand && scene_->GetSceneFlag() == true)
 		{
-			if (m_gameScene.GetChangeNum() == static_cast<int>(ChangeStatus::ChangeClear))
+			if (scene_->GetSceneNum() == static_cast<int>(ChangeStatus::ChangeClear))
 			{
 				m_sceneMe = Result;
 			}
-			else if (m_gameScene.GetChangeNum() == static_cast<int>(ChangeStatus::ChangeRetry))
+			else if (scene_->GetSceneNum() == static_cast<int>(ChangeStatus::ChangeRetry))
 			{
-				m_sceneMe = GameScene;
+				m_sceneMe = Game;
 			}
-			else if (m_gameScene.GetChangeNum() == static_cast<int>(ChangeStatus::ChangeSelect))
+			else if (scene_->GetSceneNum() == static_cast<int>(ChangeStatus::ChangeSelect))
 			{
 				m_sceneMe = SelectScene;
 			}
 			m_changeSceneFlag = ChangeFirst;
 		}
-	}
-	else if (m_scene == Result)
-	{
+		break;
+	case Result:
 		if (m_changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
 		{
-			if (m_resultScene.GetScene() == static_cast<int>(ResultNext::ResultNextStage) && m_stageScene.GetStageNum() != 3)
+			if (scene_->GetSceneNum() == static_cast<int>(ResultNext::ResultNextStage) && m_stageNum != 3)
 			{
-				m_sceneMe = GameScene;
-				m_stageScene.SetBreakBoxNum(Stage::Get()->GetBlockNum());
+				m_sceneMe = Game;
+				if (Stage::Get()->GetBlockNum() > m_breakBox[m_stageNum - 1])
+				{
+					m_breakBox[m_stageNum - 1] = Stage::Get()->GetBlockNum();
+				}
 			}
-			if (m_resultScene.GetScene() == static_cast<int>(ResultNext::ResultSelect) || m_stageScene.GetStageNum() == 3)
+			if (scene_->GetSceneNum() == static_cast<int>(ResultNext::ResultSelect) || m_stageNum == 3)
 			{
 				m_sceneMe = SelectScene;
-				m_stageScene.SetBreakBoxNum(Stage::Get()->GetBlockNum());
+				if (Stage::Get()->GetBlockNum() > m_breakBox[m_stageNum - 1])
+				{
+					m_breakBox[m_stageNum - 1] = Stage::Get()->GetBlockNum();
+				}
 			}
 			m_changeSceneFlag = ChangeFirst;
 			Audio::Get()->SoundSEPlayWave(m_buttonSE);
 		}
+		break;
+	default:
+		break;
 	}
-
 
 	//シーンチェンジの色
 	if (m_changeSceneFlag == ChangeFirst)
@@ -239,44 +218,45 @@ void SceneManager::SceneChange()
 		m_changeSceneColor += Vec4(0.0f, 0.0f, 0.0f, 0.1f);
 		if (m_changeSceneColor.w >= 1.0f)
 		{
+			BaseScene* scene = nullptr;
 			m_changeSceneFlag = ChangeEnd;
 			switch (m_scene)
 			{
 			case Title:
-				m_stageScene.Init();
+				scene = new StageSelect();
 				break;
 			case SelectScene:
-				m_gameScene.Init(m_stageScene.GetStageNum());
+				scene = new GameScene();
 				break;
-			case GameScene:
+			case Game:
 				if (m_sceneMe == Result)
 				{
-					m_resultScene.Init();
+					scene = new ResultScene();
 				}
-				else if (m_sceneMe == GameScene)
+				else if (m_sceneMe == Game)
 				{
-					m_gameScene.Init(m_stageScene.GetStageNum());
+					scene = new GameScene();
 				}
 				else if (m_sceneMe == SelectScene)
 				{
-					m_stageScene.Init();
+					scene = new StageSelect();
 				}
 				break;
 			case Result:
-				if (m_sceneMe == GameScene)
+				if (m_sceneMe == Game)
 				{
-					m_stageScene.StagePlas();
-					m_gameScene.Init(m_stageScene.GetStageNum());
-
+					m_stageNum++;
+					scene = new GameScene();
 				}
 				else if (m_sceneMe == SelectScene)
 				{
-					m_stageScene.Init();
+					scene = new StageSelect();
 				}
 				break;
 			default:
 				break;
 			}
+			SetNextScene(scene);
 			m_scene = m_sceneMe;
 		}
 	}

@@ -12,6 +12,9 @@ ResultScene::~ResultScene()
 }
 void ResultScene::Initialize()
 {
+}
+void ResultScene::Init(int stageNum)
+{
 	m_boxGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/UIBox.png");
 	m_uiNumber[0] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber1.png");
 	m_uiNumber[1] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber2.png");
@@ -24,11 +27,9 @@ void ResultScene::Initialize()
 	m_uiNumber[8] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber9.png");
 	m_uiNumber[9] = Sprite::Get()->SpriteCreate(L"Resources/UI/UINumber10.png");
 	m_uiSlash = Sprite::Get()->SpriteCreate(L"Resources/UI/UISlash.png");
-
 	m_clearGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/clear.png");
 	m_nextGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/retry.png");
 	m_selectGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/select.png");
-
 	m_buttonGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/titleButton.png");
 
 
@@ -53,9 +54,9 @@ void ResultScene::Initialize()
 
 	m_decisionSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
 	m_selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
-}
-void ResultScene::Init()
-{
+
+
+
 	m_resultTime = 0;
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
 	FBXObject3d::SetLight(lightGroup.get());
@@ -63,7 +64,7 @@ void ResultScene::Init()
 	m_penginHandFbx->PlayAnimation(true);
 }
 
-void ResultScene::Update()
+void ResultScene::Update(int& stageNum, const int m_breakBox[])
 {
 	//順番にリザルトが出るように
 	if (m_resultTime <= c_resultTimeMax)
@@ -80,13 +81,13 @@ void ResultScene::Update()
 	//次のシーン
 	if (Input::Get()->ControllerDown(LButtonLeft) || Input::Get()->ControllerDown(LButtonRight))
 	{
-		if (m_nextScene == static_cast<int>(ResultNext::ResultNextStage))
+		if (m_sceneNum == static_cast<int>(ResultNext::ResultNextStage))
 		{
-			m_nextScene = static_cast<int>(ResultNext::ResultSelect);
+			m_sceneNum = static_cast<int>(ResultNext::ResultSelect);
 		}
 		else
 		{
-			m_nextScene = static_cast<int>(ResultNext::ResultNextStage);
+			m_sceneNum = static_cast<int>(ResultNext::ResultNextStage);
 		}
 		Audio::Get()->SoundSEPlayWave(m_selectSE);
 	}
@@ -158,7 +159,7 @@ void ResultScene::Draw(const int stageNum)
 	}
 	else
 	{
-		if (m_nextScene == static_cast<int>(ResultNext::ResultSelect))
+		if (m_sceneNum == static_cast<int>(ResultNext::ResultSelect))
 		{
 			Sprite::Get()->Draw(m_nextGraph, Vec2(basicPosX[0], basicPosY + numberScale / 2),
 				533.0f, numberScale, anchorpoint);
@@ -190,4 +191,13 @@ void ResultScene::ShadowDraw()
 		Vec3(1000.0f, 1.0f, 1000.0f), Vec3());
 	Object::Draw(m_floorObj, m_objectPsr, Vec3(0.0f, 5.0f, 20.0f),
 		Vec3(100.0f, 20.0f, 10.0f), Vec3(), Vec2(), m_floorObj.OBJTexture);
+}
+
+void ResultScene::SecondDraw()
+{
+}
+
+void ResultScene::Finalize()
+{
+	
 }

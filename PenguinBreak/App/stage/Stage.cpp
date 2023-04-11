@@ -435,8 +435,8 @@ void Stage::SetStageBox(StageData* stageData, const Vec3& scale)
 
 void Stage::FloorHitDropPoint(const StageData* s, const Vec3& PPos)
 {
-	if (s == nullptr) {}
-	assert(0);
+	if (s == nullptr) { assert(0); }
+	
 	if (Player::Get()->GetIsFishDie() == true) { return; }
 
 	//ƒvƒŒƒCƒ„[

@@ -10,7 +10,8 @@ TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
 {}
-void TitleScene::Initialize()
+
+void TitleScene::Init(int stageNum)
 {
 	//‰æ‘œ‚ðƒ[ƒh
 	m_boxGraph = Texture::Get()->LoadTexture(L"Resources/cube/Normal.png");
@@ -37,11 +38,8 @@ void TitleScene::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, 0));
-}
 
 
-void TitleScene::Init()
-{
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
@@ -49,7 +47,7 @@ void TitleScene::Init()
 	m_penginHandFbx->PlayAnimation(true);
 }
 
-void TitleScene::Update()
+void TitleScene::Update(int& stageNum, const int m_breakBox[])
 {
 	m_buttonTime++;
 	if (m_buttonTime >= 60)
@@ -59,7 +57,7 @@ void TitleScene::Update()
 	lightGroup->Update();
 }
 
-void TitleScene::Draw()
+void TitleScene::Draw(const int stageNum)
 {
 	//3D
 	m_penginHandFbx->Draw(true);
@@ -91,4 +89,13 @@ void TitleScene::ShadowDraw()
 		Vec3(0.0f, 10.0f, 0.0f), Vec2(), m_boxGraph);
 	Object::Draw(m_floorObj, m_wallPsr, Vec3(0.0f, -5.0f, 0.0f), Vec3(1000.0f, 1.0f, 1000.0f),
 		Vec3(), Vec2());
+}
+
+void TitleScene::SecondDraw()
+{
+}
+
+void TitleScene::Finalize()
+{
+	
 }

@@ -2,6 +2,7 @@
 #include<memory>
 #include"FBXObject3d.h"
 #include<Audio.h>
+#include"BaseScene.h"
 /// <summary>
 /// シーン移動
 /// </summary>
@@ -14,7 +15,7 @@ enum class ResultNext
 /// <summary>
 /// リザルトシーン
 /// </summary>
-class ResultScene
+class ResultScene:public BaseScene
 {
 private:
 
@@ -34,22 +35,26 @@ public:
 	/// <summary>
 	/// ループ初期化
 	/// </summary>
-	void Init();
+	void Init(int stageNum)override;
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(int& stageNum, const int m_breakBox[])override;
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="stageNum">ステージ</param>
-	void Draw(const int stageNum);
+	void Draw(const int stageNum)override;
 	/// <summary>
 	/// 影描画
 	/// </summary>
-	void ShadowDraw();
+	void ShadowDraw()override;
+	/// <summary>
+	/// 
+	/// </summary>
+	void SecondDraw()override;
 
-	inline bool GetScene() { return  m_nextScene; }
+	void Finalize()override;
 private:
 	std::unique_ptr<LightGroup> lightGroup;
 private:
@@ -77,7 +82,7 @@ private:
 	SpriteData  m_clearGraph;
 	SpriteData  m_selectGraph;
 	SpriteData  m_nextGraph;
-	int  m_nextScene = 0;
+	//int  m_nextScene = 0;
 	const float c_selectScaleSpeed = 0.02f;//大きさが変わるスピード
 	const float c_nextScaleMax = 1.2f;     //最大の大きさ
 	const float c_nextScaleMin = 0.8f;     //最初の大きさ

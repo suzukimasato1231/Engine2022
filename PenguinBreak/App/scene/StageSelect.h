@@ -6,12 +6,13 @@
 #include"FBXObject3d.h"
 #include"Object.h"
 #include<memory>
+#include"BaseScene.h"
 extern const int window_width;
 extern const int window_height;
 /// <summary>
 /// ステージセレクト
 /// </summary>
-class StageSelect
+class StageSelect:public BaseScene
 {
 public:
 	/// <summary>
@@ -22,39 +23,35 @@ public:
 	/// デスコンストラクタ
 	/// </summary>
 	~StageSelect();
-	//初期化
-	void Initialize();
 	/// <summary>
 	/// 初期化ループ
 	/// </summary>
-	void Init();
+	void Init(int stageNum)override;
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(int& stageNum,const int m_breakBox[])override;
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(const int stageNum)override;
 	/// <summary>
 	/// 影の描画
 	/// </summary>
-	void DrawShadow();
+	void ShadowDraw()override;
+	/// <summary>
+	/// 
+	/// </summary>
+	void SecondDraw()override;
 
-	void StagePlas() { m_stageNum++; }
+	void Finalize()override;
 
 	void SetBreakBoxNum(int breakBox_);
 public:
 	std::unique_ptr<LightGroup>lightGroup;
-public:
-	int GetStageNum() { return  m_stageNum; }
-
-	bool GetSelectFlag() { return  m_selectFlag; }
 private://定義
 	static const int c_stageNumMax = 3;	   //最大ステージ数
-	int  m_stageNum = 0;				   //現在のステージ
-	bool  m_selectFlag = false;			   //次のシーンへ移動
-
+	
 	ObjectData  m_selectOBJ;				//セレクト数字のOBJ
 	int  m_selectGraph[c_stageNumMax];		//セレクトOBJの画像
 	const float c_selectScale = 10.0f;	    //セレクトOBJの大きさ
@@ -78,7 +75,6 @@ private://定義
 	int  m_breakNumMax[c_stageNumMax] = { 0,0,0 };
 	int  m_breakNumTenMax[c_stageNumMax] = { 0,0,0 };
 
-	int  m_breakBox[c_stageNumMax] = { 0,0,0 };
 	int  m_breakNum[c_stageNumMax] = { 0,0,0 };
 	int  m_breakNumTen[c_stageNumMax] = { 0,0,0 };
 
@@ -90,5 +86,3 @@ private://定義
 
 	SoundData  m_boxSE = {};
 };
-
-
