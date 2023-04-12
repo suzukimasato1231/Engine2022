@@ -7,8 +7,7 @@
 #include "Pipeline.h"
 #include"Vec.h"
 #include"Singleton.h"
-#include"Texture.h"
-
+#include<Texture.h>
 extern const int window_width;
 extern const int window_height;
 /// <summary>
@@ -27,7 +26,7 @@ struct SpriteData
 	//ワールド行列
 	XMMATRIX matWorld;
 	//テクスチャ番号
-	UINT texNumber = 0;
+	TextureData texNumber = {};
 	//大きさ
 	Vec2 size = { 100,100 };
 
@@ -78,7 +77,6 @@ public://構造体
 	{
 		//GPUリソースの生成1
 		ComPtr<ID3D12Resource> constBuff;
-
 	};
 public:
 	/// <summary>

@@ -75,7 +75,7 @@ void Electricity::Draw(StageData* stageObj, const bool shadowFlag)
 	}
 #endif
 	Object::Draw(m_electOBJ, stageObj->psr, stageObj->position, stageObj->scale,
-		stageObj->rotation, Vec2(), 0, shadowFlag);
+		stageObj->rotation, Vec2(), {}, shadowFlag);
 
 	if (m_electFlag == true)
 	{
@@ -83,7 +83,7 @@ void Electricity::Draw(StageData* stageObj, const bool shadowFlag)
 		BasicPos.x *= stageObj->scale.z;
 		Vec3 BasicScale = { 1.0f,1.0f,2.7f };
 		Object::DrawUVScroll(m_electShockOBJ, stageObj->psr, stageObj->position + BasicPos * stageObj->scale, stageObj->scale * BasicScale,
-			stageObj->rotation, m_uvScroll, 0);
+			stageObj->rotation, m_uvScroll, {});
 	}
 }
 

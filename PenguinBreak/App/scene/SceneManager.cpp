@@ -65,7 +65,7 @@ void SceneManager::Initialize()
 	Player::Get()->Init();
 	//ステージ
 	Stage::Get()->Init();
-
+	//シーンをタイトルに設定
 	BaseScene* scene = new TitleScene();
 	SetNextScene(scene);
 
@@ -103,7 +103,6 @@ void SceneManager::Update()
 	//更新
 	scene_->Update(m_stageNum,m_breakBox);
 
-
 	if (Input::Get()->KeybordTrigger(DIK_T) == true)
 	{
 		m_scene = Title;
@@ -117,7 +116,7 @@ void SceneManager::Draw()
 	//影深度値取得
 	m_shadowMapFar.PreDraw(DirectXBase::Get()->GetCmandList());
 	Object::InitDraw();
-
+	//影描画
 	scene_->ShadowDraw();
 
 	m_shadowMapFar.PostDraw(DirectXBase::Get()->GetCmandList());

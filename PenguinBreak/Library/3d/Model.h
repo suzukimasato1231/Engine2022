@@ -9,6 +9,7 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include<fbxsdk.h>
+#include<Texture.h>
 // ノード
 struct Node
 {
@@ -126,6 +127,6 @@ private:
 	//ボーン配列
 	std::vector<Bone>bones;
 
-	int m_textureNum = 0;
+	TextureData m_textureNum = {};
 };
 

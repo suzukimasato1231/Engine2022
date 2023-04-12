@@ -84,7 +84,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, bool shadowFlag)
 		ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		// シェーダリソースビューをセット
-		cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(m_textureNum));
+		cmdList->SetGraphicsRootDescriptorTable(1, m_textureNum.gpuDescHandleSRV);
 	}
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);

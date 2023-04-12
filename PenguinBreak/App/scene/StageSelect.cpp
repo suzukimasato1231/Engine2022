@@ -10,8 +10,7 @@
 StageSelect::StageSelect()
 {}
 StageSelect::~StageSelect()
-{
-}
+{}
 
 void StageSelect::Init(int stageNum)
 {
@@ -34,7 +33,6 @@ void StageSelect::Init(int stageNum)
 	lightGroup->SetShadowDir(Vec3(0, 1, -1));
 	m_boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
 
-
 	m_numberGraph[0] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber1.png");
 	m_numberGraph[1] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber2.png");
 	m_numberGraph[2] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber3.png");
@@ -46,8 +44,6 @@ void StageSelect::Init(int stageNum)
 	m_numberGraph[8] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber9.png");
 	m_numberGraph[9] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber10.png");
 	m_numberGraph[10] = Texture::Get()->LoadTexture(L"Resources/UI/UISlash.png");
-
-
 
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
@@ -184,11 +180,7 @@ void StageSelect::ShadowDraw()
 }
 
 void StageSelect::SecondDraw()
-{
-}
+{}
 
 void StageSelect::Finalize()
-{
-	
-}
-
+{}

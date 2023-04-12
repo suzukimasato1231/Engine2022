@@ -30,22 +30,22 @@ void FigurineOBJ::Draw(StageData* stageObj, const bool shadowFlag)
 	if (stageObj->fileName.compare("WALL") == 0)
 	{
 		Object::Draw(m_wallOBJ, stageObj->psr, stageObj->position,
-			stageObj->scale, stageObj->rotation, Vec2(), 0, shadowFlag);
+			stageObj->scale, stageObj->rotation, Vec2(), {}, shadowFlag);
 	}
 	else if (stageObj->fileName.compare("STLON") == 0)
 	{
 		Object::Draw(m_stone, stageObj->psr, stageObj->position,
-			stageObj->scale, stageObj->rotation, Vec2(), 0, shadowFlag);
+			stageObj->scale, stageObj->rotation, Vec2(), {}, shadowFlag);
 	}
 	else if (stageObj->fileName.compare("DEADTREE") == 0)
 	{
 		Object::Draw(m_deadTree, stageObj->psr, Vec3(stageObj->position.x, stageObj->position.y, stageObj->position.z),
-			stageObj->scale, stageObj->rotation, Vec2(), 0, shadowFlag);
+			stageObj->scale, stageObj->rotation, Vec2(), {}, shadowFlag);
 	}
 	else if (stageObj->fileName.compare("ICEARCH") == 0)
 	{
 		Object::Draw(m_iceArch, stageObj->psr, stageObj->position, stageObj->scale,
-			Vec3(stageObj->rotation.x, stageObj->rotation.y - 90.0f, stageObj->rotation.z), Vec2(), 0, shadowFlag);
+			Vec3(stageObj->rotation.x, stageObj->rotation.y - 90.0f, stageObj->rotation.z), Vec2(), {}, shadowFlag);
 	}
 	else if (stageObj->fileName.compare("SIGNBOARD1") == 0)
 	{

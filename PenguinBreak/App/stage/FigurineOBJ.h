@@ -37,7 +37,7 @@ private:
 	ObjectData m_iceArch;
 	//看板
 	ObjectData m_signboard;
-	int m_tutorialGraph[2] = {};
+	TextureData m_tutorialGraph[2] = {};
 	int m_tutorialNum = SIGNBOARD1;		//チュートリアルの基本値
 
 };

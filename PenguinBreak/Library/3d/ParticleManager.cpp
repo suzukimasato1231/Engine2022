@@ -344,7 +344,7 @@ void ParticleManager::Update()
 	m_constBuff->Unmap(0, nullptr);
 }
 
-void ParticleManager::Draw(int graph)
+void ParticleManager::Draw(TextureData &graph)
 {
 	// nullptrチェック
 	assert(device);
@@ -367,7 +367,7 @@ void ParticleManager::Draw(int graph)
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, m_constBuff->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(graph));
+	cmdList->SetGraphicsRootDescriptorTable(1, graph.gpuDescHandleSRV);
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
 }

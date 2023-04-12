@@ -41,7 +41,7 @@ void Object::Delete()
 	}
 }
 
-void Object::MatWord(const ObjectData &polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, bool shadowFlag)
+void Object::MatWord(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv, bool shadowFlag)
 {
 	HRESULT result;
 
@@ -70,37 +70,37 @@ void Object::MatWord(const ObjectData &polygon, PSR& psr, const Vec3 &position, 
 		psr.rotation = rotation;
 	}
 
-	
-		const XMMATRIX& matViewProjection = Camera::Get()->GetMatViewProjection();
-		const Vec3& cameraPos = Camera::Get()->GetEye();
-		//GPU上のバッファに対応した仮想メモリを取得
-		ConstBufferDataB0* constMap = nullptr;
-		result = Object::OBJbuffer[OBJNum]->constBuffB0->Map(0, nullptr, (void**)&constMap);
-		//行列の合成   ワールド変換行列 ＊ ビュー変換行列 ＊ 射影変換行列
-		constMap->viewproj = matViewProjection;
-		if (psr.parent == nullptr)
-		{
-			constMap->world = psr.matWorld;
-		}
-		else
-		{
-			constMap->world = psr.matWorld * psr.parent->matWorld;
-		}
-		constMap->cameraPos = cameraPos;
-		constMap->uv = uv;
-		constMap->lightproj = lightGroup->GetLightMatProjection();
-		Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
+
+	const XMMATRIX& matViewProjection = Camera::Get()->GetMatViewProjection();
+	const Vec3& cameraPos = Camera::Get()->GetEye();
+	//GPU上のバッファに対応した仮想メモリを取得
+	ConstBufferDataB0* constMap = nullptr;
+	result = Object::OBJbuffer[OBJNum]->constBuffB0->Map(0, nullptr, (void**)&constMap);
+	//行列の合成   ワールド変換行列 ＊ ビュー変換行列 ＊ 射影変換行列
+	constMap->viewproj = matViewProjection;
+	if (psr.parent == nullptr)
+	{
+		constMap->world = psr.matWorld;
+	}
+	else
+	{
+		constMap->world = psr.matWorld * psr.parent->matWorld;
+	}
+	constMap->cameraPos = cameraPos;
+	constMap->uv = uv;
+	constMap->lightproj = lightGroup->GetLightMatProjection();
+	Object::OBJbuffer[OBJNum]->constBuffB0->Unmap(0, nullptr);
 
 
-		//定数バッファへデータ転送
-		ConstBufferDataB1* constMap1 = nullptr;
-		result = Object::OBJbuffer[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
-		constMap1->ambient = polygon.material.ambient;
-		constMap1->diffuse = polygon.material.diffuse;
-		constMap1->specular = polygon.material.specular;
-		constMap1->alpha = polygon.material.alpha;
-		Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
-	
+	//定数バッファへデータ転送
+	ConstBufferDataB1* constMap1 = nullptr;
+	result = Object::OBJbuffer[OBJNum]->constBuffB1->Map(0, nullptr, (void**)&constMap1);
+	constMap1->ambient = polygon.material.ambient;
+	constMap1->diffuse = polygon.material.diffuse;
+	constMap1->specular = polygon.material.specular;
+	constMap1->alpha = polygon.material.alpha;
+	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
+
 }
 
 void Object::InitDraw()
@@ -145,7 +145,7 @@ void Object::OBJConstantBuffer()
 
 }
 
-void Object::Draw(const ObjectData &polygon, PSR& psr, const Vec3& position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph, bool shadowFlag)
+void Object::Draw(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv, const TextureData& graph, bool shadowFlag)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -189,33 +189,33 @@ void Object::Draw(const ObjectData &polygon, PSR& psr, const Vec3& position, con
 	cmdList->SetGraphicsRootConstantBufferView(1, Object::OBJbuffer[OBJNum]->constBuffB1->GetGPUVirtualAddress());
 	if (shadowFlag == true)
 	{
-		if (graph > 0)
+		if (graph.s_texNum > 0)
 		{
 			//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-			cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+			cmdList->SetGraphicsRootDescriptorTable(2, graph.gpuDescHandleSRV);
 		}
-		else if (polygon.OBJTexture == 0)
+		else if (polygon.OBJTexture.s_texNum == 0)
 		{
-			//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-			cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+			//ヒープの２番目にあるSRVをルートパラメータ１番に設定//白画像を設定
+			cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetWhite().gpuDescHandleSRV);
 		}
 		else
 		{
 			//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-			cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(polygon.OBJTexture));
+			cmdList->SetGraphicsRootDescriptorTable(2, polygon.OBJTexture.gpuDescHandleSRV);
 		}
 		//ライトの描画
 		lightGroup->Draw(cmdList, 3);
 		//影画像
-		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
+		cmdList->SetGraphicsRootDescriptorTable(4, Texture::Get()->GetShadowTexture().gpuDescHandleSRV);
 	}
-	
+
 	//描画コマンド          //頂点数				//インスタンス数	//開始頂点番号		//インスタンスごとの加算番号
 	cmdList->DrawIndexedInstanced((UINT)polygon.indicesNum, 1, 0, 0, 0);
 	OBJNum++;
 }
 
-void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv)
+void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -274,7 +274,7 @@ void Object::MatWordUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &po
 	//Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph)
+void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv, const TextureData &graph)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -307,20 +307,20 @@ void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &posit
 	//ヒープの先頭にあるCBVをルートパラメータ０番に設定
 	cmdList->SetGraphicsRootConstantBufferView(0, Object::OBJbuffer[OBJNum]->constBuffB0->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(1, Object::OBJbuffer[OBJNum]->constBuffB1->GetGPUVirtualAddress());
-	if (graph > 0)
+	if (graph.s_texNum > 0)
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+		cmdList->SetGraphicsRootDescriptorTable(2, graph.gpuDescHandleSRV);
 	}
-	else if (polygon.OBJTexture == 0)
+	else if (polygon.OBJTexture.s_texNum == 0)
 	{
-		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+		//ヒープの２番目にあるSRVをルートパラメータ１番に設定//白画像を設定
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetWhite().gpuDescHandleSRV);
 	}
 	else
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(polygon.OBJTexture));
+		cmdList->SetGraphicsRootDescriptorTable(2, polygon.OBJTexture.gpuDescHandleSRV);
 	}
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
@@ -330,7 +330,7 @@ void Object::DrawUVScroll(const ObjectData& polygon, PSR& psr, const Vec3 &posit
 	OBJNum++;
 }
 
-void Object::NoShadowMatWorld(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv)
+void Object::NoShadowMatWorld(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv)
 {
 	HRESULT result;
 	if (psr.position.x != position.x || psr.position.y != position.y || psr.position.z != position.z
@@ -388,7 +388,7 @@ void Object::NoShadowMatWorld(const ObjectData& polygon, PSR& psr, const Vec3 &p
 	Object::OBJbuffer[OBJNum]->constBuffB1->Unmap(0, nullptr);
 }
 
-void Object::NoShadowDraw(const ObjectData& polygon, PSR& psr, const Vec3 &position, const Vec3 &scale, const Vec3 &rotation, const Vec2 &uv, int graph)
+void Object::NoShadowDraw(const ObjectData& polygon, PSR& psr, const Vec3& position, const Vec3& scale, const Vec3& rotation, const Vec2& uv,const TextureData& graph)
 {
 	if (OBJNum >= Object::OBJbuffer.size())
 	{
@@ -421,20 +421,20 @@ void Object::NoShadowDraw(const ObjectData& polygon, PSR& psr, const Vec3 &posit
 	//ヒープの先頭にあるCBVをルートパラメータ０番に設定
 	cmdList->SetGraphicsRootConstantBufferView(0, Object::OBJbuffer[OBJNum]->constBuffB0->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(1, Object::OBJbuffer[OBJNum]->constBuffB1->GetGPUVirtualAddress());
-	if (graph > 0)
+	if (graph.s_texNum > 0)
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+		cmdList->SetGraphicsRootDescriptorTable(2, graph.gpuDescHandleSRV);
 	}
-	else if (polygon.OBJTexture == 0)
+	else if (polygon.OBJTexture.s_texNum == 0)
 	{
-		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(graph));
+		//ヒープの２番目にあるSRVをルートパラメータ１番に設定//白画像を設定
+		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetWhite().gpuDescHandleSRV);
 	}
 	else
 	{
 		//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-		cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(polygon.OBJTexture));
+		cmdList->SetGraphicsRootDescriptorTable(2, polygon.OBJTexture.gpuDescHandleSRV);
 	}
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);

@@ -68,13 +68,13 @@ private:
 	//箱の大きさ
 	const Vec3 c_breakBoxScale = { 20.0f,20.0f,20.0f };
 	//壊れる箱の画像
-	int m_normalBoxGraph = 0;
+	TextureData m_normalBoxGraph = {};
 	//固い箱の画像
-	int m_hardBoxGraph = 0;
+	TextureData m_hardBoxGraph = {};
 	//ジャンプの箱の画像
-	int m_jumpBoxgraph = 0;
+	TextureData m_jumpBoxgraph = {};
 	//爆弾の箱の画像
-	int m_bombBoxGraph = 0;
+	TextureData m_bombBoxGraph = {};
 	Vec3 m_bombBoxAngle = {};							//爆弾角度
 	const Vec3 c_bombSpeedAngle = { 0.0f,2.0f,0.0f };	//回転速度
 	bool m_bombBoxFlag = false;							//爆弾演出フラグ

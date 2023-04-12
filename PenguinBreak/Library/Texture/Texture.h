@@ -1,7 +1,16 @@
 #pragma once
 #include <d3dx12.h>
 #include"Singleton.h"
-#include"Sprite.h"
+#include<dxgi1_6.h>
+#include "Pipeline.h"
+//テクスチャデータ
+struct TextureData
+{
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
+	ComPtr<ID3D12Resource> texbuff;
+	int s_texNum = 0;
+};
 /// <summary>
 /// テクスチャクラス
 /// </summary>
@@ -13,14 +22,7 @@ public:
 	friend Singleton<Texture>;
 public:
 	static ID3D12Device* dev;					//デバイス
-	static const int textureMax = 1024;
-	//テクスチャデータ
-	struct TextureData
-	{
-		D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
-		D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
-		ComPtr<ID3D12Resource> texbuff;
-	};
+	static const int textureMax = 2024;
 
 	Texture();
 
@@ -28,11 +30,11 @@ public:
 	//初期化
 	void Init(ID3D12Device* dev);
 	//画像読み込み
-	int LoadTexture(const wchar_t* filename);
+	TextureData LoadTexture(const wchar_t* filename);
 	//OBJ画像読み込み
-	int OBJLoadTexture(const std::string& directoryPath, const std::string& filename);
+	TextureData OBJLoadTexture(const std::string& directoryPath, const std::string& filename);
 
-	int FbxLoadTexture(const DirectX::Image* img, CD3DX12_RESOURCE_DESC texresDesc);
+	TextureData FbxLoadTexture(const DirectX::Image* img, CD3DX12_RESOURCE_DESC texresDesc);
 
 	//影用の深度値保存
 	void LoadShadowTexture(ID3D12Resource* texbuff);
@@ -40,33 +42,28 @@ public:
 	void LoadCameraTexture(ID3D12Resource* texbuff);
 	//ポストエフェクト保存
 	void LoadPostEfectTexture(ID3D12Resource* texbuff);
-	//SRVを獲得
-	const D3D12_GPU_DESCRIPTOR_HANDLE &GetGPUSRV(int i);
-
-	ID3D12Resource* GetTexbuff(int i);
 	//desc獲得
 	ID3D12DescriptorHeap* GetDescHeap();
 
-	int GetShadowTexture() { return m_shadowTexture; }
+	TextureData GetShadowTexture() { return m_shadowData; }
 
-	int GetCameraDepth() { return m_cameraDepth; }
+	TextureData GetCameraDepth() { return m_cameraDepth; }
 
-	int GetPostEfect() { return m_postEfect; }
-	//テクスチャ解放
-	void DeleteTexture();
+	TextureData GetPostEfect() { return m_postEfect; }
+	//白画像
+	TextureData GetWhite() { return m_white; }
 private:
 	//定数バッファ用のデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap >m_descHeap = { nullptr };
 
 	//テクスチャデータの作成
-	std::vector <TextureData*>textureData;
-
 	int m_texNum = 0;
-
-	int m_shadowTexture = 0;
-
-	int m_cameraDepth = 0;
-
-	int m_postEfect = 0;
+	//白画像保存用
+	TextureData m_white = {};
+	//影保存用
+	TextureData m_shadowData = {};
+	//ポストエフェクト保存
+	TextureData m_postEfect = {};
+	//カメラ深度
+	TextureData m_cameraDepth = {};
 };
-

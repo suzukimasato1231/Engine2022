@@ -13,7 +13,7 @@ private:
 		Vec3 accel = {};
 		Vec3 angle = {};
 		Vec3 anglePlas = {};
-		int graph = 0;
+		TextureData graph = {};
 		int framNow = 0;
 		int framMax;
 	};
@@ -30,7 +30,7 @@ public:
 	void Draw();
 	//çÏê¨
 	void Create(const ObjectData& objData, const Vec3& pos, const  Vec3& velocity,
-		const  Vec3& accel, const Vec3& anglePlas, const  int time, const int graph = 0);
+		const  Vec3& accel, const Vec3& anglePlas, const  int time, const TextureData &graph = {});
 
 	static Particle3D* Create();
 private:

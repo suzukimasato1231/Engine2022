@@ -53,7 +53,7 @@ private://定義
 	static const int c_stageNumMax = 3;	   //最大ステージ数
 	
 	ObjectData  m_selectOBJ;				//セレクト数字のOBJ
-	int  m_selectGraph[c_stageNumMax];		//セレクトOBJの画像
+	TextureData  m_selectGraph[c_stageNumMax]={};		//セレクトOBJの画像
 	const float c_selectScale = 10.0f;	    //セレクトOBJの大きさ
 	Vec3  m_selectPos[c_stageNumMax];		//セレクトOBJの座標
 	Box  m_selectBox[c_stageNumMax];		//セレクトOBJのBOX
@@ -64,9 +64,9 @@ private://定義
 	ObjectData  m_flameOBJ = {};			//フレーム
 	PSR  m_boxBreakPSR[c_stageNumMax] = {};	//壊した箱のPSR保存
 	PSR  m_flamePSR[c_stageNumMax] = {};	//フレームPSR
-	int  m_boxBreakGraph = 0;				//壊した箱の画像
-	int  m_boxFramGraph = 0;
-	int  m_numberGraph[11] = {};			//数字の画像
+	TextureData  m_boxBreakGraph = {};				//壊した箱の画像
+	TextureData  m_boxFramGraph = {};
+	TextureData  m_numberGraph[11] = {};			//数字の画像
 	const Vec3 c_numberScale = { 0.3f,0.3f,0.3f };//数字の大きさ
 	const Vec3 c_numberAngle = {};                //数字の角度
 

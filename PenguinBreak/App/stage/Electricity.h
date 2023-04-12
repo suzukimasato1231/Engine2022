@@ -51,7 +51,7 @@ private:
 	int m_electTime = 0;			//切り替えまでの時間
 	//電気びりびり
 	std::unique_ptr<ParticleManager>m_electParicle = nullptr;
-	int m_electParicleGraph = 0;
+	TextureData m_electParicleGraph = {};
 
 	const Vec2 c_uvScrollSpeed = { 0.0f, 0.002f };	//uvスクロール速度
 	Vec2 m_uvScroll = { 0.0f ,0.0f };				//uv位置

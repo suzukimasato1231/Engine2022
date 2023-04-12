@@ -3,6 +3,7 @@
 #include"FBXObject3d.h"
 #include<Audio.h>
 #include"BaseScene.h"
+#include<Sprite.h>
 /// <summary>
 /// シーン移動
 /// </summary>
@@ -28,10 +29,6 @@ public:
 	/// デスコンストラクタ
 	/// </summary>
 	~ResultScene();
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
 	/// <summary>
 	/// ループ初期化
 	/// </summary>
@@ -75,9 +72,9 @@ private:
 	ObjectData  m_floorObj;
 
 	//壊れた箱リザルト
-	SpriteData  m_uiNumber[10];
-	SpriteData  m_uiSlash;
-	SpriteData  m_boxGraph;
+	SpriteData  m_uiNumber[10]={};
+	SpriteData  m_uiSlash={};
+	SpriteData  m_boxGraph={};
 
 	SpriteData  m_clearGraph;
 	SpriteData  m_selectGraph;

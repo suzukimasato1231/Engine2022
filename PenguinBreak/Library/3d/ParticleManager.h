@@ -7,6 +7,7 @@
 #include<forward_list>
 #include"Camera.h"
 #include"Pipeline.h"
+#include<Texture.h>
 /// <summary>
 /// パーティクルマネジャー
 /// </summary>
@@ -143,7 +144,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(int graph);
+	void Draw(TextureData &graph);
 
 private: // メンバ変数
 

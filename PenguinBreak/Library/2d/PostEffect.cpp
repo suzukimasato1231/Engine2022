@@ -263,10 +263,10 @@ void PostEffect::DrawPost(SpriteData& sprite, const Vec2 &position, float width,
 
 	//シェーダーリソースビューをセット
 	
-	Sprite::cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetGPUSRV(Texture::Get()->GetPostEfect()));
+	Sprite::cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetPostEfect().gpuDescHandleSRV);
 
 	//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-	Sprite::cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetGPUSRV(Texture::Get()->GetCameraDepth()));
+	Sprite::cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetCameraDepth().gpuDescHandleSRV);
 
 
 	//ポリゴンの描画（４頂点で四角形）

@@ -39,7 +39,6 @@ void TitleScene::Init(int stageNum)
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, 0));
 
-
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
@@ -92,10 +91,7 @@ void TitleScene::ShadowDraw()
 }
 
 void TitleScene::SecondDraw()
-{
-}
+{}
 
 void TitleScene::Finalize()
-{
-	
-}
+{}

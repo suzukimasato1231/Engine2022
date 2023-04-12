@@ -7,12 +7,7 @@
 ResultScene::ResultScene()
 {}
 ResultScene::~ResultScene()
-{
-
-}
-void ResultScene::Initialize()
-{
-}
+{}
 void ResultScene::Init(int stageNum)
 {
 	m_boxGraph = Sprite::Get()->SpriteCreate(L"Resources/UI/UIBox.png");
@@ -194,10 +189,7 @@ void ResultScene::ShadowDraw()
 }
 
 void ResultScene::SecondDraw()
-{
-}
+{}
 
 void ResultScene::Finalize()
-{
-	
-}
+{}

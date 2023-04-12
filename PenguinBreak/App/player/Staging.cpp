@@ -10,7 +10,7 @@ void Staging::Init()
 {
 	particle = std::make_unique<ParticleManager>();
 	particle->Initialize();
-	
+
 	paricle3D = std::make_unique <Particle3D>();
 
 	m_fallDown = Shape::CreateSquare(1.0f, 1.0f, 1.0f);
@@ -24,7 +24,7 @@ void Staging::Init()
 void Staging::Update()
 {
 	particle->Update();
-	
+
 	paricle3D->Update();
 }
 
@@ -97,7 +97,7 @@ void Staging::CreateFallDown(const Vec3& pPos)
 		velocity.x += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.y += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
 		velocity.z += (float)rand() / RAND_MAX * md_vec - md_vec / 2.0f;
-		paricle3D->Create(m_fallDown,pos, velocity, accel,anglePlas, particleTime);
+		paricle3D->Create(m_fallDown, pos, velocity, accel, anglePlas, particleTime);
 	}
 }
 
@@ -122,10 +122,16 @@ void Staging::CreateStart(const Vec3& pPos)
 		velocity.z += md_vec.z / particleTime;
 
 		int graph_num = rand() % 3;
-
-		if (graph_num == 0) { graph_num = m_start_color[0]; }
-		else if (graph_num == 1) { graph_num = m_start_color[1]; }
-		else { graph_num = m_start_color[2]; }
-		paricle3D->Create(m_startObject,pos, velocity, accel,anglePlas, particleTime, graph_num);
+		TextureData texture = {};
+		if (graph_num == 0) {
+			texture = m_start_color[0];
+		}
+		else if (graph_num == 1) {
+			texture = m_start_color[1];
+		}
+		else {
+			texture = m_start_color[2];
+		}
+		paricle3D->Create(m_startObject, pos, velocity, accel, anglePlas, particleTime, texture);
 	}
 }

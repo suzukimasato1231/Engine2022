@@ -96,6 +96,6 @@ void DangerFish::Draw(StageData* stageObj, const bool shadowFlag)
 	}
 #endif
 	Object::Draw(m_dangerFishOBJ, stageObj->psr, stageObj->actionPos, stageObj->scale,
-		m_rotation, Vec2(), 0, shadowFlag);
+		m_rotation, Vec2(), {}, shadowFlag);
 }
 

@@ -211,7 +211,7 @@ void ShadowMap::Draw(ID3D12GraphicsCommandList* cmdList)
 
 	//SRV
 	cmdList->SetGraphicsRootDescriptorTable(
-		1, Texture::Get()->GetGPUSRV(Texture::Get()->GetShadowTexture()));
+		1, Texture::Get()->GetShadowTexture().gpuDescHandleSRV);
 	//•`‰æƒRƒ}ƒ“ƒh
 	cmdList->DrawInstanced(4, 1, 0, 0);
 #endif

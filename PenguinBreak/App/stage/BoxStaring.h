@@ -50,7 +50,7 @@ private:
 	//箱が壊れるパーティクル
 	std::unique_ptr<ParticleManager>particle2D;
 	Vec3 m_breakPos = {};
-	int m_graph = 0;
+	TextureData m_graph = {};
 	bool m_breakBoxFlag = false;
 	//爆弾箱は壊れるパーティクル
 	Vec3 m_bombPos = {};
@@ -61,6 +61,6 @@ private:
 	//壊れた箱が飛び散る
 	std::unique_ptr<Particle3D>particle3D;
 	ObjectData m_boxData;
-	int m_boxGraph = 0;
+	TextureData m_boxGraph = {};
 };
 

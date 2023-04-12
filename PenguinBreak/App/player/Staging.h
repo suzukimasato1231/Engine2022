@@ -17,9 +17,9 @@ private://メンバ変数
 	std::unique_ptr<ParticleManager> particle = nullptr;
 	//プレイヤー登場時の演出
 	ObjectData  m_startObject;
-	int  m_start_color[3];
+	TextureData  m_start_color[3]={};
 
-	int  m_graph = 0;
+	TextureData  m_graph = {};
 public://メンバ関数
 	/// <summary>
 	/// コンストラクタ

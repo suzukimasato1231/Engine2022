@@ -48,7 +48,7 @@ private:
 private://定義
 	ObjectData  m_box;							//箱OBJ
 	PSR  m_boxPsr = {};							//箱PSR保存
-	int  m_boxGraph;							//箱画像
+	TextureData  m_boxGraph;							//箱画像
 
 	//ゴール時の演出ハンドサイン
 	std::unique_ptr<Model> m_penginModel;		  //ペンギンモデル

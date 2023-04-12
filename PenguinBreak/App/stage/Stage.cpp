@@ -148,7 +148,7 @@ void Stage::Draw(bool shadowFlag)
 		else if (s->fileName.compare("FLOORNORMAL") == 0)
 		{
 			Object::Draw(m_floorOBJ, s->psr, s->position,
-				s->scale, s->rotation, Vec2(), 0, shadowFlag);
+				s->scale, s->rotation, Vec2(), {}, shadowFlag);
 		}
 		else if (s->fileName.compare("GOAL") == 0)
 		{

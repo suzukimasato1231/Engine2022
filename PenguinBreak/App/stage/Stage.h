@@ -59,7 +59,7 @@ private:
 private://è∞ä÷òA
 	//ê·ÇÃè∞
 	ObjectData m_floorOBJ;
-	int m_floorGraph = 0;
+	TextureData m_floorGraph = {};
 	//ìÆÇ≠è∞
 	MoveFloor m_moveFloor;
 
@@ -89,7 +89,7 @@ private:
 
 
 	ObjectData m_water = {};
-	int m_waterGraph = 0;
+	TextureData m_waterGraph = {};
 	Vec2 m_waterUV = {};
 
 	PSR m_blackPsr[6][4] = {};

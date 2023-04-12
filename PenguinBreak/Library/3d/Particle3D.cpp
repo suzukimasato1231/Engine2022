@@ -39,7 +39,7 @@ void Particle3D::Draw()
 {
 	for (auto p : particle)
 	{
-		if (p->graph == 0)
+		if (p->graph.s_texNum == 0)
 		{
 			Object::NoShadowDraw(p->objData, p->psr,
 				p->position, Vec3(1.0f, 1.0f, 1.0f), p->angle, Vec2(), p->graph);
@@ -52,7 +52,7 @@ void Particle3D::Draw()
 	}
 }
 
-void Particle3D::Create(const ObjectData& objData, const Vec3& pos, const Vec3& velocity, const Vec3& accel, const Vec3& anglePlas, const int time, const int graph)
+void Particle3D::Create(const ObjectData& objData, const Vec3& pos, const Vec3& velocity, const Vec3& accel, const Vec3& anglePlas, const int time, const TextureData& graph)
 {
 	particle.push_back(new ParticleData);
 	size_t num = particle.size() - 1;

@@ -39,7 +39,7 @@ public:
 	void Draw(StageData* floorData, const bool shadowFlag);
 private:
 	ObjectData m_pitfallOBJ;						//床OBJ
-	int m_pitfallGraph = 0;							//床画像
+	TextureData m_pitfallGraph = {};							//床画像
 	const int c_pitfallTime = 70;					//回転時間
 	const int c_pitfallSpeed = 18;					//回転速度
 	const Vec3 c_pitfallScale = { 25.0f,5.0f,25.0f };//	描画スケール

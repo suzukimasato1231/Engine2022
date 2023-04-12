@@ -1,11 +1,11 @@
 #include "Sprite.h"
 #include"ShaderManager.h"
+#include<Texture.h>
 ID3D12Device* Sprite::dev = nullptr;
 ID3D12GraphicsCommandList* Sprite::cmdList = nullptr;
 
 Sprite::Sprite()
-{
-}
+{}
 Sprite::~Sprite()
 {
 	for (int i = (int)constBuffer.size() - 1; i >= 0; i--)
@@ -18,7 +18,6 @@ Sprite::~Sprite()
 void Sprite::StaticInit(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 {
 	Sprite::dev = dev;
-
 	Sprite::cmdList = cmdList;
 }
 
@@ -88,10 +87,10 @@ SpriteData Sprite::SpriteCreate(const wchar_t* filename)
 
 
 	//指定番号の画像が読み込み済みなら
-	if (Texture::Get()->GetTexbuff(sprite.texNumber))
+	if (sprite.texNumber.texbuff)
 	{
 		//テクスチャ情報を取得
-		D3D12_RESOURCE_DESC resDesc = Texture::Get()->GetTexbuff(sprite.texNumber)->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = sprite.texNumber.texbuff->GetDesc();
 		//スプライトの大きさを画像の解像度に合わせる
 		sprite.size = { (float)resDesc.Width,(float)resDesc.Height };
 	}
@@ -118,7 +117,6 @@ SpriteData Sprite::SpriteCreate(const wchar_t* filename)
 	constBuffer[constBuffer.size() - 1]->constBuff->Unmap(0, nullptr);
 
 	return sprite;
-
 }
 
 //スプライト単体頂点バッファの転送
@@ -149,10 +147,10 @@ void Sprite::SpriteTransferVertexBuffer(const SpriteData& sprite)
 
 	//uv計算
 	//指定番号の画像が読み込み済みなら
-	if (Texture::Get()->GetTexbuff(sprite.texNumber) && !sprite.texSize.x == 0 && !sprite.texSize.y == 0)
+	if (sprite.texNumber.texbuff && !sprite.texSize.x == 0 && !sprite.texSize.y == 0)
 	{
 		//テクスチャ情報取得
-		D3D12_RESOURCE_DESC resDesc = Texture::Get()->GetTexbuff(sprite.texNumber)->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = sprite.texNumber.texbuff->GetDesc();
 
 		float tex_left = sprite.texLeftTop.x / resDesc.Width;
 		float tex_right = (sprite.texLeftTop.x + sprite.texSize.x) / resDesc.Width;
@@ -314,7 +312,6 @@ void Sprite::Draw(SpriteData& sprite, const Vec2 &position, const float width, c
 		CreateConstBuffer();
 	}
 
-
 	Update(sprite, position, width, height, anchorpoint, color, isFlipX, isFlipY);
 	//頂点バッファをセット
 	cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
@@ -325,7 +322,7 @@ void Sprite::Draw(SpriteData& sprite, const Vec2 &position, const float width, c
 	cmdList->SetGraphicsRootDescriptorTable(1,
 		CD3DX12_GPU_DESCRIPTOR_HANDLE(
 			Texture::Get()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
-			sprite.texNumber,
+			sprite.texNumber.s_texNum,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 
 	//ポリゴンの描画（４頂点で四角形）
@@ -373,7 +370,7 @@ void Sprite::DebugDraw(SpriteData& sprite)
 	cmdList->SetGraphicsRootDescriptorTable(1,
 		CD3DX12_GPU_DESCRIPTOR_HANDLE(
 			Texture::Get()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
-			sprite.texNumber,
+			sprite.texNumber.s_texNum,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 
 	//ポリゴンの描画（４頂点で四角形）
