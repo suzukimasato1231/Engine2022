@@ -29,7 +29,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(int& stageNum, const int m_breakBox[])override;
+	void Update(int& stageNum, int m_breakBox[])override;
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -48,7 +48,9 @@ private:
 private://定義
 	ObjectData  m_box;							//箱OBJ
 	PSR  m_boxPsr = {};							//箱PSR保存
-	TextureData  m_boxGraph;							//箱画像
+	TextureData  m_boxGraph;					//箱画像
+
+	SoundData  m_buttonSE = {};                 //ボタンSE
 
 	//ゴール時の演出ハンドサイン
 	std::unique_ptr<Model> m_penginModel;		  //ペンギンモデル

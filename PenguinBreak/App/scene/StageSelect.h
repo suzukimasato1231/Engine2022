@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// XV
 	/// </summary>
-	void Update(int& stageNum,const int m_breakBox[])override;
+	void Update(int& stageNum, int m_breakBox[])override;
 	/// <summary>
 	/// •`‰æ
 	/// </summary>
@@ -45,8 +45,6 @@ public:
 	void SecondDraw()override;
 
 	void Finalize()override;
-
-	void SetBreakBoxNum(int breakBox_);
 public:
 	std::unique_ptr<LightGroup>lightGroup;
 private://’è‹`

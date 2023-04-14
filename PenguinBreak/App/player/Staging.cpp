@@ -19,6 +19,9 @@ void Staging::Init()
 	m_start_color[0] = Texture::Get()->LoadTexture(L"Resources/Paricle/startWhite.png");
 	m_start_color[1] = Texture::Get()->LoadTexture(L"Resources/Paricle/starBlack.png");
 	m_start_color[2] = Texture::Get()->LoadTexture(L"Resources/Paricle/startYellow.png");
+
+	m_graph = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
+
 }
 
 void Staging::Update()

@@ -6,10 +6,14 @@
 #include"Input.h"
 #include"Texture.h"
 #include"../App/player/Player.h"
+#include"StageSelect.h"
+#include"SceneManager.h"
 TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
-{}
+{
+	//Audio::SoundUnload(&m_buttonSE);
+}
 
 void TitleScene::Init(int stageNum)
 {
@@ -25,6 +29,8 @@ void TitleScene::Init(int stageNum)
 	m_penginModel = std::make_unique<Model>();
 	m_penginModel = std::unique_ptr<Model>(model1);
 
+
+	m_buttonSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
 	//3Dオブジェクトの生成とモデルのセット
 	m_penginHandFbx = std::make_unique<FBXObject3d>();
 	m_penginHandFbx->Initialize();
@@ -46,7 +52,7 @@ void TitleScene::Init(int stageNum)
 	m_penginHandFbx->PlayAnimation(true);
 }
 
-void TitleScene::Update(int& stageNum, const int m_breakBox[])
+void TitleScene::Update(int& stageNum,int m_breakBox[])
 {
 	m_buttonTime++;
 	if (m_buttonTime >= 60)
@@ -54,6 +60,14 @@ void TitleScene::Update(int& stageNum, const int m_breakBox[])
 		m_buttonTime = 0;
 	}
 	lightGroup->Update();
+
+	if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
+	{
+		BaseScene* scene = new StageSelect();
+		sceneManager_->SetNextScene(scene);
+		Audio::Get()->SoundSEPlayWave(m_buttonSE);
+	}
+
 }
 
 void TitleScene::Draw(const int stageNum)

@@ -4,6 +4,10 @@
 #include "Input.h"
 #include"Shape.h"
 #include"PostEffect.h"
+#include"GameScene.h"
+#include"TitleScene.h"
+#include"StageSelect.h"
+#include"ResultScene.h"
 SceneManager::SceneManager()
 {}
 SceneManager::~SceneManager()
@@ -12,11 +16,8 @@ SceneManager::~SceneManager()
 	Audio::Get()->xAudio2.Reset();
 	//音データ解放
 	Audio::SoundUnload(&m_bgm);
-	Audio::SoundUnload(&m_buttonSE);
-
 	scene_->Finalize();
 	delete scene_;
-
 }
 void SceneManager::Initialize()
 {
@@ -74,7 +75,6 @@ void SceneManager::Initialize()
 
 	//BGM
 	m_bgm = Audio::SoundLoadWave("Resources/sound/BGM/bgm.wav");
-	m_buttonSE = Audio::SoundLoadWave("Resources/sound/SE/menu.wav");
 	Audio::Get()->SoundBGMPlayLoopWave(m_bgm, 0);
 	Audio::Get()->SetVolume(0.02f);
 }
@@ -87,7 +87,7 @@ void SceneManager::Update()
 	SceneChange();
 
 	//次のシーンの予約があるなら
-	if (nextScene_)
+	if (m_changeSceneFlag == ChangeEnd && nextScene_)
 	{
 		if (scene_)
 		{
@@ -97,15 +97,16 @@ void SceneManager::Update()
 		//シーン切り替え
 		scene_ = nextScene_;
 		nextScene_ = nullptr;
+
+		scene_->SetSceneManager(this);
 		//次のシーンを初期化する
 		scene_->Init(m_stageNum);
 	}
 	//更新
-	scene_->Update(m_stageNum,m_breakBox);
+	scene_->Update(m_stageNum, m_breakBox);
 
 	if (Input::Get()->KeybordTrigger(DIK_T) == true)
 	{
-		m_scene = Title;
 		BaseScene* scene = new TitleScene();
 		SetNextScene(scene);
 	}
@@ -118,7 +119,6 @@ void SceneManager::Draw()
 	Object::InitDraw();
 	//影描画
 	scene_->ShadowDraw();
-
 	m_shadowMapFar.PostDraw(DirectXBase::Get()->GetCmandList());
 
 
@@ -148,67 +148,10 @@ void SceneManager::Delete()
 
 void SceneManager::SceneChange()
 {
-	//シーン切り替え
-	switch (m_scene)
+	//シーンチェンジ開始
+	if (nextScene_ && m_changeSceneFlag == ChangeEmpty)
 	{
-	case Title:
-		if (m_changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
-		{
-			m_changeSceneFlag = ChangeFirst;
-			m_sceneMe = SelectScene;
-			Audio::Get()->SoundSEPlayWave(m_buttonSE);
-		}
-		break;
-	case SelectScene:
-		if (m_changeSceneFlag == ChangeStand && scene_->GetSceneFlag() == true)
-		{
-			m_sceneMe = Game;
-			m_changeSceneFlag = ChangeFirst;
-		}
-		break;
-	case Game:
-		if (m_changeSceneFlag == ChangeStand && scene_->GetSceneFlag() == true)
-		{
-			if (scene_->GetSceneNum() == static_cast<int>(ChangeStatus::ChangeClear))
-			{
-				m_sceneMe = Result;
-			}
-			else if (scene_->GetSceneNum() == static_cast<int>(ChangeStatus::ChangeRetry))
-			{
-				m_sceneMe = Game;
-			}
-			else if (scene_->GetSceneNum() == static_cast<int>(ChangeStatus::ChangeSelect))
-			{
-				m_sceneMe = SelectScene;
-			}
-			m_changeSceneFlag = ChangeFirst;
-		}
-		break;
-	case Result:
-		if (m_changeSceneFlag == ChangeStand && (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA)))
-		{
-			if (scene_->GetSceneNum() == static_cast<int>(ResultNext::ResultNextStage) && m_stageNum != 3)
-			{
-				m_sceneMe = Game;
-				if (Stage::Get()->GetBlockNum() > m_breakBox[m_stageNum - 1])
-				{
-					m_breakBox[m_stageNum - 1] = Stage::Get()->GetBlockNum();
-				}
-			}
-			if (scene_->GetSceneNum() == static_cast<int>(ResultNext::ResultSelect) || m_stageNum == 3)
-			{
-				m_sceneMe = SelectScene;
-				if (Stage::Get()->GetBlockNum() > m_breakBox[m_stageNum - 1])
-				{
-					m_breakBox[m_stageNum - 1] = Stage::Get()->GetBlockNum();
-				}
-			}
-			m_changeSceneFlag = ChangeFirst;
-			Audio::Get()->SoundSEPlayWave(m_buttonSE);
-		}
-		break;
-	default:
-		break;
+		m_changeSceneFlag = ChangeFirst;
 	}
 
 	//シーンチェンジの色
@@ -217,46 +160,7 @@ void SceneManager::SceneChange()
 		m_changeSceneColor += Vec4(0.0f, 0.0f, 0.0f, 0.1f);
 		if (m_changeSceneColor.w >= 1.0f)
 		{
-			BaseScene* scene = nullptr;
 			m_changeSceneFlag = ChangeEnd;
-			switch (m_scene)
-			{
-			case Title:
-				scene = new StageSelect();
-				break;
-			case SelectScene:
-				scene = new GameScene();
-				break;
-			case Game:
-				if (m_sceneMe == Result)
-				{
-					scene = new ResultScene();
-				}
-				else if (m_sceneMe == Game)
-				{
-					scene = new GameScene();
-				}
-				else if (m_sceneMe == SelectScene)
-				{
-					scene = new StageSelect();
-				}
-				break;
-			case Result:
-				if (m_sceneMe == Game)
-				{
-					m_stageNum++;
-					scene = new GameScene();
-				}
-				else if (m_sceneMe == SelectScene)
-				{
-					scene = new StageSelect();
-				}
-				break;
-			default:
-				break;
-			}
-			SetNextScene(scene);
-			m_scene = m_sceneMe;
 		}
 	}
 	else if (m_changeSceneFlag == ChangeEnd)
@@ -264,7 +168,7 @@ void SceneManager::SceneChange()
 		m_changeSceneColor -= Vec4(0.0f, 0.0f, 0.0f, 0.1f);
 		if (m_changeSceneColor.w <= 0.0f)
 		{
-			m_changeSceneFlag = ChangeStand;
+			m_changeSceneFlag = ChangeEmpty;
 		}
 	}
 }

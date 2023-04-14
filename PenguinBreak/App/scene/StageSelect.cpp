@@ -7,6 +7,8 @@
 #include"../App/player/Player.h"
 #include"Object.h"
 #include"../App/stage/Stage.h"
+#include"SceneManager.h"
+#include"GameScene.h"
 StageSelect::StageSelect()
 {}
 StageSelect::~StageSelect()
@@ -31,7 +33,7 @@ void StageSelect::Init(int stageNum)
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,0,1,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, -1));
-	m_boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
+	//m_boxSE = Audio::SoundLoadWave("Resources/sound/SE/boxBreak.wav");
 
 	m_numberGraph[0] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber1.png");
 	m_numberGraph[1] = Texture::Get()->LoadTexture(L"Resources/UI/UINumber2.png");
@@ -69,7 +71,7 @@ void StageSelect::Init(int stageNum)
 }
 
 
-void StageSelect::Update(int& stageNum, const int m_breakBox[])
+void StageSelect::Update(int& stageNum,  int m_breakBox[])
 {
 	//ステージ選択
 	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3(0.0f, 15.0f, -130.0f));
@@ -84,7 +86,7 @@ void StageSelect::Update(int& stageNum, const int m_breakBox[])
 				m_productionFlag[i] = true;
 				m_productionTime = c_productionTimeMax;
 				Player::Get()->JumpPoweZero();
-				Audio::Get()->SoundSEPlayWave(m_boxSE);
+				//Audio::Get()->SoundSEPlayWave(m_boxSE);
 			}
 			else
 			{
@@ -123,7 +125,8 @@ void StageSelect::Update(int& stageNum, const int m_breakBox[])
 
 			if (m_productionTime <= 0)
 			{
-				m_sceneFlag = true;
+				BaseScene* scene = new GameScene();
+				sceneManager_->SetNextScene(scene);
 			}
 		}
 	}

@@ -36,7 +36,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(int& stageNum, const int m_breakBox[])override;
+	void Update(int& stageNum, int m_breakBox[])override;
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -96,4 +96,5 @@ private:
 	//音データ
 	SoundData  m_decisionSE = {};
 	SoundData  m_selectSE = {};
+	SoundData  m_buttonSE = {};                 //ボタンSE
 };

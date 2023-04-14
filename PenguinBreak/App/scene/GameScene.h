@@ -10,12 +10,7 @@
 #include"BaseScene.h"
 extern const int window_width;
 extern const int window_height;
-enum class ChangeStatus
-{
-	ChangeClear,
-	ChangeRetry,
-	ChangeSelect,
-};
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -23,10 +18,11 @@ class GameScene:public BaseScene
 {
 private:
 	//ゲームオーバーセレクト
-	enum GameOverSelect
+	enum  ChangeStatus
 	{
-		GameOverRetry = 1,
-		GameOverSelect,
+		ChangeClear,
+		ChangeRetry,
+		ChangeSelect,
 	};
 public:
 	/// <summary>
@@ -41,7 +37,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(int& stageNum, const int m_breakBox[])override;
+	void Update(int& stageNum,  int m_breakBox[])override;
 	/// <summary>
 	/// 描画
 	/// </summary>

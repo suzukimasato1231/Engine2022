@@ -1,12 +1,11 @@
 #pragma once
-#include"GameScene.h"
-#include"TitleScene.h"
-#include"StageSelect.h"
-#include"ResultScene.h"
 #include "ShadowMap.h"
-
+#include"BaseScene.h"
+#include"Audio.h"
+#include<Sprite.h>
 extern const int window_width;
 extern const int window_height;
+
 class SceneManager :public Singleton<SceneManager>
 {
 private:
@@ -29,6 +28,7 @@ private:
 		ChangeStand,
 		ChangeFirst,
 		ChangeEnd,
+		ChangeEmpty,
 	};
 public:
 	/// <summary>
@@ -55,13 +55,14 @@ public:
 	/// 削除
 	/// </summary>
 	void Delete();
+
+	//次のシーン予約
+	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
 private:
 	/// <summary>
 	/// シーンチェンジの処理
 	/// </summary>
 	void SceneChange();
-	//次のシーン予約
-	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
 private://定義
 	//今のシーン
 	BaseScene* scene_ = nullptr;
@@ -71,16 +72,13 @@ private://定義
 	int m_stageNum = 0;
 	int m_breakBox[3] = {};
 
-	int  m_scene = Title;	//シーン管理
-	int  m_sceneMe = Title;
 	SpriteData  m_changeBlack;
-	int  m_changeSceneFlag = false;
-	Vec4  m_changeSceneColor = { 1.0f,1.0f,1.0f,0.0f };//シーンが変わる時の色
+	int  m_changeSceneFlag = ChangeEnd;
+	Vec4  m_changeSceneColor = { 1.0f,1.0f,1.0f,0.2f };//シーンが変わる時の色
 	bool  m_Flag = false;
 
 	Audio* m_audio = nullptr;
 	SoundData  m_bgm={};
-	SoundData  m_buttonSE={};
 
 	ShadowMap  m_shadowMapFar;
 };

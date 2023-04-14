@@ -4,12 +4,13 @@
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
+#include"StageSelect.h"
+#include"SceneManager.h"
+#include"ResultScene.h"
 GameScene::GameScene()
 {}
 GameScene::~GameScene()
 {
-	//XAudio2解放
-	audio->xAudio2.Reset();
 }
 
 void GameScene::Init(int stageNum)
@@ -42,7 +43,7 @@ void GameScene::Init(int stageNum)
 	m_ui.Reset();
 }
 
-void GameScene::Update(int& stageNum, const int m_breakBox[])
+void GameScene::Update(int& stageNum, int m_breakBox[])
 {
 	//プレイヤーの更新
 	if (Input::Get()->KeybordTrigger(DIK_R))
@@ -65,7 +66,7 @@ void GameScene::Update(int& stageNum, const int m_breakBox[])
 		if (Stage::Get()->GetClearFlag() == true)
 		{
 			//プレイヤーゴールFbx始め
-			if (m_goalStagingTime <= 0 && m_sceneFlag==false)//m_changeScene == false)
+			if (m_goalStagingTime <= 0 && m_sceneFlag == false)
 			{
 				m_goalStagingTime = c_goalStagingTimeMax;
 				Player::Get()->GoalStaging(FbxGoalJump);
@@ -118,13 +119,32 @@ void GameScene::Update(int& stageNum, const int m_breakBox[])
 			m_sceneFlag = true;
 			Audio::Get()->SoundSEPlayWave(m_decisionSE);
 		}
-		if (m_sceneNum >GameOverSelect)
+		if (m_sceneNum > ChangeSelect)
 		{
-			m_sceneNum = GameOverRetry;
+			m_sceneNum = ChangeRetry;
 		}
-		else if (m_sceneNum < GameOverRetry)
+		else if (m_sceneNum < ChangeRetry)
 		{
-			m_sceneNum = GameOverSelect;
+			m_sceneNum = ChangeSelect;
+		}
+	}
+	//シーン変更
+	if (m_sceneFlag)
+	{
+		if (m_sceneNum == ChangeSelect)
+		{
+			BaseScene* scene = new StageSelect();
+			sceneManager_->SetNextScene(scene);
+		}
+		else if (m_sceneNum == ChangeRetry)
+		{
+			Reset(stageNum);
+			m_sceneFlag = false;
+		}
+		else if (m_sceneNum == ChangeClear)
+		{
+			BaseScene* scene = new ResultScene();
+			sceneManager_->SetNextScene(scene);
 		}
 	}
 	m_ui.Update(Player::Get()->GetFishNum(), Stage::Get()->GetClearFlag(), m_sceneFlag, m_sceneNum);
@@ -164,6 +184,8 @@ void GameScene::Reset(int stageNum)
 {
 	Player::Get()->Reset();
 	Stage::Get()->MainInit(stageNum);
+	m_decLifeStaging.Reset();
+	m_ui.Reset();
 }
 
 void GameScene::Finalize()

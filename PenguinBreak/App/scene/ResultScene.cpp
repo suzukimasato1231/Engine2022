@@ -4,6 +4,9 @@
 #include"Shape.h"
 #include <FBXObject3d.h>
 #include<Input.h>
+#include"GameScene.h"
+#include"StageSelect.h"
+#include"SceneManager.h"
 ResultScene::ResultScene()
 {}
 ResultScene::~ResultScene()
@@ -51,7 +54,6 @@ void ResultScene::Init(int stageNum)
 	m_selectSE = Audio::SoundLoadWave("Resources/sound/SE/menuSelect.wav");
 
 
-
 	m_resultTime = 0;
 	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
 	FBXObject3d::SetLight(lightGroup.get());
@@ -59,7 +61,7 @@ void ResultScene::Init(int stageNum)
 	m_penginHandFbx->PlayAnimation(true);
 }
 
-void ResultScene::Update(int& stageNum, const int m_breakBox[])
+void ResultScene::Update(int& stageNum, int m_breakBox[])
 {
 	//順番にリザルトが出るように
 	if (m_resultTime <= c_resultTimeMax)
@@ -86,6 +88,28 @@ void ResultScene::Update(int& stageNum, const int m_breakBox[])
 		}
 		Audio::Get()->SoundSEPlayWave(m_selectSE);
 	}
+
+	if (Input::Get()->KeybordTrigger(DIK_SPACE) || Input::Get()->ControllerDown(ButtonA))
+	{
+		if (m_sceneNum == static_cast<int>(ResultNext::ResultSelect) || stageNum == 3)
+		{
+			BaseScene* scene = new StageSelect();
+			sceneManager_->SetNextScene(scene);
+		}
+		else if (m_sceneNum == static_cast<int>(ResultNext::ResultNextStage) && stageNum != 3)
+		{
+			BaseScene* scene = new GameScene();
+			sceneManager_->SetNextScene(scene);
+			stageNum++;
+		}
+		Audio::Get()->SoundSEPlayWave(m_decisionSE);
+	}
+
+	if (Stage::Get()->GetBlockNum() > m_breakBox[stageNum - 1])
+	{
+		m_breakBox[stageNum - 1] = Stage::Get()->GetBlockNum();
+	}
+
 	//選択した方の大きさを変える
 	if (m_nextScaleFlag == false)
 	{
