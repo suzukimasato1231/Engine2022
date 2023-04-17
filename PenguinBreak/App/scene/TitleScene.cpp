@@ -87,7 +87,7 @@ void TitleScene::Draw(const int stageNum)
 	Sprite::Get()->Draw(m_titleGraph, Vec2(0.0f, 0.0f), static_cast<float>(window_width), static_cast<float>(window_height));
 	if (m_buttonTime >= 30)
 	{
-		Sprite::Get()->Draw(m_titleButtonGraph, Vec2(420.0f, 532.0f), 512.0f, 64.0f);
+		Sprite::Get()->Draw(m_titleButtonGraph, Vec2(420.0f, 532.0f), 512.0f, 64.0f,{},{1.0f,0.0f,0.0f,1.0f});
 	}
 }
 
