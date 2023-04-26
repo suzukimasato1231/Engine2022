@@ -23,17 +23,17 @@ void Input::Update()
 }
 
 
-bool Input::KeybordPush(BYTE keyNumber)
+bool Input::KeybordPush(BYTE keyNumber)const
 {
 	return m_keybord.PushKey(keyNumber);
 }
 
-bool Input::KeybordTrigger(BYTE keyNumber)
+bool Input::KeybordTrigger(BYTE keyNumber)const
 {
 	return m_keybord.TriggerKey(keyNumber);
 }
 
-bool Input::KeybordInputArrow()
+bool Input::KeybordInputArrow()const
 {
 	if (KeybordPush(DIK_UP) || KeybordPush(DIK_DOWN)
 		|| KeybordPush(DIK_LEFT) || KeybordPush(DIK_RIGHT))
@@ -43,32 +43,32 @@ bool Input::KeybordInputArrow()
 	return false;
 }
 
-bool Input::ControllerPush(ButtonKind button)
+bool Input::ControllerPush(ButtonKind button)const
 {
 	return m_controller.IsButtonPush(button);
 }
 
-bool Input::ControllerUp(ButtonKind button)
+bool Input::ControllerUp(ButtonKind button)const
 {
 	return m_controller.IsButtonUp(button);
 }
 
-bool Input::ControllerDown(ButtonKind button)
+bool Input::ControllerDown(ButtonKind button)const
 {
 	return m_controller.IsButtonDown(button);
 }
 
-float Input::GetLeftAngle()
+float Input::GetLeftAngle()const
 {
 	return m_controller.GetLeftAngle();
 }
 
-float Input::GetRightAngle()
+float Input::GetRightAngle()const
 {
 	return m_controller.GetRightAngle();
 }
 
-bool Input::ConRightInput()
+bool Input::ConRightInput()const
 {
 	if (ControllerPush(RButtonUp) == false &&
 		ControllerPush(RButtonDown) == false &&
@@ -80,7 +80,7 @@ bool Input::ConRightInput()
 	return false;
 }
 
-bool Input::ConLeftInputS()
+bool Input::ConLeftInputS()const
 {
 	if (ControllerPush(LButtonUpS) == true ||
 		ControllerPush(LButtonDownS) == true ||
@@ -92,7 +92,7 @@ bool Input::ConLeftInputS()
 	return false;
 }
 
-bool Input::ConLeftInput()
+bool Input::ConLeftInput()const
 {
 	if (ControllerPush(LButtonUp) == true ||
 		ControllerPush(LButtonDown) == true ||

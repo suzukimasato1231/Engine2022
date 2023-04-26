@@ -27,12 +27,12 @@ public:
 	virtual void SecondDraw() = 0;
 
 	virtual void Finalize() = 0;
+	//
+	void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
 
-	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
+	bool GetSceneFlag()const { return m_sceneFlag; };
 
-	bool GetSceneFlag() { return m_sceneFlag; };
-
-	int GetSceneNum() { return m_sceneNum; };
+	int GetSceneNum()const { return m_sceneNum; };
 
 protected:
 	bool m_sceneFlag = false;

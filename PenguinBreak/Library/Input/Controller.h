@@ -70,31 +70,31 @@ public://ゲームパッド
 	/// </summary>
 	/// <param name="button">ボタンの種類</param>
 	/// <returns></returns>
-	bool IsButtonPush(ButtonKind button);
+	bool IsButtonPush(ButtonKind button)const;
 
 	/// <summary>
 	/// ボタンが押された瞬間かどうか
 	/// </summary>
 	/// <param name="button">ボタンの種類</param>
 	/// <returns></returns>
-	bool IsButtonUp(ButtonKind button);
+	bool IsButtonUp(ButtonKind button)const;
 
 	/// <summary>
 	/// ボタンが離れた瞬間
 	/// </summary>
 	/// <param name="button">ボタンの種類</param>
 	/// <returns></returns>
-	bool IsButtonDown(ButtonKind button);
+	bool IsButtonDown(ButtonKind button)const;
 
 	/// <summary>
 	/// 左パッド角度取得
 	/// </summary>
 	/// <returns></returns>
-	float GetLeftAngle();
+	float GetLeftAngle() const;
 	/// <summary>
 	/// 右スティック角度取得
 	/// </summary>
 	/// <returns></returns>
-	float GetRightAngle();
+	float GetRightAngle() const;
 
 };

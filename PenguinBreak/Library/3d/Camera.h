@@ -59,24 +59,24 @@ public:
 	void FollowCamera(const Vec3 &position, const Vec3 &d, float angleX = 0, float angleY = 0);
 
 	//matViewを獲得
-	 XMMATRIX GetMatView();
+	 XMMATRIX GetMatView()const;
 	//projectionを獲得
-	 XMMATRIX GetProjection();
+	 XMMATRIX GetProjection()const;
 
-	 XMMATRIX GetMatViewProjection();
+	 XMMATRIX GetMatViewProjection()const;
 	 /// <summary>
 	 /// Eye取得
 	 /// </summary>
 	 /// <returns></returns>
-	 Vec3 GetEye();
+	 Vec3 GetEye()const;
 	 /// <summary>
 	 /// ターゲット取得
 	 /// </summary>
 	 /// <returns></returns>
-	 Vec3 GetTarget();
+	 Vec3 GetTarget()const;
 	 /// <summary>
 	 /// UP取得
 	 /// </summary>
 	 /// <returns></returns>
-	 Vec3 GetUp();
+	 Vec3 GetUp()const;
 };

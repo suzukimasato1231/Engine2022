@@ -49,7 +49,7 @@ void Mouse::Update()
 	result = m_devMouse->GetDeviceState(sizeof(m_mouseState), &m_mouseState);
 }
 
-bool Mouse::PushMouseLeft()
+bool Mouse::PushMouseLeft()const
 {
 	// 0でなければ押している
 	if (m_mouseState.rgbButtons[0]) {
@@ -60,7 +60,7 @@ bool Mouse::PushMouseLeft()
 	return false;
 }
 
-bool  Mouse::PushMouseMiddle()
+bool  Mouse::PushMouseMiddle()const
 {
 	// 0でなければ押している
 	if (m_mouseState.rgbButtons[2]) {
@@ -71,7 +71,7 @@ bool  Mouse::PushMouseMiddle()
 	return false;
 }
 
-bool  Mouse::TriggerMouseLeft()
+bool  Mouse::TriggerMouseLeft()const
 {
 	// 前回が0で、今回が0でなければトリガー
 	if (!m_mouseStatePre.rgbButtons[0] && m_mouseState.rgbButtons[0]) {
@@ -82,7 +82,7 @@ bool  Mouse::TriggerMouseLeft()
 	return false;
 }
 
-bool  Mouse::TriggerMouseMiddle()
+bool  Mouse::TriggerMouseMiddle()const
 {
 	// 前回が0で、今回が0でなければトリガー
 	if (!m_mouseStatePre.rgbButtons[2] && m_mouseState.rgbButtons[2]) {

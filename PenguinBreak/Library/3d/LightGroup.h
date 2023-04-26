@@ -238,7 +238,7 @@ public: // メンバ関数
 	void SetShadowDir(const Vec3 shadowDir);
 
 
-	XMMATRIX GetLightMatProjection() { return m_lightMatViewProjection; }
+	XMMATRIX GetLightMatProjection()const { return m_lightMatViewProjection; }
 
 private: // メンバ変数
 	// 定数バッファ

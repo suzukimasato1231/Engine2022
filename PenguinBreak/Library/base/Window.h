@@ -12,7 +12,7 @@ extern const int window_height;
 /// <summary>
 /// ウィンドウクラス
 /// </summary>
-class Window:public Singleton<Window>
+class Window :public Singleton<Window>
 {
 	friend Singleton<Window>;
 public://メンバ関数
@@ -25,10 +25,10 @@ public://メンバ関数
 	void TerminateGameWindow();
 
 	//Hwnd獲得
-	HWND GetHwnd() { return m_hwnd; }
+	HWND GetHwnd()const { return m_hwnd; }
 
 	//w.hInstance獲得
-	HINSTANCE GetInstance() { return m_w.hInstance; }
+	HINSTANCE GetInstance()const { return m_w.hInstance; }
 
 private://メンバ変数
 	// ウィンドウオブジェクトの生成

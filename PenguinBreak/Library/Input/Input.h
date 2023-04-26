@@ -30,35 +30,35 @@ public://メンバ関数
 	void Update();
 public://キーボード
 	//押してる時
-	bool KeybordPush(BYTE keyNumber);
+	bool KeybordPush(BYTE keyNumber)const;
 	//押した瞬間
-	bool KeybordTrigger(BYTE keyNumber);
+	bool KeybordTrigger(BYTE keyNumber)const;
 	//矢印キーのいずれかを押したかどうか
-	bool KeybordInputArrow();
+	bool KeybordInputArrow()const;
 public://ゲームパッド
 
 	//@brief ボタンが押されているかの判定関数
 	// @param[in] button 判定したいボタンの種類
-	bool ControllerPush(ButtonKind button);
+	bool ControllerPush(ButtonKind button)const;
 
 	// @brief ボタンが押された瞬間の判定関数
 	// @param[in] button 判定したいボタンの種類
-	bool ControllerUp(ButtonKind button);
+	bool ControllerUp(ButtonKind button)const;
 
 	// @brief ボタンを離した瞬間の判定関数
 	// @param[in] button 判定したいボタンの種類
-	bool ControllerDown(ButtonKind button);
+	bool ControllerDown(ButtonKind button)const;
 	//左スティック角度取得
-	float GetLeftAngle();
+	float GetLeftAngle()const;
 
-	float GetRightAngle();
+	float GetRightAngle()const;
 	//右スティック入力してるか
-	bool ConRightInput();
+	bool ConRightInput()const;
 
-	bool ConLeftInputS();
+	bool ConLeftInputS()const;
 
 	//左スティックを入力してるか
-	bool ConLeftInput();
+	bool ConLeftInput()const;
 public://マウス
 	bool MousePushLeft();
 

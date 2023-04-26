@@ -159,9 +159,9 @@ public:
 	void Initilize(const Vec3 &pos, const Vec3 &rotM, const Vec3 &scale);
 
 	void SetPos(const Vec3 &pos) { m_Pos = pos; }
-	Vec3 GetDirect(int elem);   // 指定軸番号の方向ベクトルを取得
-	float GetLen_W(int elem);   // 指定軸方向の長さを取得
-	Vec3 GetPos_W();            // 位置を取得
+	Vec3 GetDirect (int elem)const; // 指定軸番号の方向ベクトルを取得
+	float GetLen_W (int elem)const; // 指定軸方向の長さを取得
+	Vec3 GetPos_W();				// 位置を取得
 };
 
 class OBBCollision :OBB

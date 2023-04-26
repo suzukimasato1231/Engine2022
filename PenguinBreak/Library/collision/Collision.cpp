@@ -504,7 +504,7 @@ void OBB::Initilize(const Vec3 &pos, const Vec3 &rotation, const Vec3 &scale)
 }
 
 
-Vec3 OBB::GetDirect(int elem)
+Vec3 OBB::GetDirect(int elem)const
 {
 	switch (elem)
 	{
@@ -523,7 +523,7 @@ Vec3 OBB::GetDirect(int elem)
 	}
 }
 
-float OBB::GetLen_W(int elem)
+float OBB::GetLen_W(int elem)const
 {
 	switch (elem)
 	{

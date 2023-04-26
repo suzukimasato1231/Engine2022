@@ -217,7 +217,7 @@ void Controller::UpdateInput()
 	UpdateGamePad();
 }
 
-bool Controller::IsButtonPush(ButtonKind button)
+bool Controller::IsButtonPush(ButtonKind button)const
 {
 	if (g_ButtonStates[button] == ButtonState::ButtonStatePush)
 	{
@@ -227,7 +227,7 @@ bool Controller::IsButtonPush(ButtonKind button)
 	return false;
 }
 
-bool Controller::IsButtonUp(ButtonKind button)
+bool Controller::IsButtonUp(ButtonKind button)const
 {
 	if (g_ButtonStates[button] == ButtonState::ButtonStateUp)
 	{
@@ -237,7 +237,7 @@ bool Controller::IsButtonUp(ButtonKind button)
 	return false;
 }
 
-bool Controller::IsButtonDown(ButtonKind button)
+bool Controller::IsButtonDown(ButtonKind button)const
 {
 	if (g_ButtonStates[button] == ButtonState::ButtonStateDown)
 	{
@@ -247,12 +247,12 @@ bool Controller::IsButtonDown(ButtonKind button)
 	return false;
 }
 
-float Controller::GetLeftAngle()
+float Controller::GetLeftAngle()const
 {
 	return leftAngle;
 }
 
-float Controller::GetRightAngle()
+float Controller::GetRightAngle()const
 {
 	return rightAngle;
 }

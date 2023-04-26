@@ -187,7 +187,7 @@ void Player::AudioUpdate()
 	}
 }
 
-bool Player::OutofFallDown(const Vec3& pos)
+bool Player::OutofFallDown(const Vec3& pos)const
 {
 	if (pos.y < c_fallPos && m_dieType == static_cast<int>(DieType::DIENULL))
 	{

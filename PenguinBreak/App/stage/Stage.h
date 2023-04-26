@@ -37,9 +37,9 @@ public:
 	//ステージ作成
 	void LoadStage(int stageNum);
 public://マップ
-	inline bool GetClearFlag() { return m_goalFlag; }
-	inline int GetBlockNum() { return m_blockNum; }
-	inline int GetBlockMax() { return m_blockMax; }
+	bool GetClearFlag()const { return m_goalFlag; }
+	int GetBlockNum()const { return m_blockNum; }
+	int GetBlockMax()const { return m_blockMax; }
 private:
 	//川の描画
 	void DrawWater();

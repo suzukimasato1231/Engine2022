@@ -45,13 +45,13 @@ public:
 	//desc獲得
 	ID3D12DescriptorHeap* GetDescHeap();
 
-	TextureData GetShadowTexture() { return m_shadowData; }
+	TextureData GetShadowTexture()const { return m_shadowData; }
 
-	TextureData GetCameraDepth() { return m_cameraDepth; }
+	TextureData GetCameraDepth() const { return m_cameraDepth; }
 
-	TextureData GetPostEfect() { return m_postEfect; }
+	TextureData GetPostEfect() const { return m_postEfect; }
 	//白画像
-	TextureData GetWhite() { return m_white; }
+	TextureData GetWhite()const { return m_white; }
 private:
 	//定数バッファ用のデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap >m_descHeap = { nullptr };

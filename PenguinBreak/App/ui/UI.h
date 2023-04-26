@@ -25,7 +25,7 @@ public:
 	/// <param name="clearFlag">クリアフラグ</param>
 	/// <param name="changeScene">チェンジフラグ</param>
 	/// <param name="sceneNum">シーン数</param>
-	void Update(const int fishNum,const bool clearFlag, bool& changeScene, int& sceneNum);
+	void Update(const int fishNum, const bool clearFlag, bool& changeScene, int& sceneNum);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -37,8 +37,7 @@ public:
 	/// </summary>
 	void Reset();
 
-	bool GetMenuFlag() { return m_menuFlag; }
-
+	bool GetMenuFlag()const { return m_menuFlag; }
 private:
 	/// <summary>
 	/// 表示する数字を決定

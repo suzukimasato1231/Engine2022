@@ -33,25 +33,25 @@ public://メンバ関数
 	/// キーの左ボタン押下をチェック
 	/// </summary>
 	/// <returns>押されているか</returns>
-	bool PushMouseLeft();
+	bool PushMouseLeft()const;
 
 	/// <summary>
 	/// キーの中ボタン押下をチェック
 	/// </summary>
 	/// <returns>押されているか</returns>
-	bool PushMouseMiddle();
+	bool PushMouseMiddle()const;
 
 	/// <summary>
 	/// キーの左ボタントリガーをチェック
 	/// </summary>
 	/// <returns>トリガーか</returns>
-	bool TriggerMouseLeft();
+	bool TriggerMouseLeft()const;
 
 	/// <summary>
 	/// キーの中ボタントリガーをチェック
 	/// </summary>
 	/// <returns>トリガーか</returns>
-	bool TriggerMouseMiddle();
+	bool TriggerMouseMiddle()const;
 
 	/// <summary>
 	/// マウス移動量を取得

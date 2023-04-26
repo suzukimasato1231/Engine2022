@@ -87,7 +87,7 @@ void DangerFish::AllUpdate()
 	}
 }
 
-void DangerFish::Draw(StageData* stageObj, const bool shadowFlag)
+void DangerFish::Draw(StageData* stageObj, const bool shadowFlag)const
 {
 #ifdef _DEBUG
 	if (stageObj == nullptr)

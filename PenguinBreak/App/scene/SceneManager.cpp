@@ -153,9 +153,8 @@ void SceneManager::SceneChange()
 	{
 		m_changeSceneFlag = ChangeFirst;
 	}
-
 	//シーンチェンジの色
-	if (m_changeSceneFlag == ChangeFirst)
+	else if (m_changeSceneFlag == ChangeFirst)
 	{
 		m_changeSceneColor += Vec4(0.0f, 0.0f, 0.0f, 0.1f);
 		if (m_changeSceneColor.w >= 1.0f)

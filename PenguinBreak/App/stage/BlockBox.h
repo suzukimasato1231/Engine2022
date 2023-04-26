@@ -50,19 +50,19 @@ private:
 public:
 	StageData* GetObj_Data() { return m_obj_data; }
 
-	StageData GetObj_Data(int i) { return m_obj_data[i]; }
+	StageData GetObj_Data(int i) const { return m_obj_data[i]; }
 
-	int GetBox_Count() { return m_box_count; }
+	int GetBox_Count()const { return m_box_count; }
 
-	bool GetIs_Hit() { return m_is_hit; }
+	bool GetIs_Hit()const { return m_is_hit; }
 
-	StageData GetObj_Spin(int i) { return m_obj_spin[i]; }
+	StageData GetObj_Spin(int i)const { return m_obj_spin[i]; }
 
-	int GetSpin_Count() { return m_spin_count; }
+	int GetSpin_Count() const { return m_spin_count; }
 
-	bool GetIs_Spin() { return m_is_spin; }
+	bool GetIs_Spin()const { return m_is_spin; }
 
-	Vec3 GetBoxScale() { return c_breakBoxScale; }
+	Vec3 GetBoxScale()const { return c_breakBoxScale; }
 private:
 	ObjectData m_breakBoxOBJ = {};
 	//” ‚Ì‘å‚«‚³
@@ -80,8 +80,8 @@ private:
 	bool m_bombBoxFlag = false;							//”š’e‰‰oƒtƒ‰ƒO
 	int m_bombTime = 0;									//ŠJ“XŠÔ
 	const int c_bombTimeMax = 45;						//‰ñ“]ŠÔÅ‘å
-	const Vec3 c_bombPlasSpeed = {0.0f,0.2f,0.0f};		//’µ‚Ë‚é‘¬“x
-	Vec3 m_bombPlas = {0.0f,0.0f,0.0f};					//”š’e” ‚Ì’µ‚Ë‚é‹——£
+	const Vec3 c_bombPlasSpeed = { 0.0f,0.2f,0.0f };		//’µ‚Ë‚é‘¬“x
+	Vec3 m_bombPlas = { 0.0f,0.0f,0.0f };					//”š’e” ‚Ì’µ‚Ë‚é‹——£
 	//Å‘åƒqƒbƒg”
 	const int hitMax = 4;
 	//ÚG‚Ì”»’è‚Ég‚¤” 

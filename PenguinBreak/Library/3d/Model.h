@@ -90,7 +90,7 @@ public:
 	const XMMATRIX& GetModelTransform() { return meshNode->globalTransform; }
 
 	//getter
-	FbxScene* GetFbxScene() { return fbxScene; }
+	FbxScene* GetFbxScene()const { return fbxScene; }
 
 	//getter
 	std::vector<Bone>& GetBones() { return bones; }

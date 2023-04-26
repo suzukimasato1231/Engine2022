@@ -2778,7 +2778,7 @@
                     8.0
                 ]
             },
-            "file_name": "BARRIERWALL"
+            "file_name": "STLON"
         },
         {
             "type": "MESH",
@@ -2822,7 +2822,7 @@
                     8.0
                 ]
             },
-            "file_name": "BARRIERWALL"
+            "file_name": "STLON"
         },
         {
             "type": "MESH",
@@ -2844,7 +2844,7 @@
                     8.0
                 ]
             },
-            "file_name": "BARRIERWALL"
+            "file_name": "STLON"
         },
         {
             "type": "MESH",
@@ -2866,7 +2866,7 @@
                     8.0
                 ]
             },
-            "file_name": "BARRIERWALL"
+            "file_name": "STLON"
         },
         {
             "type": "MESH",
@@ -3291,7 +3291,7 @@
             "name": "Cube.173",
             "transform": {
                 "translation": [
-                    -1335.7999267578125,
+                    -1343.5164794921875,
                     258.3706359863281,
                     128.45713806152344
                 ],
@@ -3313,7 +3313,7 @@
             "name": "Cube.176",
             "transform": {
                 "translation": [
-                    -1305.3870849609375,
+                    -1306.898193359375,
                     258.3706359863281,
                     128.45713806152344
                 ],
@@ -4661,28 +4661,6 @@
                 ]
             },
             "file_name": "STLON"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.175",
-            "transform": {
-                "translation": [
-                    -1034.3701171875,
-                    252.69703674316406,
-                    122.030517578125
-                ],
-                "rotation": [
-                    90.00000762939453,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    6.0,
-                    8.0,
-                    8.0
-                ]
-            },
-            "file_name": "BARRIERWALL"
         }
     ]
 }

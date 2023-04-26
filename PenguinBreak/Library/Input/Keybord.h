@@ -29,7 +29,7 @@ public://ƒƒ“ƒoŠÖ”
 	void Update();
 
 	//‰Ÿ‚µ‚½uŠÔ
-	bool PushKey(BYTE keyNumber);
+	bool PushKey(BYTE keyNumber)const;
 	//—£‚µ‚½uŠÔ
-	bool TriggerKey(BYTE keyNumber);
+	bool TriggerKey(BYTE keyNumber)const;
 };

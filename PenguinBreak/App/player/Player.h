@@ -138,22 +138,22 @@ private:
 	/// </summary>
 	/// <param name="pos">プレイヤー位置</param>
 	/// <returns></returns>
-	bool OutofFallDown(const Vec3& pos);
+	bool OutofFallDown(const Vec3& pos)const;
 public://取得系
-	inline Vec3 GetPosition() { return m_position; }
-	inline Vec3 GetOldPosition() { return m_oldPosition; }
-	inline Vec3 GetPSize() { return m_pScale; }
-	inline Box GetBox() { return m_pBox; }
-	inline Vec3 GetVec() { return m_vec; }
-	inline float GetJumpPower() { return m_jumpPower; }
-	inline bool GetGroundFlag() { return m_groundFlag; }
-	inline bool GetOldGroundFlag() { return m_oldGroundFlag; }	
-	inline int GetRemanLives() { return m_remainLives; }
-	inline int GetFishNum() { return m_fishNum; }
-	inline bool GetGameoverFlag() { return m_gameoverFlag; }
-	inline bool GetIsFishDie() { return m_isFishDie; }
-	inline Box GetSpinBox() { return m_spinAttack; }
-	inline bool GetSpinFlag() { return m_spinFlag; }
+	inline Vec3 GetPosition()const { return m_position; }
+	inline Vec3 GetOldPosition()const { return m_oldPosition; }
+	inline Vec3 GetPSize()const { return m_pScale; }
+	inline Box GetBox() const { return m_pBox; }
+	inline Vec3 GetVec()const { return m_vec; }
+	inline float GetJumpPower()const { return m_jumpPower; }
+	inline bool GetGroundFlag()const { return m_groundFlag; }
+	inline bool GetOldGroundFlag()const { return m_oldGroundFlag; }
+	inline int GetRemanLives() const { return m_remainLives; }
+	inline int GetFishNum() const { return m_fishNum; }
+	inline bool GetGameoverFlag() const { return m_gameoverFlag; }
+	inline bool GetIsFishDie()const { return m_isFishDie; }
+	inline Box GetSpinBox()const { return m_spinAttack; }
+	inline bool GetSpinFlag()const { return m_spinFlag; }
 private:
 	//ゲームフラグ
 	bool m_moveFlag = false;								//2D false 3D true
@@ -161,7 +161,7 @@ private:
 	bool m_clearFlag = false;								//クリアしたかどうか
 	//プレイヤーステータス
 	const Vec3 c_firstPosition = { 90.0f,25.0f,80.0f }; 	//初期位置
-	Vec3 m_position =c_firstPosition;				        //座標
+	Vec3 m_position = c_firstPosition;				        //座標
 	Vec3 m_oldPosition = c_firstPosition;					//1つ前の座標
 	const Vec3 c_speed = { 2.0f,2.0f,2.0f };				//走るスピード
 	const Vec3 c_walkSpeed = { 1.0f,1.0f,1.0f };			//歩くスピード

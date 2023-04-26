@@ -32,9 +32,9 @@ public:
 	/// </summary>
 	/// <param name="stageObj">ステージデータ</param>
 	/// <param name="shadowFlag">影フラグ</param>
-	void Draw(StageData* stageObj, const bool shadowFlag);
+	void Draw(StageData* stageObj, const bool shadowFlag)const;
 public:
-	Vec3 GetFishAngle() { return m_rotation; }
+	Vec3 GetFishAngle()const { return m_rotation; }
 private:
 	ObjectData m_dangerFishOBJ;						//魚OBJ
 	bool m_dangerFishFlag = false;					//魚が出てくるかどうか

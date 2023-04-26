@@ -30,7 +30,7 @@ public:
 	/// <param name="shadowFlag">影フラグ</param>
 	void Draw(StageData* stageObj, const bool shadowFlag);
 
-	Vec3 GetGoalScale() { return m_goalScale; }
+	Vec3 GetGoalScale()const { return m_goalScale; }
 private:
 	//ゴール
 	ObjectData  m_goalOBJ = {};					//金色魚OBJ
