@@ -63,36 +63,7 @@ void GameScene::Update(int& stageNum, int m_breakBox[])
 		}
 
 		//クリアしたらシーンチェンジ
-		if (Stage::Get()->GetClearFlag() == true)
-		{
-			//プレイヤーゴールFbx始め
-			if (m_goalStagingTime <= 0 && m_sceneFlag == false)
-			{
-				m_goalStagingTime = c_goalStagingTimeMax;
-				Player::Get()->GoalStaging(FbxGoalJump);
-				Player::Get()->GetClearFlag(true);
-				m_goalCameraAngle = c_cameraAngle;
-				m_goalDistance = c_goalDistanceMax;
-			}
-			m_goalStagingTime--;
-			if (m_goalCameraAngle >= c_goalCamraAngleMax)
-			{
-				m_goalCameraAngle -= c_cameraSpeed;
-			}
-			if (m_goalDistance >= c_goalDistanceMin)
-			{
-				m_goalDistance -= c_cameraSpeed;
-			}
-
-			//カメラ移動始め
-			Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-m_goalDistance }, 0.0f, m_goalCameraAngle);
-
-			if (m_goalStagingTime == 0)
-			{
-				m_sceneFlag = true;
-				m_sceneNum = static_cast<int>(ChangeStatus::ChangeClear);
-			}
-		}
+		ClearMove();
 		//ライト更新
 		lightGroup->Update();
 	}
@@ -102,32 +73,7 @@ void GameScene::Update(int& stageNum, int m_breakBox[])
 	}
 
 	//ゲームオーバー時のセレクト
-	if (Player::Get()->GetGameoverFlag() == true)
-	{
-		if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft) == true)
-		{
-			m_sceneNum++;
-			Audio::Get()->SoundSEPlayWave(m_selectSE);
-		}
-		if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight) == true)
-		{
-			m_sceneNum--;
-			Audio::Get()->SoundSEPlayWave(m_selectSE);
-		}
-		if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA) == true)
-		{
-			m_sceneFlag = true;
-			Audio::Get()->SoundSEPlayWave(m_decisionSE);
-		}
-		if (m_sceneNum > ChangeSelect)
-		{
-			m_sceneNum = ChangeRetry;
-		}
-		else if (m_sceneNum < ChangeRetry)
-		{
-			m_sceneNum = ChangeSelect;
-		}
-	}
+	GameOverSelect();
 	//シーン変更
 	if (m_sceneFlag)
 	{
@@ -186,6 +132,70 @@ void GameScene::Reset(int stageNum)
 	Stage::Get()->MainInit(stageNum);
 	m_decLifeStaging.Reset();
 	m_ui.Reset();
+}
+
+void GameScene::GameOverSelect()
+{
+	if (Player::Get()->GetGameoverFlag() == false) { return; }
+
+	if (Input::Get()->KeybordTrigger(DIK_LEFT) == true || Input::Get()->ControllerDown(LButtonLeft) == true)
+	{
+		m_sceneNum++;
+		Audio::Get()->SoundSEPlayWave(m_selectSE);
+	}
+	if (Input::Get()->KeybordTrigger(DIK_RIGHT) == true || Input::Get()->ControllerDown(LButtonRight) == true)
+	{
+		m_sceneNum--;
+		Audio::Get()->SoundSEPlayWave(m_selectSE);
+	}
+	if (Input::Get()->KeybordTrigger(DIK_SPACE) == true || Input::Get()->ControllerDown(ButtonA) == true)
+	{
+		m_sceneFlag = true;
+		Audio::Get()->SoundSEPlayWave(m_decisionSE);
+	}
+	if (m_sceneNum > ChangeSelect)
+	{
+		m_sceneNum = ChangeRetry;
+	}
+	else if (m_sceneNum < ChangeRetry)
+	{
+		m_sceneNum = ChangeSelect;
+	}
+
+}
+
+void GameScene::ClearMove()
+{
+	if (Stage::Get()->GetClearFlag() == false) { return; }
+
+	//プレイヤーゴールFbx始め
+	if (m_goalStagingTime <= 0 && m_sceneFlag == false)
+	{
+		m_goalStagingTime = c_goalStagingTimeMax;
+		Player::Get()->GoalStaging(FbxGoalJump);
+		Player::Get()->GetClearFlag(true);
+		m_goalCameraAngle = c_cameraAngle;
+		m_goalDistance = c_goalDistanceMax;
+	}
+	m_goalStagingTime--;
+	if (m_goalCameraAngle >= c_goalCamraAngleMax)
+	{
+		m_goalCameraAngle -= c_cameraSpeed;
+	}
+	if (m_goalDistance >= c_goalDistanceMin)
+	{
+		m_goalDistance -= c_cameraSpeed;
+	}
+
+	//カメラ移動始め
+	Camera::Get()->FollowCamera(Player::Get()->GetPosition(), Vec3{ 0,0,-m_goalDistance }, 0.0f, m_goalCameraAngle);
+
+	if (m_goalStagingTime == 0)
+	{
+		m_sceneFlag = true;
+		m_sceneNum = static_cast<int>(ChangeStatus::ChangeClear);
+	}
+
 }
 
 void GameScene::Finalize()

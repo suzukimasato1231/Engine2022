@@ -59,6 +59,14 @@ private:
 	/// </summary>
 	/// <param name="stageNum">ステージ</param>
 	void Reset(int stageNum);
+	/// <summary>
+	/// ゲームオーバーのセレクト
+	/// </summary>
+	void GameOverSelect();
+	/// <summary>
+	/// クリアしたときの動き
+	/// </summary>
+	void ClearMove();
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 	std::unique_ptr<Audio> audio;
