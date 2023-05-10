@@ -453,6 +453,9 @@
     <ClInclude Include="App\scene\BaseScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="App\player\Fish.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -637,6 +640,9 @@
     </ClCompile>
     <ClCompile Include="App\scene\BaseScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="App\player\Fish.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

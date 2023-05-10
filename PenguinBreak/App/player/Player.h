@@ -6,6 +6,7 @@
 #include<memory>
 #include <Audio.h>
 #include"PlayerFBX.h"
+#include"Fish.h"
 /// <summary>
 /// 死亡タイプ
 /// </summary>
@@ -114,10 +115,6 @@ private:
 	//落ちて死亡したとき
 	void FallDie();
 	/// <summary>
-	/// 魚の加算
-	/// </summary>
-	void Fish();
-	/// <summary>
 	/// 赤い魚に捕まったときの処理
 	/// </summary>
 	void RedFishDie();
@@ -149,7 +146,7 @@ public://取得系
 	inline bool GetGroundFlag()const { return m_groundFlag; }
 	inline bool GetOldGroundFlag()const { return m_oldGroundFlag; }
 	inline int GetRemanLives() const { return m_remainLives; }
-	inline int GetFishNum() const { return m_fishNum; }
+	inline int GetFishNum() const { return fishClass.GetFishNum(); }
 	inline bool GetGameoverFlag() const { return m_gameoverFlag; }
 	inline bool GetIsFishDie()const { return m_isFishDie; }
 	inline Box GetSpinBox()const { return m_spinAttack; }
@@ -193,11 +190,8 @@ private:
 	int m_spinCoolTime = 0;								//スピンのクールタイム
 	bool m_spinFlag = false;							//スピンをしたか
 
-	//魚
-	bool m_fishFlag = false;							//魚を獲得したか								
-	int m_fishNum = 0;									//魚獲得数
-	const int c_fishMax = 100;							//最大獲得数
-	const int c_fishPlas = 5;							//一回の獲得数
+	//魚獲得数クラス
+	FishClass fishClass;
 
 	//プレイヤー演出
 	Staging m_staging;						     			//演出クラス

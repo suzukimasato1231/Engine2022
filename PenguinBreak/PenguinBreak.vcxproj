@@ -286,6 +286,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\player\DecLifeStaging.h" />
+    <ClInclude Include="App\player\Fish.h" />
     <ClInclude Include="App\player\Player.h" />
     <ClInclude Include="App\player\PlayerFBX.h" />
     <ClInclude Include="App\player\Staging.h" />
@@ -357,6 +358,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\player\DecLifeStaging.cpp" />
+    <ClCompile Include="App\player\Fish.cpp" />
     <ClCompile Include="App\player\Player.cpp" />
     <ClCompile Include="App\player\PlayerFBX.cpp" />
     <ClCompile Include="App\player\Staging.cpp" />

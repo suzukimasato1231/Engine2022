@@ -19,6 +19,7 @@ void Player::Init()
 	m_fallSE = Audio::SoundLoadWave("Resources/sound/SE/fall.wav");
 	m_electSE = Audio::SoundLoadWave("Resources/sound/SE/elect.wav");
 	m_pFbx.Load();
+
 }
 
 void Player::Update()
@@ -44,11 +45,11 @@ void Player::Update()
 	m_pBox.minPosition = XMVectorSet(m_position.x - m_pScale.x / 2, m_position.y - m_pScale.y / 2, m_position.z - m_pScale.z / 2, 1);
 	//落下死
 	FallDie();
-	//魚関連
-	Fish();
+	
+	fishClass.Update(m_changeBreakFlag,m_remainLives);
 
 	RedFishDie();
-	
+
 	m_pFbx.Update(m_oldPosition, m_angle);
 
 	AnimationUpdate();
@@ -81,7 +82,7 @@ void Player::Reset()
 	m_position = c_firstPosition;	//座標
 	m_oldPosition = m_position;
 	m_remainLives = c_remainLivesMax;
-	m_fishNum = {};
+	fishClass.Init();
 	m_gameoverFlag = false;
 	m_dieType = static_cast<int>(DieType::DIENULL);
 	m_clearFlag = false;
@@ -232,7 +233,7 @@ void Player::Move()
 		m_pFbx.PlayFBX(FbxWalk);
 	}
 	else if (Input::Get()->ConLeftInputS())
-	{	
+	{
 		MoveController(c_walkSpeed);
 		m_pFbx.PlayFBX(FbxWalking);
 	}
@@ -307,61 +308,40 @@ void Player::FallDie()
 	}
 
 
-	if (m_dieType == static_cast<int>(DieType::DIENOW))
+	if (m_dieType != static_cast<int>(DieType::DIENOW)) { return; }
+
+	if (m_dieNowTime > 0)
 	{
-		if (m_dieNowTime > 0)
+		m_dieNowTime--;
+		//暗転開始
+		if (m_dieNowTime == 1)
 		{
-			m_dieNowTime--;
-			//暗転開始
-			if (m_dieNowTime == 1)
-			{
-				m_decLifeTime = 50;
-			}
+			m_decLifeTime = 50;
 		}
-		else
+	}
+	else
+	{
+		if (m_remainLives > 0)
 		{
-			if (m_remainLives > 0)
+			m_decLifeTime--;
+			if (m_decLifeTime <= 0)
 			{
-				m_decLifeTime--;
-				if (m_decLifeTime <= 0)
-				{
-					SetPosition(c_firstPosition);
-					m_angle = c_firstAngle;	//角度
-					m_oldPosition = m_position;
-					m_remainLives--;
-					m_isFishDie = false;
-					m_dieType = static_cast<int>(DieType::DIENULL);
-					m_starStaging = true;
-				}
-			}
-			else if (m_remainLives == 0)
-			{
-				m_gameoverFlag = true;
+				SetPosition(c_firstPosition);
+				m_angle = c_firstAngle;	//角度
+				m_oldPosition = m_position;
+				m_remainLives--;
+				m_isFishDie = false;
 				m_dieType = static_cast<int>(DieType::DIENULL);
+				m_starStaging = true;
 			}
 		}
-	}
-}
-
-
-void Player::Fish()
-{
-	if (m_changeBreakFlag == true)
-	{
-		m_fishFlag = true;
-		m_changeBreakFlag = false;
-	}
-	if (m_fishFlag == true)
-	{
-		m_fishNum += c_fishPlas;
-		m_fishFlag = false;
-		//100個集まったら残機１つ増える
-		if (m_fishNum >= c_fishMax)
+		else if (m_remainLives == 0)
 		{
-			m_fishNum -= c_fishMax;
-			m_remainLives++;
+			m_gameoverFlag = true;
+			m_dieType = static_cast<int>(DieType::DIENULL);
 		}
 	}
+
 }
 
 void Player::RedFishDie()
